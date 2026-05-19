@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      padding: 16px;
+      background: var(--figma-color-bg, #fff);
+      color: var(--figma-color-text, #333);
+      font-size: 13px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .header svg { flex-shrink: 0; }
+    .header h2 { font-size: 15px; font-weight: 600; }
+    .header small { font-size: 11px; color: #888; display: block; margin-top: 2px; }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 16px;
+      border: 1px solid var(--figma-color-border, #ddd);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .tab {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: inherit;
+      background: var(--figma-color-bg-secondary, #f5f5f5);
+      color: var(--figma-color-text-secondary, #666);
+      transition: all 0.15s;
+    }
+    .tab:not(:last-child) { border-right: 1px solid var(--figma-color-border, #ddd); }
+    .tab.active {
+      background: #4199d5;
+      color: #fff;
+    }
+
+    /* Panels */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* Fields */
+    .field { margin-bottom: 12px; }
+    .field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--figma-color-text-secondary, #888);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--figma-color-border, #ddd);
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      background: var(--figma-color-bg, #fff);
+      color: var(--figma-color-text, #333);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input:focus, textarea:focus {
+      border-color: #4199d5;
+    }
+    textarea {
+      height: 220px;
+      font-family: 'SF Mono', Menlo, monospace;
+      font-size: 11px;
+      resize: vertical;
+    }
+
+    /* Buttons */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-primary {
+      background: #4199d5;
+      color: #fff;
+    }
+    .btn-primary:hover { background: #3580b5; }
+    .btn-primary:disabled {
+      background: #b0cfe8;
+      cursor: not-allowed;
+    }
+
+    /* Status */
+    .status {
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      display: none;
+    }
+    .status.visible { display: block; }
+    .status.info {
+      background: #e8f4fd;
+      color: #1a6fa8;
+    }
+    .status.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    .status.error {
+      background: #fde8e8;
+      color: #c62828;
+    }
+
+    /* Help text */
+    .help {
+      margin-top: 16px;
+      padding: 12px;
+      background: var(--figma-color-bg-secondary, #f8f9fa);
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--figma-color-text-secondary, #666);
+    }
+    .help strong { color: var(--figma-color-text, #333); }
+    .help code {
+      background: rgba(0,0,0,0.06);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-family: 'SF Mono', Menlo, monospace;
+      font-size: 10px;
+    }
+
+    /* File drop */
+    .drop-zone {
+      border: 2px dashed var(--figma-color-border, #ddd);
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      color: #888;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .drop-zone.dragover {
+      border-color: #4199d5;
+      background: #e8f4fd;
+      color: #4199d5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <rect width="24" height="24" rx="4" fill="#4199d5"/>
+      <path d="M7 8h10M7 12h7M7 16h10" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <h2>HTML to Figma</h2>
+      <small>Aurora Design System</small>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" data-tab="server">From Server</button>
+    <button class="tab" data-tab="file">From File</button>
+    <button class="tab" data-tab="paste">Paste JSON</button>
+  </div>
+
+  <!-- Panel: Server -->
+  <div id="panel-server" class="panel active">
+    <div class="field">
+      <label>Server URL</label>
+      <input type="text" id="server-url" value="http://localhost:3333" placeholder="http://localhost:3333">
+    </div>
+    <button class="btn btn-primary" id="btn-server" onclick="fetchFromServer()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M10 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Import from Server
+    </button>
+  </div>
+
+  <!-- Panel: File drop -->
+  <div id="panel-file" class="panel">
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+      Drop a <strong>.json</strong> file here<br>or click to browse
+    </div>
+    <input type="file" id="file-input" accept=".json" style="display:none" onchange="handleFile(event)">
+    <button class="btn btn-primary" id="btn-file" onclick="importFileData()" disabled>
+      Import File
+    </button>
+  </div>
+
+  <!-- Panel: Paste -->
+  <div id="panel-paste" class="panel">
+    <div class="field">
+      <label>JSON Layer Data</label>
+      <textarea id="json-input" placeholder='Paste JSON from figma-export/*.json here...'></textarea>
+    </div>
+    <button class="btn btn-primary" onclick="importPasted()">
+      Import JSON
+    </button>
+  </div>
+
+  <!-- Status -->
+  <div class="status" id="status"></div>
+
+  <!-- Help -->
+  <div class="help">
+    <strong>How to use:</strong><br>
+    1. Run: <code>cd scripts && node html-to-figma.mjs ../prototypes/your-page.html</code><br>
+    2. Server starts at <code>localhost:3333</code><br>
+    3. Click "Import from Server" above
+  </div>
+
+  <script>
+    let fileData = null;
+
+    // ── Tab switching ──
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ── Status display ──
+    function showStatus(text, type) {
+      const el = document.getElementById('status');
+      el.textContent = text;
+      el.className = 'status visible ' + type;
+    }
+
+    // ── Import from localhost server ──
+    async function fetchFromServer() {
+      const url = document.getElementById('server-url').value.trim();
+      if (!url) return showStatus('Enter a server URL', 'error');
+
+      const btn = document.getElementById('btn-server');
+      btn.disabled = true;
+      showStatus('Fetching from ' + url + '...', 'info');
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const count = countNodes(data);
+        showStatus(`Received ${count} layers. Creating in Figma...`, 'info');
+        parent.postMessage({ pluginMessage: { type: 'import', data } }, '*');
+      } catch (e) {
+        showStatus('Failed: ' + e.message + '. Is the server running?', 'error');
+        btn.disabled = false;
+      }
+    }
+
+    // ── Import from file ──
+    function handleFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          fileData = JSON.parse(e.target.result);
+          const count = countNodes(fileData);
+          showStatus(`Loaded ${file.name} (${count} layers)`, 'success');
+          document.getElementById('btn-file').disabled = false;
+        } catch (err) {
+          showStatus('Invalid JSON file: ' + err.message, 'error');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function importFileData() {
+      if (!fileData) return showStatus('No file loaded', 'error');
+      showStatus('Creating layers in Figma...', 'info');
+      parent.postMessage({ pluginMessage: { type: 'import', data: fileData } }, '*');
+    }
+
+    // ── File drop zone ──
+    const dropZone = document.getElementById('drop-zone');
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        document.getElementById('file-input').files = e.dataTransfer.files;
+        handleFile({ target: { files: [file] } });
+      }
+    });
+
+    // ── Import pasted JSON ──
+    function importPasted() {
+      const json = document.getElementById('json-input').value.trim();
+      if (!json) return showStatus('Paste JSON data first', 'error');
+
+      try {
+        const data = JSON.parse(json);
+        const count = countNodes(data);
+        showStatus(`Parsed ${count} layers. Creating in Figma...`, 'info');
+        parent.postMessage({ pluginMessage: { type: 'import', data } }, '*');
+      } catch (e) {
+        showStatus('Invalid JSON: ' + e.message, 'error');
+      }
+    }
+
+    // ── Count nodes helper ──
+    function countNodes(node) {
+      if (!node) return 0;
+      let c = 1;
+      for (const child of node.children || []) c += countNodes(child);
+      return c;
+    }
+
+    // ── Messages from plugin code ──
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg) return;
+
+      if (msg.type === 'status') {
+        const isSuccess = msg.text.startsWith('Done');
+        showStatus(msg.text, isSuccess ? 'success' : 'info');
+        // Re-enable buttons
+        document.getElementById('btn-server').disabled = false;
+      }
+      if (msg.type === 'progress') {
+        showStatus(`Creating layers... (${msg.count} so far)`, 'info');
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "senior-uiux-figma-pipeline",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "HTML prototype → Figma layer JSON (pakai Chrome sistem via puppeteer-core)",
+  "scripts": {
+    "to-figma": "node html-to-figma.mjs"
+  },
+  "dependencies": {
+    "puppeteer-core": "^23.0.0"
+  }
+}

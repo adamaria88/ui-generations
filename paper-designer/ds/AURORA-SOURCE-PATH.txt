@@ -1,0 +1,2 @@
+Aurora component source of truth (SCSS/TS/tokens) — READ DIRECTLY, jangan ngarang:
+/Users/working/aurora/projects/ui/

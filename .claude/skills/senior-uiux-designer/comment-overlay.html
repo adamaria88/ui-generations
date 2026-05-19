@@ -1,0 +1,572 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  KOMEN OVERLAY ala Figma — SISIPKAN BLOK INI PERSIS SEBELUM </body> ║
+  ║  Self-contained. Toggle ON/OFF (OFF = prototype bisa diklik normal).║
+  ║  ON = cursor ikon komen, klik di mana pun = taro pin. Panel list   ║
+  ║  komen di kanan (buka/tutup). "Submit komen" = salin → paste chat.  ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<style>
+  body.suxc-on, body.suxc-on *{cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="%23cdd8df" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>') 4 4, crosshair !important;}
+  #suxc-panel, #suxc-panel *, #suxc-nav, #suxc-nav *{cursor:default !important;}
+  #suxc-panel .suxc-item, #suxc-panel .suxc-x, #suxc-nav button, #suxc-close{cursor:pointer !important;}
+  .suxc-pin{position:absolute;z-index:99998;width:24px;height:24px;border-radius:9999px 9999px 9999px 2px;background:#e35273;color:#fff;font:700 12px/24px 'Lato',sans-serif;text-align:center;transform:translate(-2px,-26px);box-shadow:0 1px 2px rgba(10,13,18,.25);user-select:none;cursor:pointer}
+  .suxc-pin.resolved{background:#7a8b97}
+  .suxc-pop{position:absolute;z-index:100000;width:248px;background:#1b2630;border:1px solid rgba(255,255,255,.10);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.45);padding:12px;font-family:'Lato',sans-serif}
+  .suxc-pop textarea{width:100%;box-sizing:border-box;font:400 14px/22px 'Lato',sans-serif;background:#10151b;color:#e6edf2;border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:8px;resize:vertical;min-height:60px}
+  .suxc-pop textarea::placeholder{color:#6f8494}
+  .suxc-row{display:flex;gap:8px;margin-top:8px;justify-content:center;align-items:center}
+  .suxc-pop button{font:600 12px 'Lato',sans-serif;border:0;border-radius:9999px;cursor:pointer}
+  .suxc-save{background:#4199d5;color:#fff;padding:7px 16px}
+  .suxc-res,.suxc-del{width:32px;height:32px;font-size:15px;display:flex;align-items:center;justify-content:center;padding:0}
+  .suxc-res{background:rgba(255,255,255,.06);color:#5fc98a}.suxc-res.on{background:rgba(95,201,138,.20)}
+  .suxc-del{background:transparent;color:#ef7a96;border:1px solid rgba(239,122,150,.4)!important}
+  .suxc-hint{font-size:11px;color:#a5b6c1;text-align:center;margin-top:6px}
+  #suxc-nav{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:100001;
+   display:flex;gap:4px;background:#1f2b33;border-radius:16px;padding:8px;
+   box-shadow:0 8px 28px rgba(0,0,0,.30)}
+  #suxc-nav button{position:relative;width:42px;height:42px;border:0;border-radius:11px;background:transparent;
+   color:#cdd8df;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  #suxc-nav button:hover{background:rgba(255,255,255,.12)}
+  #suxc-nav button:disabled{opacity:.3;cursor:not-allowed}
+  #suxc-nav button:disabled:hover{background:transparent}
+  #suxc-nav button[data-tip]:hover:after{content:attr(data-tip);position:absolute;bottom:52px;left:50%;
+   transform:translateX(-50%);background:#0c1116;color:#fff;font:600 12px 'Lato',sans-serif;
+   padding:6px 10px;border-radius:6px;white-space:nowrap;pointer-events:none}
+  #suxc-nav button.on{background:#4199d5;color:#fff}
+  #suxc-nav .sep{width:1px;align-self:stretch;background:rgba(255,255,255,.14);margin:4px 4px}
+  #suxc-cbadge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:9999px;
+   background:#e35273;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;padding:0 3px}
+  /* prototype: 1 FAB bisa digeser; klik → nav (4 pilihan) muncul di deketnya */
+  #suxc-fab{position:fixed;right:24px;bottom:24px;z-index:100001;width:52px;height:52px;
+   border-radius:9999px;background:#1f2b33;color:#fff;border:0;cursor:grab;display:none;
+   align-items:center;justify-content:center;box-shadow:0 8px 28px rgba(0,0,0,.35);
+   touch-action:none;user-select:none}
+  #suxc-fab.show{display:flex}
+  #suxc-fab.drag{cursor:grabbing}
+  #suxc-fab:hover{background:#26333d}
+  #suxc-fbadge{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;border-radius:9999px;
+   background:#e35273;color:#fff;font:700 11px/18px 'Lato',sans-serif;text-align:center;padding:0 4px;display:none}
+  #suxc-nav.suxc-asmenu{left:auto;right:auto;bottom:auto;top:auto;transform:none}
+  html.suxc-flow,body.suxc-flow{margin:0;height:100%;overflow:hidden} /* kanvas: cuma mode flow. prototype = scroll natural */
+  #suxc-stage{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;min-width:100vw;box-sizing:border-box;padding:40px}
+  body.suxc-on{outline:3px solid #4199d5;outline-offset:-3px}
+  body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
+  #suxc-toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%) translateY(10px);
+   background:#0c1116;color:#fff;font:600 13px 'Lato',sans-serif;padding:10px 18px;border-radius:9999px;
+   box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:100002;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s}
+  #suxc-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  #suxc-zoom{position:fixed;left:16px;bottom:18px;z-index:100001;display:flex;gap:4px;
+   background:#1f2b33;border-radius:12px;padding:6px;box-shadow:0 8px 28px rgba(0,0,0,.3)}
+  #suxc-zoom button{width:34px;height:34px;border:0;border-radius:8px;background:transparent;
+   color:#cdd8df;font:700 15px 'Lato',sans-serif;cursor:pointer}
+  #suxc-zoom button:hover{background:rgba(255,255,255,.12)}
+  #suxc-zoom span{min-width:46px;text-align:center;align-self:center;color:#8ea3b2;font:600 12px 'Lato',sans-serif}
+  .suxc-rect{position:absolute;z-index:99997;border:2px dashed #4199d5;background:rgba(65,153,213,.08);border-radius:6px;pointer-events:none}
+  .suxc-rect.live{z-index:99996}
+  #suxc-panel{position:fixed;top:0;right:0;height:100vh;width:300px;background:#161d26;border-left:1px solid rgba(255,255,255,.08);box-shadow:-6px 0 24px rgba(0,0,0,.4);z-index:99999;font-family:'Lato',sans-serif;display:flex;flex-direction:column;transition:transform .2s ease}
+  #suxc-panel.closed{transform:translateX(300px)}
+  #suxc-ph{padding:16px;border-bottom:1px solid rgba(255,255,255,.08);font-weight:700;font-size:14px;color:#e6edf2;display:flex;justify-content:space-between;align-items:center}
+  #suxc-close{cursor:pointer;color:#8ea3b2}
+  #suxc-list{flex:1;overflow:auto;padding:8px}
+  .suxc-item{padding:10px;border:1px solid rgba(255,255,255,.08);border-radius:8px;margin-bottom:8px;font-size:13px;color:#c7d2db;cursor:pointer;display:flex;align-items:flex-start;gap:8px;background:#1b2630}
+  .suxc-item:hover{border-color:#4199d5;background:#1f2c38}
+  .suxc-item .tx{flex:1}
+  .suxc-ts{margin-top:4px;font-size:11px;color:#6f8494;display:flex;align-items:center;gap:4px}
+  .suxc-x,.suxc-ok{flex:none;width:22px;height:22px;border-radius:6px;border:0;background:transparent;color:#6f8494;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center}
+  .suxc-x:hover{background:rgba(239,122,150,.16);color:#ef7a96}
+  .suxc-ok:hover{background:rgba(95,201,138,.16);color:#5fc98a}
+  .suxc-ok.on{background:rgba(95,201,138,.20);color:#5fc98a}
+  .suxc-item.resolved .tx{text-decoration:line-through;opacity:.6}
+  .suxc-item b{color:#ef7a96;margin-right:6px}.suxc-item.resolved{opacity:.55}
+  #suxc-empty{padding:24px 12px;color:#6f8494;font-size:13px;text-align:center}
+</style>
+<div id="suxc-nav">
+  <button id="suxc-tgl" type="button" data-tip="Mode komen (C)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg></button>
+  <button id="suxc-tab" type="button" data-tip="Daftar komen (L)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span id="suxc-cbadge" style="display:none">0</span></button>
+  <span class="sep"></span>
+  <button id="suxc-submit" type="button" data-tip="Submit komen — copy (S)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+  <span class="sep"></span>
+  <button id="suxc-figma" type="button" data-tip="Generate Figma (G)"><svg width="18" height="18" viewBox="0 0 38 57" fill="currentColor"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg></button>
+</div>
+<div id="suxc-panel" class="closed">
+  <div id="suxc-ph"><span>💬 Komen <span id="suxc-count">0</span></span><span id="suxc-close">✕</span></div>
+  <div id="suxc-list"></div>
+</div>
+<div id="suxc-zoom">
+  <button id="suxc-zout" type="button" data-tip="Zoom out">−</button>
+  <span id="suxc-zlvl">100%</span>
+  <button id="suxc-zin" type="button" data-tip="Zoom in">+</button>
+  <button id="suxc-zfit" type="button" data-tip="Reset (0)">⤢</button>
+</div>
+<button id="suxc-fab" type="button" aria-label="Tools review"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg><span id="suxc-fbadge">0</span></button>
+<script>
+(function(){
+  // MODE: 'flow' = kanvas pan/zoom + komen (buat 01-flow). 'prototype' = web
+  // natural, komen/list/submit disabled, cuma Generate Figma aktif (buat 02-ui).
+  // Senior set <body data-suxc="flow|prototype">. Default = prototype (web natural).
+  var MODE=(document.body.getAttribute('data-suxc')||'prototype').toLowerCase();
+  var FLOW=(MODE==='flow');
+  var KEY='suxc:'+location.pathname, on=false, data=[];
+  try{data=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(data))data=[];}
+  catch(e){data=[];try{localStorage.removeItem(KEY);}catch(_){}}
+  var panel=document.getElementById('suxc-panel'),tab=document.getElementById('suxc-tab'),
+      tgl=document.getElementById('suxc-tgl'),badge=document.getElementById('suxc-cbadge'),
+      nav=document.getElementById('suxc-nav'),fab=document.getElementById('suxc-fab');
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}}
+  var LOGKEY='suxc:log';                                  // append-only, lintas file & sesi
+  function logEvent(c,act){try{
+    var L=JSON.parse(localStorage.getItem(LOGKEY)||'[]');if(!Array.isArray(L))L=[];
+    L.push({t:new Date().toISOString(),file:(location.pathname.split('/').pop()||''),
+      act:act,text:(c.text||''),loc:(c.ctx||''),x:Math.round(c.x),y:Math.round(c.y),
+      area:!!(c.w&&c.h)});
+    localStorage.setItem(LOGKEY,JSON.stringify(L));}catch(e){}}
+  function downloadLog(){
+    var raw=localStorage.getItem(LOGKEY)||'[]';
+    var blob=new Blob([raw],{type:'application/json'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='comment-log.json';document.body.appendChild(a);a.click();a.remove();
+  }
+  window.suxcDownloadLog=downloadLog;                      // bisa dipanggil dari console
+  var toastT;
+  function toast(msg){
+    var el=document.getElementById('suxc-toast');
+    if(!el){el=document.createElement('div');el.id='suxc-toast';document.body.appendChild(el);}
+    el.textContent=msg;el.classList.add('show');
+    clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove('show');},2200);
+  }
+  // ── STAGE: cuma di mode flow. Prototype = web natural (no wrap, scroll biasa). ──
+  var stage, T={x:0,y:0,s:1}, spaceDown=false;
+  if(FLOW){
+    document.documentElement.classList.add('suxc-flow');
+    document.body.classList.add('suxc-flow');
+    stage=document.createElement('div');stage.id='suxc-stage';
+    (function(){var ns=[].slice.call(document.body.childNodes);
+      ns.forEach(function(n){
+        if(n.nodeType===1){var id=n.id||'',tg=n.tagName;
+          if(id.indexOf('suxc-')===0||tg==='SCRIPT'||tg==='STYLE'||tg==='LINK')return;}
+        else if(n.nodeType!==3)return;
+        stage.appendChild(n);});
+      document.body.appendChild(stage);})();
+  }else{
+    stage=document.body;                       // prototype: koordinat = dokumen apa adanya
+  }
+  function applyT(){if(!FLOW)return;
+    stage.style.transform='translate('+T.x+'px,'+T.y+'px) scale('+T.s+')';
+    var z=document.getElementById('suxc-zlvl');if(z)z.textContent=Math.round(T.s*100)+'%';}
+  function scX(){return window.scrollX||window.pageXOffset||0;}
+  function scY(){return window.scrollY||window.pageYOffset||0;}
+  // flow: koordinat lewat transform kanvas. prototype: koordinat dokumen (scroll-aware).
+  function toLocal(cx,cy){return FLOW?{x:(cx-T.x)/T.s,y:(cy-T.y)/T.s}:{x:cx+scX(),y:cy+scY()};}
+  function toClient(lx,ly){return FLOW?{x:T.x+lx*T.s,y:T.y+ly*T.s}:{x:lx-scX(),y:ly-scY()};}
+  function clamp(v,a,b){return v<a?a:v>b?b:v;}
+  function zoomAt(cx,cy,ns){ns=clamp(ns,0.2,3);var L=toLocal(cx,cy);
+    T.s=ns;T.x=cx-L.x*ns;T.y=cy-L.y*ns;applyT();}
+  function smooth(fn){stage.style.transition='transform .22s ease';fn();
+    setTimeout(function(){stage.style.transition='';},240);}
+  function panTo(c){
+    if(!FLOW){window.scrollTo({left:Math.max(0,c.x-120),top:Math.max(0,c.y-160),behavior:'smooth'});return;}
+    smooth(function(){T.x=window.innerWidth/2-(c.x+(c.w||0)/2)*T.s;
+      T.y=window.innerHeight/2-(c.y+(c.h||0)/2)*T.s;applyT();});}
+  function setOn(v){on=v;document.body.classList.toggle('suxc-on',on);tgl.classList.toggle('on',on);if(on){setPanel(true);}else{clearRects();}}
+  function setPanel(o){panel.classList.toggle('closed',!o);}
+  tgl.onclick=function(){setOn(!on);};
+  tab.onclick=function(){setPanel(panel.classList.contains('closed'));};
+  document.getElementById('suxc-close').onclick=function(){setPanel(false);};
+  function fmt(ts){if(!ts)return'';var d=new Date(ts);function z(n){return(n<10?'0':'')+n;}
+    return z(d.getHours())+':'+z(d.getMinutes())+':'+z(d.getSeconds())+' WIB';}
+  var CLOCK='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>';
+  function txt(e){return((e.innerText||e.textContent||'').replace(/\s+/g,' ').trim());}
+  function anchorAt(px,py){
+    var sc=toClient(px,py),cx=sc.x,cy=sc.y;          // px,py = lokal stage
+    if(cx<0||cy<0||cx>window.innerWidth||cy>window.innerHeight)return'';
+    var els=document.elementsFromPoint?document.elementsFromPoint(cx,cy):[document.elementFromPoint(cx,cy)];
+    for(var k=0;k<els.length;k++){var e=els[k];
+      if(!e||!e.closest||e===document.body||e===document.documentElement)continue;
+      if(e.closest('#suxc-nav,#suxc-panel,.suxc-pop,.suxc-pin,.suxc-rect'))continue;
+      var s=txt(e);                                   // elemen terdalam = paling spesifik
+      if(s&&s.length<=110)return s.length>80?s.slice(0,80)+'…':s;}
+    return'';
+  }
+  function ctxFor(c){
+    if(c.w&&c.h){
+      var P=[[c.x+c.w/2,c.y+c.h/2],[c.x+10,c.y+10],[c.x+c.w-10,c.y+10],
+             [c.x+10,c.y+c.h-10],[c.x+c.w-10,c.y+c.h-10]],seen=[];
+      P.forEach(function(p){var a=anchorAt(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
+      if(seen.length)return seen.slice(0,2).join(' & ');
+      var n=nearest(c.x+c.w/2,c.y+c.h/2);return n?('di dekat: '+n):'';
+    }
+    var d=anchorAt(c.x,c.y);if(d)return d;
+    var nn=nearest(c.x,c.y);return nn?('di dekat: '+nn):'';
+  }
+  function nearest(lx,ly){                              // elemen ber-teks terdekat (buat lokasi manusiawi)
+    var sc=toClient(lx,ly),best=null,bd=1e9;
+    var all=stage.querySelectorAll('div,span,h1,h2,h3,p,td,li,b,a,button');
+    for(var i=0;i<all.length;i++){var e=all[i];
+      if(e.children.length>2)continue;                 // ambil yg leaf-ish
+      var s=txt(e);if(!s||s.length<3||s.length>90)continue;
+      var r=e.getBoundingClientRect();if(!r.width)continue;
+      var dx=Math.max(r.left-sc.x,0,sc.x-r.right),dy=Math.max(r.top-sc.y,0,sc.y-r.bottom);
+      var dist=dx*dx+dy*dy;if(dist<bd){bd=dist;best=s;}}
+    return best?(best.length>70?best.slice(0,70)+'…':best):'';
+  }
+  function clearRects(){document.querySelectorAll('.suxc-rect:not(.live)').forEach(function(e){e.remove();});}
+  function showRect(c){clearRects();if(!(c.w&&c.h))return;
+    var r=document.createElement('div');r.className='suxc-rect';
+    r.style.left=c.x+'px';r.style.top=c.y+'px';r.style.width=c.w+'px';r.style.height=c.h+'px';
+    if(c.resolved)r.style.borderColor='#7a8b97';stage.appendChild(r);}
+  function render(){
+    document.querySelectorAll('.suxc-pin,.suxc-pop,.suxc-rect:not(.live)').forEach(function(e){e.remove();});
+    var list=document.getElementById('suxc-list');list.innerHTML='';
+    document.getElementById('suxc-count').textContent=data.length;
+    badge.style.display=data.length?'block':'none';badge.textContent=data.length;
+    var fb=document.getElementById('suxc-fbadge');
+    if(fb){fb.style.display=data.length?'block':'none';fb.textContent=data.length;}
+    if(!data.length){list.innerHTML='<div id="suxc-empty">Belum ada komen.<br>Nyalain mode komen (ikon 💬 / tekan C) lalu klik atau drag area di layar.</div>';}
+    data.forEach(function(c,i){
+      var p=document.createElement('div');p.className='suxc-pin'+(c.resolved?' resolved':'');
+      p.style.left=c.x+'px';p.style.top=c.y+'px';p.textContent=i+1;
+      p.onmousedown=function(ev){
+        ev.stopPropagation();ev.preventDefault();
+        var sx=ev.clientX,sy=ev.clientY,moved=false;
+        function mv(e){ if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4)moved=true;
+          if(moved){var L=toLocal(e.clientX,e.clientY);c.x=L.x;c.y=L.y;
+            p.style.left=c.x+'px';p.style.top=c.y+'px';
+            document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+        function up(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);
+          if(moved){save();render();}else{openEditor(c);}}
+        document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);
+      };
+      p.onmouseenter=function(){if(on)openEditor(c);};   // mode ON: hover komen lama → kebuka
+      stage.appendChild(p);
+      var it=document.createElement('div');it.className='suxc-item'+(c.resolved?' resolved':'');
+      it.innerHTML='<div class="tx"><b>'+(i+1)+'</b>'+((c.text||'(kosong)').replace(/</g,'&lt;'))+
+        '<div class="suxc-ts">'+CLOCK+' '+fmt(c.ts)+'</div></div>'+
+        '<button class="suxc-ok'+(c.resolved?' on':'')+'" title="Tandai selesai">✓</button>'+
+        '<button class="suxc-x" title="Hapus komen">✕</button>';
+      it.querySelector('.tx').onclick=function(){panTo(c);openEditor(c);};
+      it.onmouseenter=function(){showRect(c);};
+      it.onmouseleave=function(){if(!document.querySelector('.suxc-pop'))clearRects();};
+      it.querySelector('.suxc-ok').onclick=function(ev){ev.stopPropagation();c.resolved=!c.resolved;logEvent(c,c.resolved?'resolve':'reopen');save();render();};
+      it.querySelector('.suxc-x').onclick=function(ev){ev.stopPropagation();if(confirm('Hapus komen #'+(i+1)+'? Nggak bisa di-undo.')){logEvent(c,'delete');data.splice(i,1);save();render();}};
+      list.appendChild(it);
+    });
+  }
+  function openEditor(c){
+    document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});
+    var pop=document.createElement('div');pop.className='suxc-pop';
+    var sc=toClient(c.x,c.y);
+    pop.style.position='fixed';
+    pop.style.left=Math.max(8,Math.min(sc.x+24,window.innerWidth-340))+'px';
+    pop.style.top=Math.max(8,Math.min(sc.y,window.innerHeight-220))+'px';
+    showRect(c);
+    pop.innerHTML='<textarea placeholder="Tulis komen...">'+(c.text||'').replace(/</g,'&lt;')+'</textarea>'+
+      '<div class="suxc-row"><button class="suxc-save">Simpan</button>'+
+      '<button class="suxc-res'+(c.resolved?' on':'')+'" title="Tandai beres">✓</button>'+
+      '<button class="suxc-del" title="Hapus">🗑</button></div>';
+    var ta=pop.querySelector('textarea');
+    function isNew(){return data.indexOf(c)<0;}
+    function close(){document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});clearRects();}
+    function commit(){
+      c.text=ta.value.trim();
+      if(!c.text){ var k=data.indexOf(c); if(k>-1){logEvent(c,'delete');data.splice(k,1);} save();render();close(); return; }
+      if(isNew()){ c.ts=Date.now(); data.push(c); logEvent(c,'add'); } else { logEvent(c,'edit'); }
+      save();render();close();
+    }
+    ta.onkeydown=function(ev){ if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();commit();} };
+    pop.querySelector('.suxc-save').onclick=commit;
+    pop.querySelector('.suxc-res').onclick=function(){
+      c.resolved=!c.resolved;
+      if(!isNew()){logEvent(c,c.resolved?'resolve':'reopen');save();render();close();}
+      else{pop.querySelector('.suxc-res').classList.toggle('on',c.resolved);}
+    };
+    pop.querySelector('.suxc-del').onclick=function(){
+      if(isNew()){close();return;} // draft: buang aja
+      if(confirm('Hapus komen ini? Nggak bisa di-undo.')){logEvent(c,'delete');var k=data.indexOf(c);if(k>-1)data.splice(k,1);save();render();close();}
+    };
+    pop.onclick=function(ev){ev.stopPropagation();};
+    document.body.appendChild(pop);ta.focus();
+  }
+  function isChrome(t){return t.closest&&(t.closest('#suxc-panel')||t.closest('#suxc-nav')||t.closest('#suxc-zoom')||t.closest('#suxc-fab')||t.closest('.suxc-pop')||t.closest('.suxc-pin'));}
+  // klik di mode komen jangan ngebocor ke UI di bawahnya
+  document.addEventListener('click',function(ev){
+    if(on&&!spaceDown&&!isChrome(ev.target)){ev.preventDefault();ev.stopPropagation();}
+  },true);
+  document.addEventListener('mousedown',function(ev){
+    if(isChrome(ev.target))return;
+    // flow: pan + komen. prototype: NO pan; komen cuma kalau mode komen ON
+    // (kalau OFF → return, biar klik natural ke UI prototype).
+    var doPan=FLOW&&((ev.button===1)||spaceDown||(!on&&ev.button===0));
+    var doCmt=on&&ev.button===0&&!spaceDown;
+    if(!doPan&&!doCmt)return;
+    ev.preventDefault();
+    if(doPan){
+      var sx=ev.clientX,sy=ev.clientY,ox=T.x,oy=T.y;document.body.classList.add('suxc-pan');
+      function pm(e){T.x=ox+(e.clientX-sx);T.y=oy+(e.clientY-sy);applyT();}
+      function pu(){document.removeEventListener('mousemove',pm);document.removeEventListener('mouseup',pu);
+        document.body.classList.remove('suxc-pan');}
+      document.addEventListener('mousemove',pm);document.addEventListener('mouseup',pu);return;
+    }
+    // mode komen: klik kecil → titik, drag → area (koordinat = lokal stage)
+    var L0=toLocal(ev.clientX,ev.clientY),rect=null;
+    function mv(e){
+      var L=toLocal(e.clientX,e.clientY),w=Math.abs(L.x-L0.x),h=Math.abs(L.y-L0.y);
+      if(!rect&&(w+h)>6){rect=document.createElement('div');rect.className='suxc-rect live';stage.appendChild(rect);}
+      if(rect){rect.style.left=Math.min(L0.x,L.x)+'px';rect.style.top=Math.min(L0.y,L.y)+'px';
+        rect.style.width=w+'px';rect.style.height=h+'px';}
+    }
+    function up(e){
+      document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);
+      if(rect)rect.remove();
+      var L=toLocal(e.clientX,e.clientY),w=Math.abs(L.x-L0.x),h=Math.abs(L.y-L0.y);
+      var c={x:Math.min(L0.x,L.x),y:Math.min(L0.y,L.y),text:'',resolved:false};
+      if(w>6&&h>6){c.w=w;c.h=h;}else{c.x=L0.x;c.y=L0.y;}
+      c.ctx=ctxFor(c);
+      openEditor(c);
+    }
+    document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);
+  },true);
+  document.addEventListener('wheel',function(ev){
+    if(!FLOW)return;                                 // prototype: scroll natural
+    if(isChrome(ev.target))return;
+    ev.preventDefault();
+    if(ev.ctrlKey||ev.metaKey){                    // Ctrl/⌘ + scroll (atau pinch) = ZOOM halus
+      zoomAt(ev.clientX,ev.clientY,T.s*Math.exp(-ev.deltaY*0.0028));
+    }else{                                          // scroll biasa = GESER kanvas
+      T.x-=ev.deltaX;T.y-=ev.deltaY;applyT();
+    }
+  },{passive:false});
+  document.getElementById('suxc-zin').onclick=function(){smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s*1.2);});};
+  document.getElementById('suxc-zout').onclick=function(){smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s/1.2);});};
+  document.getElementById('suxc-zfit').onclick=function(){smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});};
+  function typing(t){return t&&(t.tagName==='TEXTAREA'||t.tagName==='INPUT'||t.isContentEditable);}
+  document.addEventListener('keydown',function(ev){
+    if(ev.key==='Escape'){
+      if(!FLOW&&navOpen){hideNav();return;}        // prototype: tutup menu FAB dulu
+      var pop=document.querySelector('.suxc-pop');
+      if(pop){pop.remove();clearRects();return;}  // 1x ESC: tutup popup komen
+      if(on){setOn(false);return;}                 // mode ON: matiin komen
+      setPanel(false);return;                      // sisanya: tutup panel
+    }
+    if(FLOW&&(ev.ctrlKey||ev.metaKey)){                        // (flow) Ctrl/⌘ + (= - 0) = zoom
+      var z=ev.key;
+      if(z==='='||z==='+'){ev.preventDefault();smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s*1.2);});}
+      else if(z==='-'||z==='_'){ev.preventDefault();smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s/1.2);});}
+      else if(z==='0'){ev.preventDefault();smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});}
+      return;
+    }
+    if(typing(ev.target))return;
+    if(FLOW&&(ev.code==='Space'||ev.key===' ')){spaceDown=true;ev.preventDefault();return;} // (flow) tahan Space = geser
+    var k=ev.key.toLowerCase();
+    if(k==='c'){ev.preventDefault();setOn(!on);}              // C: toggle mode komen
+    else if(k==='l'){ev.preventDefault();setPanel(panel.classList.contains('closed'));} // L: buka/tutup list
+    else if(k==='s'){ev.preventDefault();doSubmit();}          // S: submit (copy)
+    else if(k==='g'){ev.preventDefault();doFigma();}            // G: generate Figma JSON
+    else if(FLOW&&k==='0'){ev.preventDefault();smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});} // (flow) reset view
+  });
+  document.addEventListener('keyup',function(ev){
+    if(ev.code==='Space'||ev.key===' ')spaceDown=false;
+  });
+  function doSubmit(){
+    if(!data.length){toast('Belum ada komen');return;}
+    var file=location.pathname.split('/').pop()||'flow';
+    var head='Revisi dari user di '+file+' (kerjakan sesuai lokasi tiap poin):\n\n';
+    var body=data.map(function(c,i){
+      var loc=c.ctx||('area sekitar x'+Math.round(c.x)+' y'+Math.round(c.y));
+      return (i+1)+'. '+(c.resolved?'(beres) ':'')+(c.text||'(kosong)')+
+             '\n   ↳ lokasi: '+loc;
+    }).join('\n\n');
+    var t=head+body;
+    navigator.clipboard.writeText(t).then(function(){toast('Komen tersalin ✔ paste ke chat Senior');},
+      function(){prompt('Copy komen ini, paste ke chat Senior:',t);});
+  }
+  document.getElementById('suxc-submit').onclick=doSubmit;
+  // ── GENERATE FIGMA: ekstrak DOM → Figma layer JSON (logika persis html-to-figma.mjs),
+  //    skip semua chrome suxc- jadi overlay boleh tetap nempel. Download JSON langsung. ──
+  function extractTree(rootEl){
+    function dirText(el){var t='';for(var i=0;i<el.childNodes.length;i++){var n=el.childNodes[i];
+      if(n.nodeType===3){var s=n.textContent.trim();if(s)t+=(t?' ':'')+s;}}return t;}
+    function st(cs){return{backgroundColor:cs.backgroundColor,backgroundImage:cs.backgroundImage,
+      borderTopLeftRadius:parseFloat(cs.borderTopLeftRadius)||0,borderTopRightRadius:parseFloat(cs.borderTopRightRadius)||0,
+      borderBottomRightRadius:parseFloat(cs.borderBottomRightRadius)||0,borderBottomLeftRadius:parseFloat(cs.borderBottomLeftRadius)||0,
+      borderTopWidth:parseFloat(cs.borderTopWidth)||0,borderRightWidth:parseFloat(cs.borderRightWidth)||0,
+      borderBottomWidth:parseFloat(cs.borderBottomWidth)||0,borderLeftWidth:parseFloat(cs.borderLeftWidth)||0,
+      borderTopColor:cs.borderTopColor,borderRightColor:cs.borderRightColor,borderBottomColor:cs.borderBottomColor,
+      borderLeftColor:cs.borderLeftColor,boxShadow:cs.boxShadow,opacity:parseFloat(cs.opacity),overflow:cs.overflow};}
+    function ts(cs){return{fontFamily:cs.fontFamily.split(',')[0].replace(/['"]/g,'').trim(),
+      fontSize:parseFloat(cs.fontSize),fontWeight:parseInt(cs.fontWeight),color:cs.color,
+      lineHeight:cs.lineHeight==='normal'?Math.round(parseFloat(cs.fontSize)*1.4):parseFloat(cs.lineHeight),
+      textAlign:cs.textAlign,letterSpacing:cs.letterSpacing==='normal'?0:parseFloat(cs.letterSpacing)};}
+    // ── Auto Layout: cuma diisi kalau flex; null = biar absolut (kayak dulu) ──
+    function lay(cs){
+      var d=cs.display||'';
+      if(d.indexOf('flex')<0)return null;
+      return{display:'flex',
+        flexDirection:cs.flexDirection||'row',
+        flexWrap:cs.flexWrap||'nowrap',
+        justifyContent:cs.justifyContent||'flex-start',
+        alignItems:cs.alignItems||'stretch',
+        rowGap:parseFloat(cs.rowGap)||0,
+        columnGap:parseFloat(cs.columnGap)||0,
+        pt:parseFloat(cs.paddingTop)||0,pr:parseFloat(cs.paddingRight)||0,
+        pb:parseFloat(cs.paddingBottom)||0,pl:parseFloat(cs.paddingLeft)||0};
+    }
+    function skip(el){var id=el.id||'';if(id.indexOf('suxc-')===0)return true;
+      if(el.classList&&(el.classList.contains('suxc-pin')||el.classList.contains('suxc-pop')||el.classList.contains('suxc-rect')))return true;
+      return false;}
+    function ex(el,pr,pe){
+      if(skip(el))return null;
+      var r=el.getBoundingClientRect();
+      if(r.width<=0||r.height<=0)return null;
+      var cs=getComputedStyle(el);
+      if(cs.display==='none'||cs.visibility==='hidden')return null;
+      var tag=el.tagName.toLowerCase(),cn=el.classList.length>0?el.classList[0]:'',id=el.id||'';
+      var nm=id||cn||tag,pos=cs.position;
+      var sl=pe?pe.scrollLeft:0,st2=pe?pe.scrollTop:0,px=pr?pr.left:0,py=pr?pr.top:0;
+      var x=r.left-px+sl,y=r.top-py+st2,w=r.width,h=r.height;
+      if(tag==='svg')return{type:'SVG',name:cn||'svg',x:x,y:y,width:w,height:h,pos:pos,svg:el.outerHTML};
+      if(tag==='img'){var du=null;try{var cv=document.createElement('canvas');
+        cv.width=el.naturalWidth||w;cv.height=el.naturalHeight||h;cv.getContext('2d').drawImage(el,0,0);
+        du=cv.toDataURL('image/png');}catch(e){}
+        return{type:'IMAGE',name:el.alt||'image',x:x,y:y,width:w,height:h,pos:pos,src:el.src,dataUrl:du};}
+      var hasKids=el.children.length>0,dt=dirText(el);
+      if(!hasKids&&dt){
+        var pl=parseFloat(cs.paddingLeft)||0,pt=parseFloat(cs.paddingTop)||0,
+            prr=parseFloat(cs.paddingRight)||0,pb=parseFloat(cs.paddingBottom)||0;
+        var hasPad=pl>0||pt>0||prr>0||pb>0;
+        var hasBg=cs.backgroundColor!=='rgba(0, 0, 0, 0)'&&cs.backgroundColor!=='transparent';
+        if(hasPad||hasBg)return{type:'FRAME',name:nm,x:x,y:y,width:w,height:h,pos:pos,styles:st(cs),
+          children:[{type:'TEXT',name:dt.slice(0,40),text:dt,x:pl,y:pt,
+            width:Math.max(1,w-pl-prr),height:Math.max(1,h-pt-pb),textStyles:ts(cs)}]};
+        return{type:'TEXT',name:dt.slice(0,40),text:dt,x:x,y:y,width:w,height:h,pos:pos,styles:st(cs),textStyles:ts(cs)};
+      }
+      var node={type:'FRAME',name:nm,x:x,y:y,width:w,height:h,pos:pos,styles:st(cs),layout:lay(cs),children:[]};
+      for(var i=0;i<el.childNodes.length;i++){var ch=el.childNodes[i];
+        if(ch.nodeType===1){var cl=ex(ch,r,el);if(cl)node.children.push(cl);}
+        else if(ch.nodeType===3&&ch.textContent.trim()){
+          var rg=document.createRange();rg.selectNodeContents(ch);var tr=rg.getBoundingClientRect();
+          if(tr.width>0&&tr.height>0)node.children.push({type:'TEXT',name:ch.textContent.trim().slice(0,40),
+            text:ch.textContent.trim(),x:tr.left-r.left,y:tr.top-r.top,width:tr.width,height:tr.height,textStyles:ts(cs)});
+        }
+      }
+      return node;
+    }
+    return ex(rootEl,null,null);
+  }
+  // ── Multi-screen: tiap [data-screen] top-level = 1 screen; data-flow-next="A,B" = panah alur ──
+  function topScreens(){
+    var all=[].slice.call(document.querySelectorAll('[data-screen]'));
+    return all.filter(function(e){return !e.parentElement||!e.parentElement.closest('[data-screen]');});
+  }
+  function buildFigmaPayload(){
+    var screens=topScreens();
+    if(screens.length>=2){
+      var names=screens.map(function(e){return e.getAttribute('data-screen')||'screen';});
+      var trees=[],edges=[],hasExplicit=false;
+      screens.forEach(function(e,i){
+        var t=extractTree(e);if(t){t.name=names[i];trees.push({name:names[i],tree:t});}
+        var nx=e.getAttribute('data-flow-next');
+        if(nx){hasExplicit=true;nx.split(',').forEach(function(to){
+          to=to.trim();if(to)edges.push({from:names[i],to:to,label:e.getAttribute('data-flow-label')||''});});}
+      });
+      if(!hasExplicit)for(var i=0;i<trees.length-1;i++)edges.push({from:trees[i].name,to:trees[i+1].name,label:''});
+      return{type:'FLOW',name:(location.pathname.split('/').pop()||'flow').replace(/\.html?$/i,''),
+        screens:trees,edges:edges};
+    }
+    var root=document.querySelector('.app-layout')||(stage&&stage.firstElementChild)||document.body;
+    return extractTree(root);
+  }
+  function doFigma(){
+    // 1) SEMBUNYIIN overlay dulu (bukan hapus) → JSON dijamin bersih, sesuai ekspektasi
+    var chrome=[];
+    ['suxc-nav','suxc-panel','suxc-zoom','suxc-toast','suxc-fab'].forEach(function(id){
+      var e=document.getElementById(id);if(e)chrome.push(e);});
+    [].forEach.call(document.querySelectorAll('.suxc-pin,.suxc-rect,.suxc-pop'),
+      function(e){chrome.push(e);});
+    var prev=chrome.map(function(e){return e.style.display;});
+    chrome.forEach(function(e){e.style.display='none';});
+    var hadOn=document.body.classList.contains('suxc-on');
+    if(hadOn)document.body.classList.remove('suxc-on');
+    function restore(){                              // 4) MUNCULIN overlay lagi
+      chrome.forEach(function(e,i){e.style.display=prev[i];});
+      if(hadOn)document.body.classList.add('suxc-on');
+    }
+    // 2) EXTRACT
+    var pT,pTs;
+    if(FLOW){pT=stage.style.transform;pTs=stage.style.transition;
+      stage.style.transition='none';stage.style.transform='none';void stage.offsetWidth;}
+    var data;
+    try{data=buildFigmaPayload();}catch(e){data=null;}
+    if(FLOW){stage.style.transform=pT;stage.style.transition=pTs;}
+    if(!data){restore();toast('Gagal ekstrak — konten kosong');return;}
+    function cnt(n){if(!n)return 0;var c=1;(n.children||[]).forEach(function(k){c+=cnt(k);});return c;}
+    var total,extra;
+    if(data.type==='FLOW'){
+      total=data.screens.reduce(function(a,s){return a+cnt(s.tree);},0);
+      extra=data.screens.length+' screen + '+data.edges.length+' panah';
+    }else{total=cnt(data);extra='1 screen';}
+    // 3) DOWNLOAD
+    var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    var name=(location.pathname.split('/').pop()||'ui').replace(/\.html?$/i,'')+'.figma.json';
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
+    document.body.appendChild(a);a.click();a.remove();
+    restore();                                       // download ke-trigger → balikin overlay
+    toast(total+' layer · '+extra+' → '+name+' · overlay balik ✓');
+  }
+  window.suxcGenerateFigma=doFigma;
+  document.getElementById('suxc-figma').onclick=doFigma;
+  // ── PROTOTYPE: 1 FAB bisa digeser; klik → nav (4 pilihan) muncul deket FAB ──
+  var navOpen=false;
+  function placeNav(){
+    nav.classList.add('suxc-asmenu');nav.style.display='flex';
+    nav.style.left='-9999px';nav.style.top='0px';                // ukur dulu off-screen
+    var nw=nav.offsetWidth,nh=nav.offsetHeight,fr=fab.getBoundingClientRect();
+    var L=fr.right-nw;if(L<8)L=8;
+    if(L+nw>window.innerWidth-8)L=window.innerWidth-8-nw;
+    var Tp=fr.top-nh-12;if(Tp<8)Tp=fr.bottom+12;
+    if(Tp+nh>window.innerHeight-8)Tp=Math.max(8,window.innerHeight-8-nh);
+    nav.style.left=L+'px';nav.style.top=Tp+'px';
+  }
+  function showNav(){placeNav();navOpen=true;}
+  function hideNav(){nav.style.display='none';navOpen=false;}
+  function setupFab(){
+    var zoomEl=document.getElementById('suxc-zoom');if(zoomEl)zoomEl.style.display='none';
+    nav.style.display='none';fab.classList.add('show');
+    try{var fp=JSON.parse(localStorage.getItem('suxc:fab')||'null');}catch(e){fp=null;}
+    if(fp&&typeof fp.l==='number'){fab.style.left=fp.l+'px';fab.style.top=fp.t+'px';
+      fab.style.right='auto';fab.style.bottom='auto';}
+    fab.addEventListener('mousedown',function(ev){
+      if(ev.button!==0)return;ev.preventDefault();
+      var sx=ev.clientX,sy=ev.clientY,fr=fab.getBoundingClientRect(),
+          ox=ev.clientX-fr.left,oy=ev.clientY-fr.top,moved=false;
+      function mm(e){
+        if(!moved&&Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4){moved=true;fab.classList.add('drag');}
+        if(moved){
+          var l=Math.min(Math.max(4,e.clientX-ox),window.innerWidth-fab.offsetWidth-4);
+          var t=Math.min(Math.max(4,e.clientY-oy),window.innerHeight-fab.offsetHeight-4);
+          fab.style.left=l+'px';fab.style.top=t+'px';fab.style.right='auto';fab.style.bottom='auto';
+          if(navOpen)placeNav();
+        }
+      }
+      function mu(){
+        document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);
+        fab.classList.remove('drag');
+        if(moved){var f2=fab.getBoundingClientRect();
+          try{localStorage.setItem('suxc:fab',JSON.stringify({l:Math.round(f2.left),t:Math.round(f2.top)}));}catch(e){}}
+        else{navOpen?hideNav():showNav();}
+      }
+      document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);
+    });
+    // pilih salah satu aksi → nav nutup balik ke FAB (biar halaman bisa diklik)
+    nav.addEventListener('click',function(ev){
+      if(ev.target.closest&&ev.target.closest('button'))setTimeout(hideNav,0);
+    });
+    // klik di luar nav+fab → tutup
+    document.addEventListener('mousedown',function(ev){
+      if(navOpen&&ev.target.closest&&!ev.target.closest('#suxc-nav')&&!ev.target.closest('#suxc-fab'))hideNav();
+    },true);
+  }
+  if(!FLOW)setupFab();
+  applyT();render();                                  // applyT no-op di prototype; render = tampilkan komen tersimpan
+})();
+</script>
