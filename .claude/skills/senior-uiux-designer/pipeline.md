@@ -25,6 +25,7 @@ Tanya: **"Cepet apa Mateng?"** (lihat SKILL.md untuk teks). Tunggu jawaban.
 1. Baca memory terkait di `paper-designer/memory/` (Dasar #10).
 2. Baca WAJIB: `ds/ds-core.md` (1 file — semua aturan universal, token, layout, komponen catalog).
    Kalau butuh detail styling komponen tertentu yang akan dipakai → baca section-nya di `rules/design-rules.md`.
+   **Wajib juga baca:** section "⛔ HARGA MATI — Aurora Component Lookup Ritual (4 Mekanisme)" di `rules/design-rules.md` — itu hukum prosedural baru per 2026-05-20.
 3. Cek `rules/page-registry.md` → ini fitur baru atau modifikasi screen yang
    sudah ada?
    - **Fitur baru**: lanjut seperti biasa.
@@ -43,6 +44,44 @@ Tanya: **"Cepet apa Mateng?"** (lihat SKILL.md untuk teks). Tunggu jawaban.
 5. Kalau butuh komponen yang tidak ada di Aurora → **STOP** (Hukum Mati #2):
    lapor + pembelaan (kenapa baru / kenapa bukan yang ada / alasan UX). Tunggu
    keputusan user sebelum lanjut.
+
+### Langkah 2.5 — ⛔ AURORA COMPONENT MAPPING (WAJIB sebelum coding UI prototype)
+
+> **Phase ini dikunci user 2026-05-20** setelah audit Expense Management nemu 15 dari 17 komponen ternyata custom/ngarang. Rincian mekanisme: `rules/design-rules.md` section "HARGA MATI — Aurora Component Lookup Ritual".
+
+**Phase ini WAJIB jalan SEBELUM Langkah 5 (HTML UI Prototype) — bukan boleh-skip.** Hasilnya = mapping table yang user **approve eksplisit** sebelum coding dimulai.
+
+**Prosedur:**
+
+1. **List semua UI element** yang dibutuhkan di prototype (button, input, badge, table, modal, toast, dst).
+
+2. **Untuk tiap element**, jalankan Aurora Lookup Ritual:
+   - `ls /Users/working/aurora/projects/ui/` — cek folder yang ada
+   - Kalau ada match → baca `<component>/<component>.component.scss` (VALUE) + `.interface.ts` (variants)
+   - Kalau tidak ada → mark ❌ TIDAK ADA → STOP & lapor (HUKUM MATI #2)
+
+3. **Susun mapping table** dengan format:
+
+   | UI Need | Aurora Component | Variant | Aurora source file | Notes |
+   |---------|------------------|---------|---------------------|-------|
+   | Primary action btn | `au-btn` | `primary` | `button/button.component.scss` | pill filled #4199d5 |
+   | Bulk action trigger | `au-btn` | `tertiary-plain` | `button/button.component.scss` | text-link no border |
+   | Table data display | `au-table` | default | `table/table.component.scss` | sticky action col |
+   | Status indicator | `au-chip-status` | success/danger/warning | `chip-status/chip-status.component.scss` | — |
+   | Empty state | ❌ TIDAK ADA | — | — | **STOP & lapor — minta user pilih (a/b/c)** |
+
+4. **Share mapping table ke user** — minta approve eksplisit ("oke lanjut" / "ganti komponen X" / "yang ini override jadi custom").
+
+5. **Catat keputusan override** kalau ada — kalau user bilang "Aurora-nya jelek, pakai custom" → record di `paper-designer/ds/AURORA-OVERRIDES.md` dengan alasan + tanggal.
+
+6. **Setelah user approve mapping table** → boleh lanjut Langkah 3 (User Flow) → Langkah 5 (UI Prototype).
+
+**Anti-pattern yang dilarang:**
+- Lompat ke coding tanpa mapping table — guaranteed bakal ngarang
+- Build mapping table tapi ga share/approve dulu — gerbang harus dilewati
+- Custom komponen tanpa entry di AURORA-OVERRIDES.md — pelanggaran
+
+**Kapan phase ini boleh di-skip?** **TIDAK PERNAH** untuk full prototype. Boleh skip cuma di **JALUR TWEAK** (ubahan receh di file yang sudah ada — komponennya sudah ter-map sebelumnya).
 
 ### Langkah 3 — HTML USER FLOW / JOURNEY (BUKAN UI)
 Bikin `_output/<slug>/01-flow.html`. Ini harus **beneran menggambarkan
@@ -111,7 +150,49 @@ ke UI sebelum alur disepakati.**
 ### Langkah 5 — HTML UI PROTOTYPE
 Bikin `_output/<slug>/02-ui.html`: UI jadi, bisa diklik, **semua state**
 (loading, kosong, error, sukses, no-akses — Dasar #8/J1), **100% dari Aurora**
-(Hukum Mati). Pakai struktur 3-Zone dari `layout-rules.md` & template yang tepat
+(Hukum Mati).
+
+**⚠️ WAJIB — State Switcher (tidak boleh dilewati):**
+Setiap area yang punya lebih dari 1 kondisi tampilan (tabel ada data vs kosong vs
+loading, form sukses vs error, dsb) **HARUS** dibungkus dengan `[data-states]`.
+Jangan hardcode satu state saja — reviewer harus bisa cek semua kondisi tanpa
+ganti kode.
+
+```html
+<div data-states>
+  <div data-state="default"><!-- UI normal / ada data --></div>
+  <div data-state="empty"><!-- Belum ada data --></div>
+  <div data-state="loading"><!-- Skeleton shimmer --></div>
+  <div data-state="error"><!-- Error / gagal load --></div>
+</div>
+```
+
+Cara kerja overlay: widget gelap **"State"** muncul otomatis di kiri bawah layar
+(draggable, ingat posisi terakhir via localStorage). Klik → pilih state → label
+berubah jadi **"Empty Active"** dll. Widget tidak ikut di-export Figma.
+
+State wajib yang selalu ada (kecuali tidak relevan secara konteks):
+- `default` — UI dengan data / kondisi normal
+- `empty` — belum ada data, belum pernah diisi
+- `loading` — sedang memuat (pakai `.skel` shimmer dari Aurora)
+
+State tambahan sesuai kebutuhan: `error`, `no-akses`, `sukses`, `partial` dll.
+Kalau satu area memang hanya punya 1 kondisi → tidak perlu `[data-states]`.
+
+**⚠️ WAJIB — Auto-Layout Friendly HTML (tidak boleh dilewati):**
+HTML harus generate dengan pola flexbox konsisten, supaya **export ke Figma otomatis jadi auto-layout** (bukan absolute positioning). Pipeline `overlay.html` → Figma plugin sudah baca flex properties — yang penting HTML-nya disiplin pakai flex.
+
+Aturan:
+- **Container layout = `display:flex`** (kolom: `flex-direction:column`). Jangan pakai `display:block` untuk container yang punya children stack — pakai flex column.
+- **Spacing antar children = `gap`**, BUKAN `margin`. Margin pada child = absolute positioning di Figma, gap = auto-layout itemSpacing.
+- **Padding di container, bukan margin di child.** Container yang punya padding bakal jadi frame dengan padding auto-layout.
+- **Absolute positioning HANYA untuk:** FAB, modal scrim, dropdown menu, tooltip, toast — element yang memang "floating". Selain itu wajib flex.
+- **Jangan pakai `width`/`height` fixed di flex container** kecuali komponen spesifik (avatar, ikon, button width). Container biarin auto-size.
+- **`[data-screen]`, `.app-layout`, `.main-area`** wajib flex container (sudah convention engine).
+
+Hasilnya: setiap frame di Figma punya auto-layout dengan `layoutMode`, `itemSpacing`, `padding` yang persis seperti HTML — designer DS nggak perlu konversi manual.
+
+Pakai struktur 3-Zone dari `layout-rules.md` & template yang tepat
 dari `page-templates.md`. Gunakan komponen shell dengan tag inject:
 `<!--SUXC:sidemenu-->`, `<!--SUXC:nav-header-->` — taruh di posisi yang tepat
 dalam layout. Deklarasikan token dari `ds/aurora-tokens.md` sebagai `:root` CSS vars.
@@ -138,6 +219,11 @@ hand-edit file hasil generate** — overlay sudah otomatis nyesuain mode dari
   jadi 1 frame terpisah di Figma, disusun kiri→kanan + panah konektor. Default
   panah = urutan DOM; mau bercabang: `data-flow-next="Layar B,Layar C"`
   (opsional `data-flow-label="bayar"`). Cuma 1 layar → nggak usah `data-screen`.
+  **Layar aktif/nonaktif via JS (`display:none`)**: oke — overlay otomatis
+  force-show semua `[data-screen]` yang tersembunyi saat export (G), lalu restore.
+  **Nggak perlu file `03-figma.html` terpisah.**
+  Edge case: kalau tetap butuh file terpisah → tambah `data-figma-src="03-figma.html"`
+  di `<body>` → tombol G redirect ke file itu tanpa script override manual.
 
 Sebelum setor, jalankan **Pre-Generation Checklist** di `rules/design-rules.md`
 + Penjaga Konsistensi (Dasar #13): bandingkan vs acuan screen lama

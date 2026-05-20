@@ -4,6 +4,121 @@
 
 ---
 
+## ⛔ HARGA MATI — Aurora Component Lookup Ritual (4 Mekanisme, Non-Skippable)
+
+> **Konteks**: HUKUM MATI #1 ("Semua komponen dari DS Aurora") dan #2 ("Komponen tidak ada → STOP & lapor") SUDAH ada di skill, tapi terus dilanggar karena ga punya mekanisme prosedural. 4 mekanisme di bawah = **enforcement layer** yang bikin pelanggaran tidak mungkin "kelolosan".
+>
+> Dikunci user 2026-05-20 setelah audit Expense Management nemu 15 dari 17 komponen di prototype ternyata custom/ngarang.
+
+### Mekanisme 1 — Aurora Lookup Ritual (WAJIB pre-coding, 3 step urut)
+
+Sebelum nulis CSS class baru untuk UI element apapun:
+
+```
+[STEP A] Tentukan UI need: button? input? badge? dropdown? table? toast? dst.
+[STEP B] Map ke Aurora component name. SUMBER yang dipakai (urut prioritas):
+         1) ls /Users/working/aurora/projects/ui/   → folder yang exist
+         2) cat .../<component>/<component>.component.scss   → VALUE persis (warna, padding, radius, transition)
+         3) cat .../<component>/<component>.interface.ts     → variant/types available
+         4) cat .../<component>/<component>.component.ts     → behavior/props (kalau perlu)
+         
+         CATATAN: `paper-designer/ds/ds-core.md` cuma OVERVIEW catalog.
+         DETAIL spec WAJIB dari Aurora SCSS — bukan tebakan dari catalog.
+
+[STEP C] Putuskan:
+         ✅ Ada di Aurora      → pakai class `au-<name>--<variant>` (atau adaptasi naming ke prototype),
+                                 copy VALUE persis dari SCSS, JANGAN approximate.
+         ❌ TIDAK ada di Aurora → STOP. Lapor ke user dengan format:
+                                  "Komponen `<X>` dibutuhkan untuk `<UI need>`,
+                                   TIDAK ada di Aurora. Pilihan:
+                                   (a) develop di DS dulu (tunda prototype),
+                                   (b) skip fitur (alternatif UX apa),
+                                   (c) custom dengan alasan + masuk AURORA-OVERRIDES.md.
+                                   User pilih?"
+                                  JANGAN main bikin sendiri.
+```
+
+### Mekanisme 2 — Anotasi Wajib di Tiap CSS Block
+
+Setiap CSS class untuk UI component (bukan layout helper) WAJIB punya comment header link ke Aurora source:
+
+```css
+/* AURORA: au-btn--tertiary
+   Source: aurora/projects/ui/button/button.component.scss L56-63
+   Variants: ButtonType (button.interface.ts) */
+.btn--tertiary{...}
+```
+
+Format wajib mencakup:
+- `AURORA: <component-name>--<variant>` (atau `OVERRIDE: <name>` kalau ada di AURORA-OVERRIDES.md)
+- `Source: <relative-path-to-scss-file> L<start>-<end>` (line range)
+- `Variants:` daftar variant yang tersedia (kalau ada)
+
+**Class TANPA anotasi `AURORA:` atau `OVERRIDE:`** otomatis dianggap melanggar — kecuali masuk approved-custom whitelist berikut:
+
+**Approved-custom whitelist (boleh tanpa anotasi):**
+- Layout helper: `.app-layout`, `.main-area`, `.page-head`, `.action-bar`, `.tbl-toolbar`, `.form-grid`, `.field` (wrapper saja), `.screen`
+- Project-internal naming: `.sidemenu*`, `.nav-header*` (dari `paper-designer/components/`)
+- Overlay/review tools: `.suxc-*` (SUXC overlay system, bukan production UI)
+- Page-specific decorative: `.dialog__ill`, `.empty` (decorative wrappers around Aurora components)
+
+### Mekanisme 3 — Audit Pre-Delivery (Penjaga Konsistensi extension)
+
+Sebelum bilang "udah jadi" ke user, **WAJIB** jalankan audit eksplisit. Skrip pseudocode:
+
+```
+1. Extract semua class: grep -oE 'class="[^"]+"' <output-file> | sort -u
+2. Untuk tiap class:
+   a) Cek apakah ada di approved-custom whitelist  → OK skip
+   b) Cek apakah CSS block-nya punya anotasi AURORA: atau OVERRIDE: → OK
+   c) Cek apakah class itu match pattern au-<name>--<variant> yang Aurora punya → OK
+   d) Selain itu = FAIL
+3. Kalau ada FAIL → STOP, ga boleh setor. Report ke user dengan list class bermasalah.
+```
+
+**Format report ke user kalau audit FAIL:**
+
+```
+⚠️ Audit Aurora Lookup gagal. Class yang bermasalah:
+- .foo  → tidak punya counterpart Aurora, tidak punya anotasi. (Custom ngarang?)
+- .bar  → punya anotasi tapi value berbeda dari SCSS source. (Approximation?)
+
+Pilihan: (a) replace pakai Aurora component <X>, (b) masukin ke AURORA-OVERRIDES.md dengan alasan.
+```
+
+### Mekanisme 4 — Phase 1.5 Aurora Component Mapping (sebelum coding)
+
+Sebelum mulai coding prototype apapun, build **mapping table** dan share ke user untuk approval. Phase ini sekarang masuk pipeline skill `senior-uiux-designer` sebagai **Phase 1.5 — Aurora Component Mapping**, antara understanding brief (Phase 1) dan coding (Phase 2).
+
+**Format mapping table:**
+
+| UI Need | Aurora Component | Variant | Aurora source file | Notes |
+|---------|------------------|---------|---------------------|-------|
+| Primary action btn | au-btn | primary | `button/button.component.scss` | — |
+| Bulk action trigger | au-btn | tertiary-plain | `button/button.component.scss` | text-link with chevron |
+| Table data display | au-table | default | `table/table.component.scss` | sticky action col |
+| Status indicator | au-chip-status | success/danger/warning | `chip-status/chip-status.component.scss` | — |
+| Empty state | ❌ TIDAK ADA | — | — | **STOP & lapor — pilih (a/b/c)** |
+
+Mapping table di-attach ke prototype output sebagai header comment atau companion file. User approve mapping → baru coding boleh jalan.
+
+### Mekanisme Override — `AURORA-OVERRIDES.md`
+
+Kalau user prefer custom diatas spec Aurora (misal Aurora-nya jelek/outdated), catat eksplisit di `paper-designer/ds/AURORA-OVERRIDES.md`:
+
+```markdown
+## Override: <component-name>
+
+**Aurora spec:** `au-<name>` di `<scss-path>` — value X
+**Override jadi:** value Y
+**Alasan:** <user decision date + reason>
+**Approved by:** <user> on <date>
+```
+
+Class yang override → anotasi pakai `OVERRIDE:` bukan `AURORA:`. Override hanya valid kalau ada entry di AURORA-OVERRIDES.md. **Custom diam-diam tanpa entry = pelanggaran.**
+
+---
+
 ## Global Rules
 
 1. **Font family is ALWAYS `'Lato', sans-serif`** — no other font, ever.
@@ -277,9 +392,9 @@ box-shadow:
 
 | Property | Value |
 |----------|-------|
-| `width` | `450px` |
+| `width` | `380px` |
 | `padding` | `12px` |
-| `border-radius` | `var(--radius-lg)` (12px) |
+| `border-radius` | `var(--radius-md)` (8px) |
 | `background` | `linear-gradient(90deg, #133f5d 0%, #0a1d28 100%)` |
 | `color` | `var(--color-text-inverse)` #fff |
 | `box-shadow` | `0 3px 10px 0 rgb(0 0 0 / 8%)` |
@@ -290,6 +405,8 @@ box-shadow:
 | Slide-in animation | `translateY(-100px) → translateY(0)`, `var(--speed-slow)` (400ms) `var(--ease-out-strong)` |
 | Slide-out animation | `translateY(0) → translateY(-100px)`, `200ms` |
 | Mobile `max-width` | `calc(100vw - 40px)` |
+
+> **Catatan (keputusan user 2026-05-19):** `width` & `border-radius` di-override manual ke `380px` / `8px`. Mengesampingkan Aurora SCSS (450px/12px) dan Paperverse Toast doc 2023 (300px/4px). Nilai ini yang dipakai.
 
 ---
 
@@ -315,7 +432,7 @@ box-shadow:
 
 ### Sidemenu (Custom Component)
 
-**Source of truth**: `/Users/working/ui designer/components/sidemenu.html`
+**Source of truth**: `/Users/working/ui-generations/paper-designer/components/sidemenu.html`
 
 | Property | Value |
 |----------|-------|
@@ -463,6 +580,214 @@ box-shadow:
 
 ---
 
+## Behavioral & Pattern Rules (sumber: Paperverse 1.0)
+
+> Bagian di atas = **nilai CSS** dari Aurora SCSS (single source of truth styling).
+> Bagian ini = **aturan behavior/pattern** dari Paperverse 1.0 (cara pakai komponen, bukan nilai CSS). Dua hal beda — jangan dicampur.
+
+### ⭐ Action Hierarchy by Page Purpose (analytical framework — WAJIB step DULU sebelum pilih komponen button)
+
+**Anti-pattern yang sering meleset:** langsung pasang `btn--secondary` atau `btn--primary` ke setiap action tanpa nanya "ini priority-nya gimana untuk user". Hasilnya page jadi "**ramai aksi**" — semua tombol terlihat sama berat → primary action kehilangan dominance → user bingung mana yang harus dilakukan.
+
+**Cara benar — purpose-down thinking (4 step, urutan ini wajib):**
+
+**STEP 1 — Page ini untuk APA?** Tentukan purpose-nya satu kalimat. Contoh:
+- List Pengeluaran → "lihat & kelola daftar pengeluaran"
+- Detail Invoice → "lihat data invoice + ambil aksi terkait dokumen ini"
+- Create Invoice → "input data invoice baru sampe tersimpan"
+
+**STEP 2 — Klasifikasi setiap action di page by USER PRIORITY:**
+
+| Tier | Definisi | Contoh di List Pengeluaran |
+|------|----------|---------------------------|
+| **Must-do (primary)** | Aksi inti — kenapa user buka page ini | Catat Pengeluaran |
+| **Penting-ga-penting** | User mungkin perlu, tapi BUKAN sekarang. Sering = utilitas/sekunder | Tindakan Lainnya (bulk), Unduh, Filter |
+| **Destructive / jarang** | Berisiko atau langka — wajib disembunyiin | Hapus, Arsipkan |
+
+> **Test:** Tanya diri sendiri "kalo user buka page ini pertama kali, dia bakal langsung butuh action ini?" → Ya = primary. Tidak = penting-ga-penting. Berisiko/langka = sembunyiin.
+
+**STEP 3 — Pilih komponen by tier:**
+
+| Tier | Komponen | Visual |
+|------|----------|--------|
+| Must-do | **Pill filled (primary)** | Dominan, biru penuh. **MAX 1 per page** |
+| Penting-ga-penting (aksi langsung) | **Text-link with icon** (`.btn-text`) | Teks biru primary + icon kiri, no border, no fill |
+| Penting-ga-penting (menu trigger) | **Text-link with chevron** (`.btn-link`) | Teks dark blue (text-primary) + chevron, no border |
+| Destructive/jarang | **3-dot menu / sub-menu** | Sembunyiin di action menu per row atau di overflow menu |
+
+**STEP 4 — Squint test:** Tutup mata 50%, lihat page. Lo mestinya lihat **satu titik primary dominan**. Kalo lo lihat 2-3 tombol "berat" sama-sama → hierarchy rusak, balik ke step 2.
+
+**Contoh konkret (List Pengeluaran):**
+
+```
+✅ BENAR
+┌─────────────────────────────────────────────────────────┐
+│ Tindakan Lainnya ▼          [ + Catat Pengeluaran ]     │  ← text-link kiri, pill primary kanan
+│ (text-link, low weight)     (pill filled, dominan)      │
+└─────────────────────────────────────────────────────────┘
+
+❌ SALAH
+┌─────────────────────────────────────────────────────────┐
+│ [ Tindakan Lainnya ▼ ]      [ + Catat Pengeluaran ]     │  ← 2 pill = visual competition
+│ (pill outline)               (pill filled)              │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Why this matters:** Pill filled primary itu **anchor visual** — dia bekerja karena LANGKA. Begitu lo kasih 2-3 pill di page yang sama, dominance hilang. Hierarchy by purpose memastikan tiap page punya 1 anchor & semua secondary action tetap accessible tapi ga ribut.
+
+---
+
+### Button — 5 Tipe Komponen
+
+1. **Primary (pill filled)** — must-do per page (lihat framework di atas). **Hanya 1 primary per page**. Verb-based ("Simpan", "Kirim", "Bayar"). Jangan ulang object kalau konteks sudah jelas.
+2. **Secondary (pill outline/neutral)** — alternatif/pendukung yang TETAP berat visual. Pakai HANYA kalau page beneran punya 2 must-do (langka — mis. "Simpan Draft" + "Kirim"). Jangan pakai untuk penting-ga-penting.
+3. **Text Button (`.btn-text` / `.btn-link`)** — aksi penting-ga-penting (Unduh, Tindakan Lainnya, Filter, Learn More). No border, low weight. **Default pilihan untuk semua action non-primary.**
+4. **Dropdown Button** — grup beberapa aksi terkait (lihat hierarchy di bawah).
+5. **Icon-Only Button** — aksi sering & universally recognizable. **WAJIB tooltip + aria-label selalu**. Hanya untuk table/compact toolbar, BUKAN primary action halaman. Jangan pakai icon ambigu.
+
+**Dropdown Button — Hierarchy of Actions (urutan WAJIB konsisten di semua halaman):**
+1. **Page-Specific Actions** (atas) — unik per flow/entity (mis. Buat Kuitansi Penjualan, Catat Pembayaran, Duplikat Invoice, Lihat Riwayat Dokumen)
+2. **Supporting Actions** (tengah) — lintas halaman (mis. Unduh PDF, Unduh Dot Matrix)
+3. **Core Actions** (selalu paling bawah, **dipisah divider**) — urutan tetap: **View → Edit → Delete**. Delete **SELALU paling akhir**, merah/destructive, wajib confirmation modal.
+
+**Destructive Button:**
+- Definisi destructive: **permanen & susah dibatalkan** (keputusan user 2026-05-19)
+- Warna: Aurora red. Di dropdown → **selalu paling bawah, dipisah divider**
+- **WAJIB trigger Confirmation Modal** — tidak boleh langsung execute tanpa konfirmasi
+- Selalu sediakan exit aman (Cancel/Go Back)
+- Wording: spesifik + sebut jumlah → "Hapus 3 Invoice" (bukan cuma "Hapus"); selalu sebut object yang terpengaruh
+- ⚠️ **Delete baris tabel form yang belum tersimpan = BUKAN destructive** (gampang re-add) → no confirmation modal
+
+**Button behavior:** State model `Enabled → Hover → Pressed → Loading`. Disabled: non-interactive, contrast min 3:1, tooltip wajib jelasin kenapa disabled. Forms: set `type` eksplisit, guard double-submit (disable on submit / debounce). Motion: 120-200ms hover/press, 300-500ms loading, ease-out masuk / ease-in keluar, no bouncing.
+
+---
+
+### Autocomplete / Multi-Select (behavior)
+
+> Pakai kalau: opsi banyak (**≥ 5**) DAN butuh search. Kalau **< 5 opsi → pakai Dropdown/Select**, jangan Autocomplete. Data statis lebih cocok ke Select; Autocomplete untuk list besar / dari API.
+
+- **Trigger**: suggestion muncul setelah user ketik **2-3 karakter** (configurable)
+- **Max visible suggestions**: ~10 items
+- **Option text**: ≤ 35 karakter, scannable, single-line (jangan nested/multi-line kecuali perlu)
+- **Filtering**: dinamis per input, **highlight** substring yang match
+- **Keyboard**: `↑↓` navigasi, `Enter` confirm, `Esc` tutup list
+- **Selection**: pilih opsi → isi field + tutup list
+- **States wajib**: Default, Focused/Active, Hover, Selected, Error, Disabled, **No Result Found** ("No results found" — jangan dropdown kosong tanpa feedback), **Loading** (shimmer kalau fetch dari API/BE)
+- Focus & blur: dropdown nutup saat field kehilangan fokus / setelah selection
+
+---
+
+### Confirmation Modal & Information Modal (behavior)
+
+Detail lengkap kapan-pakai + anatomy + copy → lihat `page-templates.md` Template 3b & 3c. Ringkas pembeda kritis:
+
+| | Confirmation Modal | Information Modal |
+|---|---|---|
+| Risk | High | Low |
+| **Default focus** | **Cancel** (aksi aman) | **Primary** action |
+| Action | Destructive / Permanent | Safe / Reversible |
+| Async sukses | auto-close → success toast | auto-close → success toast |
+| Async gagal | modal tetap buka + Try Again | — |
+| Copy pattern | What happened → What can do → next step | What happened → Why it matters → next step |
+| Illustration | warning/destructive | soft (jangan harsh warning icon) |
+
+Jangan: modal chain (modal nyambung modal), Information Modal untuk destructive, Confirmation Modal untuk success state.
+
+---
+
+### Error Message (sistem lengkap)
+
+**Component level (3):**
+| Tipe | Kapan | Copy pattern |
+|------|-------|-------------|
+| **Inline Error** | error spesifik di 1 field, user bisa langsung perbaiki | what happened + suggestion |
+| **Banner Error** | blocking / multiple field error / contextual failure di section/modal/page | what happened + what next to do |
+| **Toast Error** | async/background task (upload file dsb), tidak butuh aksi user | what happened + what to do |
+
+**Container level (2):**
+- **Modal Error** — error mid-flow tapi user tetap di halaman (network/connection, gagal submit karena sistem). JANGAN untuk error validasi konten.
+- **Page Error** — sistem nggak bisa render konten utama (404, server error). JANGAN untuk error validasi.
+
+**Decision pattern:**
+- Validation Form → Field = Inline | Modal/Side sheet = Banner + Inline | Page = Banner + Inline, lalu Toast
+- System/Network/Permission → Modal level = Modal Error | Page level = Banner → Page Error
+
+**Copy guideline universal:** `What happened → What can do → Action or next step`. Natural & informatif ("No partner selected yet"), bukan teknis/menyalahkan ("Partner cannot be empty"). Preserve input yang sudah diisi saat error.
+
+---
+
+### Tab — Principles
+
+- **Pakai untuk**: aspek berbeda dari **entity yang SAMA** dalam 1 konteks (mis. tab di section/card detail)
+- **JANGAN pakai untuk**: navigasi antar konten/kategori beda, atau step sequential (→ pakai navigasi utama / stepper)
+- Varian: Tab Segmented (indicator), Tab Subtitle, Tab Single Line
+- Scrollable: web = horizontal scroll, mobile = swipe
+- Anatomy: container → tab item → tab label → counter (opsional)
+- CSS values: lihat section `Tab Group (au-tabs-group)` di atas
+
+---
+
+### Table List — Behavior & Layout
+
+- **Pakai untuk**: data terstruktur, banding antar baris/kolom, detail action. **JANGAN** untuk dataset kecil/simpel (→ list/cards), step sequential (→ stepper), konten visual (→ gallery)
+- **Kolom**: min-width **120px**, max-width **250px**. Header title singkat (≤ 2 kata)
+- **Angka WAJIB right-aligned** (scanning finansial). Empty field = tampilkan dash `-`, jangan kosong total
+- **Row height**: maks 2-3 baris teks, jangan terlalu tinggi
+- **Sticky (KOREKSI dari production 2026-05-20)**: HANYA **kolom action (⋮) yang sticky kanan** saat horizontal scroll (dengan shadow divider di kiri kolom action). Kolom kiri (checkbox/expand/No.) **TIDAK sticky** — ikut scroll. (Asumsi lama "checkbox sticky kiri" SALAH, sudah dibetulkan.)
+- **Header label + filter row (dari production 2026-05-20)**: baris label dan baris filter = **satu blok header bertint** (`--color-surface-light-raised`), kontrol filter putih di atasnya. Kontrol filter = ukuran **Aurora form-field** (height 40px, padding 8px 12px, radius 4px, border light-grey-40). **Ikon search di filter input = SEBELAH KANAN** di dalam input (bukan kiri). Dropdown chevron juga kanan.
+- **Footer pagination (dari production 2026-05-20)**: 3 grup (`Jumlah Baris: [N ▾]` · `‹ 1 2 3 4 5 … N ›` · `Menampilkan X hingga Y dari Z entri`) **disusun center sebagai 1 blok** (BUKAN `justify-content:space-between` full-width). Gap antar grup ~24px. Wording: gunakan **"hingga"** (bukan "sampai") dan **"entri"** generic (bukan "invoice"/"pengeluaran"/dll). **Active page** = highlight ringan biru muda (`--color-light-brand-15`) dengan teks primary — **BUKAN** solid primary + teks putih. **Chevron prev/next** = plain icon tanpa border box (transparan, hover light-grey-15).
+- **Type**: Fixed (default, kolom muat di viewport) vs Horizontal Scrolling (kolom banyak)
+- **Behaviors**: row hover, column hover, sticky action menu (3-dot), multi-row selection (checkbox → bulk action menu muncul), Search No Result state, Empty state
+- Dataset besar → sediakan sorting + filtering per kolom
+- JANGAN: overload kolom (prioritaskan info kunci), teks terlalu kecil, hover row buat expand
+
+#### Bentukan Tabel Standar (referensi hidup: `_output/expense-management/02-ui.html`, dikunci user 2026-05-20)
+
+Urutan kolom kiri→kanan:
+1. **Checkbox** (master di header → toggle semua; per-row → bulk-select). Width ~46px. **TIDAK sticky.**
+2. **Expand chevron** (klik → buka detail row di bawahnya). Width ~40px. **TIDAK sticky.**
+3. **Kolom data** (N kolom, sortable pakai ikon sort dua-panah, numeric right-aligned, badge compact, paperclip SVG untuk bukti).
+4. **Action ⋮** (3-dot dropdown). Width ~56px. **Sticky kanan** dengan shadow divider di kiri.
+   - **Item dropdown WAJIB pakai ikon leading** (Aurora SVG, 18×18, stroke 1.5, round caps). Warna ikon = `--color-text-primary` (dark blue `#133f5d`); item destructive (Hapus) ikon + teks merah `--color-action-destructive-bg`. Tanpa ikon = nggak ikut produksi.
+   - Min-width menu ~200px, padding 6px, item padding 10×14, font 14px **regular (400)** — bukan semibold/bold.
+   - z-index tinggi (≥ 9999) supaya menu nutup di atas shadow kolom sticky.
+   - **Positioning (penting)**: portal menu ke `<body>` saat open (`document.body.appendChild(menu)`), `position:fixed`, anchor pakai `left = btn.getBoundingClientRect().right - menu.offsetWidth`. JANGAN naive `position:absolute` (ke-clip oleh `.table-wrap{overflow:hidden}`) atau naive `position:fixed` di tempat (rawan containing-block leak kalau ada ancestor pakai `transform/will-change/filter`). Pakai `documentElement.clientWidth` untuk clamp (BUKAN `window.innerWidth` yang include scrollbar). Auto-flip ke atas kalau kepotong, restore parent saat close.
+   - Hierarchy item: Page-Specific → Supporting → divider → Core (View/Lihat → Edit/Ubah → Hapus paling akhir, merah).
+
+Header (2 baris, **1 blok bertint**):
+- Baris 1: label kolom (bold, sortable + sort icon) di bg raised.
+- Baris 2: filter inline per kolom — date / select / search (icon kanan). Input style = Aurora form-field (40px, radius 4px, white di atas bg raised).
+
+Body:
+- `border-collapse:separate; border-spacing:0`; cell padding `14px 16px`; row hover bg `--color-surface-light-platform`; cell bg default white (wajib opaque biar sticky-r nggak transparan saat scroll).
+- Wrapper: border 1px + radius 8px + `overflow:hidden`. Container scroll: child `.table-scroll{overflow-x:auto}` dengan `scrollbar-width:none` + `::-webkit-scrollbar{display:none}` — scrollbar horizontal **disembunyikan** (tetap bisa scroll via drag/trackpad/shift+wheel).
+
+Footer:
+- Pagination 3 grup center 1 blok (lihat bullet "Footer pagination" di atas).
+
+Toolbar list (di luar tabel):
+- **TIDAK** ada global search bar terpisah & **TIDAK** ada tombol "Filter" global — gunakan filter inline per kolom. Toolbar hanya untuk action sekunder (mis. "Unduh").
+
+---
+
+### Toast — Copywriting & Variants
+
+> CSS values (width 380px, radius 8px — keputusan user) lihat section `Toast (au-toast)` di atas.
+
+- **Kapan**: feedback aksi yang TIDAK block journey user, aksi di toast opsional
+- Muncul di halaman yang sama dengan trigger, auto-hilang. Jangan redirect setelah toast. Kasih delay kalau toast punya action
+- **Variants & copy**:
+  | Variant | Copy guideline |
+  |---------|---------------|
+  | Neutral | simple & direct, low-priority done ("Perubahan disimpan") |
+  | Success | konfirmasi aksi sukses ("Data berhasil disimpan") — pakai "Berhasil" bukan "Selesai" |
+  | Warning | clear & concise potensi isu ("Yakin mau hapus item ini?") |
+  | Error | informatif + guidance recovery ("Input tidak valid, cek lagi") |
+  | Loading | indikasikan proses jalan ("Memuat...", "Menyimpan...") |
+- Multi-toast: loading toast → diganti result toast (success/error) → auto-dismiss ~5s
+
+---
+
 ## Absolute Prohibitions
 
 1. **NEVER** use `border-radius` other than: `0`, `4px`, `8px`, `12px`, `16px`, or `9999px`
@@ -502,3 +827,12 @@ Before outputting any HTML prototype or design spec, verify:
 - [ ] Default submenu items (Penjualan, etc.) use `padding-left: 52px` indent, NO icons
 - [ ] Lainnya submenu items use `padding: 0 16px` (sejajar parent), WITH 20×20 icons
 - [ ] Sidemenu component source is `components/sidemenu.html` — propagate changes to all prototypes
+
+### Pelajaran Prototyping (dari sesi 2026-05-20 — JANGAN diulang)
+
+- [ ] **Tabel data**: kolom sortable WAJIB punya ikon sort + ada **baris filter inline per kolom** (Tanggal=date, kategori/status=dropdown, teks=search). Jangan tabel header polos. (Table List rules)
+- [ ] **Pagination**: pakai pola `au-pagination` — dropdown "Jumlah Baris" + tombol chevron first/prev/next/last (18px, `vector-effect:non-scaling-stroke`, disabled = warna muted bukan opacity). Jangan cuma teks "Menampilkan X dari Y".
+- [ ] **Ikon**: TIDAK PERNAH emoji (📎📅✓ dll) — selalu Aurora SVG / `au-icon`. Emoji = langsung gagal Penjaga Konsistensi.
+- [ ] **Sidemenu active state**: tiap halaman WAJIB set 1 item sidemenu aktif (highlight) sesuai modul — `layout-rules.md` (sidemenu konsisten, hanya active yang berubah). Fitur baru tanpa posisi menu → tanya/komen user, jangan biarkan kosong tanpa catatan.
+- [ ] **Aset shell**: komponen di `components/` TIDAK boleh pakai path relatif aset (`../assets/...`) yang putus saat di-inject ke `_output/<slug>/`. Pakai inline SVG / self-contained. (Bug logo PaperPlus — sudah difix di `sidemenu.html`.)
+- [ ] **Sinkron baked component**: kalau file `_output/` sudah ke-inject (SUXC tag hilang), fix di shell source TIDAK auto-propagate — wajib fix juga blok baked di file itu (atau regenerate).

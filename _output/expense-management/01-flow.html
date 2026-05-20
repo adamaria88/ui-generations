@@ -2,542 +2,285 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flow — Tagih Invoice Jatuh Tempo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User Flow — Manajemen Pengeluaran (Expense Management)</title>
 <style>
-  /* ── Global ── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root{
+    --bg:#10151b; --dot:rgba(255,255,255,.045); --txt:#e6edf2; --muted:#8ea3b2;
+    --step-bg:#1b2630; --step-bd:rgba(255,255,255,.09); --accent:#4199d5;
+    --exit-bd:#e35273; --exit-tx:#f0a8b8; --conn:rgba(255,255,255,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--dot) 1px,transparent 1px),linear-gradient(90deg,var(--dot) 1px,transparent 1px);
+    background-size:24px 24px;
+    color:var(--txt);font-family:'Lato',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    line-height:1.5;padding:48px 32px 120px;min-height:100vh;
+  }
+  .wrap{max-width:1080px;margin:0 auto}
 
-  body {
-    font-family: 'Lato', sans-serif;
-    background: #10151b;
-    color: #e6edf2;
-    min-height: 100vh;
-    overflow-x: auto;
-  }
+  /* ---- Header konteks: metadata biasa, TANPA box ---- */
+  .doc-title{font-size:24px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .doc-sub{color:var(--muted);font-size:13px;margin-bottom:28px}
+  .meta{display:flex;flex-direction:column;gap:10px;margin-bottom:8px}
+  .meta-row{display:flex;gap:14px;align-items:baseline}
+  .meta-k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);min-width:84px;font-weight:700}
+  .meta-v{font-size:15px;color:var(--txt)}
+  .rule{height:1px;background:var(--step-bd);margin:28px 0 8px}
 
-  /* ── Graph-paper grid ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-    background-size: 24px 24px;
-    pointer-events: none;
-    z-index: 0;
-  }
+  /* ---- Spine & connectors ---- */
+  .spine{display:flex;flex-direction:column;align-items:center}
+  .conn{width:2px;background:var(--conn);height:32px;position:relative;flex:none}
+  .conn::after{content:"";position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);
+    border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid var(--conn)}
+  .conn.short{height:20px}
 
-  .canvas {
-    position: relative;
-    z-index: 1;
-    padding: 48px 64px 80px;
-    min-width: 1100px;
-  }
+  /* ---- Step card ---- */
+  .step{background:var(--step-bg);border:1px solid var(--step-bd);border-radius:12px;
+    padding:16px 20px;width:520px;max-width:100%;position:relative}
+  .step .num{position:absolute;left:-13px;top:-13px;width:26px;height:26px;border-radius:50%;
+    background:var(--accent);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .step h3{font-size:15px;font-weight:600;margin-bottom:4px}
+  .step p{font-size:13px;color:var(--muted)}
+  .anno{margin-top:8px;font-size:12px;color:var(--muted);border-left:2px solid var(--accent);
+    padding-left:10px;background:rgba(65,153,213,.06);border-radius:0 4px 4px 0;padding:6px 10px}
 
-  /* ── Meta header ── */
-  .meta {
-    display: flex;
-    gap: 40px;
-    margin-bottom: 48px;
-  }
-  .meta-item { display: flex; flex-direction: column; gap: 3px; }
-  .meta-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: #4199d5;
-  }
-  .meta-value { font-size: 14px; color: #e6edf2; }
+  /* ---- Decision diamond ---- */
+  .dec{width:210px;height:120px;position:relative;display:flex;align-items:center;justify-content:center}
+  .dec svg{position:absolute;inset:0;width:100%;height:100%}
+  .dec span{position:relative;font-size:13px;font-weight:600;text-align:center;padding:0 26px;color:var(--txt)}
 
-  /* ── Flow layout ── */
-  .flow {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-  }
+  /* ---- Fork: pisah kiri-kanan ---- */
+  .fork{display:flex;flex-direction:column;align-items:center;width:100%}
+  .fork-stem{width:2px;height:22px;background:var(--conn)}
+  .fork-bar{height:2px;background:var(--conn);width:560px;max-width:90%}
+  .fork-cols{display:flex;gap:48px;width:560px;max-width:90%;justify-content:space-between;align-items:flex-start}
+  .fork-col{display:flex;flex-direction:column;align-items:center;flex:1}
+  .drop{width:2px;height:18px;background:var(--conn)}
+  .drop.arrow{position:relative}
+  .drop.arrow::after{content:"";position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);
+    border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid var(--conn)}
+  .blabel{font-size:11px;font-weight:700;letter-spacing:.08em;padding:3px 10px;border-radius:9999px;margin:4px 0}
+  .blabel.yes{background:rgba(65,153,213,.18);color:#8fc4ea;border:1px solid rgba(65,153,213,.4)}
+  .blabel.no{background:rgba(142,163,178,.14);color:var(--muted);border:1px solid rgba(142,163,178,.3)}
 
-  /* ── Connector line ── */
-  .connector {
-    width: 2px;
-    height: 32px;
-    background: rgba(255,255,255,.22);
-    flex-shrink: 0;
-  }
-  .connector.long { height: 48px; }
+  /* ---- Exit / fail node ---- */
+  .exit{background:rgba(227,82,115,.07);border:1px solid var(--exit-bd);border-radius:12px;
+    padding:14px 18px;width:340px;max-width:100%}
+  .exit h3{font-size:14px;font-weight:600;color:var(--exit-tx);margin-bottom:3px}
+  .exit p{font-size:12px;color:var(--muted)}
+  .exit .back{margin-top:8px;font-size:11px;color:var(--exit-tx);display:flex;align-items:center;gap:6px}
+  .exit .back::before{content:"↩";font-size:13px}
 
-  /* ── Arrow head ── */
-  .arrow {
-    width: 0;
-    height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 8px solid rgba(255,255,255,.22);
-    margin-top: -1px;
-  }
-
-  /* ── Step node ── */
-  .step {
-    background: #1b2630;
-    border: 1px solid rgba(255,255,255,.09);
-    border-radius: 8px;
-    padding: 14px 24px;
-    min-width: 280px;
-    max-width: 400px;
-    text-align: center;
-  }
-  .step-num {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .06em;
-    color: #4199d5;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  .step-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: #e6edf2;
-    line-height: 1.4;
-  }
-  .step-note {
-    font-size: 12px;
-    color: #8ea3b2;
-    margin-top: 6px;
-    line-height: 1.5;
-  }
-  .step.trigger {
-    border-color: #4199d5;
-    background: rgba(65,153,213,.08);
-  }
-  .step.success {
-    border-color: rgba(100,200,100,.35);
-    background: rgba(100,200,100,.05);
-  }
-  .step.success .step-title { color: #7ed4a0; }
-
-  /* ── Exit node ── */
-  .exit {
-    background: rgba(227,82,115,.07);
-    border: 1px solid #e35273;
-    border-radius: 8px;
-    padding: 10px 20px;
-    min-width: 200px;
-    max-width: 280px;
-    text-align: center;
-  }
-  .exit-title { font-size: 13px; font-weight: 600; color: #f0a8b8; }
-  .exit-note  { font-size: 11px; color: #c98090; margin-top: 4px; }
-
-  /* ── Decision diamond ── */
-  .dec-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-  }
-  .dec {
-    position: relative;
-    width: 180px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .dec svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .dec-text {
-    position: relative;
-    z-index: 1;
-    font-size: 13px;
-    font-weight: 600;
-    color: #e6edf2;
-    text-align: center;
-    padding: 0 24px;
-    line-height: 1.35;
-  }
-
-  /* ── Fork (split left–right) ── */
-  .fork {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .fork-bar-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .fork-stem { width: 2px; height: 24px; background: rgba(255,255,255,.22); }
-  .fork-bar  {
-    height: 2px;
-    background: rgba(255,255,255,.22);
-    align-self: stretch;
-  }
-  .fork-cols {
-    display: flex;
-    gap: 80px;
-    align-items: flex-start;
-  }
-  .fork-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-  }
-  .fork-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 9999px;
-    margin-bottom: 4px;
-  }
-  .fork-label.yes { color: #7ed4a0; background: rgba(100,200,100,.12); }
-  .fork-label.no  { color: #f0a8b8; background: rgba(227,82,115,.12); }
-
-  /* ── Section divider ── */
-  .section-title {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: #4199d5;
-    opacity: .6;
-    margin: 12px 0 8px;
-    text-align: center;
-  }
-
-  /* ── Multi-entry row ── */
-  .entry-row {
-    display: flex;
-    gap: 32px;
-    align-items: flex-start;
-    justify-content: center;
-    margin-bottom: 0;
-  }
-  .entry-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-  }
-
-  /* ── Merge connector ── */
-  .merge {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 0;
-  }
-
-  /* ── Annotation ── */
-  .annot {
-    display: inline-block;
-    font-size: 11px;
-    color: #8ea3b2;
-    background: rgba(255,255,255,.04);
-    border: 1px dashed rgba(255,255,255,.12);
-    border-radius: 4px;
-    padding: 4px 10px;
-    max-width: 280px;
-    text-align: center;
-    margin: 6px 0;
-  }
-
-  /* ── Back-loop arrow (exit returning) ── */
-  .back-note {
-    font-size: 11px;
-    color: #f0a8b8;
-    font-style: italic;
-    text-align: center;
-    margin: 4px 0 0;
-  }
+  .mini{width:340px;max-width:100%}
+  .goal{background:rgba(65,153,213,.1);border:1px solid var(--accent);border-radius:12px;
+    padding:16px 20px;width:520px;max-width:100%;text-align:center}
+  .goal h3{font-size:15px;font-weight:700;color:#8fc4ea}
+  .goal p{font-size:12px;color:var(--muted);margin-top:3px}
+  .legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:36px;font-size:12px;color:var(--muted);justify-content:center}
+  .legend i{display:inline-block;width:22px;height:12px;border-radius:3px;vertical-align:middle;margin-right:6px}
 </style>
 </head>
 <body data-suxc="flow">
+<div class="wrap">
 
-<div class="canvas">
+  <div class="doc-title">Manajemen Pengeluaran — User Flow</div>
+  <div class="doc-sub">Expense Management · Paper.id · alur utama (mode cepet) · v1</div>
 
-  <!-- ══ META HEADER ══ -->
   <div class="meta">
-    <div class="meta-item">
-      <span class="meta-label">Aktor</span>
-      <span class="meta-value">Staf / Admin Keuangan Paper.id</span>
-    </div>
-    <div class="meta-item">
-      <span class="meta-label">Goal</span>
-      <span class="meta-value">Kirim pengingat penagihan ke klien yang invoicenya sudah melewati jatuh tempo</span>
-    </div>
-    <div class="meta-item">
-      <span class="meta-label">Trigger</span>
-      <span class="meta-value">User melihat invoice berstatus "Jatuh Tempo" di daftar / detail invoice</span>
-    </div>
-    <div class="meta-item">
-      <span class="meta-label">Mode</span>
-      <span class="meta-value">Cepat</span>
-    </div>
+    <div class="meta-row"><span class="meta-k">Aktor</span><span class="meta-v">Staf Finance / Pemilik Bisnis</span></div>
+    <div class="meta-row"><span class="meta-k">Goal</span><span class="meta-v">Mencatat & mengelola pengeluaran bisnis supaya rapi, terlacak, dan siap dilaporkan</span></div>
+    <div class="meta-row"><span class="meta-k">Trigger</span><span class="meta-v">Ada pengeluaran (beli ATK, bayar listrik, reimburse karyawan) yang harus dicatat</span></div>
   </div>
+  <div class="rule"></div>
 
-  <!-- ══ FLOW ══ -->
-  <div class="flow">
+  <div class="spine">
 
-    <!-- ENTRY POINTS -->
-    <div class="section-title">Entry Point (2 jalur masuk)</div>
-
-    <div class="entry-row">
-      <!-- Entry A -->
-      <div class="entry-col">
-        <div class="step trigger">
-          <div class="step-num">Entry A</div>
-          <div class="step-title">List Invoice — tab "Jatuh Tempo"</div>
-          <div class="step-note">User buka halaman List SI → klik tab / filter "Jatuh Tempo" → melihat daftar invoice overdue</div>
-        </div>
-        <div class="connector"></div>
-        <div class="arrow"></div>
-      </div>
-
-      <!-- Entry B -->
-      <div class="entry-col">
-        <div class="step trigger">
-          <div class="step-num">Entry B</div>
-          <div class="step-title">Detail Invoice — tombol "Tagih"</div>
-          <div class="step-note">User buka detail 1 invoice yang sudah jatuh tempo → klik tombol "Tagih"</div>
-        </div>
-        <div class="connector"></div>
-        <div class="arrow"></div>
-      </div>
-    </div>
-
-    <!-- Merge into main flow -->
-    <!-- Entry A continues: select invoice -->
-
-    <!-- ─ Step 1 ─ (dari Entry A) -->
-    <div style="display:flex;gap:32px;align-items:flex-start;justify-content:center;">
-      <!-- Left: dari Entry A -->
-      <div style="display:flex;flex-direction:column;align-items:center;">
-        <div class="step">
-          <div class="step-num">Step 1A</div>
-          <div class="step-title">User pilih invoice untuk ditagih</div>
-          <div class="step-note">Checkbox per baris (single/batch). Toolbar bulk action muncul saat ≥1 dipilih.</div>
-        </div>
-        <div class="connector"></div>
-        <div class="arrow"></div>
-        <!-- Decision: ada yg dipilih? -->
-        <div class="dec-wrap">
-          <div class="dec">
-            <svg viewBox="0 0 180 100" fill="none">
-              <polygon points="90,4 176,50 90,96 4,50"
-                stroke="#4199d5" stroke-width="1.5"
-                fill="rgba(65,153,213,.07)"
-                vector-effect="non-scaling-stroke"/>
-            </svg>
-            <span class="dec-text">Ada invoice dipilih?</span>
-          </div>
-        </div>
-        <!-- Fork -->
-        <div class="fork">
-          <div class="fork-bar-wrap">
-            <div class="fork-stem"></div>
-            <div style="display:flex;width:400px;">
-              <div class="fork-bar" style="flex:1;margin-top:1px;"></div>
-            </div>
-          </div>
-          <div class="fork-cols">
-            <!-- YES -->
-            <div class="fork-col">
-              <div class="fork-label yes">YA</div>
-              <div class="connector"></div>
-              <div class="arrow"></div>
-              <!-- Step 2 -->
-              <div class="step">
-                <div class="step-num">Step 2</div>
-                <div class="step-title">User klik "Tagih" / "Kirim Pengingat"</div>
-                <div class="step-note">Toolbar batch → tombol "Tagih". Atau 3-dot action di baris.</div>
-              </div>
-              <!-- merge point — bersambung ke Step 3 via garis ke bawah -->
-              <div class="connector long"></div>
-              <div class="arrow"></div>
-            </div>
-            <!-- NO -->
-            <div class="fork-col" style="margin-top:32px;">
-              <div class="fork-label no">TIDAK</div>
-              <div class="connector"></div>
-              <div class="exit">
-                <div class="exit-title">Tombol "Tagih" disabled</div>
-                <div class="exit-note">User diminta pilih invoice dulu. Tidak ada aksi.</div>
-              </div>
-              <div class="back-note">↩ kembali ke daftar</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right: dari Entry B langsung ke Step 2 -->
-      <div style="display:flex;flex-direction:column;align-items:center;padding-top:0;gap:0;">
-        <div class="annot">Entry B: 1 invoice sudah terselect otomatis</div>
-        <div class="connector long"></div>
-        <div class="arrow"></div>
-        <!-- Dummy spacer supaya label Step 2 sejajar -->
-        <div style="height:160px;display:flex;align-items:flex-end;">
-          <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
-            <div class="connector long"></div>
-            <div class="arrow"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ─ Step 3 — Dialog Kirim Pengingat ─ -->
+    <!-- 1 -->
     <div class="step">
-      <div class="step-num">Step 3</div>
-      <div class="step-title">Dialog "Kirim Pengingat" terbuka</div>
-      <div class="step-note">
-        Modal compact. Tampil: nama klien, nomor &amp; total invoice (jika batch → ringkasan "X invoice · Rp Y").<br>
-        Pilih channel: <strong>WhatsApp · Email · SMS</strong> (bisa multi-pilih).<br>
-        Preview teks pesan singkat (bisa diedit ringan).
-      </div>
+      <span class="num">1</span>
+      <h3>User buka menu "Pengeluaran"</h3>
+      <p>Dari sidemenu → Main Area menampilkan halaman daftar Pengeluaran.</p>
+      <div class="anno">Tabel kolom: Tanggal · Kategori · Penerima · Jumlah (right-aligned) · Status · Bukti · Aksi. Search + filter inline per kolom.</div>
     </div>
-    <div class="connector"></div>
-    <div class="arrow"></div>
+    <div class="conn"></div>
 
-    <!-- Decision: channel valid? -->
-    <div class="dec-wrap">
-      <div class="dec">
-        <svg viewBox="0 0 180 100" fill="none">
-          <polygon points="90,4 176,50 90,96 4,50"
-            stroke="#4199d5" stroke-width="1.5"
-            fill="rgba(65,153,213,.07)"
-            vector-effect="non-scaling-stroke"/>
-        </svg>
-        <span class="dec-text">Channel &amp; kontak tersedia?</span>
-      </div>
+    <!-- Decision: ada data? -->
+    <div class="dec">
+      <svg viewBox="0 0 210 120" preserveAspectRatio="none">
+        <polygon points="105,4 206,60 105,116 4,60" fill="none" stroke="#4199d5" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <span>Sudah ada pengeluaran tercatat?</span>
     </div>
-    <!-- Fork channel valid -->
     <div class="fork">
-      <div class="fork-bar-wrap">
-        <div class="fork-stem"></div>
-        <div style="display:flex;width:520px;">
-          <div class="fork-bar" style="flex:1;margin-top:1px;"></div>
-        </div>
-      </div>
-      <div class="fork-cols" style="gap:120px;">
-        <!-- YES -->
+      <div class="fork-stem"></div>
+      <div class="fork-bar"></div>
+      <div class="fork-cols">
+        <!-- TIDAK -->
         <div class="fork-col">
-          <div class="fork-label yes">YA</div>
-          <div class="connector"></div>
-          <div class="arrow"></div>
-          <div class="step">
-            <div class="step-num">Step 4</div>
-            <div class="step-title">User klik "Kirim Sekarang"</div>
-            <div class="step-note">Tombol primary aktif. Loading spinner singkat.</div>
+          <span class="blabel no">TIDAK</span>
+          <div class="drop"></div>
+          <div class="exit" style="border-style:dashed">
+            <h3 style="color:var(--txt)">Empty state</h3>
+            <p>"Belum ada pengeluaran." Ilustrasi + tombol primary <b>Catat Pengeluaran</b>.</p>
+            <div class="back" style="color:var(--accent)">lanjut ke langkah 2</div>
           </div>
-          <div class="connector"></div>
-          <div class="arrow"></div>
         </div>
-        <!-- NO -->
-        <div class="fork-col" style="margin-top:32px;">
-          <div class="fork-label no">TIDAK</div>
-          <div class="connector"></div>
-          <div class="exit">
-            <div class="exit-title">Warning inline di dialog</div>
-            <div class="exit-note">
-              "No. WA / email klien belum ada."<br>
-              Tombol "Lengkapi Data Mitra" muncul.<br>
-              Kirim tetap disabled.
-            </div>
+        <!-- YA -->
+        <div class="fork-col">
+          <span class="blabel yes">YA</span>
+          <div class="drop arrow"></div>
+          <div class="step mini">
+            <h3>Tabel terisi</h3>
+            <p>User lihat daftar, bisa cari/filter. Lanjut catat baru.</p>
           </div>
-          <div class="back-note">↩ kembali ke dialog atau ke form Mitra</div>
         </div>
       </div>
     </div>
+    <div class="conn"></div>
 
-    <!-- Decision: kirim berhasil? -->
-    <div class="dec-wrap">
-      <div class="dec">
-        <svg viewBox="0 0 180 100" fill="none">
-          <polygon points="90,4 176,50 90,96 4,50"
-            stroke="#4199d5" stroke-width="1.5"
-            fill="rgba(65,153,213,.07)"
-            vector-effect="non-scaling-stroke"/>
-        </svg>
-        <span class="dec-text">Pengiriman berhasil?</span>
-      </div>
+    <!-- 2 -->
+    <div class="step">
+      <span class="num">2</span>
+      <h3>User klik "Catat Pengeluaran"</h3>
+      <p>Tombol primary di kanan atas daftar.</p>
     </div>
-    <!-- Fork kirim -->
+    <div class="conn"></div>
+
+    <!-- 3 -->
+    <div class="step">
+      <span class="num">3</span>
+      <h3>Main Area berubah jadi Form Catat Pengeluaran</h3>
+      <p>Bukan modal — form replace isi Main Area (Form Page).</p>
+      <div class="anno">Breadcrumb muncul: <b>Pengeluaran &gt; Catat Pengeluaran</b>. Form dibungkus card putih, primary sticky kanan-bawah.</div>
+    </div>
+    <div class="conn"></div>
+
+    <!-- 4 -->
+    <div class="step">
+      <span class="num">4</span>
+      <h3>User isi data pengeluaran</h3>
+      <p>Tanggal · Kategori · Penerima/Vendor · Jumlah · Metode Bayar · Deskripsi · Upload bukti/struk.</p>
+      <div class="anno">Kategori = Dropdown (≥5 opsi). Bukti/struk = upload opsional. Angka jumlah right-aligned. Field wajib ditandai <b>*</b>.</div>
+    </div>
+    <div class="conn"></div>
+
+    <!-- Decision: valid? -->
+    <div class="dec">
+      <svg viewBox="0 0 210 120" preserveAspectRatio="none">
+        <polygon points="105,4 206,60 105,116 4,60" fill="none" stroke="#4199d5" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <span>Field wajib terisi &amp; valid?</span>
+    </div>
     <div class="fork">
-      <div class="fork-bar-wrap">
-        <div class="fork-stem"></div>
-        <div style="display:flex;width:560px;">
-          <div class="fork-bar" style="flex:1;margin-top:1px;"></div>
-        </div>
-      </div>
-      <div class="fork-cols" style="gap:160px;">
-        <!-- SUCCESS -->
+      <div class="fork-stem"></div>
+      <div class="fork-bar"></div>
+      <div class="fork-cols">
+        <!-- TIDAK -->
         <div class="fork-col">
-          <div class="fork-label yes">BERHASIL</div>
-          <div class="connector"></div>
-          <div class="arrow"></div>
-          <div class="step success">
-            <div class="step-num">Step 5 — Selesai</div>
-            <div class="step-title">Toast "Pengingat berhasil dikirim"</div>
-            <div class="step-note">
-              Modal nutup. Status invoice di list update → badge "Ditagih" / timestamp "Terakhir ditagih: hari ini".<br>
-              User tetap di halaman list / detail.
-            </div>
-          </div>
-        </div>
-        <!-- FAIL -->
-        <div class="fork-col" style="margin-top:32px;">
-          <div class="fork-label no">GAGAL</div>
-          <div class="connector"></div>
+          <span class="blabel no">TIDAK</span>
+          <div class="drop"></div>
           <div class="exit">
-            <div class="exit-title">Error toast + opsi coba lagi</div>
-            <div class="exit-note">
-              Toast merah: "Gagal mengirim — coba lagi."<br>
-              Dialog tetap terbuka. User bisa retry atau tutup.
-            </div>
+            <h3>Inline error per field</h3>
+            <p>Pesan natural ("Jumlah belum diisi"), input yang sudah diisi dipertahankan. Primary tetap enabled.</p>
+            <div class="back">balik ke langkah 4 — user perbaiki</div>
           </div>
-          <div class="back-note">↩ kembali ke Step 4</div>
+        </div>
+        <!-- YA -->
+        <div class="fork-col">
+          <span class="blabel yes">YA</span>
+          <div class="drop arrow"></div>
+          <div class="step mini"><h3>Lanjut simpan</h3><p>Data lolos validasi.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="conn"></div>
+
+    <!-- Decision: butuh approval? -->
+    <div class="dec">
+      <svg viewBox="0 0 210 120" preserveAspectRatio="none">
+        <polygon points="105,4 206,60 105,116 4,60" fill="none" stroke="#4199d5" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <span>Jumlah ≥ batas butuh persetujuan?</span>
+    </div>
+    <div class="fork">
+      <div class="fork-stem"></div>
+      <div class="fork-bar"></div>
+      <div class="fork-cols">
+        <!-- YA -->
+        <div class="fork-col">
+          <span class="blabel yes">YA</span>
+          <div class="drop arrow"></div>
+          <div class="step mini">
+            <h3>Submit → status "Menunggu Persetujuan"</h3>
+            <p>Pengeluaran masuk antrian approval atasan.</p>
+          </div>
+        </div>
+        <!-- TIDAK -->
+        <div class="fork-col">
+          <span class="blabel no">TIDAK</span>
+          <div class="drop arrow"></div>
+          <div class="step mini">
+            <h3>Simpan → status "Tercatat"</h3>
+            <p>Langsung tercatat tanpa approval.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conn"></div>
+
+    <!-- 5 goal -->
+    <div class="goal">
+      <h3>✓ Pengeluaran tercatat di daftar</h3>
+      <p>Toast sukses "Pengeluaran berhasil dicatat" → Main Area balik ke daftar, baris baru muncul dengan status-nya.</p>
+    </div>
+
+    <div class="rule" style="width:520px;max-width:100%;margin:34px auto 8px"></div>
+
+    <!-- Exit terpisah: batal di tengah -->
+    <div class="dec" style="margin-top:6px">
+      <svg viewBox="0 0 210 120" preserveAspectRatio="none">
+        <polygon points="105,4 206,60 105,116 4,60" fill="none" stroke="#e35273" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <span>User klik "Batal" saat isi form (langkah 4)</span>
+    </div>
+    <div class="fork">
+      <div class="fork-stem"></div>
+      <div class="fork-bar"></div>
+      <div class="fork-cols">
+        <!-- ada perubahan -->
+        <div class="fork-col">
+          <span class="blabel yes">ADA PERUBAHAN</span>
+          <div class="drop"></div>
+          <div class="exit">
+            <h3>Confirmation Modal: "Buang perubahan?"</h3>
+            <p>Default focus = <b>Batal</b> (aksi aman). Lanjut buang → balik ke daftar Pengeluaran.</p>
+            <div class="back">kembali ke langkah 1 (daftar)</div>
+          </div>
+        </div>
+        <!-- belum ada -->
+        <div class="fork-col">
+          <span class="blabel no">BELUM ADA</span>
+          <div class="drop"></div>
+          <div class="exit" style="border-color:var(--step-bd)">
+            <h3 style="color:var(--txt)">Langsung balik ke daftar</h3>
+            <p>Tanpa modal — tidak ada data yang hilang.</p>
+            <div class="back" style="color:var(--accent)">kembali ke langkah 1</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Extra exit: batal di tengah -->
-    <div style="margin-top:40px;display:flex;flex-direction:column;align-items:center;gap:8px;">
-      <div class="section-title">Exit tambahan — batal di tengah proses</div>
-      <div class="exit" style="max-width:380px;">
-        <div class="exit-title">User klik "Batal" / tutup dialog (Step 3)</div>
-        <div class="exit-note">
-          Dialog nutup. Tidak ada pengiriman. Tidak ada perubahan status invoice.<br>
-          ↩ kembali ke List atau Detail Invoice.
-        </div>
-      </div>
+    <div class="legend">
+      <span><i style="background:var(--step-bg);border:1px solid var(--step-bd)"></i>Langkah user</span>
+      <span><i style="background:rgba(65,153,213,.1);border:1px solid var(--accent)"></i>Goal tercapai</span>
+      <span><i style="background:rgba(227,82,115,.07);border:1px solid var(--exit-bd)"></i>Exit / gagal (nyambung balik)</span>
+      <span><i style="background:transparent;border:1.5px solid var(--accent);transform:rotate(45deg);width:12px;height:12px"></i>Titik keputusan</span>
     </div>
 
-    <!-- No-access exit -->
-    <div style="margin-top:16px;display:flex;flex-direction:column;align-items:center;gap:8px;">
-      <div class="section-title">Exit — role tidak punya akses</div>
-      <div class="exit" style="max-width:380px;">
-        <div class="exit-title">Tombol "Tagih" tidak tampil</div>
-        <div class="exit-note">
-          Role tanpa permission "Kirim Invoice" → tombol disembunyikan dari UI.<br>
-          Tidak ada pesan error — cukup tidak ditampilkan.
-        </div>
-      </div>
-    </div>
-
-  </div><!-- .flow -->
-</div><!-- .canvas -->
-
+  </div>
+</div>
 <!--
   ╔══════════════════════════════════════════════════════════════════╗
   ║  KOMEN OVERLAY ala Figma — SISIPKAN BLOK INI PERSIS SEBELUM </body> ║
@@ -1262,12 +1005,6 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
   applyT();render();
 })();
 </script>
-
-
-
-
-
-
 
 
 

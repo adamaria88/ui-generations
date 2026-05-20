@@ -234,8 +234,10 @@ Flow utama / kompleks?
 | Tipe | Kapan | Kompleksitas | Best For |
 |------|-------|--------------|----------|
 | Form Page | Core process, multi-step | Tinggi | Create Invoice, Create Partner |
-| Side Sheet | Edit kontekstual dalam view | Sedang | Buat Mitra dari halaman Invoice |
-| Modal Form | Task cepat, 1-4 fields | Rendah | Edit nama, Tambah note |
+| Side Sheet | Kontekstual / form pendek dalam cross-process | Sedang | Buat Mitra dari halaman Invoice |
+| Modal Form | Task cepat, maks 3 fields | Rendah | Edit nama, Tambah note |
+
+> Modal ada **3 tipe beda** (Modal Form / Confirmation Modal / Information Modal) — default focus Confirmation = Cancel, Information = Primary. Detail: `page-templates.md` Template 3. Behavior Button/Autocomplete/Error/Tab/Table/Toast: section "Behavioral & Pattern Rules" di `design-rules.md`.
 
 ### Form Page Rules
 - Form dibungkus card putih dengan border (`1px solid`, `var(--radius-md)` 8px, padding 24-32px)
@@ -244,15 +246,20 @@ Flow utama / kompleks?
 - Header: judul + breadcrumb di kiri, panduan + pengaturan lanjutan di kanan
 - Footer: primary CTA di kiri, secondary/cancel di kanan bawah card
 - Save & cancel SELALU di kanan bawah
+- Label 14px dark blue bold, input 14px, min font 12px, angka tabel right-aligned, qty default 1
+- Side Sheet: width default 40% (→ 50% kalau kompleks banget), TIDAK bisa close klik di luar
+- Toast: width **380px**, radius **8px** (keputusan user 2026-05-19, override Aurora SCSS)
 
 ### Input Behavior
 | Kondisi | Gunakan |
 |---------|---------|
-| Opsi < 4 | Radio Group (tampilkan langsung) |
-| Opsi >= 4 | Select/Dropdown |
-| Opsi banyak + search | Autocomplete |
+| Opsi ≤ 4 | Radio Group (tampilkan langsung) |
+| Opsi ≥ 5 | Select/Dropdown |
+| Opsi banyak (≥ 5) + search | Autocomplete (kalau < 5 → tetap Dropdown) |
 | Teks panjang | Rich Text / Textarea |
 | Tanggal | Date Picker |
+
+> Threshold (keputusan user 2026-05-19): Radio ≤ 4, Dropdown ≥ 5.
 
 ### Error & Validation
 - Pesan natural ("No partner selected yet"), bukan teknikal ("cannot be empty")
@@ -304,7 +311,7 @@ Flow utama / kompleks?
 | Komponen | When to use | Selector |
 |----------|-------------|----------|
 | Accordion | Collapsible section, FAQ, settings | `au-accordion` |
-| Dialog | Modal konfirmasi, form, detail view | `au-dialog` |
+| Dialog | 3 tipe modal beda: Modal Form / Confirmation Modal / Information Modal — lihat `page-templates.md` Template 3 | `au-dialog` |
 | Carousel | Image gallery, onboarding slides | `au-carousel` |
 | Scroll Container | Custom scrollable area | `au-scroll-container` |
 
@@ -325,8 +332,8 @@ Flow utama / kompleks?
 ### Quick Selection Guide
 | Need | Component |
 |------|-----------|
-| User confirms action | Dialog |
-| Select <= 5 options | Radio |
+| User confirms action | Confirmation Modal (lihat page-templates.md 3b) |
+| Select ≤ 4 options | Radio |
 | Select multiple | Checkbox |
 | Toggle setting | Toggle |
 | Choose date | Datepicker |

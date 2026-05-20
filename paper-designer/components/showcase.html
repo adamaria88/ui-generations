@@ -8,115 +8,191 @@
 <style>
 :root {
   /* ── AURORA COLOR PRIMITIVES (color-primitive.css) ── */
-  --color-light-brand-10: #f8fbfe;
-  --color-light-brand-15: #f2f7fc;
-  --color-light-brand-20: #e8f3fa;
-  --color-light-brand-25: #d1e6f5;
-  --color-light-brand-30: #c2def2;
-  --color-light-brand-35: #98c5e8;
-  --color-light-brand-40: #89bde5;
-  --color-light-brand-45: #71b0e0;
-  --color-light-brand-50: #4199d5;
-  --color-light-brand-55: #3a93c7;
-  --color-light-brand-60: #3385b5;
-
-  --color-light-blue-10: #f8fbfe;
-  --color-light-blue-15: #f2f7fc;
-  --color-light-blue-20: #e8f3fa;
-  --color-light-blue-25: #d1e6f5;
-  --color-light-blue-30: #c2def2;
-  --color-light-blue-40: #89bde5;
-  --color-light-blue-50: #4199d5;
-  --color-light-blue-60: #3385b5;
-
-  --color-light-green-10: #fbfdf8;
-  --color-light-green-15: #f7fbf3;
-  --color-light-green-20: #f2f8ea;
-  --color-light-green-25: #e5f2d6;
-  --color-light-green-30: #d6eabe;
-  --color-light-green-40: #bcdd95;
-  --color-light-green-50: #97cc56;
-  --color-light-green-60: #6faf35;
-
-  --color-light-grey-10: #fdfdfe;
-  --color-light-grey-15: #fbfbfc;
-  --color-light-grey-20: #f8f9fa;
-  --color-light-grey-25: #f2f4f5;
-  --color-light-grey-30: #eaedef;
-  --color-light-grey-35: #e1e5e8;
-  --color-light-grey-40: #dde1e5;
-  --color-light-grey-45: #d6dbe0;
-  --color-light-grey-50: #c8cfd5;
-  --color-light-grey-55: #d6dbe0;
-  --color-light-grey-60: #ced3d7;
-
-  --color-light-red-10: #fef8fa;
-  --color-light-red-15: #fdf3f5;
-  --color-light-red-20: #fbeaee;
-  --color-light-red-25: #f8d6de;
-  --color-light-red-30: #f6c7d2;
-  --color-light-red-35: #f0a1b3;
-  --color-light-red-40: #ee94a8;
-  --color-light-red-45: #ea7d96;
-  --color-light-red-50: #e35273;
-  --color-light-red-55: #c6315e;
-  --color-light-red-60: #b52b55;
-
-  --color-light-yellow-10: #fefcf6;
-  --color-light-yellow-15: #fdf9ef;
-  --color-light-yellow-20: #fcf5e3;
-  --color-light-yellow-25: #faecc9;
-  --color-light-yellow-30: #f8e6b6;
-  --color-light-yellow-35: #f3d584;
-  --color-light-yellow-40: #f2cf72;
-  --color-light-yellow-45: #efc555;
-  --color-light-yellow-50: #eab11c;
-  --color-light-yellow-55: #d4a82a;
-  --color-light-yellow-60: #c89d24;
-
-  --color-light-orange-10: #fffaf8;
-  --color-light-orange-15: #fef6f3;
-  --color-light-orange-20: #fdecea;
-  --color-light-orange-25: #fce0d5;
-  --color-light-orange-30: #fbd5c7;
-  --color-light-orange-40: #f8ae93;
-  --color-light-orange-50: #f37d51;
-  --color-light-orange-55: #d86435;
-  --color-light-orange-60: #cc5a2e;
-
-  --color-dark-brand-10: #f6f8f9;
-  --color-dark-brand-15: #eef1f4;
-  --color-dark-brand-20: #e2e8eb;
-  --color-dark-brand-25: #c2cdd5;
-  --color-dark-brand-30: #a5b6c1;
-  --color-dark-brand-35: #7f97a7;
-  --color-dark-brand-40: #718c9e;
-  --color-dark-brand-45: #4e6f86;
-  --color-dark-brand-50: #133f5d;
-  --color-dark-brand-55: #263640;
-  --color-dark-brand-60: #1f2b33;
-
-  --color-dark-grey-10: #f3f6f9;
-  --color-dark-grey-15: #f1f3f4;
-  --color-dark-grey-20: #e7eaec;
-  --color-dark-grey-25: #d0d9df;
-  --color-dark-grey-30: #b5bec5;
-  --color-dark-grey-35: #95a2ad;
-  --color-dark-grey-40: #8695a1;
-  --color-dark-grey-45: #6d7f8d;
-  --color-dark-grey-50: #3c5467;
-  --color-dark-grey-55: #353f47;
-  --color-dark-grey-60: #2a3339;
-
-  --color-dark-green-50: #356021;
-  --color-dark-red-50: #5c122d;
-  --color-dark-orange-50: #8c2f0c;
-  --color-dark-yellow-50: #6e4e00;
-  --color-dark-blue-50: #133f5d;
+  --color-light-amber-10: #fffaf1;
+  --color-light-amber-30: #ffe8bd;
+  --color-light-amber-50: #f8ac1f;
+  --color-light-brand-10: #f8fbfeff;
+  --color-light-brand-15: #f2f7fcff;
+  --color-light-brand-20: #e8f3faff;
+  --color-light-brand-25: #d1e6f5ff;
+  --color-light-brand-30: #c2def2ff;
+  --color-light-brand-35: #98c5e8ff;
+  --color-light-brand-40: #89bde5ff;
+  --color-light-brand-45: #71b0e0ff;
+  --color-light-brand-50: #4199d5ff;
+  --color-light-brand-55: #3a93c7ff;
+  --color-light-brand-60: #3385b5ff;
+  --color-light-blue-10: #f8fbfeff;
+  --color-light-blue-15: #f2f7fcff;
+  --color-light-blue-20: #e8f3faff;
+  --color-light-blue-25: #d1e6f5ff;
+  --color-light-blue-30: #c2def2ff;
+  --color-light-blue-35: #98c5e8ff;
+  --color-light-blue-40: #89bde5ff;
+  --color-light-blue-45: #71b0e0ff;
+  --color-light-blue-50: #4199d5ff;
+  --color-light-blue-55: #3a93c7ff;
+  --color-light-blue-60: #3385b5ff;
+  --color-light-green-10: #fbfdf8ff;
+  --color-light-green-15: #f7fbf3ff;
+  --color-light-green-20: #f2f8eaff;
+  --color-light-green-25: #e5f2d6ff;
+  --color-light-green-30: #d6eabeff;
+  --color-light-green-35: #c4e1a2ff;
+  --color-light-green-40: #bcdd95ff;
+  --color-light-green-45: #aed67fff;
+  --color-light-green-50: #97cc56ff;
+  --color-light-green-55: #7fbc3eff;
+  --color-light-green-60: #6faf35ff;
+  --color-light-grey-10: #fdfdfeff;
+  --color-light-grey-15: #fbfbfcff;
+  --color-light-grey-20: #f8f9faff;
+  --color-light-grey-25: #f2f4f5ff;
+  --color-light-grey-30: #eaedefff;
+  --color-light-grey-35: #e1e5e8ff;
+  --color-light-grey-40: #dde1e5ff;
+  --color-light-grey-45: #d6dbe0ff;
+  --color-light-grey-50: #c8cfd5ff;
+  --color-light-grey-55: #d6dbe0ff;
+  --color-light-grey-60: #ced3d7ff;
+  --color-light-red-10: #fef8faff;
+  --color-light-red-15: #fdf3f5ff;
+  --color-light-red-20: #fbeaeeff;
+  --color-light-red-25: #f8d6deff;
+  --color-light-red-30: #f6c7d2ff;
+  --color-light-red-35: #f0a1b3ff;
+  --color-light-red-40: #ee94a8ff;
+  --color-light-red-45: #ea7d96ff;
+  --color-light-red-50: #e35273ff;
+  --color-light-red-55: #c6315eff;
+  --color-light-red-60: #b52b55ff;
+  --color-light-yellow-10: #fefcf6ff;
+  --color-light-yellow-15: #fdf9efff;
+  --color-light-yellow-20: #fcf5e3ff;
+  --color-light-yellow-25: #faecc9ff;
+  --color-light-yellow-30: #f8e6b6ff;
+  --color-light-yellow-35: #f3d584ff;
+  --color-light-yellow-40: #f2cf72ff;
+  --color-light-yellow-45: #efc555ff;
+  --color-light-yellow-50: #eab11cff;
+  --color-light-yellow-55: #d4a82aff;
+  --color-light-yellow-60: #c89d24ff;
+  --color-light-orange-10: #fffaf8ff;
+  --color-light-orange-15: #fef6f3ff;
+  --color-light-orange-20: #fdefeaff;
+  --color-light-orange-25: #fce0d5ff;
+  --color-light-orange-30: #fbd5c7ff;
+  --color-light-orange-35: #f8b8a1ff;
+  --color-light-orange-40: #f8ae93ff;
+  --color-light-orange-45: #f69e7dff;
+  --color-light-orange-50: #f37d51ff;
+  --color-light-orange-55: #d86435ff;
+  --color-light-orange-60: #cc5a2eff;
+  --color-dark-brand-10: #f6f8f9ff;
+  --color-dark-brand-15: #eef1f4ff;
+  --color-dark-brand-20: #e2e8ebff;
+  --color-dark-brand-25: #c2cdd5ff;
+  --color-dark-brand-30: #a5b6c1ff;
+  --color-dark-brand-35: #7f97a7ff;
+  --color-dark-brand-40: #718c9eff;
+  --color-dark-brand-45: #4e6f86ff;
+  --color-dark-brand-50: #133f5dff;
+  --color-dark-brand-55: #263640ff;
+  --color-dark-brand-60: #1f2b33ff;
+  --color-dark-blue-10: #f6f8f9ff;
+  --color-dark-blue-15: #eef1f4ff;
+  --color-dark-blue-20: #e2e8ebff;
+  --color-dark-blue-25: #c2cdd5ff;
+  --color-dark-blue-30: #a5b6c1ff;
+  --color-dark-blue-35: #7f97a7ff;
+  --color-dark-blue-40: #718c9eff;
+  --color-dark-blue-45: #4e6f86ff;
+  --color-dark-blue-50: #133f5dff;
+  --color-dark-blue-55: #263640ff;
+  --color-dark-blue-60: #1f2b33ff;
+  --color-dark-green-10: #e2f2e1ff;
+  --color-dark-green-15: #c8e4c3ff;
+  --color-dark-green-20: #b0d3a3ff;
+  --color-dark-green-25: #96bf83ff;
+  --color-dark-green-30: #7cac63ff;
+  --color-dark-green-35: #6a9750ff;
+  --color-dark-green-40: #58843dff;
+  --color-dark-green-45: #47722fff;
+  --color-dark-green-50: #356021ff;
+  --color-dark-green-55: #29441bff;
+  --color-dark-green-60: #213815ff;
+  --color-dark-grey-10: #f3f6f9ff;
+  --color-dark-grey-15: #f1f3f4ff;
+  --color-dark-grey-20: #e7eaecff;
+  --color-dark-grey-25: #d0d9dfff;
+  --color-dark-grey-30: #b5bec5ff;
+  --color-dark-grey-35: #95a2adff;
+  --color-dark-grey-40: #8695a1ff;
+  --color-dark-grey-45: #6d7f8dff;
+  --color-dark-grey-50: #3c5467ff;
+  --color-dark-grey-55: #353f47ff;
+  --color-dark-grey-60: #2a3339ff;
+  --color-dark-navy-30: #4f8ccb;
   --color-dark-navy-50: #17348f;
-
-  --color-neutral-black: #161616;
+  --color-dark-red-10: #f9d1dcff;
+  --color-dark-red-15: #f0a8beff;
+  --color-dark-red-20: #db7e9eff;
+  --color-dark-red-25: #c45c89ff;
+  --color-dark-red-30: #ac3f71ff;
+  --color-dark-red-35: #98325eff;
+  --color-dark-red-40: #84274dff;
+  --color-dark-red-45: #701b3cff;
+  --color-dark-red-50: #5c122dff;
+  --color-dark-red-55: #401021ff;
+  --color-dark-red-60: #330b18ff;
+  --color-dark-yellow-10: #faedbdff;
+  --color-dark-yellow-15: #f3df96ff;
+  --color-dark-yellow-20: #e6c66cff;
+  --color-dark-yellow-25: #d5ac46ff;
+  --color-dark-yellow-30: #bf9727ff;
+  --color-dark-yellow-35: #ab8415ff;
+  --color-dark-yellow-40: #96720aff;
+  --color-dark-yellow-45: #815f04ff;
+  --color-dark-yellow-50: #6e4e00ff;
+  --color-dark-yellow-55: #443400ff;
+  --color-dark-yellow-60: #382800ff;
+  --color-dark-orange-10: #fdeae4ff;
+  --color-dark-orange-15: #f9d0c9ff;
+  --color-dark-orange-20: #f3afaaff;
+  --color-dark-orange-25: #e99386ff;
+  --color-dark-orange-30: #de7d60ff;
+  --color-dark-orange-35: #cb6949ff;
+  --color-dark-orange-40: #b85534ff;
+  --color-dark-orange-45: #a2411fff;
+  --color-dark-orange-50: #8c2f0cff;
+  --color-dark-orange-55: #4d1f11ff;
+  --color-dark-orange-60: #3d170dff;
+  --color-neutral-black: #161616ff;
   --color-neutral-white: #ffffff;
+  --color-interactive-brand-40: var(--color-light-brand-40);
+  --color-interactive-brand-50: var(--color-light-brand-50);
+  --color-interactive-brand-60: var(--color-light-brand-60);
+  --color-interactive-blue-40: var(--color-light-blue-40);
+  --color-interactive-blue-50: var(--color-light-blue-50);
+  --color-interactive-blue-60: var(--color-light-blue-60);
+  --color-interactive-green-40: var(--color-light-green-40);
+  --color-interactive-green-50: var(--color-light-green-50);
+  --color-interactive-green-60: var(--color-light-green-60);
+  --color-interactive-grey-40: var(--color-light-grey-25);
+  --color-interactive-grey-50: var(--color-light-grey-30);
+  --color-interactive-grey-60: var(--color-light-grey-40);
+  --color-interactive-red-40: var(--color-light-red-40);
+  --color-interactive-red-50: var(--color-light-red-50);
+  --color-interactive-red-60: var(--color-light-red-60);
+  --color-interactive-yellow-40: var(--color-light-yellow-40);
+  --color-interactive-yellow-50: var(--color-light-yellow-50);
+  --color-interactive-yellow-60: var(--color-light-yellow-60);
+  --color-interactive-orange-40: var(--color-light-orange-40);
+  --color-interactive-orange-50: var(--color-light-orange-50);
+  --color-interactive-orange-60: var(--color-light-orange-60);
+  --color-interactive-white-40: var(--color-light-grey-15);
+  --color-interactive-white-50: var(--color-neutral-white);
+  --color-interactive-white-60: var(--color-light-grey-20);
 
   /* ── AURORA SEMANTIC TOKENS (color-semantic.css) ── */
   --color-text-primary: var(--color-dark-brand-50);
@@ -124,50 +200,97 @@
   --color-text-muted: var(--color-dark-brand-30);
   --color-text-inverse: var(--color-neutral-white);
   --color-text-brand: var(--color-dark-brand-50);
-
   --color-surface-light-default: var(--color-neutral-white);
   --color-surface-light-raised: var(--color-dark-grey-10);
   --color-surface-light-muted: var(--color-dark-grey-20);
   --color-surface-light-platform: var(--color-light-brand-10);
   --color-surface-dark-default: var(--color-dark-brand-55);
   --color-surface-dark-raised: var(--color-dark-brand-50);
-
+  --color-surface-dark-muted: var(--color-dark-brand-45);
+  --color-surface-dark-platform: var(--color-dark-brand-60);
   --color-border-subtle: var(--color-light-grey-25);
   --color-border-default: var(--color-light-grey-40);
-
   --color-action-primary-bg: var(--color-light-brand-50);
   --color-action-primary-hover: var(--color-light-brand-40);
   --color-action-primary-pressed: var(--color-light-brand-60);
   --color-action-primary-fg: var(--color-neutral-white);
-
   --color-action-destructive-bg: var(--color-light-red-50);
   --color-action-destructive-hover: var(--color-light-red-40);
   --color-action-destructive-pressed: var(--color-light-red-60);
   --color-action-destructive-fg: var(--color-neutral-white);
-
   --color-focus-ring: var(--color-light-brand-40);
-
   --color-state-success-text-dark: var(--color-dark-green-50);
+  --color-state-success-text-light: var(--color-light-green-50);
+  --color-state-success-icon: var(--color-light-green-50);
   --color-state-success-bg: var(--color-light-green-15);
   --color-state-success-border: var(--color-light-green-30);
-
   --color-state-danger-text-dark: var(--color-dark-red-50);
+  --color-state-danger-text-light: var(--color-light-red-50);
+  --color-state-danger-icon: var(--color-light-red-50);
   --color-state-danger-bg: var(--color-light-red-15);
   --color-state-danger-border: var(--color-light-red-30);
-
   --color-state-warning-text-dark: var(--color-dark-orange-50);
+  --color-state-warning-text-light: var(--color-light-orange-50);
+  --color-state-warning-icon: var(--color-light-orange-50);
   --color-state-warning-bg: var(--color-light-orange-15);
   --color-state-warning-border: var(--color-light-orange-30);
-
   --color-state-caution-text-dark: var(--color-dark-yellow-50);
+  --color-state-caution-text-light: var(--color-light-yellow-50);
+  --color-state-caution-icon: var(--color-light-yellow-50);
   --color-state-caution-bg: var(--color-light-yellow-15);
   --color-state-caution-border: var(--color-light-yellow-30);
-
+  --color-state-active-text-dark: var(--color-dark-blue-50);
+  --color-state-active-text-light: var(--color-light-blue-50);
   --color-state-active-border: var(--color-light-brand-30);
   --color-state-active-icon: var(--color-light-brand-50);
-
+  --color-action-neutral-bg: var(--color-light-grey-10);
+  --color-action-neutral-hover: var(--color-light-grey-25);
+  --color-action-neutral-pressed: var(--color-light-grey-40);
+  --color-action-neutral-fg: var(--color-dark-brand-50);
   --color-action-disabled-bg: var(--color-dark-grey-20);
+  --color-action-disabled-hover: var(--color-dark-grey-10);
+  --color-action-disabled-pressed: var(--color-dark-grey-20);
   --color-action-disabled-fg: var(--color-dark-brand-35);
+
+  /* ── AURORA TEXT TOKENS (text.css) ── */
+  --text-heading-size-xs: 14px;
+  --text-heading-size-sm: 16px;
+  --text-heading-size-md: 22px;
+  --text-heading-size-lg: 28px;
+  --text-heading-size-xl: 34px;
+  --text-heading-size-2xl: 42px;
+  --text-heading-size-3xl: 52px;
+  --text-heading-size-4xl: 64px;
+  --text-heading-size-5xl: 72px;
+  --text-heading-size-6xl: 80px;
+  --text-heading-line-height-xs: 20px;
+  --text-heading-line-height-sm: 20px;
+  --text-heading-line-height-md: 28px;
+  --text-heading-line-height-lg: 36px;
+  --text-heading-line-height-xl: 44px;
+  --text-heading-line-height-2xl: 52px;
+  --text-heading-line-height-3xl: 60px;
+  --text-heading-line-height-4xl: 72px;
+  --text-heading-line-height-5xl: 82px;
+  --text-heading-line-height-6xl: 92px;
+  --text-heading-font-family: 'Lato', sans-serif;
+  --text-heading-weight-regular: 400;
+  --text-heading-weight-medium: 500;
+  --text-heading-weight-semibold: 600;
+  --text-heading-weight-bold: 700;
+  --text-body-size-sm: 12px;
+  --text-body-size-md: 14px;
+  --text-body-size-lg: 20px;
+  --text-body-size-xl: 24px;
+  --text-body-line-height-sm: 18px;
+  --text-body-line-height-md: 22px;
+  --text-body-line-height-lg: 30px;
+  --text-body-line-height-xl: 36px;
+  --text-body-font-family: 'Lato', sans-serif;
+  --text-body-weight-regular: 400;
+  --text-body-weight-medium: 500;
+  --text-body-weight-semibold: 600;
+  --text-body-weight-bold: 700;
 
   /* ── AURORA LAYOUT TOKENS (layout.css) ── */
   --spacing-2xs: 2px;
@@ -181,6 +304,16 @@
   --spacing-4xl: 32px;
   --spacing-5xl: 36px;
   --spacing-6xl: 40px;
+  --opacity-0: 0;
+  --opacity-10: 0.1;
+  --opacity-25: 0.25;
+  --opacity-50: 0.5;
+  --opacity-75: 0.75;
+  --opacity-100: 1;
+  --stroke-none: 0px;
+  --stroke-xs: 1px;
+  --stroke-md: 1.5px;
+  --stroke-lg: 2px;
   --radius-none: 0px;
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -188,36 +321,25 @@
   --radius-xl: 16px;
   --radius-full: 9999px;
 
-  /* ── AURORA TEXT TOKENS (text.css) ── */
-  --text-heading-size-xs: 14px;
-  --text-heading-size-sm: 16px;
-  --text-heading-size-md: 22px;
-  --text-heading-size-lg: 28px;
-  --text-heading-line-height-xs: 20px;
-  --text-heading-line-height-sm: 20px;
-  --text-heading-line-height-md: 28px;
-  --text-heading-font-family: 'Lato', sans-serif;
-  --text-heading-weight-semibold: 600;
-  --text-heading-weight-bold: 700;
-  --text-body-size-sm: 12px;
-  --text-body-size-md: 14px;
-  --text-body-size-lg: 20px;
-  --text-body-line-height-sm: 18px;
-  --text-body-line-height-md: 22px;
-  --text-body-line-height-lg: 30px;
-  --text-body-font-family: 'Lato', sans-serif;
-  --text-body-weight-regular: 400;
-  --text-body-weight-medium: 500;
-  --text-body-weight-semibold: 600;
-  --text-body-weight-bold: 700;
-
   /* ── AURORA ANIMATION TOKENS (animation.css) ── */
+  --ease-in-relax: cubic-bezier(0.55, 0.09, 0.68, 0.53);
+  --ease-in-regular: cubic-bezier(0.21, 0.61, 0.35, 1);
+  --ease-in-strong: cubic-bezier(0.89, 0.03, 0.68, 0.22);
+  --ease-in-powerful: cubic-bezier(0.75, 0.05, 0.85, 0.06);
   --ease-out-relax: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-regular: cubic-bezier(0.21, 0.61, 0.35, 1);
   --ease-out-strong: cubic-bezier(0.16, 0.84, 0.44, 1);
-  --speed-extra-fast: 100ms;
-  --speed-fast: 200ms;
-  --speed-normal: 300ms;
+  --ease-out-powerful: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-relax: cubic-bezier(0.45, 0.03, 0.51, 0.96);
+  --ease-in-out-regular: cubic-bezier(0.64, 0.05, 0.35, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.17, 1);
+  --ease-in-out-powerful: cubic-bezier(0.86, 0, 0.07, 1);
+  --speed-relaxed: 1000ms;
+  --speed-extra-slow: 500ms;
   --speed-slow: 400ms;
+  --speed-normal: 300ms;
+  --speed-fast: 200ms;
+  --speed-extra-fast: 100ms;
 
   /* ── SHOWCASE ALIASES (compat untuk utility CSS di bawah) ── */
   --space-1: var(--spacing-xs);
@@ -245,7 +367,6 @@
   --color-action-primary-active: var(--color-action-primary-pressed);
   --color-action-primary-disabled: var(--color-action-disabled-bg);
   --color-action-secondary-bg: var(--color-surface-light-default);
-  --color-action-destructive-hover: var(--color-action-destructive-hover);
   --color-state-active-bg: var(--color-light-brand-20);
   --color-border-focus: var(--color-focus-ring);
   --transition-fast: var(--speed-extra-fast);
@@ -253,7 +374,15 @@
   --transition-slow: var(--speed-normal);
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── Aurora base reset (base.css) ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { text-size-adjust: none; }
+body, h1, h2, h3, h4, p, figure, blockquote, dl, dd { margin-block-end: 0; margin: 0; padding: 0; }
+ul[role='list'], ol[role='list'] { list-style: none; }
+h1, h2, h3, h4 { text-wrap: balance; }
+a:not([class]) { text-decoration-skip-ink: auto; color: currentcolor; }
+input, button, optgroup, textarea, select { font-family: inherit; }
+:target { scroll-margin-block: 5ex; }
 
 body {
   font-family: 'Lato', sans-serif;
@@ -320,9 +449,10 @@ body {
   --button-disabled-fg: var(--color-dark-grey-30);
   display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-lg);
-  font-family: 'Lato', sans-serif;
+  font-family: var(--text-heading-font-family);
   font-size: var(--text-body-size-md);
   font-weight: var(--text-body-weight-medium);
+  line-height: var(--text-body-line-height-md);
   border-radius: var(--radius-full);
   border: none;
   cursor: pointer;
@@ -578,11 +708,17 @@ body {
 .badge.overdue { background: var(--color-light-red-50);    border-color: var(--color-light-red-50);    color: var(--color-text-inverse); }
 .badge.warning { background: var(--color-light-orange-50); border-color: var(--color-light-orange-50); color: var(--color-text-inverse); }
 .badge.info    { background: var(--color-light-blue-30);   border-color: var(--color-light-blue-30);   color: var(--color-text-inverse); }
+.badge.compact {
+  padding: var(--spacing-2xs) var(--spacing-sm);
+  font-size: var(--text-body-size-sm);
+  line-height: var(--text-body-line-height-sm);
+}
 
 /* ─── TAB GROUP ──────────────────────────────────── */
 .au-tabs { border-bottom: 2px solid var(--color-dark-grey-20); display: flex; gap: 0; }
 .au-tab {
   padding: var(--spacing-md) var(--spacing-lg);
+  font-family: var(--text-body-font-family);
   font-size: var(--text-body-size-md);
   font-weight: var(--text-body-weight-bold);
   color: var(--color-text-secondary);
@@ -650,7 +786,7 @@ body {
 .table-wrap tbody tr.selected { background: var(--color-state-active-bg); }
 .table-wrap tbody tr.selected:hover { background: var(--color-state-active-bg); }
 .th-inner { display: flex; align-items: center; gap: 4px; }
-.sort-icon { color: var(--color-text-secondary); font-size: 10px; }
+.sort-icon { display: inline-flex; align-items: center; vertical-align: middle; margin-left: 2px; color: var(--color-text-secondary); }
 .sort-icon.active { color: var(--color-text-primary); }
 .col-filter {
   display: block;
@@ -667,6 +803,18 @@ body {
   box-sizing: border-box;
 }
 .col-filter:focus { border-color: var(--color-light-brand-40); }
+.col-filter-wrap { position: relative; display: block; margin-top: var(--spacing-xs); }
+.col-filter-wrap .col-filter { margin-top: 0; padding-right: 28px; }
+.col-filter-icon {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  color: var(--color-text-muted); pointer-events: none; display: flex; align-items: center;
+}
+.col-filter-select-wrap { position: relative; display: block; margin-top: var(--spacing-xs); }
+.col-filter-select-wrap .col-filter { margin-top: 0; padding-right: 28px; appearance: none; cursor: pointer; }
+.col-filter-select-chevron {
+  position: absolute; right: 7px; top: 50%; transform: translateY(-50%);
+  color: var(--color-text-secondary); pointer-events: none; display: flex; align-items: center;
+}
 .row-expand {
   padding: 4px; cursor: pointer; color: var(--color-text-secondary);
   background: none; border: none;
@@ -698,7 +846,17 @@ body {
   padding: 0 !important;
 }
 /* Expanded row */
-.expand-row td { background: var(--color-light-brand-10); padding: var(--spacing-md) var(--spacing-lg); font-size: var(--text-body-size-sm); color: var(--color-text-secondary); }
+.expand-row td { background: var(--color-light-brand-10); padding: var(--spacing-md) var(--spacing-lg); }
+.expand-row:hover td { background: var(--color-light-brand-10) !important; }
+.expand-card {
+  background: var(--color-neutral-white);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  display: flex; flex-direction: column; gap: var(--spacing-xs);
+  font-size: var(--text-body-size-sm); color: var(--color-text-primary);
+}
+.expand-card-title { font-weight: 700; color: var(--color-dark-brand-50); margin-bottom: var(--spacing-2xs); }
 .expand-row:hover td { background: var(--color-light-brand-10) !important; }
 /* Mini row icons (below primary cell text) */
 .row-meta { display: flex; align-items: center; gap: var(--spacing-xs); margin-top: 4px; }
@@ -737,11 +895,12 @@ body {
 .au-banner.success-attention { background: var(--color-light-green-20);  border-color: var(--color-interactive-green-50); }
 .au-banner.danger-attention  { background: var(--color-light-red-20);    border-color: var(--color-interactive-red-50); }
 .au-banner.warning-attention { background: var(--color-light-yellow-20); border-color: var(--color-interactive-yellow-50); }
-.banner-icon { flex-shrink: 0; font-size: 16px; line-height: 1.4; }
+.banner-icon { flex-shrink: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
 .banner-body { flex: 1; }
 .banner-title { font-weight: 700; font-size: var(--text-body-size-md); }
 .banner-desc { font-size: var(--text-body-size-sm); color: var(--color-text-secondary); margin-top: var(--spacing-2xs); }
-.banner-close { background: none; border: none; cursor: pointer; color: var(--color-text-secondary); font-size: 16px; padding: 0; line-height: 1; }
+.banner-close { background: none; border: none; cursor: pointer; color: var(--color-text-secondary); padding: 0; display: flex; align-items: center; justify-content: center; opacity: 0.7; }
+.banner-close:hover { opacity: 1; }
 
 /* ─── TOAST ───────────────────────────────────────── */
 .au-toast {
@@ -760,7 +919,7 @@ body {
 .toast-body { flex: 1; }
 .toast-title { font-weight: 700; font-size: var(--text-body-size-md); }
 .toast-desc { font-size: var(--text-body-size-sm); color: var(--color-text-inverse); margin-top: var(--spacing-2xs); }
-.toast-close { background: none; border: none; cursor: pointer; color: var(--color-light-brand-50); font-size: 18px; padding: 0; }
+.toast-close { background: none; border: none; cursor: pointer; color: var(--color-light-brand-50); padding: 0; display: flex; align-items: center; flex-shrink: 0; }
 .au-toast.danger .toast-close { color: var(--color-text-inverse); }
 
 /* ─── TOOLTIP ─────────────────────────────────────── */
@@ -881,6 +1040,7 @@ body {
   border-radius: var(--radius-sm);
   border: none;
   background: transparent;
+  font-family: var(--text-body-font-family);
   font-size: var(--text-body-size-md);
   color: var(--color-dark-blue-50);
   cursor: pointer;
@@ -891,6 +1051,19 @@ body {
 .page-btn.disabled { pointer-events: none; opacity: 0.4; }
 .page-btn.ellipsis { background: none; cursor: default; }
 .page-btn.ellipsis:hover { background: none; }
+/* Icon-only prev/next buttons — no horizontal padding, matches au-pagination-icon */
+.page-icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--color-dark-blue-50);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+}
+.page-icon-btn:hover { background: var(--color-light-grey-25); }
+.page-icon-btn.disabled { pointer-events: none; color: var(--color-dark-blue-35); }
 
 /* ─── PROGRESS BAR ────────────────────────────────── */
 .au-progress { width: 100%; height: var(--spacing-lg); background: var(--color-light-brand-25); border-radius: var(--radius-xl); overflow: hidden; }
@@ -1046,22 +1219,65 @@ body {
       <div class="swatch-item"><div class="swatch" style="background:var(--color-dark-grey-60);border:1px solid rgba(0,0,0,0.2)"></div><div class="swatch-label">d-grey-60<br><span style="color:#aaa">#2a3339</span></div></div>
     </div>
 
-    <div class="section-sub">Color — Semantic State</div>
+    <div class="section-sub">Color — Light Grey (light-grey)</div>
+    <div class="swatch-grid">
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-grey-10)"></div><div class="swatch-label">grey-10<br><span style="color:#aaa">#fdfdfe</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-grey-15)"></div><div class="swatch-label">grey-15<br><span style="color:#aaa">#fbfbfc</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-grey-20)"></div><div class="swatch-label">grey-20<br><span style="color:#aaa">#f8f9fa</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-grey-25)"></div><div class="swatch-label">grey-25<br><span style="color:#aaa">#f2f4f5</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-grey-30)"></div><div class="swatch-label">grey-30<br><span style="color:#aaa">#eaedef</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-grey-35)"></div><div class="swatch-label">grey-35<br><span style="color:#aaa">#e1e5e8</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-grey-40)"></div><div class="swatch-label">grey-40<br><span style="color:#aaa">#dde1e5</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-grey-45)"></div><div class="swatch-label">grey-45<br><span style="color:#aaa">#d6dbe0</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-grey-50)"></div><div class="swatch-label">grey-50<br><span style="color:#aaa">#c8cfd5</span></div></div>
+    </div>
+
+    <div class="section-sub">Color — Danger (light-red)</div>
     <div class="swatch-grid">
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-red-10)"></div><div class="swatch-label">red-10<br><span style="color:#aaa">#fef8fa</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-red-15)"></div><div class="swatch-label">red-15<br><span style="color:#aaa">#fdf3f5</span></div></div>
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-red-20)"></div><div class="swatch-label">red-20<br><span style="color:#aaa">#fbeaee</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-red-25)"></div><div class="swatch-label">red-25<br><span style="color:#aaa">#f8d6de</span></div></div>
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-red-30)"></div><div class="swatch-label">red-30<br><span style="color:#aaa">#f6c7d2</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-red-40)"></div><div class="swatch-label">red-40<br><span style="color:#aaa">#ee94a8</span></div></div>
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-red-50)"></div><div class="swatch-label">red-50<br><span style="color:#aaa">#e35273</span></div></div>
-      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-red-60)"></div><div class="swatch-label">red-60<br><span style="color:#aaa">#b52b55</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-red-60);border:1px solid rgba(0,0,0,.15)"></div><div class="swatch-label">red-60<br><span style="color:#aaa">#b52b55</span></div></div>
+    </div>
+
+    <div class="section-sub">Color — Success (light-green)</div>
+    <div class="swatch-grid">
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-green-10)"></div><div class="swatch-label">grn-10<br><span style="color:#aaa">#fbfdf8</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-green-15)"></div><div class="swatch-label">grn-15<br><span style="color:#aaa">#f7fbf3</span></div></div>
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-green-20)"></div><div class="swatch-label">grn-20<br><span style="color:#aaa">#f2f8ea</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-green-25)"></div><div class="swatch-label">grn-25<br><span style="color:#aaa">#e5f2d6</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-green-30)"></div><div class="swatch-label">grn-30<br><span style="color:#aaa">#d6eabe</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-green-40)"></div><div class="swatch-label">grn-40<br><span style="color:#aaa">#bcdd95</span></div></div>
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-green-50)"></div><div class="swatch-label">grn-50<br><span style="color:#aaa">#97cc56</span></div></div>
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-green-60)"></div><div class="swatch-label">grn-60<br><span style="color:#aaa">#6faf35</span></div></div>
+    </div>
+
+    <div class="section-sub">Color — Warning (light-yellow)</div>
+    <div class="swatch-grid">
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-yellow-10)"></div><div class="swatch-label">yel-10<br><span style="color:#aaa">#fefcf6</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-yellow-15)"></div><div class="swatch-label">yel-15<br><span style="color:#aaa">#fdf9ef</span></div></div>
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-yellow-20)"></div><div class="swatch-label">yel-20<br><span style="color:#aaa">#fcf5e3</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-yellow-25)"></div><div class="swatch-label">yel-25<br><span style="color:#aaa">#faecc9</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-yellow-30)"></div><div class="swatch-label">yel-30<br><span style="color:#aaa">#f8e6b6</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-yellow-40)"></div><div class="swatch-label">yel-40<br><span style="color:#aaa">#f2cf72</span></div></div>
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-yellow-50)"></div><div class="swatch-label">yel-50<br><span style="color:#aaa">#eab11c</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-yellow-60)"></div><div class="swatch-label">yel-60<br><span style="color:#aaa">#c89d24</span></div></div>
+    </div>
+
+    <div class="section-sub">Color — Caution (light-orange)</div>
+    <div class="swatch-grid">
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-orange-10)"></div><div class="swatch-label">org-10<br><span style="color:#aaa">#fffaf8</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-orange-15)"></div><div class="swatch-label">org-15<br><span style="color:#aaa">#fef6f3</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-orange-20)"></div><div class="swatch-label">org-20<br><span style="color:#aaa">#fdecea</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-orange-25)"></div><div class="swatch-label">org-25<br><span style="color:#aaa">#fce0d5</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-orange-30)"></div><div class="swatch-label">org-30<br><span style="color:#aaa">#fbd5c7</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-orange-40)"></div><div class="swatch-label">org-40<br><span style="color:#aaa">#f8ae93</span></div></div>
       <div class="swatch-item"><div class="swatch" style="background:var(--color-light-orange-50)"></div><div class="swatch-label">org-50<br><span style="color:#aaa">#f37d51</span></div></div>
+      <div class="swatch-item"><div class="swatch" style="background:var(--color-light-orange-60)"></div><div class="swatch-label">org-60<br><span style="color:#aaa">#cc5a2e</span></div></div>
     </div>
 
     <div class="section-sub">Typography Scale — Body</div>
@@ -1326,6 +1542,18 @@ body {
       <div class="col"><span class="badge warning">Warning</span><div class="label">warning</div></div>
       <div class="col"><span class="badge info">Info</span><div class="label">info</div></div>
     </div>
+
+    <div class="section-sub">Badge / Status — compact (dipakai di tabel)</div>
+    <div class="row">
+      <div class="col"><span class="badge compact draft">Draft</span><div class="label">draft</div></div>
+      <div class="col"><span class="badge compact sent">Sent</span><div class="label">sent</div></div>
+      <div class="col"><span class="badge compact paid">Completed</span><div class="label">paid/success</div></div>
+      <div class="col"><span class="badge compact unpaid">Pending</span><div class="label">unpaid</div></div>
+      <div class="col"><span class="badge compact overdue">Overdue</span><div class="label">overdue/danger</div></div>
+      <div class="col"><span class="badge compact partial">Partial</span><div class="label">partial</div></div>
+      <div class="col"><span class="badge compact warning">Warning</span><div class="label">warning</div></div>
+      <div class="col"><span class="badge compact info">Info</span><div class="label">info</div></div>
+    </div>
   </div>
 
   <!-- ═══════════════════════════════════════════════════ TAB GROUP -->
@@ -1359,22 +1587,31 @@ body {
             </th>
             <th style="width:32px"></th>
             <th>
-              <div class="th-inner">Name <span class="sort-icon active">▲</span></div>
-              <input class="col-filter" type="text" placeholder="Filter name...">
+              <div class="th-inner">Name <span class="sort-icon active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M5.245 17h13.51c.865 0 1.322-1.025.743-1.669l-6.383-7.092a1.5 1.5 0 0 0-2.23 0L4.502 15.33c-.58.644-.122 1.669.743 1.669" vector-effect="non-scaling-stroke"/></svg></span></div>
+              <div class="col-filter-wrap">
+                <input class="col-filter" type="text" placeholder="Filter name...">
+                <span class="col-filter-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill="currentColor" fill-opacity=".15" d="M3 10.328a6.61 6.61 0 0 0 6.611 6.611c1.396 0 3.15-.836 4.217-1.575-4.635-1.558-3.154-9.142-10.008-8.227A6.6 6.6 0 0 0 3 10.328" vector-effect="non-scaling-stroke"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m21 21-6-6m2-5a7 7 0 1 1-1.53-4.368" vector-effect="non-scaling-stroke"/></svg></span>
+              </div>
             </th>
             <th style="min-width:160px">
-              <div class="th-inner">Category <span class="sort-icon">↕</span></div>
-              <select class="col-filter" style="appearance:none;cursor:pointer">
-                <option value="">All categories</option>
-                <option>Electronics</option>
-                <option>Furniture</option>
-                <option>Stationery</option>
-                <option>Accessories</option>
-              </select>
+              <div class="th-inner">Category <span class="sort-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M10.94 4.06a1.5 1.5 0 0 1 2.12 0l5.233 5.233c.63.63.184 1.707-.707 1.707H6.414c-.89 0-1.337-1.077-.707-1.707zM10.94 19.94a1.5 1.5 0 0 0 2.12 0l5.233-5.233c.63-.63.184-1.707-.707-1.707H6.414c-.89 0-1.337 1.077-.707 1.707z" vector-effect="non-scaling-stroke"/></svg></span></div>
+              <div class="col-filter-select-wrap">
+                <select class="col-filter">
+                  <option value="">Select category</option>
+                  <option>Electronics</option>
+                  <option>Furniture</option>
+                  <option>Stationery</option>
+                  <option>Accessories</option>
+                </select>
+                <span class="col-filter-select-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m6 9 6 6 6-6" vector-effect="non-scaling-stroke"/></svg></span>
+              </div>
             </th>
             <th>
-              <div class="th-inner">Price <span class="sort-icon">↕</span></div>
-              <input class="col-filter" type="text" placeholder="Filter price...">
+              <div class="th-inner">Price <span class="sort-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M10.94 4.06a1.5 1.5 0 0 1 2.12 0l5.233 5.233c.63.63.184 1.707-.707 1.707H6.414c-.89 0-1.337-1.077-.707-1.707zM10.94 19.94a1.5 1.5 0 0 0 2.12 0l5.233-5.233c.63-.63.184-1.707-.707-1.707H6.414c-.89 0-1.337 1.077-.707 1.707z" vector-effect="non-scaling-stroke"/></svg></span></div>
+              <div class="col-filter-wrap">
+                <input class="col-filter" type="text" placeholder="Filter price...">
+                <span class="col-filter-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill="currentColor" fill-opacity=".15" d="M3 10.328a6.61 6.61 0 0 0 6.611 6.611c1.396 0 3.15-.836 4.217-1.575-4.635-1.558-3.154-9.142-10.008-8.227A6.6 6.6 0 0 0 3 10.328" vector-effect="non-scaling-stroke"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m21 21-6-6m2-5a7 7 0 1 1-1.53-4.368" vector-effect="non-scaling-stroke"/></svg></span>
+              </div>
             </th>
             <th>In Stock</th>
             <th class="table-actions-header"></th>
@@ -1385,29 +1622,32 @@ body {
           <tr>
             <td style="width:40px"><div class="au-checkbox" style="margin:auto"></div></td>
             <td style="width:32px"><button class="row-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button></td>
-            <td style="font-weight:600">Laptop</td>
+            <td>Laptop</td>
             <td>Electronics</td>
             <td>$1,200</td>
-            <td><span class="badge paid">In Stock</span></td>
+            <td><span class="badge compact paid">In Stock</span></td>
             <td class="table-actions-cell"><button class="row-icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg></button></td>
           </tr>
           <!-- Selected + expanded row -->
           <tr class="selected">
             <td style="width:40px"><div class="au-checkbox checked" style="margin:auto"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="1.8"/></svg></div></td>
-            <td style="width:32px"><button class="row-expand" style="transform:rotate(90deg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button></td>
-            <td style="font-weight:600">Mouse</td>
+            <td style="width:32px"><button class="row-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:rotate(90deg)"><polyline points="9 18 15 12 9 6"/></svg></button></td>
+            <td>Mouse</td>
             <td>Electronics</td>
             <td>$25</td>
-            <td><span class="badge paid">In Stock</span></td>
+            <td><span class="badge compact paid">In Stock</span></td>
             <td class="table-actions-cell"><button class="row-icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg></button></td>
           </tr>
           <!-- Expand row content -->
           <tr class="expand-row">
             <td colspan="7">
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--spacing-lg)">
-                <div><div style="font-size:var(--text-body-size-sm);color:var(--color-text-secondary)">SKU</div><div style="font-weight:600">ACC-MOUSE-002</div></div>
-                <div><div style="font-size:var(--text-body-size-sm);color:var(--color-text-secondary)">Supplier</div><div style="font-weight:600">Logitech Inc.</div></div>
-                <div><div style="font-size:var(--text-body-size-sm);color:var(--color-text-secondary)">Last Ordered</div><div style="font-weight:600">15 Jan 2024</div></div>
+              <div class="expand-card">
+                <div class="expand-card-title">Product Details:</div>
+                <div>SKU: ACC-MOUSE-002</div>
+                <div>Supplier: Logitech Inc.</div>
+                <div>Last Ordered: 15 Jan 2024</div>
+                <div>Category: Electronics</div>
+                <div>Price: $25</div>
               </div>
             </td>
           </tr>
@@ -1415,28 +1655,28 @@ body {
           <tr>
             <td style="width:40px"><div class="au-checkbox" style="margin:auto"></div></td>
             <td style="width:32px"><button class="row-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button></td>
-            <td style="font-weight:600">Keyboard</td>
+            <td>Keyboard</td>
             <td>Electronics</td>
             <td>$75</td>
-            <td><span class="badge overdue">Out of Stock</span></td>
+            <td><span class="badge compact overdue">Out of Stock</span></td>
             <td class="table-actions-cell"><button class="row-icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg></button></td>
           </tr>
           <tr>
             <td style="width:40px"><div class="au-checkbox" style="margin:auto"></div></td>
             <td style="width:32px"><button class="row-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button></td>
-            <td style="font-weight:600">Monitor</td>
+            <td>Monitor</td>
             <td>Electronics</td>
             <td>$300</td>
-            <td><span class="badge paid">In Stock</span></td>
+            <td><span class="badge compact paid">In Stock</span></td>
             <td class="table-actions-cell"><button class="row-icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg></button></td>
           </tr>
           <tr>
             <td style="width:40px"><div class="au-checkbox" style="margin:auto"></div></td>
             <td style="width:32px"><button class="row-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button></td>
-            <td style="font-weight:600">Desk Chair</td>
+            <td>Desk Chair</td>
             <td>Furniture</td>
             <td>$200</td>
-            <td><span class="badge paid">In Stock</span></td>
+            <td><span class="badge compact paid">In Stock</span></td>
             <td class="table-actions-cell"><button class="row-icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg></button></td>
           </tr>
         </tbody>
@@ -1454,9 +1694,9 @@ body {
           </tr>
         </thead>
         <tbody>
-          <tr><td>Laptop</td><td>Electronics</td><td>$1,200</td><td><span class="badge paid">In Stock</span></td></tr>
-          <tr><td>Mouse</td><td>Electronics</td><td>$25</td><td><span class="badge paid">In Stock</span></td></tr>
-          <tr><td>Keyboard</td><td>Electronics</td><td>$75</td><td><span class="badge overdue">Out of Stock</span></td></tr>
+          <tr><td>Laptop</td><td>Electronics</td><td>$1,200</td><td><span class="badge compact paid">In Stock</span></td></tr>
+          <tr><td>Mouse</td><td>Electronics</td><td>$25</td><td><span class="badge compact paid">In Stock</span></td></tr>
+          <tr><td>Keyboard</td><td>Electronics</td><td>$75</td><td><span class="badge compact overdue">Out of Stock</span></td></tr>
         </tbody>
       </table>
       <div class="table-loading-mask">
@@ -1495,50 +1735,50 @@ body {
 
     <div class="section-sub">Subtle (border + tinted bg)</div>
     <div class="au-banner info-subtle">
-      <div class="banner-icon">ℹ️</div>
+      <div class="banner-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 11.9773C21.0031 14.0467 20.2887 16.0532 18.9785 17.655L18.3457 18.3581C17.0819 19.6031 15.4789 20.4476 13.7374 20.786C11.9959 21.1244 10.1934 20.9415 8.55528 20.2604C6.9172 19.5793 5.51642 18.4301 4.52828 16.9568C3.54014 15.4834 3.00853 13.7513 3.00001 11.9773C2.99943 11.5415 3.03471 11.1065 3.10548 10.6765C3.45025 8.44123 4.62399 6.41771 6.39311 5.00862C8.16223 3.59953 10.397 2.90819 12.6528 3.07216C14.9085 3.23614 17.0199 4.24341 18.5666 5.89353C20.1134 7.54366 20.9821 9.71565 21 11.9773Z" fill="#4199D5"/><path d="M11.9901 18.1688C12.5821 18.1688 13.0621 17.6888 13.0621 17.0967V12.6064C13.0621 12.1529 13.035 11.7019 12.9808 11.2534C12.9568 11.0568 12.9293 10.8583 12.8986 10.6579C12.8301 10.2126 12.4406 9.89297 11.9901 9.89297C11.5395 9.89297 11.15 10.2126 11.0816 10.6579C11.0508 10.8583 11.0234 11.0568 10.9993 11.2534C10.9451 11.7019 10.918 12.1529 10.918 12.6064V17.0967C10.918 17.6888 11.398 18.1688 11.9901 18.1688ZM10.6666 7.22393C10.6666 7.40138 10.6987 7.5665 10.7627 7.71929C10.8317 7.87209 10.9229 8.00517 11.0363 8.11854C11.1546 8.23191 11.2926 8.32063 11.4503 8.38471C11.6081 8.45371 11.7806 8.48821 11.9679 8.48821C12.1502 8.48821 12.3203 8.45371 12.478 8.38471C12.6358 8.32063 12.7738 8.23191 12.8921 8.11854C13.0104 8.00517 13.1015 7.87209 13.1656 7.71929C13.2346 7.5665 13.2691 7.40138 13.2691 7.22393C13.2691 7.04649 13.2346 6.87891 13.1656 6.72118C13.1015 6.56838 13.0104 6.4353 12.8921 6.32193C12.7738 6.20856 12.6358 6.11984 12.478 6.05577C12.3203 5.99169 12.1502 5.95965 11.9679 5.95965C11.7806 5.95965 11.6081 5.99169 11.4503 6.05577C11.2926 6.11984 11.1546 6.20856 11.0363 6.32193C10.9229 6.4353 10.8317 6.56838 10.7627 6.72118C10.6987 6.87891 10.6666 7.04649 10.6666 7.22393Z" fill="white"/></svg></div>
       <div class="banner-body"><div class="banner-title">Heads up</div><div class="banner-desc">This is an informative banner with important information.</div></div>
-      <button class="banner-close">×</button>
+      <button class="banner-close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="au-banner success-subtle">
-      <div class="banner-icon">✅</div>
+      <div class="banner-icon"><svg width="25" height="24" viewBox="0 0 25 24" fill="none"><path d="M21.0543 11.9859C21.0609 14.0652 20.3453 16.0811 19.0318 17.6836C18.8329 17.9217 18.6278 18.1614 18.4031 18.3858C17.149 19.6393 15.5553 20.4905 13.8227 20.8322C12.0899 21.174 10.2958 20.991 8.66598 20.3064C7.03618 19.6217 5.64361 18.466 4.66361 16.9848C3.6836 15.5034 3.15996 13.7628 3.15862 11.9819C3.15636 11.5485 3.18943 11.1156 3.2575 10.6876C3.59153 8.43889 4.75472 6.40028 6.51449 4.97933C8.27427 3.55839 10.5009 2.85985 12.7492 3.02339C14.9975 3.18692 17.1018 4.20049 18.6412 5.86141C20.1807 7.52232 21.0419 9.70821 21.0526 11.9819L21.0543 11.9859Z" fill="#97CC56"/><path d="M8.05341 12.0235L10.9945 14.9903L16.6032 9.33331" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="banner-body"><div class="banner-title">Upload complete</div><div class="banner-desc">Your file has been uploaded successfully.</div></div>
-      <button class="banner-close">×</button>
+      <button class="banner-close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="au-banner danger-subtle">
-      <div class="banner-icon">❌</div>
+      <div class="banner-icon"><svg width="25" height="24" viewBox="0 0 25 24" fill="none"><path d="M21.2105 11.9859C21.2171 14.0652 20.4974 16.0811 19.1762 17.6836C18.9762 17.9217 18.7699 18.1614 18.5439 18.3858C17.2825 19.6393 15.6795 20.4905 13.9368 20.8322C12.194 21.174 10.3894 20.991 8.75009 20.3064C7.11081 19.6217 5.71014 18.466 4.72443 16.9848C3.73872 15.5034 3.21203 13.7628 3.21068 11.9819C3.20841 11.5485 3.24167 11.1156 3.31014 10.6876C3.64612 8.43889 4.81608 6.40028 6.58609 4.97933C8.35611 3.55839 10.5957 2.85985 12.8571 3.02339C15.1185 3.18692 17.235 4.20049 18.7834 5.86141C20.3318 7.52232 21.198 9.70821 21.2088 11.9819L21.2105 11.9859Z" fill="#E35273"/><path d="M8.10529 15.9999L16.1053 7.99995" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M8.10529 8L16.1053 15.9999" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
       <div class="banner-body"><div class="banner-title">An error occurred</div><div class="banner-desc">Please check your input and try again.</div></div>
-      <button class="banner-close">×</button>
+      <button class="banner-close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="au-banner warning-subtle">
-      <div class="banner-icon">⚠️</div>
+      <div class="banner-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 11.9773C21.0031 14.0467 20.2887 16.0532 18.9785 17.655L18.3457 18.3581C17.0819 19.6031 15.4789 20.4476 13.7374 20.786C11.9959 21.1244 10.1934 20.9415 8.55528 20.2604C6.9172 19.5793 5.51642 18.4301 4.52828 16.9568C3.54014 15.4834 3.00853 13.7513 3.00001 11.9773C2.99943 11.5415 3.03471 11.1065 3.10548 10.6765C3.45025 8.44123 4.62399 6.41771 6.39311 5.00862C8.16223 3.59953 10.397 2.90819 12.6528 3.07216C14.9085 3.23614 17.0199 4.24341 18.5666 5.89353C20.1134 7.54366 20.9821 9.71565 21 11.9773Z" fill="#EAB11C"/><path d="M11.9901 5.95966C12.5821 5.95966 13.0621 6.43963 13.0621 7.03171V11.522C13.0621 11.9755 13.035 12.4265 12.9808 12.8751C12.9568 13.0716 12.9293 13.2701 12.8986 13.4705C12.8301 13.9158 12.4406 14.2354 11.9901 14.2354C11.5395 14.2354 11.15 13.9158 11.0816 13.4705C11.0508 13.2701 11.0234 13.0716 10.9993 12.8751C10.9451 12.4265 10.918 11.9755 10.918 11.522V7.03171C10.918 6.43963 11.398 5.95966 11.9901 5.95966ZM10.6666 16.9045C10.6666 16.727 10.6987 16.5619 10.7627 16.4091C10.8317 16.2563 10.9229 16.1232 11.0363 16.0099C11.1546 15.8965 11.2926 15.8078 11.4503 15.7437C11.6081 15.6747 11.7806 15.6402 11.9679 15.6402C12.1502 15.6402 12.3203 15.6747 12.478 15.7437C12.6358 15.8078 12.7738 15.8965 12.8921 16.0099C13.0104 16.1232 13.1015 16.2563 13.1656 16.4091C13.2346 16.5619 13.2691 16.727 13.2691 16.9045C13.2691 17.0819 13.2346 17.2495 13.1656 17.4072C13.1015 17.56 13.0104 17.6931 12.8921 17.8065C12.7738 17.9199 12.6358 18.0086 12.478 18.0727C12.3203 18.1367 12.1502 18.1688 11.9679 18.1688C11.7806 18.1688 11.6081 18.1367 11.4503 18.0727C11.2926 18.0086 11.1546 17.9199 11.0363 17.8065C10.9229 17.6931 10.8317 17.56 10.7627 17.4072C10.6987 17.2495 10.6666 17.0819 10.6666 16.9045Z" fill="white"/></svg></div>
       <div class="banner-body"><div class="banner-title">Review required</div><div class="banner-desc">Please review this information before proceeding.</div></div>
-      <button class="banner-close">×</button>
+      <button class="banner-close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
 
     <div class="section-sub">Attention (filled bg)</div>
     <div class="au-banner info-attention">
-      <div class="banner-icon">ℹ️</div>
+      <div class="banner-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 11.9773C21.0031 14.0467 20.2887 16.0532 18.9785 17.655L18.3457 18.3581C17.0819 19.6031 15.4789 20.4476 13.7374 20.786C11.9959 21.1244 10.1934 20.9415 8.55528 20.2604C6.9172 19.5793 5.51642 18.4301 4.52828 16.9568C3.54014 15.4834 3.00853 13.7513 3.00001 11.9773C2.99943 11.5415 3.03471 11.1065 3.10548 10.6765C3.45025 8.44123 4.62399 6.41771 6.39311 5.00862C8.16223 3.59953 10.397 2.90819 12.6528 3.07216C14.9085 3.23614 17.0199 4.24341 18.5666 5.89353C20.1134 7.54366 20.9821 9.71565 21 11.9773Z" fill="#4199D5"/><path d="M11.9901 18.1688C12.5821 18.1688 13.0621 17.6888 13.0621 17.0967V12.6064C13.0621 12.1529 13.035 11.7019 12.9808 11.2534C12.9568 11.0568 12.9293 10.8583 12.8986 10.6579C12.8301 10.2126 12.4406 9.89297 11.9901 9.89297C11.5395 9.89297 11.15 10.2126 11.0816 10.6579C11.0508 10.8583 11.0234 11.0568 10.9993 11.2534C10.9451 11.7019 10.918 12.1529 10.918 12.6064V17.0967C10.918 17.6888 11.398 18.1688 11.9901 18.1688ZM10.6666 7.22393C10.6666 7.40138 10.6987 7.5665 10.7627 7.71929C10.8317 7.87209 10.9229 8.00517 11.0363 8.11854C11.1546 8.23191 11.2926 8.32063 11.4503 8.38471C11.6081 8.45371 11.7806 8.48821 11.9679 8.48821C12.1502 8.48821 12.3203 8.45371 12.478 8.38471C12.6358 8.32063 12.7738 8.23191 12.8921 8.11854C13.0104 8.00517 13.1015 7.87209 13.1656 7.71929C13.2346 7.5665 13.2691 7.40138 13.2691 7.22393C13.2691 7.04649 13.2346 6.87891 13.1656 6.72118C13.1015 6.56838 13.0104 6.4353 12.8921 6.32193C12.7738 6.20856 12.6358 6.11984 12.478 6.05577C12.3203 5.99169 12.1502 5.95965 11.9679 5.95965C11.7806 5.95965 11.6081 5.99169 11.4503 6.05577C11.2926 6.11984 11.1546 6.20856 11.0363 6.32193C10.9229 6.4353 10.8317 6.56838 10.7627 6.72118C10.6987 6.87891 10.6666 7.04649 10.6666 7.22393Z" fill="white"/></svg></div>
       <div class="banner-body"><div class="banner-title">New feature available</div><div class="banner-desc">Check out our latest updates and improvements.</div></div>
-      <button class="banner-close">×</button>
+      <button class="banner-close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="au-banner danger-attention">
-      <div class="banner-icon">🚨</div>
-      <div class="banner-body"><div class="banner-title">Action required</div><div class="banner-desc">Please verify your account to continue using all features.</div></div>
-      <button class="banner-close">×</button>
+      <div class="banner-icon"><svg width="25" height="24" viewBox="0 0 25 24" fill="none"><path d="M21.2105 11.9859C21.2171 14.0652 20.4974 16.0811 19.1762 17.6836C18.9762 17.9217 18.7699 18.1614 18.5439 18.3858C17.2825 19.6393 15.6795 20.4905 13.9368 20.8322C12.194 21.174 10.3894 20.991 8.75009 20.3064C7.11081 19.6217 5.71014 18.466 4.72443 16.9848C3.73872 15.5034 3.21203 13.7628 3.21068 11.9819C3.20841 11.5485 3.24167 11.1156 3.31014 10.6876C3.64612 8.43889 4.81608 6.40028 6.58609 4.97933C8.35611 3.55839 10.5957 2.85985 12.8571 3.02339C15.1185 3.18692 17.235 4.20049 18.7834 5.86141C20.3318 7.52232 21.198 9.70821 21.2088 11.9819L21.2105 11.9859Z" fill="#E35273"/><path d="M8.10529 15.9999L16.1053 7.99995" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M8.10529 8L16.1053 15.9999" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <div class="banner-body"><div class="banner-title">Aksi Diperlukan</div><div class="banner-desc">Verifikasi email untuk melanjutkan pengiriman invoice.</div></div>
+      <button class="banner-close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
   </div>
 
   <!-- ═══════════════════════════════════════════════════ TOAST -->
   <div class="section">
     <div class="section-title">Toast</div>
-    <div class="section-sub">Default — gradient dark bg (dark-brand-50 → #0a1d28) · width 450px · radius lg</div>
+    <div class="section-sub">Default/Info — gradient dark bg · width 450px · radius lg</div>
     <div class="au-toast">
       <div class="au-toast__content">
         <div class="toast-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-light-brand-50)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.2" d="M29 15.967C29.0044 18.9723 27.9725 21.8863 26.0801 24.2126L25.166 25.2337C23.3405 27.0417 21.025 28.2682 18.5096 28.7596C15.9941 29.251 13.3904 28.9855 11.0243 27.9963C8.65818 27.0071 6.63483 25.3382 5.20751 23.1985C3.7802 21.0588 3.01232 18.5434 3.00001 15.967C2.99918 15.3342 3.05013 14.7024 3.15235 14.0779C3.65037 10.8317 5.34576 7.89304 7.90116 5.84667C10.4566 3.8003 13.6846 2.79628 16.9429 3.03442C20.2012 3.27255 23.2509 4.73538 25.4851 7.13179C27.7193 9.52821 28.9741 12.6825 29 15.967Z" fill="#4199D5"/><path d="M25 15.9288C25.0031 17.9982 24.2887 20.0047 22.9785 21.6066L22.3457 22.3097C21.0819 23.5546 19.4789 24.3992 17.7374 24.7375C15.9959 25.0759 14.1934 24.8931 12.5553 24.212C10.9172 23.5308 9.51642 22.3817 8.52828 20.9083C7.54014 19.4349 7.00853 17.7028 7.00001 15.9288C6.99943 15.4931 7.03471 15.058 7.10548 14.628C7.45025 12.3928 8.62399 10.3692 10.3931 8.96016C12.1622 7.55107 14.397 6.85972 16.6528 7.0237C18.9085 7.18767 21.0199 8.19495 22.5666 9.84507C24.1134 11.4952 24.9821 13.6672 25 15.9288Z" fill="#4199D5"/><path d="M15.9899 22.1204C16.582 22.1204 17.062 21.6404 17.062 21.0483V16.558C17.062 16.1045 17.0349 15.6535 16.9807 15.205C16.9566 15.0084 16.9292 14.8099 16.8984 14.6095C16.83 14.1642 16.4405 13.8446 15.9899 13.8446C15.5394 13.8446 15.1499 14.1642 15.0814 14.6095C15.0506 14.8099 15.0232 15.0084 14.9992 15.205C14.945 15.6535 14.9179 16.1045 14.9179 16.558V21.0483C14.9179 21.6404 15.3979 22.1204 15.9899 22.1204ZM14.6665 11.1755C14.6665 11.353 14.6985 11.5181 14.7626 11.6709C14.8316 11.8237 14.9228 11.9568 15.0362 12.0701C15.1545 12.1835 15.2925 12.2722 15.4502 12.3363C15.6079 12.4053 15.7805 12.4398 15.9678 12.4398C16.1501 12.4398 16.3202 12.4053 16.4779 12.3363C16.6356 12.2722 16.7736 12.1835 16.8919 12.0701C17.0102 11.9568 17.1014 11.8237 17.1655 11.6709C17.2345 11.5181 17.269 11.353 17.269 11.1755C17.269 10.9981 17.2345 10.8305 17.1655 10.6728C17.1014 10.52 17.0102 10.3869 16.8919 10.2735C16.7736 10.1602 16.6356 10.0714 16.4779 10.0074C16.3202 9.94329 16.1501 9.91125 15.9678 9.91125C15.7805 9.91125 15.6079 9.94329 15.4502 10.0074C15.2925 10.0714 15.1545 10.1602 15.0362 10.2735C14.9228 10.3869 14.8316 10.52 14.7626 10.6728C14.6985 10.8305 14.6665 10.9981 14.6665 11.1755Z" fill="white"/></svg>
         </div>
-        <div class="toast-body"><div class="toast-title">Upload complete!</div><div class="toast-desc">Your file has been uploaded successfully.</div></div>
-        <button class="toast-close" style="color:var(--color-light-brand-50)">×</button>
+        <div class="toast-body"><div class="toast-title">Title goes here</div><div class="toast-desc">Subtitle goes here</div></div>
+        <button class="toast-close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-light-brand-50)" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
     </div>
 
@@ -1546,10 +1786,10 @@ body {
     <div class="au-toast danger">
       <div class="au-toast__content">
         <div class="toast-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.2" d="M29 15.967C29.0044 18.9723 27.9725 21.8863 26.0801 24.2126L25.166 25.2337C23.3405 27.0417 21.025 28.2682 18.5096 28.7596C15.9941 29.251 13.3904 28.9855 11.0243 27.9963C8.65818 27.0071 6.63483 25.3382 5.20751 23.1985C3.7802 21.0588 3.01232 18.5434 3.00001 15.967C2.99918 15.3342 3.05013 14.7024 3.15235 14.0779C3.65037 10.8317 5.34576 7.89304 7.90116 5.84667C10.4566 3.8003 13.6846 2.79628 16.9429 3.03442C20.2012 3.27255 23.2509 4.73538 25.4851 7.13179C27.7193 9.52821 28.9741 12.6825 29 15.967Z" fill="white"/><path d="M25.1054 15.9859C25.112 18.0652 24.3923 20.0811 23.0711 21.6836C22.8711 21.9217 22.6648 22.1614 22.4388 22.3858C21.1774 23.6393 19.5744 24.4905 17.8317 24.8322C16.0889 25.174 14.2843 24.991 12.645 24.3064C11.0057 23.6217 9.60503 22.466 8.61933 20.9848C7.63362 19.5034 7.10693 17.7628 7.10558 15.9819C7.10331 15.5485 7.13657 15.1156 7.20503 14.6876C7.54101 12.4389 8.71097 10.4003 10.481 8.97933C12.251 7.55839 14.4906 6.85985 16.752 7.02339C19.0134 7.18692 21.1299 8.20049 22.6783 9.86141C24.2267 11.5223 25.0929 13.7082 25.1037 15.9819L25.1054 15.9859Z" fill="white"/><path d="M12 19.9998L20 11.9999" stroke="#E35273" stroke-width="2" stroke-linecap="round"/><path d="M12 12L20 19.9999" stroke="#E35273" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
         <div class="toast-body"><div class="toast-title">An error occurred</div><div class="toast-desc">Something went wrong. Please try again.</div></div>
-        <button class="toast-close">×</button>
+        <button class="toast-close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
     </div>
   </div>
@@ -1565,7 +1805,7 @@ body {
       </div>
       <div class="tooltip-demo tooltip-right" style="margin-left:var(--space-8)">
         <button class="au-btn tertiary icon-only" title="">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16.01"/></svg>
         </button>
         <div class="au-tooltip">More information about this item</div>
       </div>
@@ -1700,14 +1940,24 @@ body {
     </nav>
 
     <div class="section-sub" style="margin-top:var(--space-5)">Pagination</div>
-    <div class="au-pagination">
-      <button class="page-btn disabled">‹</button>
-      <button class="page-btn active">1</button>
-      <button class="page-btn">2</button>
-      <button class="page-btn">3</button>
-      <button class="page-btn ellipsis">…</button>
-      <button class="page-btn">10</button>
-      <button class="page-btn">›</button>
+    <div style="display:flex;align-items:center;justify-content:flex-end;gap:var(--spacing-lg);flex-wrap:wrap">
+      <div class="au-pagination">
+        <span style="font-size:var(--text-body-size-md);color:var(--color-dark-brand-50)">Jumlah Baris:</span>
+        <button class="au-pagination-dropdown-button" style="background:none;border:none;cursor:pointer;font-size:var(--text-body-size-md);font-weight:var(--text-body-weight-semibold);color:var(--color-dark-brand-50);display:inline-flex;align-items:center;gap:var(--spacing-xs);margin-right:var(--spacing-lg)">
+          10
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m6 9 6 6 6-6" vector-effect="non-scaling-stroke"/></svg>
+        </button>
+        <button class="page-icon-btn disabled"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m15 18-6-6 6-6" vector-effect="non-scaling-stroke"/></svg></button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">4</button>
+        <button class="page-btn">5</button>
+        <button class="page-btn ellipsis">…</button>
+        <button class="page-btn">20</button>
+        <button class="page-icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m9 18 6-6-6-6" vector-effect="non-scaling-stroke"/></svg></button>
+      </div>
+      <span style="font-size:var(--text-body-size-md);color:var(--color-text-secondary);white-space:nowrap">Menampilkan 1 sampai 10 dari 100 Invoice</span>
     </div>
   </div>
 
@@ -2535,6 +2785,15 @@ body {
   if(!FLOW)setupFab();
   applyT();render();                                  // applyT no-op di prototype; render = tampilkan komen tersimpan
 })();
+</script>
+
+<script>
+/* Accordion toggle */
+document.querySelectorAll('.au-accordion__header').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    btn.closest('.au-accordion').classList.toggle('open');
+  });
+});
 </script>
 
 </body>

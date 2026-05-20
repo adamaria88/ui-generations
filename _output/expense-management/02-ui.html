@@ -2,437 +2,335 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Invoice Penjualan — UI Screens</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manajemen Pengeluaran — Paper.id</title>
 <style>
-:root {
-  --text-body-font-family: 'Lato', sans-serif;
-  --text-heading-font-family: 'Lato', sans-serif;
-  --text-body-size-sm: 12px; --text-body-size-md: 14px; --text-body-size-lg: 20px;
-  --text-body-weight-regular: 400; --text-body-weight-medium: 500;
-  --text-body-weight-semibold: 600; --text-body-weight-bold: 700;
-  --text-body-line-height-sm: 18px; --text-body-line-height-md: 22px;
-  --spacing-2xs:2px; --spacing-xs:4px; --spacing-sm:8px; --spacing-md:12px;
-  --spacing-lg:16px; --spacing-xl:20px; --spacing-2xl:24px; --spacing-3xl:28px;
-  --spacing-4xl:32px; --spacing-5xl:36px; --spacing-6xl:40px;
-  --radius-none:0px; --radius-sm:4px; --radius-md:8px; --radius-lg:12px;
-  --radius-xl:16px; --radius-full:9999px;
-  --speed-extra-fast:100ms; --speed-fast:200ms; --speed-normal:300ms;
-  --speed-slow:400ms; --speed-extra-slow:500ms;
-  --ease-out-relax:cubic-bezier(.4,0,.2,1);
-  --ease-out-regular:cubic-bezier(.22,.61,.36,1);
-  --ease-out-strong:cubic-bezier(.16,1,.3,1);
-  --ease-out-powerful:cubic-bezier(.16,1,.3,1);
-  --color-neutral-white:#ffffff; --color-neutral-black:#161616;
-  --color-text-primary:#133f5d; --color-text-secondary:#718c9e;
-  --color-text-muted:#a5b6c1; --color-text-inverse:#ffffff;
-  --color-surface-light-default:#ffffff; --color-surface-light-raised:#f3f6f9;
-  --color-surface-light-muted:#e7eaec; --color-surface-light-platform:#f8fbfe;
-  --color-border-default:#d6dbe0; --color-border-subtle:#eaedef;
-  --color-focus-ring:#4199d5;
-  --color-light-brand-10:#f8fbfe; --color-light-brand-15:#f2f7fc;
-  --color-light-brand-20:#e8f2fa; --color-light-brand-25:#d9eaf7;
-  --color-light-brand-40:#89bde5; --color-light-brand-50:#4199d5;
-  --color-light-brand-60:#3385b5;
-  --color-light-blue-10:#f8fbfe; --color-light-blue-15:#f2f7fc;
-  --color-light-blue-50:#4199d5;
-  --color-dark-grey-10:#f3f6f9; --color-dark-grey-20:#d7dfe4;
-  --color-dark-grey-50:#3c5467; --color-dark-brand-25:#8ba9b9;
-  --color-dark-brand-50:#133f5d;
-  --color-light-grey-15:#f2f4f5; --color-light-grey-20:#e7eaec;
-  --color-light-grey-30:#e7eaec; --color-light-grey-40:#d6dbe0;
-  --color-light-grey-45:#d6dbe0; --color-light-grey-50:#c8cfd5;
-  --color-light-red-10:#fef8fa; --color-light-red-20:#fde8ee;
-  --color-light-red-30:#f9bfce; --color-light-red-40:#ee94a8;
-  --color-light-red-50:#e35273; --color-light-red-60:#b52b55;
-  --color-light-green-20:#e9f5d8; --color-light-green-50:#97cc56;
-  --color-light-yellow-20:#faecc4; --color-light-yellow-50:#eab11c;
-  --color-interactive-blue-50:#4199d5; --color-interactive-red-50:#e35273;
-  --color-action-primary-bg:#4199d5; --color-action-primary-hover:#89bde5;
-  --color-action-primary-pressed:#3385b5; --color-action-primary-fg:#ffffff;
-  --color-action-disabled-bg:#e7eaec; --color-action-disabled-fg:#a5b6c1;
-  --color-state-success-bg:#f2f9e9; --color-state-success-border:#d6eabe;
-  --color-state-success-text-dark:#356021;
-  --color-state-danger-bg:#fef0f3; --color-state-danger-border:#f6c7d2;
-  --color-state-danger-text-dark:#b52b55; --color-state-danger-icon:#e35273;
-  --color-state-active-bg:#f2f7fc; --color-state-active-border:#4199d5;
-}
+  :root{
+    /* spacing */
+    --spacing-2xs:2px;--spacing-xs:4px;--spacing-sm:8px;--spacing-md:12px;--spacing-lg:16px;
+    --spacing-xl:20px;--spacing-2xl:24px;--spacing-3xl:28px;--spacing-4xl:32px;--spacing-5xl:36px;--spacing-6xl:40px;
+    /* radius */
+    --radius-none:0;--radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;--radius-full:9999px;
+    /* stroke */
+    --stroke-xs:1px;--stroke-md:1.5px;--stroke-lg:2px;
+    /* typography */
+    --text-body-font-family:'Lato',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --text-heading-font-family:'Lato',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --text-body-size-sm:12px;--text-body-size-md:14px;--text-body-size-lg:20px;
+    --text-body-line-height-sm:18px;
+    --text-body-weight-regular:400;--text-body-weight-medium:500;--text-body-weight-semibold:600;--text-body-weight-bold:700;
+    /* color: text */
+    --color-text-primary:#133f5d;--color-text-secondary:#718c9e;--color-text-muted:#a5b6c1;
+    --color-text-inverse:#ffffff;--color-text-brand:#133f5d;
+    /* color: surface */
+    --color-surface-light-default:#ffffff;--color-surface-light-raised:#f3f6f9;
+    --color-surface-light-muted:#e7eaec;--color-surface-light-platform:#f8fbfe;
+    /* color: action */
+    --color-action-primary-bg:#4199d5;--color-action-primary-hover:#89bde5;
+    --color-action-primary-pressed:#3385b5;--color-action-primary-fg:#ffffff;
+    --color-action-destructive-bg:#e35273;--color-action-destructive-hover:#ee94a8;
+    --color-action-destructive-pressed:#b52b55;--color-action-destructive-fg:#ffffff;
+    --color-action-disabled-bg:#e7eaec;--color-action-disabled-fg:#a5b6c1;
+    /* color: border / grey */
+    --color-border-default:#dbe2e8;--color-light-grey-15:#eef2f5;--color-light-grey-20:#e3e9ee;
+    --color-light-grey-40:#c4d0d9;--color-dark-grey-50:#3c5467;
+    /* color: brand / states */
+    --color-light-brand-15:#e3f0fa;--color-light-brand-25:#c7e1f3;--color-light-brand-40:#7bb8e0;
+    --color-light-brand-50:#4199d5;--color-light-red-50:#e35273;--color-neutral-white:#ffffff;
+    --color-state-success-bg:#eaf6e3;--color-state-success-text-dark:#356021;--color-state-success-border:#c3e3a8;
+    --color-state-warning-bg:#fdf3d9;--color-state-warning-text-dark:#8a6400;--color-state-warning-border:#f3dca0;
+    --color-state-danger-bg:#fce8ec;--color-state-danger-text-dark:#b52b55;--color-state-danger-border:#f3c2cf;
+    --color-state-active-bg:#e3f0fa;--color-state-active-text-dark:#1f6fa8;--color-state-active-border:#a9d3ee;
+    --color-focus-ring:#4199d5;
+    /* animation */
+    --speed-extra-fast:100ms;--speed-fast:200ms;--speed-normal:300ms;--speed-slow:400ms;--speed-extra-slow:500ms;
+    --ease-out-regular:cubic-bezier(.22,1,.36,1);--ease-out-relax:cubic-bezier(.25,.8,.35,1);
+    --ease-out-strong:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:var(--text-body-font-family);
+    font-size:var(--text-body-size-md);
+    color:var(--color-text-primary);
+    background:var(--color-surface-light-platform);
+  }
+  .app-layout{display:flex;height:100vh;overflow:hidden}
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-[hidden]{display:none!important}
-body{font-family:var(--text-body-font-family);font-size:var(--text-body-size-md);
-  color:var(--color-text-primary);background:var(--color-surface-light-platform);
-  height:100vh;overflow:hidden}
-.app-layout{display:flex;height:100vh}
-.right-panel{flex:1;display:flex;flex-direction:column;height:100vh;min-width:0}
-.main-area{flex:1;overflow-y:auto;background:var(--color-surface-light-platform);
-  padding:var(--spacing-2xl);position:relative}
+  /* ── Zone 3: Main Area ── */
+  .main-area{flex:1;overflow-y:auto;padding:var(--spacing-2xl);background:var(--color-surface-light-platform);min-width:0}
+  .screen{display:none;flex-direction:column;gap:var(--spacing-md)}
+  .screen.active{display:flex}
 
-/* ── Page header ── */
-.page-header{display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:var(--spacing-lg)}
-.page-title{font-size:22px;font-weight:700;color:var(--color-text-primary);line-height:28px}
+  /* ── Breadcrumb ── */
+  .breadcrumb{display:flex;align-items:center;gap:var(--spacing-sm);font-size:var(--text-body-size-md);margin-bottom:var(--spacing-xs)}
+  .breadcrumb a{color:var(--color-text-secondary);text-decoration:none;cursor:pointer}
+  .breadcrumb a:hover{color:var(--color-action-primary-bg)}
+  .breadcrumb .sep{color:var(--color-text-muted)}
+  .breadcrumb .current{color:var(--color-text-primary);font-weight:var(--text-body-weight-bold)}
 
-/* ── Tab group (au-tabs-group) ── */
-.tab-group{display:flex;border-bottom:2px solid var(--color-dark-grey-20);
-  margin-bottom:var(--spacing-lg)}
-.tab-btn{display:inline-flex;align-items:center;gap:var(--spacing-xs);
-  padding:var(--spacing-sm) var(--spacing-lg);
-  font-family:var(--text-body-font-family);font-size:var(--text-body-size-md);
-  font-weight:var(--text-body-weight-regular);color:var(--color-text-secondary);
-  background:transparent;border:none;cursor:pointer;position:relative;
-  opacity:.5;transition:opacity var(--speed-normal) var(--ease-out-regular),
-  color var(--speed-normal) var(--ease-out-regular);white-space:nowrap}
-.tab-btn.active{color:var(--color-text-primary);
-  font-weight:var(--text-body-weight-semibold);opacity:1}
-.tab-btn.active::after{content:'';position:absolute;bottom:-2px;left:0;right:0;
-  height:2px;background:var(--color-light-blue-50);border-radius:var(--radius-full) var(--radius-full) 0 0}
-.tab-badge{display:inline-flex;align-items:center;justify-content:center;
-  min-width:18px;height:18px;padding:0 5px;background:var(--color-light-red-50);
-  color:#fff;font-size:11px;font-weight:700;border-radius:var(--radius-full)}
+  /* ── Page head ── */
+  .page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--spacing-lg);flex-wrap:wrap}
+  .page-head .page-title{margin-bottom:2px}
+  .page-title{font-family:var(--text-heading-font-family);font-size:22px;line-height:28px;font-weight:var(--text-body-weight-bold);color:var(--color-text-primary)}
+  .page-sub{font-size:var(--text-body-size-sm);color:var(--color-text-secondary);margin-top:2px}
 
-/* ── CTA bar ── */
-.cta-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--spacing-md)}
-.cta-bar__right{display:flex;align-items:center;gap:var(--spacing-sm)}
+  /* ── Button (Aurora: radius 9999, padding 8 16, weight 500) ── */
+  .btn{display:inline-flex;align-items:center;gap:var(--spacing-sm);padding:8px 16px;
+    border-radius:var(--radius-full);font-family:var(--text-body-font-family);font-size:14px;
+    font-weight:500;line-height:22px;border:none;cursor:pointer;white-space:nowrap;
+    transition:background var(--speed-slow) var(--ease-out-relax),color var(--speed-extra-slow) var(--ease-out-relax)}
+  .btn svg{width:18px;height:18px;flex-shrink:0}
+  .btn--primary{background:var(--color-action-primary-bg);color:var(--color-action-primary-fg);
+    box-shadow:0 0 0 1px rgb(10 13 18 / 18%) inset,0 1px 0 1px rgb(255 255 255 / 10%) inset,0 -2px 0 0 rgb(10 13 18 / 5%) inset,0 1px 2px 0 rgb(10 13 18 / 5%)}
+  .btn--primary:hover{background:var(--color-action-primary-hover)}
+  .btn--primary:active{background:var(--color-action-primary-pressed)}
+  .btn--secondary{background:var(--color-surface-light-default);color:var(--color-dark-grey-50);
+    box-shadow:0 0 0 1px rgb(10 13 18 / 18%) inset,0 1px 0 1px rgb(255 255 255 / 10%) inset,0 -2px 0 0 rgb(10 13 18 / 5%) inset,0 1px 2px 0 rgb(10 13 18 / 5%)}
+  .btn--secondary:hover{background:var(--color-light-grey-15)}
+  .btn--destructive{background:var(--color-action-destructive-bg);color:var(--color-action-destructive-fg)}
+  .btn--destructive:hover{background:var(--color-action-destructive-hover)}
+  /* Aurora tertiary — pill transparent + bg hover, fg light-brand-50 (utility, mis. Unduh) */
+  .btn--tertiary{background:transparent;color:var(--color-light-brand-50);box-shadow:none}
+  .btn--tertiary:hover{background:var(--color-light-brand-15)}
+  .btn--tertiary:active{background:var(--color-light-brand-25)}
+  .btn--tertiary:disabled{background:transparent;color:var(--color-action-disabled-fg);box-shadow:none}
+  /* Aurora tertiary-plain — pure text-link, no padding, no bg, no radius (menu trigger / inline link, mis. Tindakan Lainnya) */
+  .btn--tertiary-plain{background:transparent;color:var(--color-light-brand-50);box-shadow:none;
+    padding:0;border-radius:0}
+  .btn--tertiary-plain:hover,.btn--tertiary-plain:active{background:transparent;box-shadow:none}
+  .btn--tertiary-plain:disabled{background:transparent;color:var(--color-action-disabled-fg)}
+  .btn:disabled{background:var(--color-action-disabled-bg);color:var(--color-action-disabled-fg);cursor:not-allowed;box-shadow:none}
+  .btn:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
 
-/* ── Table toolbar (search + unduh) ── */
-.table-toolbar{display:flex;align-items:center;justify-content:space-between;
-  padding:10px 16px;border-bottom:1px solid var(--color-border-subtle)}
-.table-search-wrap{display:flex;align-items:center;gap:var(--spacing-xs);
-  border:1px solid var(--color-light-grey-40);border-radius:var(--radius-sm);
-  background:var(--color-neutral-white);padding:0 var(--spacing-sm);
-  height:34px;min-width:220px;
-  transition:border-color var(--speed-normal) var(--ease-out-powerful)}
-.table-search-wrap:focus-within{border-color:var(--color-light-brand-40);background:var(--color-light-blue-10)}
-.table-search-wrap input{border:none;outline:none;background:transparent;
-  font-family:var(--text-body-font-family);font-size:13px;
-  color:var(--color-text-primary);flex:1}
-.table-search-wrap input::placeholder{color:var(--color-text-muted)}
-.table-search-wrap svg{color:var(--color-text-muted);flex-shrink:0}
-.table-unduh-btn{display:inline-flex;align-items:center;gap:var(--spacing-xs);
-  font-family:var(--text-body-font-family);font-size:13px;font-weight:400;
-  color:var(--color-light-brand-50);background:transparent;border:none;cursor:pointer;padding:0}
-.table-unduh-btn:hover{opacity:.8}
+  /* ── Action bar (di atas card table, di luar card): menu trigger kiri + primary action kanan ── */
+  .action-bar{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-md);flex-wrap:wrap}
 
-/* ── au-btn ── */
-.au-btn{display:inline-flex;align-items:center;gap:var(--spacing-sm);
-  padding:8px 16px;border-radius:var(--radius-full);
-  font-family:var(--text-body-font-family);font-size:var(--text-body-size-md);
-  font-weight:var(--text-body-weight-medium);line-height:22px;
-  cursor:pointer;border:none;white-space:nowrap;
-  transition:background var(--speed-slow) var(--ease-out-relax),
-  color var(--speed-extra-slow) var(--ease-out-relax)}
-.au-btn:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
-.au-btn.primary{background:var(--color-action-primary-bg);color:var(--color-action-primary-fg);
-  box-shadow:0 0 0 1px rgb(10 13 18/18%) inset,0 1px 0 1px rgb(255 255 255/10%) inset,
-  0 -2px 0 0 rgb(10 13 18/5%) inset,0 1px 2px 0 rgb(10 13 18/5%)}
-.au-btn.primary:hover{background:var(--color-action-primary-hover)}
-.au-btn.primary:active{background:var(--color-action-primary-pressed)}
-.au-btn.primary:disabled{background:var(--color-action-disabled-bg);
-  color:var(--color-action-disabled-fg);cursor:not-allowed;box-shadow:none}
-.au-btn.secondary{background:var(--color-surface-light-default);color:var(--color-dark-grey-50);
-  box-shadow:0 0 0 1px rgb(10 13 18/18%) inset,0 1px 0 1px rgb(255 255 255/10%) inset,
-  0 -2px 0 0 rgb(10 13 18/5%) inset,0 1px 2px 0 rgb(10 13 18/5%)}
-.au-btn.secondary:hover{background:var(--color-light-grey-15)}
-.au-btn.secondary:active{background:var(--color-light-grey-20)}
-.au-btn.tertiary{background:transparent;color:var(--color-light-brand-50)}
-.au-btn.tertiary:hover{background:var(--color-light-brand-15)}
-.au-btn.tertiary:active{background:var(--color-light-brand-25)}
-.au-btn.compact{padding:4px 12px;gap:var(--spacing-xs)}
+  /* ── Toolbar di dalam table card (search kiri + action impact-table kanan) ── */
+  .tbl-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-md);
+    padding:var(--spacing-md) var(--spacing-lg);background:var(--color-surface-light-default);
+    border-bottom:1px solid var(--color-border-default);flex-wrap:wrap}
+  .search{display:flex;align-items:center;gap:var(--spacing-sm);background:var(--color-surface-light-default);
+    border:1px solid var(--color-light-grey-40);border-radius:var(--radius-full);padding:8px 14px;min-width:280px;flex:0 1 320px}
+  .search input{border:none;outline:none;font-family:inherit;font-size:14px;width:100%;color:var(--color-text-primary);background:transparent}
+  .search svg{width:18px;height:18px;color:var(--color-text-secondary);flex-shrink:0;stroke-width:2}
 
-/* ── Bulk toolbar ── */
-.bulk-toolbar{display:none;align-items:center;gap:var(--spacing-md);
-  padding:var(--spacing-sm) var(--spacing-lg);
-  background:var(--color-state-active-bg);
-  border:1px solid var(--color-state-active-border);
-  border-radius:var(--radius-md);margin-bottom:var(--spacing-sm);
-  animation:slideDown var(--speed-normal) var(--ease-out-regular)}
-.bulk-toolbar.visible{display:flex}
-.bulk-count{font-size:var(--text-body-size-md);
-  font-weight:var(--text-body-weight-semibold);color:var(--color-text-primary);flex:1}
-@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+  /* ── Table (Aurora: wrapper border 1px radius 8, header raised, cell pad 14 16) ── */
+  .table-wrap{background:var(--color-surface-light-default);border:1px solid var(--color-border-default);
+    border-radius:var(--radius-md);overflow:hidden}
+  .table-scroll{overflow-x:auto;overflow-y:visible;scrollbar-width:none;-ms-overflow-style:none}
+  .table-scroll::-webkit-scrollbar{display:none;height:0;width:0}
+  table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;min-width:1680px}
+  /* Label row + filter row = SATU blok bertint cohesive (ikut produksi). Label row TANPA border-bottom supaya merge dengan filter row di bawahnya */
+  thead th{background:var(--color-surface-light-raised);text-align:left;padding:10px 16px 6px;
+    font-weight:var(--text-body-weight-bold);color:var(--color-text-primary);font-size:13px;white-space:nowrap;
+    border-bottom:none}
+  /* num cell: header tetap LEFT-align (konsisten dengan filter di bawahnya). Body baru right-align */
+  tbody td{padding:14px 16px;border-bottom:1px solid var(--color-border-default);
+    color:var(--color-text-primary);font-weight:var(--text-body-weight-regular);vertical-align:middle;
+    background:var(--color-surface-light-default);white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  /* Row clickable: klik row = navigate ke View Detail (locked default semua list page) */
+  tbody tr{cursor:pointer}
+  tbody tr:hover td{background:var(--color-surface-light-platform)}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .muted{color:var(--color-text-secondary)}
+  .att{display:inline-flex;align-items:center;gap:5px}
+  .ic-clip{width:15px;height:15px;flex-shrink:0;color:var(--color-text-secondary)}
+  /* Sort icon SELALU kanan label, lebih besar (16px) + bolder color — match produksi */
+  .th-in{display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+  .sort-ic{width:16px;height:16px;color:var(--color-text-secondary);flex-shrink:0}
+  .th-in:hover .sort-ic{color:var(--color-text-primary)}
+  /* Filter row = lanjutan blok bertint yang sama. Border-bottom hanya di filter row (paling bawah header) */
+  thead tr.filter-row th{padding:0 16px 10px;background:var(--color-surface-light-raised);border-bottom:1px solid var(--color-border-default)}
+  .col-f{width:100%;height:40px;padding:8px 12px;border:1px solid var(--color-light-grey-40);
+    border-radius:var(--radius-sm);font-family:inherit;font-size:13px;color:var(--color-text-primary);
+    background:var(--color-surface-light-default);outline:none;min-width:130px}
+  .col-f::placeholder{color:var(--color-text-muted)}
+  .col-f:focus{border-color:var(--color-action-primary-bg);box-shadow:0 0 0 3px rgb(65 153 213 / 15%)}
+  /* Dropdown chevron: SOLID FILLED triangle dark blue — match produksi (bukan stroke chevron mungil) */
+  select.col-f{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M0 0h10L5 6z' fill='%23133f5d'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:34px;cursor:pointer}
+  select.col-f.is-placeholder{color:var(--color-text-muted)}
+  /* Search icon: lebih besar (18px) & stroke lebih tebal — match produksi */
+  .col-search{position:relative}
+  .col-search .col-f{padding-right:38px}
+  .col-search svg{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--color-text-secondary);pointer-events:none;stroke-width:2}
+  /* sticky columns */
+  .col-chk{width:46px;min-width:46px;text-align:center;padding-left:14px;padding-right:8px}
+  .col-exp{width:40px;min-width:40px;text-align:center;padding-left:4px;padding-right:8px}
+  .col-act{width:56px;min-width:56px;text-align:center}
+  /* Production: HANYA kolom action yang sticky (kanan). Kolom kiri ikut scroll. */
+  .stk-r{position:sticky;right:0;z-index:2}
+  thead .stk-r{z-index:5}
+  .stk-r::before{content:"";position:absolute;top:0;left:0;bottom:-1px;width:6px;transform:translateX(-100%);
+    background:linear-gradient(270deg,rgba(19,63,93,.10),transparent);pointer-events:none}
+  /* Custom checkbox — state default keliatan (border medium-grey), hover biru, checked solid biru ✓ */
+  .chk{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--color-light-grey-40);
+    border-radius:4px;background:var(--color-surface-light-default);cursor:pointer;margin:0;
+    position:relative;flex-shrink:0;transition:border-color var(--speed-fast),background var(--speed-fast);vertical-align:middle}
+  .chk:hover{border-color:var(--color-action-primary-bg)}
+  .chk:checked{background:var(--color-action-primary-bg);border-color:var(--color-action-primary-bg)}
+  .chk:checked::after{content:"";position:absolute;left:5px;top:1.5px;width:4px;height:9px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .chk:indeterminate{background:var(--color-action-primary-bg);border-color:var(--color-action-primary-bg)}
+  .chk:indeterminate::after{content:"";position:absolute;left:3px;top:7px;width:9px;height:2px;background:#fff;border-radius:1px}
+  .chk:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:1px}
+  .exp-btn{background:none;border:none;cursor:pointer;color:var(--color-text-secondary);padding:3px;display:inline-flex}
+  .exp-btn svg{width:16px;height:16px;transition:transform var(--speed-fast) var(--ease-out-regular)}
+  .exp-btn.open svg{transform:rotate(90deg)}
+  .exp-row td{background:var(--color-surface-light-raised);padding:14px 20px;font-size:13px;color:var(--color-text-secondary)}
 
-/* ── Table (au-table) ── */
-.table-wrap{border:1px solid var(--color-border-default);border-radius:var(--radius-md);
-  background:var(--color-surface-light-default);overflow:hidden}
-table{width:100%;border-collapse:collapse}
-thead tr{background:var(--color-surface-light-raised)}
-th{padding:0;font-size:13px;font-weight:700;
-  color:var(--color-text-primary);text-align:left;white-space:nowrap}
-th.col-check{width:48px;padding:10px 16px}
-td{padding:12px 16px;font-size:13px;font-weight:400;
-  color:var(--color-text-primary);border-bottom:1px solid var(--color-border-default)}
-tr:last-child td{border-bottom:none}
-tbody tr{transition:background var(--speed-extra-fast) var(--ease-out-regular)}
-tbody tr:hover{background:var(--color-light-brand-20)}
-tbody tr.selected{background:var(--color-state-active-bg)}
-.text-right{text-align:right}
-.col-actions{text-align:right}
-.actions-cell{display:flex;align-items:center;justify-content:flex-end;gap:var(--spacing-xs)}
-.font-semibold{font-weight:var(--text-body-weight-semibold)}
+  /* ── Badge / chip — compact (di dalam tabel) ── */
+  .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:var(--radius-full);
+    font-size:11px;font-weight:600;line-height:1.4;border:1px solid transparent;white-space:nowrap}
+  .badge--success{background:var(--color-state-success-bg);color:var(--color-state-success-text-dark);border-color:var(--color-state-success-border)}
+  .badge--warning{background:var(--color-state-warning-bg);color:var(--color-state-warning-text-dark);border-color:var(--color-state-warning-border)}
+  .badge--danger{background:var(--color-state-danger-bg);color:var(--color-state-danger-text-dark);border-color:var(--color-state-danger-border)}
+  .badge--active{background:var(--color-state-active-bg);color:var(--color-state-active-text-dark);border-color:var(--color-state-active-border)}
 
-/* ── au-checkbox ── */
-.au-checkbox{width:18px;height:18px;border-radius:var(--radius-sm);
-  border:1.5px solid var(--color-border-default);
-  background:var(--color-neutral-white);appearance:none;-webkit-appearance:none;
-  cursor:pointer;position:relative;
-  transition:all var(--speed-fast) var(--ease-out-regular);flex-shrink:0}
-.au-checkbox:checked{background:var(--color-action-primary-bg);
-  border-color:var(--color-action-primary-bg)}
-.au-checkbox:checked::after{content:'';position:absolute;left:3px;top:1px;
-  width:10px;height:6px;border-left:2px solid #fff;border-bottom:2px solid #fff;
-  transform:rotate(-45deg) translateY(1px)}
-.au-checkbox:hover{border-color:var(--color-action-primary-hover)}
-.au-checkbox:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
+  /* ── Row action ── */
+  .row-act{position:relative;display:inline-block}
+  .row-act__btn{background:transparent;border:none;cursor:pointer;padding:6px;border-radius:var(--radius-sm);color:var(--color-text-secondary);display:flex}
+  .row-act__btn:hover{background:var(--color-light-grey-15)}
+  /* Menu di-portal ke <body> waktu open → posisi fixed by JS. Default display:none. */
+  .row-act__menu{position:fixed;background:var(--color-surface-light-default);
+    border:1px solid var(--color-border-default);border-radius:var(--radius-md);
+    box-shadow:0 8px 24px rgb(0 0 0 / 15%);min-width:200px;padding:6px;z-index:9999;display:none}
+  .row-act__menu.open{display:block}
+  .row-act__item{display:flex;align-items:center;gap:12px;padding:10px 14px;font-size:14px;
+    color:var(--color-text-primary);border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;font-weight:400}
+  .row-act__item:hover{background:var(--color-light-grey-15)}
+  .row-act__item svg{width:18px;height:18px;flex-shrink:0;color:var(--color-text-primary)}
+  .row-act__item--danger{color:var(--color-action-destructive-bg)}
+  .row-act__item--danger svg{color:var(--color-action-destructive-bg)}
+  .row-act__sep{height:1px;background:var(--color-border-default);margin:6px 0}
 
-/* ── Status chip (au-chip) ── */
-.status-chip{display:inline-flex;align-items:center;gap:var(--spacing-xs);
-  padding:var(--spacing-xs) var(--spacing-sm);border:1px solid var(--color-border-default);
-  border-radius:var(--radius-full);font-size:var(--text-body-size-md);
-  font-weight:var(--text-body-weight-regular);color:var(--color-text-secondary);
-  white-space:nowrap}
-.status-chip.danger{background:var(--color-light-red-10);
-  border-color:var(--color-light-red-40);color:var(--color-light-red-60)}
-.status-chip.info{background:var(--color-light-brand-15);
-  border-color:var(--color-light-brand-50);color:var(--color-light-brand-50)}
-.status-chip .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+  /* ── Banner (pad 12, radius 8, icon 24) ── */
+  .banner{display:flex;align-items:flex-start;gap:var(--spacing-md);padding:12px;border-radius:var(--radius-md);
+    background:var(--color-state-active-bg);border:1px solid var(--color-state-active-border)}
+  .banner svg{width:24px;height:24px;flex-shrink:0;color:var(--color-light-brand-50)}
+  .banner__body{flex:1;font-size:13px;color:var(--color-text-primary)}
+  .banner__body b{font-weight:700}
+  .banner__body a{color:var(--color-action-primary-bg);font-weight:600;cursor:pointer;text-decoration:none}
+  .banner__close{background:none;border:none;cursor:pointer;color:var(--color-text-secondary);padding:2px;display:flex}
 
-/* ── Overdue days ── */
-.overdue-days{font-size:var(--text-body-size-sm);
-  font-weight:var(--text-body-weight-semibold);color:var(--color-light-red-60)}
+  /* ── Form Page card ── */
+  .form-card{background:var(--color-surface-light-default);border:1px solid var(--color-border-default);
+    border-radius:var(--radius-md);padding:var(--spacing-4xl)}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-xl) var(--spacing-2xl)}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field.full{grid-column:1 / -1}
+  .label{font-size:14px;font-weight:700;color:var(--color-text-primary)}
+  .label .req{color:var(--color-action-destructive-bg);margin-left:2px}
+  .ctrl{min-height:40px;padding:8px 12px;border:1px solid var(--color-light-grey-40);
+    border-radius:var(--radius-sm);font-family:inherit;font-size:14px;color:var(--color-text-primary);
+    background:var(--color-surface-light-default);outline:none;width:100%;transition:border-color var(--speed-fast) var(--ease-out-regular)}
+  .ctrl::placeholder{color:var(--color-text-muted)}
+  .ctrl:focus{border-color:var(--color-action-primary-bg);box-shadow:0 0 0 3px rgb(65 153 213 / 15%)}
+  select.ctrl{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3.5 5.5L7 9l3.5-3.5' stroke='%23718c9e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+  textarea.ctrl{min-height:88px;resize:vertical}
+  .hint{font-size:12px;color:var(--color-text-secondary)}
+  .field--error .ctrl{border-color:var(--color-action-destructive-bg)}
+  .field--error .err{font-size:12px;color:var(--color-action-destructive-bg);display:flex;align-items:center;gap:4px}
+  .err{display:none}
+  .field--error .err{display:flex}
+  .upload{border:1.5px dashed var(--color-light-grey-40);border-radius:var(--radius-md);padding:var(--spacing-xl);
+    text-align:center;color:var(--color-text-secondary);font-size:13px;cursor:pointer;background:var(--color-surface-light-platform)}
+  .upload:hover{border-color:var(--color-action-primary-bg);color:var(--color-action-primary-bg)}
+  .section-title{font-size:14px;font-weight:700;color:var(--color-text-primary);margin:var(--spacing-lg) 0 var(--spacing-sm);grid-column:1 / -1}
 
-/* ── Row action buttons ── */
-.action-btn{width:32px;height:32px;border-radius:var(--radius-md);border:none;
-  background:transparent;cursor:pointer;display:inline-flex;align-items:center;
-  justify-content:center;color:var(--color-text-secondary);
-  transition:background var(--speed-fast) var(--ease-out-regular),
-  color var(--speed-fast) var(--ease-out-regular)}
-.action-btn:hover{background:var(--color-light-grey-15);color:var(--color-text-primary)}
-.action-btn:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
+  /* ── Form footer sticky bottom-right ── */
+  .form-footer{display:flex;justify-content:flex-end;gap:var(--spacing-md);
+    padding:var(--spacing-lg) 0 0;margin-top:var(--spacing-xl);position:sticky;bottom:0}
 
-/* ── th inline filter ── */
-.col-expand{width:32px;padding:10px 4px!important;text-align:center}
-.col-menu{width:48px;padding:10px 12px!important}
-.th-inner{padding:10px 16px;display:flex;flex-direction:column;gap:5px}
-.th-label{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:700;
-  color:var(--color-text-primary);white-space:nowrap}
-.th-sort{color:var(--color-text-muted);flex-shrink:0}
-.col-filter{display:flex;align-items:center;gap:4px;height:28px;
-  background:var(--color-neutral-white);border:1px solid var(--color-light-grey-40);
-  border-radius:var(--radius-sm);padding:0 8px;font-size:12px;
-  transition:border-color var(--speed-fast) var(--ease-out-regular)}
-.col-filter:focus-within{border-color:var(--color-light-brand-40)}
-.col-filter input,.col-filter select{border:none;outline:none;background:transparent;
-  font-family:var(--text-body-font-family);font-size:12px;color:var(--color-text-primary);
-  flex:1;min-width:0}
-.col-filter input::placeholder{color:var(--color-text-muted)}
-.col-filter select{cursor:pointer;-webkit-appearance:none;appearance:none;color:var(--color-text-muted)}
-.col-filter svg{flex-shrink:0;color:var(--color-text-muted)}
-.col-filter .caret{flex-shrink:0;color:var(--color-text-primary)}
+  /* ── Empty state ── */
+  .empty{display:none;flex-direction:column;align-items:center;justify-content:center;gap:var(--spacing-md);
+    padding:64px 24px;background:var(--color-surface-light-default);border:1px solid var(--color-border-default);border-radius:var(--radius-md);text-align:center}
+  .empty svg{width:72px;height:72px;color:var(--color-light-grey-40)}
+  .empty h3{font-size:16px;font-weight:700;color:var(--color-text-primary)}
+  .empty p{font-size:13px;color:var(--color-text-secondary);max-width:340px}
 
-/* ── Row expand chevron ── */
-.row-expand{width:24px;height:24px;border:none;background:transparent;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--color-text-secondary);border-radius:var(--radius-sm);
-  transition:color var(--speed-fast) var(--ease-out-regular),
-  background var(--speed-fast) var(--ease-out-regular)}
-.row-expand:hover{background:var(--color-light-grey-15);color:var(--color-text-primary)}
+  /* ── Dialog (Confirmation Modal: radius 12, shadow) ── */
+  .scrim{position:fixed;inset:0;background:rgb(19 63 93 / 45%);display:none;align-items:center;justify-content:center;z-index:50}
+  .scrim.open{display:flex}
+  .dialog{background:var(--color-surface-light-default);border-radius:var(--radius-lg);
+    box-shadow:0 8px 24px rgb(0 0 0 / 15%);width:420px;max-width:calc(100vw - 32px);padding:var(--spacing-2xl);text-align:center}
+  .dialog__ill{width:64px;height:64px;margin:0 auto var(--spacing-md);color:var(--color-action-destructive-bg)}
+  .dialog h3{font-size:18px;font-weight:700;color:var(--color-text-primary)}
+  .dialog p{font-size:13px;color:var(--color-text-secondary);margin-top:6px}
+  .dialog__actions{display:flex;gap:var(--spacing-md);justify-content:center;margin-top:var(--spacing-xl)}
 
-/* ── Invoice cell: number + icons row ── */
-.td-invoice{display:flex;flex-direction:column;gap:3px}
-.row-icons{display:flex;align-items:center;gap:1px}
-.row-icon-btn{display:inline-flex;align-items:center;gap:2px;padding:2px 5px;
-  border:none;background:transparent;cursor:pointer;color:var(--color-text-secondary);
-  border-radius:var(--radius-sm);font-size:11px;line-height:1;
-  transition:color var(--speed-fast) var(--ease-out-regular),
-  background var(--speed-fast) var(--ease-out-regular)}
-.row-icon-btn:hover{color:var(--color-text-primary);background:var(--color-light-grey-15)}
+  /* ── Toast (user decision: width 380, radius 8) ── */
+  .toast{position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-140px);
+    width:380px;max-width:calc(100vw - 40px);padding:12px;border-radius:var(--radius-md);
+    background:linear-gradient(90deg,#133f5d 0%,#0a1d28 100%);color:var(--color-text-inverse);
+    display:flex;align-items:center;gap:var(--spacing-md);box-shadow:0 3px 10px 0 rgb(0 0 0 / 8%);
+    z-index:60;opacity:0;transition:transform var(--speed-slow) var(--ease-out-strong),opacity var(--speed-slow)}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+  .toast svg{width:24px;height:24px;flex-shrink:0}
+  .toast b{font-weight:700;font-size:14px}
+  .toast span{font-size:13px;color:rgba(255,255,255,.85);display:block}
 
-/* ── Badge (status) ── */
-.badge{display:inline-flex;align-items:center;padding:3px 10px;
-  border-radius:var(--radius-full);font-size:12px;font-weight:500;
-  white-space:nowrap;border:1px solid transparent}
-.badge.sent{background:transparent;border-color:var(--color-light-brand-40);
-  color:var(--color-light-brand-50)}
-.badge.paid{background:var(--color-light-green-50);border-color:var(--color-light-green-50);color:#fff}
-.badge.overdue{background:var(--color-light-red-50);border-color:var(--color-light-red-50);color:#fff}
-.badge.unpaid{background:transparent;border-color:var(--color-light-red-40);
-  color:var(--color-light-red-60)}
-.badge.draft{background:var(--color-light-grey-15);border-color:var(--color-light-grey-40);
-  color:var(--color-text-secondary)}
+  /* Pagination = 3 grup center sebagai 1 blok (ikut produksi) */
+  .pagination{display:flex;align-items:center;justify-content:center;gap:var(--spacing-2xl);
+    padding:var(--spacing-lg) var(--spacing-lg);font-size:13px;color:var(--color-text-secondary);flex-wrap:wrap}
+  .pg-rows{display:flex;align-items:center;gap:var(--spacing-sm)}
+  .pg-rows select{height:32px;padding:4px 24px 4px 10px;border:1px solid var(--color-light-grey-40);
+    border-radius:var(--radius-sm);font-family:inherit;font-size:13px;color:var(--color-text-primary);
+    background:var(--color-surface-light-default) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3.5 5.5L7 9l3.5-3.5' stroke='%23718c9e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 8px center;appearance:none;outline:none;cursor:pointer}
+  .pg-nav{display:flex;align-items:center;gap:var(--spacing-xs)}
+  /* Chevron prev/next: tanpa border box, plain icon (ikut produksi) */
+  .pg-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;
+    background:transparent;border-radius:var(--radius-sm);cursor:pointer;color:var(--color-text-secondary);padding:0}
+  .pg-btn:hover:not(:disabled){background:var(--color-light-grey-15);color:var(--color-text-primary)}
+  .pg-btn:disabled{color:var(--color-text-muted);cursor:not-allowed;background:transparent}
+  .pg-btn svg{width:18px;height:18px}
+  .pg-pages{display:flex;align-items:center;gap:2px;margin:0 var(--spacing-xs)}
+  .pg-page{min-width:32px;height:32px;padding:0 8px;display:flex;align-items:center;justify-content:center;
+    border:none;background:transparent;border-radius:var(--radius-sm);font-size:13px;color:var(--color-text-primary);cursor:pointer}
+  .pg-page:hover{background:var(--color-light-grey-15)}
+  /* Active page = highlight ringan biru muda dengan teks primary (ikut produksi, BUKAN solid primary+putih) */
+  .pg-page.active{background:var(--color-light-brand-15);color:var(--color-text-primary);font-weight:700}
+  .pg-ell{padding:0 6px;color:var(--color-text-muted);user-select:none}
 
-/* ── Date cell: tanggal + hari lewat stacked ── */
-.date-cell{display:flex;flex-direction:column;gap:2px}
-
-/* ── Dialog ── */
-.dialog-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);
-  display:flex;align-items:center;justify-content:center;z-index:100;
-  animation:fadeIn var(--speed-slow) var(--ease-out-regular)}
-.dialog-overlay[hidden]{display:none}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.au-dialog{background:var(--color-surface-light-default);border-radius:var(--radius-lg);
-  box-shadow:0 8px 24px rgb(0 0 0/15%);font-family:var(--text-body-font-family);
-  width:480px;max-width:calc(100vw - 40px);
-  animation:dialogIn var(--speed-slow) var(--ease-out-strong)}
-@keyframes dialogIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
-.au-dialog__header{display:flex;align-items:center;justify-content:space-between;
-  padding:16px 20px;min-height:56px;border-bottom:1px solid var(--color-border-subtle)}
-.au-dialog__title{font-size:16px;font-weight:700;color:var(--color-text-primary);line-height:20px}
-.au-dialog__close{width:32px;height:32px;border-radius:var(--radius-sm);border:none;
-  background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  color:var(--color-text-secondary);transition:background var(--speed-fast) var(--ease-out-regular)}
-.au-dialog__close:hover{background:var(--color-light-grey-15)}
-.au-dialog__close:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
-.au-dialog__content{padding:16px 20px;max-height:65vh;overflow-y:auto;
-  display:flex;flex-direction:column;gap:var(--spacing-lg)}
-.au-dialog__actions{padding:12px 20px;border-top:1px solid var(--color-border-subtle);
-  display:flex;align-items:center;justify-content:flex-end;gap:var(--spacing-sm)}
-
-/* ── Dialog: invoice summary card ── */
-.dlg-summary{display:flex;align-items:center;gap:var(--spacing-sm);
-  padding:var(--spacing-md);background:var(--color-surface-light-raised);
-  border-radius:var(--radius-md)}
-.dlg-summary-icon{width:40px;height:40px;border-radius:var(--radius-md);
-  background:var(--color-light-brand-15);display:flex;align-items:center;
-  justify-content:center;flex-shrink:0}
-.dlg-summary-label{font-size:var(--text-body-size-sm);color:var(--color-text-secondary);margin-bottom:2px}
-.dlg-summary-value{font-size:var(--text-body-size-md);
-  font-weight:var(--text-body-weight-semibold);color:var(--color-text-primary)}
-
-/* ── Banner (au-banner) ── */
-.au-banner{padding:var(--spacing-md);border-radius:var(--radius-md);
-  display:flex;align-items:flex-start;gap:var(--spacing-sm)}
-.au-banner.danger-attention{border:1px solid var(--color-interactive-red-50);
-  background:var(--color-light-red-20)}
-.au-banner-icon{width:24px;height:24px;flex-shrink:0;color:var(--color-state-danger-icon)}
-.au-banner-body{flex:1;display:flex;flex-direction:column;gap:var(--spacing-xs)}
-.au-banner-title{font-size:var(--text-body-size-md);
-  font-weight:var(--text-body-weight-semibold);color:var(--color-state-danger-text-dark)}
-.au-banner-sub{font-size:var(--text-body-size-sm);color:var(--color-state-danger-text-dark)}
-.au-banner-action{margin-top:var(--spacing-xs)}
-
-/* ── Channel options ── */
-.section-label{font-size:var(--text-body-size-md);
-  font-weight:var(--text-body-weight-semibold);color:var(--color-text-primary);
-  margin-bottom:var(--spacing-sm)}
-.channel-list{display:flex;flex-direction:column;gap:var(--spacing-sm)}
-.channel-opt{display:flex;align-items:center;gap:var(--spacing-md);
-  padding:var(--spacing-md);border:1px solid var(--color-border-default);
-  border-radius:var(--radius-md);cursor:pointer;
-  transition:border-color var(--speed-fast) var(--ease-out-regular),
-  background var(--speed-fast) var(--ease-out-regular)}
-.channel-opt:hover{background:var(--color-surface-light-raised)}
-.channel-opt.selected{border-color:var(--color-light-brand-50);background:var(--color-light-brand-15)}
-.channel-opt.disabled-opt{opacity:.5;cursor:not-allowed}
-.channel-opt.disabled-opt:hover{background:transparent}
-.ch-icon{width:36px;height:36px;border-radius:var(--radius-md);display:flex;
-  align-items:center;justify-content:center;flex-shrink:0}
-.ch-icon.wa{background:#e7f9ef}
-.ch-icon.email{background:var(--color-light-brand-15)}
-.ch-icon.sms{background:var(--color-light-yellow-20)}
-.ch-name{font-size:var(--text-body-size-md);
-  font-weight:var(--text-body-weight-semibold);color:var(--color-text-primary)}
-.ch-contact{font-size:var(--text-body-size-sm);color:var(--color-text-secondary)}
-.ch-contact.missing{color:var(--color-light-red-50)}
-.ch-check{flex-shrink:0;transition:opacity var(--speed-fast) var(--ease-out-regular)}
-
-/* ── Preview textarea ── */
-.preview-textarea{width:100%;border:1px solid var(--color-light-grey-40);
-  border-radius:var(--radius-sm);background:var(--color-neutral-white);
-  padding:8px 12px;font-family:var(--text-body-font-family);
-  font-size:var(--text-body-size-md);color:var(--color-text-primary);
-  resize:vertical;min-height:80px;
-  transition:border-color var(--speed-normal) var(--ease-out-powerful)}
-.preview-textarea:focus{outline:none;border-color:var(--color-light-brand-40);
-  background:var(--color-light-blue-10)}
-.preview-hint{font-size:var(--text-body-size-sm);color:var(--color-text-secondary);
-  margin-top:var(--spacing-xs)}
-
-/* ── Toast ── */
-.toast-wrap{position:fixed;top:24px;right:24px;z-index:200}
-.au-toast{width:400px;padding:12px;border-radius:var(--radius-lg);
-  background:linear-gradient(90deg,#133f5d 0%,#0a1d28 100%);
-  color:var(--color-text-inverse);box-shadow:0 3px 10px 0 rgb(0 0 0/8%);
-  display:flex;align-items:flex-start;gap:var(--spacing-sm);
-  animation:toastIn var(--speed-slow) var(--ease-out-strong)}
-.au-toast[hidden]{display:none}
-.au-toast-icon{width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.au-toast-body{flex:1;display:flex;flex-direction:column;gap:var(--spacing-xs)}
-.au-toast-title{font-size:var(--text-body-size-md);font-weight:var(--text-body-weight-semibold)}
-.au-toast-sub{font-size:var(--text-body-size-sm);opacity:.75}
-@keyframes toastIn{from{opacity:0;transform:translateY(-100px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── Button spinner ── */
-.btn-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.35);
-  border-top-color:#fff;border-radius:50%;animation:spin 600ms linear infinite;display:none}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── State FAB (prototype helper) ── */
-#sxstate-wrap{position:fixed;left:24px;bottom:24px;z-index:100000;
-  display:flex;flex-direction:column;align-items:flex-start;gap:6px;user-select:none}
-#sxstate-fab{height:40px;padding:0 12px 0 10px;border-radius:var(--radius-full);
-  background:#133f5d;color:#fff;border:none;cursor:grab;
-  display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--text-body-font-family);font-size:var(--text-body-size-sm);
-  font-weight:var(--text-body-weight-semibold);letter-spacing:.01em;
-  box-shadow:0 4px 12px rgba(0,0,0,.25);transition:background var(--speed-fast) var(--ease-out-regular)}
-#sxstate-fab:hover{background:#26333d}
-#sxstate-fab.dragging{cursor:grabbing}
-#sxstate-label{pointer-events:none}
-#sxstate-divider{display:none;width:1px;height:14px;background:rgba(255,255,255,.3);flex-shrink:0;pointer-events:none}
-#sxstate-fab.is-active #sxstate-divider{display:block}
-#sxstate-dismiss{display:none;align-items:center;justify-content:center;
-  width:18px;height:18px;border-radius:var(--radius-full);
-  background:rgba(255,255,255,.2);color:#fff;cursor:pointer;
-  line-height:1;flex-shrink:0;pointer-events:all;
-  transition:background var(--speed-fast) var(--ease-out-regular)}
-#sxstate-dismiss:hover{background:rgba(255,255,255,.38)}
-#sxstate-fab.is-active #sxstate-dismiss{display:flex}
-#sxstate-menu{display:none;flex-direction:column;gap:4px;margin-bottom:4px}
-#sxstate-menu.open{display:flex}
-.sxstate-opt{padding:5px 14px;border-radius:var(--radius-full);border:1.5px solid var(--color-light-grey-40);
-  font-size:var(--text-body-size-sm);font-weight:var(--text-body-weight-medium);
-  color:var(--color-text-primary);background:var(--color-neutral-white);cursor:pointer;
-  white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.1);
-  transition:all var(--speed-fast) var(--ease-out-regular)}
-.sxstate-opt:hover{border-color:var(--color-light-brand-50);color:var(--color-light-brand-50)}
-.sxstate-opt.active{background:var(--color-light-brand-50);border-color:var(--color-light-brand-50);color:#fff}
-
-/* ── Skeleton loader ── */
-.skel{display:inline-block;background:linear-gradient(90deg,#e7eaec 25%,#f3f6f9 50%,#e7eaec 75%);
-  background-size:200% 100%;border-radius:var(--radius-sm);
-  animation:skelShimmer 1.4s infinite}
-@keyframes skelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.skel-row td{padding:13px 12px;vertical-align:middle}
-
-/* ── Empty state ── */
-.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:64px 24px;gap:var(--spacing-lg)}
-.empty-icon{width:64px;height:64px;border-radius:var(--radius-full);
-  background:var(--color-surface-light-raised);display:flex;align-items:center;
-  justify-content:center;color:var(--color-text-muted)}
-.empty-title{font-size:var(--text-body-size-md);font-weight:var(--text-body-weight-semibold);
-  color:var(--color-text-primary)}
-.empty-sub{font-size:var(--text-body-size-md);color:var(--color-text-secondary);text-align:center;
-  max-width:320px;line-height:22px}
-
-/* ── Error banner ── */
-.au-banner{display:flex;align-items:flex-start;gap:var(--spacing-sm);
-  padding:var(--spacing-md) var(--spacing-lg);border-radius:var(--radius-md);
-  border:1px solid var(--color-state-danger-border);
-  background:var(--color-state-danger-bg);margin-bottom:var(--spacing-lg)}
-.au-banner-icon{flex-shrink:0;color:var(--color-state-danger-icon)}
-.au-banner-body{flex:1}
-.au-banner-title{font-size:var(--text-body-size-md);font-weight:var(--text-body-weight-semibold);
-  color:var(--color-state-danger-text-dark)}
-.au-banner-sub{font-size:var(--text-body-size-sm);color:var(--color-state-danger-text-dark);
-  opacity:.8;margin-top:2px}
-.au-banner-action{margin-top:var(--spacing-sm)}
+  /* loading skeleton */
+  .skel{background:linear-gradient(90deg,#eef2f5 25%,#e3e9ee 37%,#eef2f5 63%);background-size:400% 100%;
+    animation:sk 1.4s ease infinite;border-radius:var(--radius-sm);height:14px}
+  @keyframes sk{0%{background-position:100% 50%}100%{background-position:0 50%}}
 </style>
+</head>
+<body data-suxc="prototype">
+<div class="app-layout">
 
+  <!--
+  ============================================================
+  SIDEMENU COMPONENT — Paper.id (Paperverse 1.0)
+  ============================================================
+  Source of truth untuk sidemenu di semua halaman prototype.
+  Diambil dari Figma Paperverse 1.0 node 7112:4287.
+
+  CARA PAKAI:
+  1. Copy bagian CSS ke dalam <style> halaman
+  2. Copy bagian HTML ke dalam <body> → .app-layout
+  3. Copy bagian JS ke dalam <script> halaman
+  4. Sesuaikan active state sesuai halaman:
+     - Tambah class "expanded" pada .sidemenu__item parent
+     - Tambah class "open" pada .sidemenu__submenu yang sesuai
+     - Tambah class "active" pada .sidemenu__subitem yang aktif
+  ============================================================
+-->
+
+<!-- ======================== CSS ======================== -->
+<!--
+  CATATAN: CSS di bawah membutuhkan design tokens berikut sudah didefinisikan di :root:
+  --spacing-xs, --spacing-sm, --spacing-md, --spacing-lg, --spacing-xl
+  --radius-sm, --radius-md, --radius-full
+  --text-body-font-family, --text-body-size-sm, --text-body-size-md
+  --text-body-line-height-sm
+  --text-body-weight-regular, --text-body-weight-semibold, --text-body-weight-bold
+  --text-heading-font-family
+  --color-neutral-white, --color-light-brand-40, --color-light-brand-50
+  --speed-fast, --ease-out-regular
 -->
 <style>
 /* ── Zone 1: Sidemenu (Fixed, 240px) — gradient bg per Figma Paperverse 1.0 ── */
@@ -574,7 +472,7 @@ tbody tr.selected{background:var(--color-state-active-bg)}
   color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   cursor: pointer;
-  font-size: 13px;
+  font-size: var(--text-body-size-md);
   font-weight: var(--text-body-weight-regular);
   transition: background var(--speed-fast) var(--ease-out-regular), color var(--speed-fast) var(--ease-out-regular);
   border: none;
@@ -628,12 +526,12 @@ tbody tr.selected{background:var(--color-state-active-bg)}
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  height: 38px;
+  height: 40px;
   flex-shrink: 0;
   padding: 0 var(--spacing-xl);
   padding-left: 52px;
   color: rgba(255, 255, 255, 0.6);
-  font-size: 13px;
+  font-size: var(--text-body-size-md);
   font-weight: var(--text-body-weight-regular);
   cursor: pointer;
   border: none;
@@ -671,120 +569,7 @@ tbody tr.selected{background:var(--color-state-active-bg)}
 }
 </style>
 
-<style>
-/* ── Zone 2+3 Right Panel ── */
-.right-panel { flex: 1; display: flex; flex-direction: column; height: 100vh; min-width: 0; }
-
-/* ── Zone 2: Navigation Header (production-accurate) ── */
-.nav-header {
-  background: var(--color-surface-light-default);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 24px;
-  flex-shrink: 0;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  gap: var(--spacing-sm);
-}
-.nav-header__left {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.nav-header__company-name {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  cursor: pointer;
-  user-select: none;
-}
-.nav-header__company-name:hover { opacity: 0.8; }
-.nav-header__company-id {
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--color-text-secondary);
-  line-height: 18px;
-}
-/* ── Right side ── */
-.nav-header__right {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-.nav-header__btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  height: 34px;
-  padding: 0 8px;
-  border: none;
-  background: transparent;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-family: var(--text-body-font-family);
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--color-text-primary);
-  white-space: nowrap;
-  transition: background var(--speed-fast) var(--ease-out-regular);
-}
-.nav-header__btn:hover { background: var(--color-light-grey-15); }
-.nav-header__btn:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
-.nav-header__btn-icon {
-  width: 20px; height: 20px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-}
-.nav-header__chevron {
-  width: 14px; height: 14px; color: var(--color-text-secondary); flex-shrink: 0;
-}
-/* Notification */
-.nav-header__notif { position: relative; padding: 0 8px; }
-.nav-header__notif-badge {
-  position: absolute; top: 2px; right: 2px;
-  min-width: 16px; height: 16px;
-  background: var(--color-light-red-50); color: #fff;
-  font-size: 10px; font-weight: 700; border-radius: var(--radius-full);
-  display: flex; align-items: center; justify-content: center; padding: 0 3px;
-  pointer-events: none;
-}
-/* Avatar circle */
-.nav-header__avatar {
-  width: 22px; height: 22px; border-radius: var(--radius-full);
-  background: var(--color-light-brand-50); color: #fff;
-  font-size: 9px; font-weight: 700;
-  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.nav-header__divider {
-  width: 1px; height: 20px; background: var(--color-border-default);
-  margin: 0 4px; flex-shrink: 0;
-}
-
-</style>
-<style>
-/* interactive prototype — single page */
-body { font-family: var(--text-body-font-family); font-size: var(--text-body-size-md);
-  color: var(--color-text-primary); background: var(--color-surface-light-platform);
-  margin: 0; height: 100vh; overflow: hidden; }
-.app-layout { display: flex; height: 100vh; }
-.right-panel { flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0; }
-.sidemenu { height: 100vh; }
-.main-area { flex: 1; overflow-y: auto; background: var(--color-surface-light-platform);
-  padding: var(--spacing-2xl); position: relative; }
-.dialog-overlay { position: fixed !important; inset: 0; background: rgba(0,0,0,.4);
-  display: flex; align-items: center; justify-content: center; z-index: 100; }
-.dialog-overlay[hidden] { display: none !important; }
-.toast-wrap { position: fixed !important; top: 24px; right: 24px; z-index: 200; }
-</style>
-</head>
-<body data-suxc="prototype" data-figma-src="03-figma.html">
-<div class="app-layout">
-  <div class="app-layout">
+<!-- ======================== HTML ======================== -->
 <aside class="sidemenu">
   <!-- Logo — White Paper logo matching Figma Paperverse 1.0 -->
   <div class="sidemenu__logo">
@@ -813,7 +598,7 @@ body { font-family: var(--text-body-font-family); font-size: var(--text-body-siz
       <span class="sidemenu__promo-free">Free</span>
       <div class="sidemenu__promo-upgrade">
         <span>tingkatkan ke</span>
-        <img class="sidemenu__promo-logo" src="../assets/paperplus-logo.png" alt="PAPER plus">
+        <svg class="sidemenu__promo-logo" width="56" height="11" viewBox="0 0 56 11" fill="none" role="img" aria-label="PAPER plus"><text x="0" y="9" font-family="Lato, sans-serif" font-size="10" font-weight="800" fill="#ffffff" letter-spacing=".2">PAPER</text><text x="35" y="9" font-family="Lato, sans-serif" font-size="9" font-weight="700" fill="#97cc56">plus</text></svg>
         <!-- Info icon (i) -->
         <svg class="sidemenu__promo-info-icon" width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 7.5V11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5.5" r="0.75" fill="currentColor"/></svg>
       </div>
@@ -853,14 +638,14 @@ body { font-family: var(--text-body-font-family); font-size: var(--text-body-siz
     </button>
 
     <!-- Aurora icon: document-si (strokes only) -->
-    <button class="sidemenu__item expanded active" data-menu="penjualan" onclick="toggleSubmenu('penjualan')">
+    <button class="sidemenu__item" data-menu="penjualan" onclick="toggleSubmenu('penjualan')">
       <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 2.27V6.4C14 6.96 14 7.24 14.11 7.45C14.2 7.64 14.36 7.8 14.55 7.89C14.76 8 15.04 8 15.6 8H19.73M20 17.2C20 18.88 20 19.72 19.67 20.36C19.39 20.93 18.93 21.39 18.36 21.67C17.72 22 16.88 22 15.2 22H8.8C7.12 22 6.28 22 5.64 21.67C5.07 21.39 4.61 20.93 4.33 20.36C4 19.72 4 18.88 4 17.2V6.8C4 5.12 4 4.28 4.33 3.64C4.61 3.07 5.07 2.61 5.64 2.33C6.28 2 7.12 2 8.8 2H14L20 8V10.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       Penjualan
       <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </button>
-    <div class="sidemenu__submenu open" id="submenu-penjualan">
+    <div class="sidemenu__submenu" id="submenu-penjualan">
       <button class="sidemenu__subitem">Order Penjualan</button>
-      <button class="sidemenu__subitem active">Invoice Penjualan</button>
+      <button class="sidemenu__subitem">Invoice Penjualan</button>
       <button class="sidemenu__subitem">Kuitansi Penjualan</button>
       <button class="sidemenu__subitem">Surat Jalan</button>
       <button class="sidemenu__subitem">BuyerConnect</button>
@@ -928,12 +713,162 @@ body { font-family: var(--text-body-font-family); font-size: var(--text-body-siz
     </svg>
   </div>
 </aside>
+
+<!-- ======================== JavaScript ======================== -->
+<script>
+var SUBMENU_TRANSITION = 'max-height 500ms cubic-bezier(0.22, 0.61, 0.36, 1)';
+
+function toggleSubmenu(menuId) {
+  var btn = document.querySelector('[data-menu="' + menuId + '"]');
+  var submenu = document.getElementById('submenu-' + menuId);
+  if (!btn || !submenu) return;
+  var isOpen = submenu.classList.contains('open');
+  if (isOpen) {
+    // Close: set current height, then animate to 0
+    submenu.style.overflow = 'hidden';
+    submenu.style.maxHeight = submenu.scrollHeight + 'px';
+    submenu.style.transition = SUBMENU_TRANSITION;
+    requestAnimationFrame(function() {
+      submenu.style.maxHeight = '0';
+    });
+    btn.classList.remove('expanded');
+    submenu.addEventListener('transitionend', function() {
+      submenu.classList.remove('open');
+      submenu.style.cssText = '';
+    }, { once: true });
+  } else {
+    // Open: show first, then animate from 0 to scrollHeight
+    submenu.classList.add('open');
+    btn.classList.add('expanded');
+    submenu.style.overflow = 'hidden';
+    submenu.style.maxHeight = '0';
+    submenu.style.transition = SUBMENU_TRANSITION;
+    requestAnimationFrame(function() {
+      submenu.style.maxHeight = submenu.scrollHeight + 'px';
+    });
+    submenu.addEventListener('transitionend', function() {
+      submenu.style.cssText = '';
+    }, { once: true });
+  }
+}
+</script>
+
+
   <div class="right-panel">
+    <!--
+  ============================================================
+  NAVIGATION HEADER COMPONENT — Paper.id (Production-accurate)
+  ============================================================
+  Source of truth untuk navigation header di semua halaman prototype.
+  Diambil dari production screenshot 2026-05-19.
+
+  CARA PAKAI:
+  1. Copy CSS ke dalam <style> halaman
+  2. Copy HTML ke dalam .right-panel (sebelum .main-area)
+  3. Sesuaikan: company name, verified status, company ID, username
+  ============================================================
+-->
+
+<!-- ======================== CSS ======================== -->
+<style>
+/* ── Zone 2+3 Right Panel ── */
+.right-panel { flex: 1; display: flex; flex-direction: column; height: 100vh; min-width: 0; }
+
+/* ── Zone 2: Navigation Header ── */
+.nav-header {
+  background: var(--color-surface-light-default);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  gap: var(--spacing-sm);
+}
+.nav-header__left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nav-header__company-name {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  user-select: none;
+}
+.nav-header__company-name:hover { opacity: 0.8; }
+.nav-header__company-id {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  line-height: 18px;
+}
+.nav-header__right {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.nav-header__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 34px;
+  padding: 0 8px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--text-body-font-family);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  transition: background var(--speed-fast) var(--ease-out-regular);
+}
+.nav-header__btn:hover { background: var(--color-light-grey-15); }
+.nav-header__btn:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
+.nav-header__btn-icon {
+  width: 20px; height: 20px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-header__chevron {
+  width: 14px; height: 14px; color: var(--color-text-secondary); flex-shrink: 0;
+}
+.nav-header__notif { position: relative; padding: 0 8px; }
+.nav-header__notif-badge {
+  position: absolute; top: 2px; right: 2px;
+  min-width: 16px; height: 16px;
+  background: var(--color-light-red-50); color: #fff;
+  font-size: 10px; font-weight: 700; border-radius: var(--radius-full);
+  display: flex; align-items: center; justify-content: center; padding: 0 3px;
+  pointer-events: none;
+}
+.nav-header__avatar {
+  width: 22px; height: 22px; border-radius: var(--radius-full);
+  background: var(--color-light-brand-50); color: #fff;
+  font-size: 9px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.nav-header__divider {
+  width: 1px; height: 20px; background: var(--color-border-default);
+  margin: 0 4px; flex-shrink: 0;
+}
+</style>
+
+<!-- ======================== HTML ======================== -->
 <header class="nav-header">
   <!-- Left: Company info -->
   <div class="nav-header__left">
     <div class="nav-header__company-name">
       Alpanex Store
+      <!-- Blue verified check icon -->
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
         <path d="M8 1.33L2.67 3.67V7.33C2.67 11 5.2 14.47 8 15.33C10.8 14.47 13.33 11 13.33 7.33V3.67L8 1.33Z" fill="#4199d5"/>
         <path d="M6.33 9.47L4.87 8L4 8.87L6.33 11.2L12 5.53L11.13 4.67L6.33 9.47Z" fill="white"/>
@@ -947,13 +882,16 @@ body { font-family: var(--text-body-font-family); font-size: var(--text-body-siz
 
   <!-- Right: Actions -->
   <div class="nav-header__right">
-    <!-- Notification -->
+    <!-- Notification bell with badge -->
     <button class="nav-header__btn nav-header__notif" title="Notifikasi">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 00-6 6v4l-2 2.5h16L18 13V9a6 6 0 00-6-6z" stroke="#133f5d" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.5 19a2.5 2.5 0 005 0" stroke="#133f5d" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 3a6 6 0 00-6 6v4l-2 2.5h16L18 13V9a6 6 0 00-6-6z" stroke="#133f5d" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M9.5 19a2.5 2.5 0 005 0" stroke="#133f5d" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
       <span class="nav-header__notif-badge">3</span>
     </button>
     <div class="nav-header__divider"></div>
-    <!-- ID -->
+    <!-- ID dropdown -->
     <button class="nav-header__btn">
       ID
       <svg class="nav-header__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5L7 9L10.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -966,7 +904,7 @@ body { font-family: var(--text-body-font-family); font-size: var(--text-body-siz
       Paper Plus
       <svg class="nav-header__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5L7 9L10.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <!-- Username -->
+    <!-- Username with avatar -->
     <button class="nav-header__btn">
       <span class="nav-header__avatar">AA</span>
       Adam aria maqfira
@@ -977,207 +915,519 @@ body { font-family: var(--text-body-font-family); font-size: var(--text-body-siz
       Bantuan
       <svg class="nav-header__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5L7 9L10.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <!-- Settings -->
+    <!-- Settings gear -->
     <button class="nav-header__btn" title="Pengaturan">
       <span class="nav-header__btn-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="#133f5d" stroke-width="1.5"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06A1.65 1.65 0 0015 19.4a1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="#133f5d" stroke-width="1.5"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="#133f5d" stroke-width="1.5"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06A1.65 1.65 0 0015 19.4a1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="#133f5d" stroke-width="1.5"/>
+        </svg>
       </span>
     </button>
   </div>
 </header>
 
-    <main class="main-area">
-      <div class="page-header">
-        <h1 class="page-title">Invoice Penjualan</h1>
-      </div>
-      <div class="tab-group">
-        <button class="tab-btn">Invoice Penjualan</button>
-        <button class="tab-btn">Invoice Uang Muka</button>
-        <button class="tab-btn active">Jatuh Tempo <span class="tab-badge">3</span></button>
-        <button class="tab-btn">Invoice Terhapus</button>
-      </div>
-      <div class="cta-bar">
-        <button class="au-btn tertiary compact">Tindakan Lainnya <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <div class="cta-bar__right">
-          <button class="au-btn secondary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Unggah Invoice</button>
-          <button class="au-btn primary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Buat Invoice Baru</button>
-        </div>
-      </div>
-      <div class="bulk-toolbar " id="bulk-toolbar">
-        <span class="bulk-count" id="bulk-count"></span>
-        <button class="au-btn secondary compact" id="btn-tagih-bulk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Tagih</button>
-        <button class="au-btn tertiary compact">Batalkan Pilihan</button>
-      </div>
-      <div class="table-wrap">
-        <div class="table-toolbar">
-          <div class="table-search-wrap"><input type="text" placeholder="Cari"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/><path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-          <button class="table-unduh-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Unduh</button>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th class="col-check"><input type="checkbox" class="au-checkbox"></th>
-              <th class="col-expand"></th>
-              <th><div class="th-inner"><div class="th-label">No. Invoice <svg class="th-sort" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M7 15l5 5 5-5M7 9l5-5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="col-filter"><input type="text" placeholder="Cari nomor invoice"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/><path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div></div></th>
-              <th><div class="th-inner"><div class="th-label">Pelanggan <svg class="th-sort" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M7 15l5 5 5-5M7 9l5-5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="col-filter"><input type="text" placeholder="Cari klien"><svg class="caret" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></th>
-              <th><div class="th-inner"><div class="th-label">Jatuh Tempo <svg class="th-sort" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M7 15l5 5 5-5M7 9l5-5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="col-filter"><input type="text" placeholder="Cari tanggal"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/><path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div></div></th>
-              <th><div class="th-inner"><div class="th-label">Status Dokumen</div><div class="col-filter"><select><option value="">Pilih status</option><option>Draft</option><option>Sent</option></select><svg class="caret" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></th>
-              <th><div class="th-inner"><div class="th-label">Status Pembayaran</div><div class="col-filter"><select><option value="">Pilih status</option><option>Paid</option><option>Unpaid</option><option>Jatuh Tempo</option></select><svg class="caret" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></th>
-              <th><div class="th-inner"><div class="th-label">Jumlah (Rp) <svg class="th-sort" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M7 15l5 5 5-5M7 9l5-5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="col-filter"><input type="text" placeholder="Cari jumlah"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/><path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div></div></th>
-              <th class="col-menu"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="" id="row-1">
-              <td><input type="checkbox" class="au-checkbox row-check" data-id="1"></td>
-              <td class="col-expand"><button class="row-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></td>
-              <td>
-                <div class="td-invoice">
-                  <span class="font-semibold">INV/2025/0047</span>
-                  <div class="row-icons">
-                    <button class="row-icon-btn" title="Lampiran"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> 0</button>
-                    <button class="row-icon-btn" title="Duplikat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-                    <button class="row-icon-btn" title="Kirim"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                  </div>
-                </div>
-              </td>
-              <td>PT Maju Bersama</td>
-              <td><div class="date-cell"><span>30 Apr 2025</span><span class="overdue-days">+19 hari</span></div></td>
-              <td><span class="badge sent">Sent</span></td>
-              <td><span class="badge overdue">Jatuh Tempo</span></td>
-              <td class="text-right font-semibold">Rp 12.500.000</td>
-              <td class="col-menu"><div class="actions-cell">
-                <button class="au-btn secondary compact row-tagih-btn" data-row="1">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  Tagih
-                </button>
-                <button class="action-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg></button>
-              </div></td>
-            </tr>
-            <tr class="" id="row-2">
-              <td><input type="checkbox" class="au-checkbox row-check" data-id="2"></td>
-              <td class="col-expand"><button class="row-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></td>
-              <td>
-                <div class="td-invoice">
-                  <span class="font-semibold">INV/2025/0051</span>
-                  <div class="row-icons">
-                    <button class="row-icon-btn" title="Lampiran"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> 0</button>
-                    <button class="row-icon-btn" title="Duplikat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-                    <button class="row-icon-btn" title="Kirim"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                  </div>
-                </div>
-              </td>
-              <td>CV Karya Nusantara</td>
-              <td><div class="date-cell"><span>5 Mei 2025</span><span class="overdue-days">+14 hari</span></div></td>
-              <td><span class="badge sent">Sent</span></td>
-              <td><span class="badge overdue">Jatuh Tempo</span></td>
-              <td class="text-right font-semibold">Rp 8.750.000</td>
-              <td class="col-menu"><div class="actions-cell">
-                <button class="au-btn secondary compact row-tagih-btn" data-row="1">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  Tagih
-                </button>
-                <button class="action-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg></button>
-              </div></td>
-            </tr>
-            <tr class="" id="row-3">
-              <td><input type="checkbox" class="au-checkbox row-check" data-id="3"></td>
-              <td class="col-expand"><button class="row-expand"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></td>
-              <td>
-                <div class="td-invoice">
-                  <span class="font-semibold">INV/2025/0055</span>
-                  <div class="row-icons">
-                    <button class="row-icon-btn" title="Lampiran"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> 0</button>
-                    <button class="row-icon-btn" title="Duplikat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-                    <button class="row-icon-btn" title="Kirim"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                  </div>
-                </div>
-              </td>
-              <td>PT Sinar Abadi</td>
-              <td><div class="date-cell"><span>10 Mei 2025</span><span class="overdue-days">+9 hari</span></div></td>
-              <td><span class="badge sent">Sent</span></td>
-              <td><span class="badge overdue">Jatuh Tempo</span></td>
-              <td class="text-right font-semibold">Rp 24.250.000</td>
-              <td class="col-menu"><div class="actions-cell">
-                <button class="au-btn secondary compact row-tagih-btn" data-row="1">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  Tagih
-                </button>
-                <button class="action-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/></svg></button>
-              </div></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
-    </div>
-  </div>
-</div>
-  </div>
-</div>
-  <div class="dialog-overlay" id="dialog-overlay" hidden>
-    <div class="au-dialog" role="dialog" aria-modal="true">
-      <div class="au-dialog__header">
-        <span class="au-dialog__title">Kirim Pengingat Pembayaran</span>
-        <button class="au-dialog__close" aria-label="Tutup">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
-      </div>
-      <div class="au-dialog__content">
-        <div class="dlg-summary">
-          <div class="dlg-summary-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 2.27V6.4C14 6.96 14 7.24 14.11 7.45C14.2 7.64 14.36 7.8 14.55 7.89C14.76 8 15.04 8 15.6 8H19.73M20 17.2C20 18.88 20 19.72 19.67 20.36C19.39 20.93 18.93 21.39 18.36 21.67C17.72 22 16.88 22 15.2 22H8.8C7.12 22 6.28 22 5.64 21.67C5.07 21.39 4.61 20.93 4.33 20.36C4 19.72 4 18.88 4 17.2V6.8C4 5.12 4 4.28 4.33 3.64C4.61 3.07 5.07 2.61 5.64 2.33C6.28 2 7.12 2 8.8 2H14L20 8" stroke="#4199d5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div>
-            <div class="dlg-summary-label">Invoice yang ditagih</div>
-            <div class="dlg-summary-value">2 invoice dipilih</div>
-          </div>
-        </div>
-        <div class="au-banner danger-attention" hidden>
-          <svg class="au-banner-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 7v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>
-          <div class="au-banner-body">
-            <span class="au-banner-title"></span>
-            <span class="au-banner-sub"></span>
-            <div class="au-banner-action">
-              <button class="au-btn tertiary compact">Lengkapi Data Mitra</button>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="section-label">Kirim via</div>
-          <div class="channel-list">
-            <div class="channel-opt selected">
-              <div class="ch-icon wa"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20.52 3.48A11.95 11.95 0 0012 0C5.37 0 0 5.37 0 12c0 2.12.55 4.17 1.6 5.99L0 24l6.17-1.62A11.94 11.94 0 0012 24c6.63 0 12-5.37 12-12 0-3.21-1.25-6.23-3.48-8.52zm-8.52 18.44c-1.79 0-3.54-.48-5.06-1.39l-.36-.22-3.76.98.99-3.65-.23-.37A9.94 9.94 0 012.06 12C2.06 6.5 6.5 2.06 12 2.06c2.66 0 5.16 1.04 7.04 2.93A9.93 9.93 0 0122 12c0 5.5-4.44 9.92-10 9.92zm5.45-7.43c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15s-.78.97-.96 1.17c-.18.2-.35.22-.65.07a8.16 8.16 0 01-2.4-1.48 9.03 9.03 0 01-1.66-2.07c-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.68-1.64-.93-2.24-.24-.59-.49-.51-.68-.52h-.57c-.2 0-.52.07-.8.37s-1.04 1.02-1.04 2.48 1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.89.12.58-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.28-.2-.58-.34z" fill="#25D366"/></svg></div>
-              <div style="flex:1"><div class="ch-name">WhatsApp</div><div class="ch-contact">+62 812-3456-7890</div></div>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="opacity:1"><circle cx="12" cy="12" r="10" fill="#4199d5"/><path d="M8 12l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="channel-opt">
-              <div class="ch-icon email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" stroke="#4199d5" stroke-width="1.5"/><path d="M2 8l10 7 10-7" stroke="#4199d5" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-              <div style="flex:1"><div class="ch-name">Email</div><div class="ch-contact">finance@majubersama.co.id</div></div>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="opacity:0"><circle cx="12" cy="12" r="10" fill="#4199d5"/><path d="M8 12l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="channel-opt">
-              <div class="ch-icon sms"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="3" stroke="#eab11c" stroke-width="1.5"/><path d="M8 21l2-4h4l2 4" stroke="#eab11c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 9h10M7 12h6" stroke="#eab11c" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-              <div style="flex:1"><div class="ch-name">SMS</div><div class="ch-contact">+62 812-3456-7890</div></div>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="opacity:0"><circle cx="12" cy="12" r="10" fill="#4199d5"/><path d="M8 12l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="section-label">Preview pesan</div>
-          <textarea class="preview-textarea">Halo [Nama Klien], kami mengingatkan bahwa Invoice [No. Invoice] senilai [Total] telah melewati jatuh tempo. Mohon segera lakukan pembayaran. Terima kasih, PT Bambang Jaya Abadi.</textarea>
-          <div class="preview-hint">Teks di atas bisa diubah sebelum dikirim.</div>
-        </div>
-      </div>
-      <div class="au-dialog__actions">
-        <button class="au-btn tertiary">Batal</button>
-        <button class="au-btn primary">
-          <span id="kirim-label">Kirim Sekarang</span>
-        </button>
-      </div>
-    </div>
-  </div>
 
+    <main class="main-area">
+
+      <!-- ============ SCREEN 1: DAFTAR PENGELUARAN ============ -->
+      <section class="screen active" data-screen="Daftar Pengeluaran">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Pengeluaran</div>
+            <div class="page-sub">Catat & kelola semua pengeluaran bisnis Anda</div>
+          </div>
+        </div>
+
+        <div class="banner" id="banner">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 7.5v.01M12 11v5.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          <div class="banner__body"><b>Lacak pengeluaran lebih rapi.</b> Kategorikan tiap pengeluaran supaya laporan keuangan akhir bulan otomatis terbentuk. <a onclick="dismissBanner()">Pelajari Sekarang</a></div>
+          <button class="banner__close" onclick="dismissBanner()" title="Tutup">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <!-- Action bar (di luar card): Tindakan Lainnya (Aurora tertiary-plain, menu trigger) kiri + Catat Pengeluaran (primary, must-do) kanan -->
+        <div class="action-bar">
+          <button class="btn btn--tertiary-plain" id="bulkActBtn">
+            Tindakan Lainnya
+            <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="btn btn--primary" onclick="goCreate()">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Catat Pengeluaran
+          </button>
+        </div>
+
+        <!-- States: default (tabel) | empty | loading -->
+        <div data-states>
+
+          <div data-state="default">
+            <div class="table-wrap" id="tableWrap">
+              <!-- In-card toolbar: search bar kiri + action impact-table (Unduh) kanan -->
+              <div class="tbl-toolbar">
+                <div class="search">
+                  <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  <input type="text" placeholder="Cari pengeluaran" aria-label="Cari pengeluaran">
+                </div>
+                <button class="btn btn--tertiary" title="Unduh data tabel">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Unduh
+                </button>
+              </div>
+              <div class="table-scroll">
+              <table>
+                <thead>
+                <tr>
+                  <th class="col-chk"><input class="chk" type="checkbox" id="chkAll" aria-label="Pilih semua" onclick="toggleAll(this)"></th>
+                  <th class="col-exp"></th>
+                  <th><span class="th-in">Tanggal<svg class="sort-ic" viewBox="0 0 16 16" fill="none"><path d="M8 2l4 5H4l4-5z" fill="currentColor"/><path d="M8 14l-4-5h8l-4 5z" fill="currentColor"/></svg></span></th>
+                  <th><span class="th-in">Kategori<svg class="sort-ic" viewBox="0 0 16 16" fill="none"><path d="M8 2l4 5H4l4-5z" fill="currentColor"/><path d="M8 14l-4-5h8l-4 5z" fill="currentColor"/></svg></span></th>
+                  <th><span class="th-in">Penerima<svg class="sort-ic" viewBox="0 0 16 16" fill="none"><path d="M8 2l4 5H4l4-5z" fill="currentColor"/><path d="M8 14l-4-5h8l-4 5z" fill="currentColor"/></svg></span></th>
+                  <th class="num"><span class="th-in">Jumlah<svg class="sort-ic" viewBox="0 0 16 16" fill="none"><path d="M8 2l4 5H4l4-5z" fill="currentColor"/><path d="M8 14l-4-5h8l-4 5z" fill="currentColor"/></svg></span></th>
+                  <th><span class="th-in">Metode<svg class="sort-ic" viewBox="0 0 16 16" fill="none"><path d="M8 2l4 5H4l4-5z" fill="currentColor"/><path d="M8 14l-4-5h8l-4 5z" fill="currentColor"/></svg></span></th>
+                  <th><span class="th-in">Status<svg class="sort-ic" viewBox="0 0 16 16" fill="none"><path d="M8 2l4 5H4l4-5z" fill="currentColor"/><path d="M8 14l-4-5h8l-4 5z" fill="currentColor"/></svg></span></th>
+                  <th>Bukti</th>
+                  <th><span class="th-in">No. Referensi<svg class="sort-ic" viewBox="0 0 16 16" fill="none"><path d="M8 2l4 5H4l4-5z" fill="currentColor"/><path d="M8 14l-4-5h8l-4 5z" fill="currentColor"/></svg></span></th>
+                  <th class="num"><span class="th-in">Pajak<svg class="sort-ic" viewBox="0 0 16 16" fill="none"><path d="M8 2l4 5H4l4-5z" fill="currentColor"/><path d="M8 14l-4-5h8l-4 5z" fill="currentColor"/></svg></span></th>
+                  <th class="num"><span class="th-in">Total<svg class="sort-ic" viewBox="0 0 16 16" fill="none"><path d="M8 2l4 5H4l4-5z" fill="currentColor"/><path d="M8 14l-4-5h8l-4 5z" fill="currentColor"/></svg></span></th>
+                  <th>Akun Bank</th>
+                  <th>Dibuat Oleh</th>
+                  <th class="col-act stk-r"></th>
+                </tr>
+                <tr class="filter-row">
+                  <th class="col-chk"></th>
+                  <th class="col-exp"></th>
+                  <th><input class="col-f" type="date" aria-label="Filter tanggal"></th>
+                  <th><select class="col-f is-placeholder" aria-label="Filter kategori" onchange="this.classList.toggle('is-placeholder',!this.value)"><option value="" selected>Pilih kategori</option><option>Operasional</option><option>ATK &amp; Supplies</option><option>Perjalanan Dinas</option><option>Sewa</option><option>Gaji &amp; Tunjangan</option><option>Marketing</option><option>Lainnya</option></select></th>
+                  <th><span class="col-search"><input class="col-f" type="text" placeholder="Cari penerima" aria-label="Filter penerima"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></th>
+                  <th><span class="col-search"><input class="col-f" type="text" placeholder="Cari jumlah" aria-label="Filter jumlah"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></th>
+                  <th><select class="col-f is-placeholder" aria-label="Filter metode" onchange="this.classList.toggle('is-placeholder',!this.value)"><option value="" selected>Pilih metode</option><option>Transfer Bank</option><option>Tunai</option><option>Kartu Kredit</option><option>E-Wallet</option><option>QRIS</option></select></th>
+                  <th><select class="col-f is-placeholder" aria-label="Filter status" onchange="this.classList.toggle('is-placeholder',!this.value)"><option value="" selected>Pilih status</option><option>Tercatat</option><option>Menunggu Persetujuan</option></select></th>
+                  <th><select class="col-f is-placeholder" aria-label="Filter bukti" onchange="this.classList.toggle('is-placeholder',!this.value)"><option value="" selected>Pilih bukti</option><option>Ada lampiran</option><option>Tanpa lampiran</option></select></th>
+                  <th><span class="col-search"><input class="col-f" type="text" placeholder="Cari no. ref" aria-label="Filter referensi"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></th>
+                  <th><span class="col-search"><input class="col-f" type="text" placeholder="Cari pajak" aria-label="Filter pajak"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></th>
+                  <th><span class="col-search"><input class="col-f" type="text" placeholder="Cari total" aria-label="Filter total"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></th>
+                  <th><select class="col-f is-placeholder" aria-label="Filter akun bank" onchange="this.classList.toggle('is-placeholder',!this.value)"><option value="" selected>Pilih akun bank</option><option>Kas Kecil</option><option>BCA - 2039xxxx</option><option>Mandiri - 1180xxxx</option></select></th>
+                  <th><span class="col-search"><input class="col-f" type="text" placeholder="Cari pembuat" aria-label="Filter pembuat"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></th>
+                  <th class="col-act stk-r"></th>
+                </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+              </table>
+              </div>
+              <div class="pagination">
+                <div class="pg-rows">
+                  <span>Jumlah Baris:</span>
+                  <select id="pgSize" aria-label="Jumlah baris per halaman" onchange="renderRows()"><option>10</option><option>25</option><option>50</option><option>100</option></select>
+                </div>
+                <div class="pg-nav">
+                  <button class="pg-btn" aria-label="Sebelumnya"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></button>
+                  <div class="pg-pages">
+                    <button class="pg-page active">1</button>
+                    <button class="pg-page">2</button>
+                    <button class="pg-page">3</button>
+                    <button class="pg-page">4</button>
+                    <button class="pg-page">5</button>
+                    <span class="pg-ell">…</span>
+                    <button class="pg-page">24</button>
+                  </div>
+                  <button class="pg-btn" aria-label="Berikutnya"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></button>
+                </div>
+                <span id="pgInfo">Menampilkan 1 hingga 10 dari 233 entri</span>
+              </div>
+            </div>
+          </div>
+
+          <div data-state="empty">
+            <div class="empty" id="empty" style="display:flex">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 7l9 4 9-4M12 11v10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              <h3>Belum ada pengeluaran</h3>
+              <p>Mulai catat pengeluaran bisnis Anda supaya arus kas selalu terpantau.</p>
+              <button class="btn btn--primary" onclick="goCreate()">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Catat Pengeluaran
+              </button>
+            </div>
+          </div>
+
+          <div data-state="loading">
+            <div class="table-wrap">
+              <div class="table-scroll">
+              <table>
+                <thead>
+                <tr>
+                  <th class="col-chk"><div class="skel" style="width:16px;height:16px;border-radius:3px"></div></th>
+                  <th class="col-exp"></th>
+                  <th><div class="skel" style="width:60px"></div></th>
+                  <th><div class="skel" style="width:80px"></div></th>
+                  <th><div class="skel" style="width:90px"></div></th>
+                  <th><div class="skel" style="width:70px;margin-left:auto"></div></th>
+                  <th><div class="skel" style="width:60px"></div></th>
+                  <th><div class="skel" style="width:55px"></div></th>
+                  <th><div class="skel" style="width:40px"></div></th>
+                  <th><div class="skel" style="width:95px"></div></th>
+                  <th><div class="skel" style="width:45px;margin-left:auto"></div></th>
+                  <th><div class="skel" style="width:55px;margin-left:auto"></div></th>
+                  <th><div class="skel" style="width:80px"></div></th>
+                  <th><div class="skel" style="width:75px"></div></th>
+                  <th class="col-act stk-r"></th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr><td><div class="skel" style="width:16px;height:16px;border-radius:3px"></div></td><td></td><td><div class="skel" style="width:72px"></div></td><td><div class="skel" style="width:88px"></div></td><td><div class="skel" style="width:110px"></div></td><td><div class="skel" style="width:80px;margin-left:auto"></div></td><td><div class="skel" style="width:90px"></div></td><td><div class="skel" style="width:64px"></div></td><td><div class="skel" style="width:28px;height:28px;border-radius:4px"></div></td><td><div class="skel" style="width:96px"></div></td><td><div class="skel" style="width:52px;margin-left:auto"></div></td><td><div class="skel" style="width:70px;margin-left:auto"></div></td><td><div class="skel" style="width:100px"></div></td><td><div class="skel" style="width:84px"></div></td><td></td></tr>
+                  <tr><td><div class="skel" style="width:16px;height:16px;border-radius:3px"></div></td><td></td><td><div class="skel" style="width:66px"></div></td><td><div class="skel" style="width:72px"></div></td><td><div class="skel" style="width:130px"></div></td><td><div class="skel" style="width:68px;margin-left:auto"></div></td><td><div class="skel" style="width:70px"></div></td><td><div class="skel" style="width:80px"></div></td><td><div class="skel" style="width:28px;height:28px;border-radius:4px"></div></td><td><div class="skel" style="width:88px"></div></td><td><div class="skel" style="width:44px;margin-left:auto"></div></td><td><div class="skel" style="width:76px;margin-left:auto"></div></td><td><div class="skel" style="width:110px"></div></td><td><div class="skel" style="width:92px"></div></td><td></td></tr>
+                  <tr><td><div class="skel" style="width:16px;height:16px;border-radius:3px"></div></td><td></td><td><div class="skel" style="width:70px"></div></td><td><div class="skel" style="width:96px"></div></td><td><div class="skel" style="width:100px"></div></td><td><div class="skel" style="width:74px;margin-left:auto"></div></td><td><div class="skel" style="width:60px"></div></td><td><div class="skel" style="width:72px"></div></td><td><div class="skel" style="width:28px;height:28px;border-radius:4px"></div></td><td><div class="skel" style="width:104px"></div></td><td><div class="skel" style="width:48px;margin-left:auto"></div></td><td><div class="skel" style="width:82px;margin-left:auto"></div></td><td><div class="skel" style="width:88px"></div></td><td><div class="skel" style="width:78px"></div></td><td></td></tr>
+                  <tr><td><div class="skel" style="width:16px;height:16px;border-radius:3px"></div></td><td></td><td><div class="skel" style="width:74px"></div></td><td><div class="skel" style="width:80px"></div></td><td><div class="skel" style="width:118px"></div></td><td><div class="skel" style="width:60px;margin-left:auto"></div></td><td><div class="skel" style="width:82px"></div></td><td><div class="skel" style="width:60px"></div></td><td><div class="skel" style="width:28px;height:28px;border-radius:4px"></div></td><td><div class="skel" style="width:92px"></div></td><td><div class="skel" style="width:56px;margin-left:auto"></div></td><td><div class="skel" style="width:66px;margin-left:auto"></div></td><td><div class="skel" style="width:104px"></div></td><td><div class="skel" style="width:86px"></div></td><td></td></tr>
+                  <tr><td><div class="skel" style="width:16px;height:16px;border-radius:3px"></div></td><td></td><td><div class="skel" style="width:68px"></div></td><td><div class="skel" style="width:104px"></div></td><td><div class="skel" style="width:95px"></div></td><td><div class="skel" style="width:78px;margin-left:auto"></div></td><td><div class="skel" style="width:76px"></div></td><td><div class="skel" style="width:88px"></div></td><td><div class="skel" style="width:28px;height:28px;border-radius:4px"></div></td><td><div class="skel" style="width:80px"></div></td><td><div class="skel" style="width:40px;margin-left:auto"></div></td><td><div class="skel" style="width:90px;margin-left:auto"></div></td><td><div class="skel" style="width:96px"></div></td><td><div class="skel" style="width:80px"></div></td><td></td></tr>
+                  <tr><td><div class="skel" style="width:16px;height:16px;border-radius:3px"></div></td><td></td><td><div class="skel" style="width:64px"></div></td><td><div class="skel" style="width:88px"></div></td><td><div class="skel" style="width:122px"></div></td><td><div class="skel" style="width:72px;margin-left:auto"></div></td><td><div class="skel" style="width:66px"></div></td><td><div class="skel" style="width:76px"></div></td><td><div class="skel" style="width:28px;height:28px;border-radius:4px"></div></td><td><div class="skel" style="width:100px"></div></td><td><div class="skel" style="width:50px;margin-left:auto"></div></td><td><div class="skel" style="width:74px;margin-left:auto"></div></td><td><div class="skel" style="width:92px"></div></td><td><div class="skel" style="width:70px"></div></td><td></td></tr>
+                </tbody>
+              </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ SCREEN 2: FORM CATAT PENGELUARAN ============ -->
+      <section class="screen" data-screen="Catat Pengeluaran">
+        <div class="breadcrumb">
+          <a onclick="goList()">Pengeluaran</a>
+          <span class="sep">›</span>
+          <span class="current">Catat Pengeluaran</span>
+        </div>
+        <div class="page-head">
+          <div class="page-title">Catat Pengeluaran</div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-grid">
+            <div class="field">
+              <label class="label" for="f-tgl">Tanggal<span class="req">*</span></label>
+              <input class="ctrl" id="f-tgl" type="date" value="2026-05-19">
+              <div class="err">⚠ Tanggal belum diisi</div>
+            </div>
+            <div class="field" id="fld-kat">
+              <label class="label" for="f-kat">Kategori<span class="req">*</span></label>
+              <select class="ctrl" id="f-kat">
+                <option value="">Pilih kategori</option>
+                <option>Operasional</option><option>ATK &amp; Supplies</option>
+                <option>Perjalanan Dinas</option><option>Sewa</option>
+                <option>Gaji &amp; Tunjangan</option><option>Marketing</option><option>Lainnya</option>
+              </select>
+              <div class="err">⚠ Kategori belum dipilih</div>
+            </div>
+            <div class="field">
+              <label class="label" for="f-pen">Penerima / Vendor<span class="req">*</span></label>
+              <input class="ctrl" id="f-pen" type="text" placeholder="mis. PLN, Toko Sinar Jaya, Budi S.">
+              <div class="err">⚠ Penerima belum diisi</div>
+            </div>
+            <div class="field" id="fld-jml">
+              <label class="label" for="f-jml">Jumlah<span class="req">*</span></label>
+              <input class="ctrl" id="f-jml" type="text" inputmode="numeric" placeholder="Rp 0" style="text-align:right">
+              <div class="hint">Pengeluaran ≥ Rp 5.000.000 perlu persetujuan atasan.</div>
+              <div class="err">⚠ Jumlah belum diisi</div>
+            </div>
+            <div class="field">
+              <label class="label" for="f-met">Metode Pembayaran<span class="req">*</span></label>
+              <select class="ctrl" id="f-met">
+                <option value="">Pilih metode</option>
+                <option>Transfer Bank</option><option>Tunai</option><option>Kartu Kredit</option><option>E-Wallet</option><option>QRIS</option>
+              </select>
+              <div class="err">⚠ Metode belum dipilih</div>
+            </div>
+            <div class="field">
+              <label class="label" for="f-akun">Akun Kas/Bank</label>
+              <select class="ctrl" id="f-akun">
+                <option value="">Pilih akun</option>
+                <option>Kas Kecil</option><option>BCA - 2039xxxx</option><option>Mandiri - 1180xxxx</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label class="label" for="f-desc">Deskripsi</label>
+              <textarea class="ctrl" id="f-desc" placeholder="Catatan tambahan tentang pengeluaran ini..."></textarea>
+            </div>
+            <div class="field full">
+              <label class="label">Bukti / Struk</label>
+              <div class="upload" onclick="alert('Pilih file bukti/struk (mock)')">
+                <div style="display:flex;align-items:center;justify-content:center;gap:8px"><svg class="ic-clip" style="width:18px;height:18px" viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.34 3.34 0 014.72 4.72l-9.2 9.19a1.67 1.67 0 01-2.36-2.36l8.49-8.48" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Klik untuk unggah bukti — JPG / PNG / PDF (maks 5MB)</div>
+              </div>
+              <div class="hint">Opsional, tapi disarankan untuk audit & rekonsiliasi.</div>
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <button class="btn btn--ghost" onclick="tryCancel()">Batal</button>
+            <button class="btn btn--primary" id="saveBtn" onclick="submitForm()">
+              <span id="saveTxt">Simpan Pengeluaran</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- Confirmation Modal: buang perubahan -->
+<div class="scrim" id="confirmScrim">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+    <svg class="dialog__ill" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 7v6M12 16v.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <h3 id="cfTitle">Buang perubahan?</h3>
+    <p>Data yang sudah Anda isi belum tersimpan dan akan hilang. Tindakan ini tidak bisa dibatalkan.</p>
+    <div class="dialog__actions">
+      <button class="btn btn--secondary" id="cfCancel" onclick="closeConfirm()">Batal</button>
+      <button class="btn btn--destructive" onclick="discardChanges()">Buang Perubahan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast sukses -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#97cc56"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div><b>Pengeluaran berhasil dicatat</b><span id="toastSub">Pengeluaran baru sudah masuk ke daftar.</span></div>
+</div>
+
+<script>
+  // SVG ikon Aurora-style (stroke 1.5, round caps)
+  var IC_DOWNLOAD = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var IC_CLIP_M = '<svg viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.34 3.34 0 014.72 4.72l-9.2 9.19a1.67 1.67 0 01-2.36-2.36l8.49-8.48" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var IC_EYE = '<svg viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>';
+  var IC_PENCIL = '<svg viewBox="0 0 24 24" fill="none"><path d="M17 3l4 4-11 11H6v-4L17 3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var IC_TRASH = '<svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 4h4a1 1 0 011 1v2H9V5a1 1 0 011-1zM6 7l1 13a2 2 0 002 2h6a2 2 0 002-2l1-13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  var ROWACT = '<div class="row-act"><button class="row-act__btn" onclick="rowMenu(this)" aria-label="Aksi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/></svg></button>'
+   + '<div class="row-act__menu">'
+   + '<div class="row-act__item">'+IC_DOWNLOAD+'Unduh Bukti</div>'
+   + '<div class="row-act__item">'+IC_CLIP_M+'Tambah Lampiran</div>'
+   + '<div class="row-act__sep"></div>'
+   + '<div class="row-act__item">'+IC_EYE+'Lihat Detail</div>'
+   + '<div class="row-act__item">'+IC_PENCIL+'Ubah</div>'
+   + '<div class="row-act__item row-act__item--danger" onclick="alert(\'Confirmation Modal hapus (mock) — entity tersimpan = destructive, focus Cancel\')">'+IC_TRASH+'Hapus</div>'
+   + '</div></div>';
+  var CLIP = '<svg class="ic-clip" viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.34 3.34 0 014.72 4.72l-9.2 9.19a1.67 1.67 0 01-2.36-2.36l8.49-8.48" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  var EXP = [
+    {tgl:'18 Mei 2026',kat:'Operasional',pen:'PLN (Listrik Kantor)',jml:1250000,met:'Transfer Bank',st:'Tercatat',bukti:1,ref:'EXP/2026/0048',pajak:0,total:1250000,akun:'BCA - 2039xxxx',by:'Adam A.'},
+    {tgl:'17 Mei 2026',kat:'ATK & Supplies',pen:'Toko Sinar Jaya',jml:380000,met:'Tunai',st:'Tercatat',bukti:2,ref:'EXP/2026/0047',pajak:41800,total:421800,akun:'Kas Kecil',by:'Rina W.'},
+    {tgl:'15 Mei 2026',kat:'Perjalanan Dinas',pen:'Reimburse — Budi S.',jml:4750000,met:'Transfer Bank',st:'Menunggu Persetujuan',bukti:3,ref:'EXP/2026/0046',pajak:0,total:4750000,akun:'Mandiri - 1180xxxx',by:'Budi S.'},
+    {tgl:'12 Mei 2026',kat:'Sewa',pen:'Sewa Ruko Mei 2026',jml:12000000,met:'Transfer Bank',st:'Tercatat',bukti:0,ref:'EXP/2026/0045',pajak:0,total:12000000,akun:'BCA - 2039xxxx',by:'Adam A.'},
+    {tgl:'10 Mei 2026',kat:'Marketing',pen:'Meta Ads',jml:3200000,met:'Kartu Kredit',st:'Tercatat',bukti:1,ref:'EXP/2026/0044',pajak:352000,total:3552000,akun:'BCA - 2039xxxx',by:'Rina W.'},
+    {tgl:'09 Mei 2026',kat:'Gaji & Tunjangan',pen:'Payroll April',jml:48500000,met:'Transfer Bank',st:'Tercatat',bukti:1,ref:'EXP/2026/0043',pajak:0,total:48500000,akun:'Mandiri - 1180xxxx',by:'Adam A.'},
+    {tgl:'07 Mei 2026',kat:'Operasional',pen:'Telkom Indihome',jml:850000,met:'E-Wallet',st:'Tercatat',bukti:1,ref:'EXP/2026/0042',pajak:93500,total:943500,akun:'Kas Kecil',by:'Rina W.'},
+    {tgl:'05 Mei 2026',kat:'Perjalanan Dinas',pen:'Reimburse — Sari M.',jml:6300000,met:'Transfer Bank',st:'Menunggu Persetujuan',bukti:4,ref:'EXP/2026/0041',pajak:0,total:6300000,akun:'Mandiri - 1180xxxx',by:'Sari M.'},
+    {tgl:'03 Mei 2026',kat:'ATK & Supplies',pen:'Gramedia',jml:520000,met:'Tunai',st:'Tercatat',bukti:2,ref:'EXP/2026/0040',pajak:57200,total:577200,akun:'Kas Kecil',by:'Rina W.'},
+    {tgl:'01 Mei 2026',kat:'Lainnya',pen:'Biaya Notaris',jml:2750000,met:'Transfer Bank',st:'Tercatat',bukti:1,ref:'EXP/2026/0039',pajak:0,total:2750000,akun:'BCA - 2039xxxx',by:'Adam A.'},
+    {tgl:'29 Apr 2026',kat:'Marketing',pen:'Google Ads',jml:4100000,met:'Kartu Kredit',st:'Tercatat',bukti:1,ref:'EXP/2026/0038',pajak:451000,total:4551000,akun:'BCA - 2039xxxx',by:'Rina W.'},
+    {tgl:'27 Apr 2026',kat:'Operasional',pen:'PDAM',jml:430000,met:'E-Wallet',st:'Tercatat',bukti:0,ref:'EXP/2026/0037',pajak:0,total:430000,akun:'Kas Kecil',by:'Rina W.'}
+  ];
+
+  function rp(n){ return 'Rp '+Number(n).toLocaleString('id-ID'); }
+  function badgeOf(st){ return st==='Tercatat' ? 'badge--success' : 'badge--warning'; }
+  function rowHTML(d){
+    var bukti = d.bukti>0 ? '<span class="muted att">'+CLIP+d.bukti+'</span>' : '<span class="muted">-</span>';
+    var pajak = d.pajak>0 ? rp(d.pajak) : '<span class="muted">-</span>';
+    // Row click = navigate ke View Detail (locked default — semua list page). Exclusion via stopPropagation di element-element terkait.
+    return '<tr onclick="rowClick(event,\''+d.ref+'\')">'
+      + '<td class="col-chk"><input class="chk" type="checkbox" aria-label="Pilih baris" onclick="event.stopPropagation();syncAll()"></td>'
+      + '<td class="col-exp"><button class="exp-btn" onclick="event.stopPropagation();toggleExpand(this)" aria-label="Perluas baris"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></td>'
+      + '<td>'+d.tgl+'</td><td>'+d.kat+'</td><td>'+d.pen+'</td>'
+      + '<td class="num">'+rp(d.jml)+'</td><td class="muted">'+d.met+'</td>'
+      + '<td><span class="badge '+badgeOf(d.st)+'">'+d.st+'</span></td>'
+      + '<td>'+bukti+'</td>'
+      + '<td class="muted">'+d.ref+'</td><td class="num">'+pajak+'</td><td class="num">'+rp(d.total)+'</td>'
+      + '<td class="muted">'+d.akun+'</td><td>'+d.by+'</td>'
+      + '<td class="col-act stk-r">'+ROWACT+'</td></tr>';
+  }
+  // Row click handler — locked default semua list page (klik row body = view detail, kecuali exclusion area)
+  function rowClick(event, rowId){
+    if(event.target.closest('.col-chk,.col-exp,.row-act,input,button')) return;
+    viewDetail(rowId);
+  }
+  function viewDetail(rowId){
+    // Production: navigate ke /pengeluaran/<id> atau show('Detail Pengeluaran'). Prototype demo: toast.
+    toast('Membuka detail pengeluaran '+rowId+'…');
+  }
+  function renderRows(){
+    var size=parseInt((document.getElementById('pgSize')||{}).value||10,10);
+    var tb=document.getElementById('tbody');
+    tb.innerHTML = EXP.slice(0,size).map(rowHTML).join('');
+    var shown=Math.min(size,EXP.length);
+    var info=document.getElementById('pgInfo');
+    if(info) info.textContent='Menampilkan 1 hingga '+shown+' dari 233 entri';
+    var ca=document.getElementById('chkAll'); if(ca) ca.checked=false;
+  }
+  function toggleAll(box){
+    document.querySelectorAll('#tbody .chk').forEach(function(c){c.checked=box.checked});
+  }
+  function syncAll(){
+    var all=document.querySelectorAll('#tbody .chk'), on=document.querySelectorAll('#tbody .chk:checked');
+    var ca=document.getElementById('chkAll'); if(ca) ca.checked = all.length>0 && all.length===on.length;
+  }
+  function toggleExpand(btn){
+    var tr=btn.closest('tr'); btn.classList.toggle('open');
+    var nx=tr.nextElementSibling;
+    if(nx && nx.classList.contains('exp-row')){ nx.remove(); return; }
+    var er=document.createElement('tr'); er.className='exp-row';
+    er.innerHTML='<td colspan="15">Detail pengeluaran: catatan, riwayat persetujuan, lampiran bukti, dan jurnal akuntansi terkait ditampilkan di sini.</td>';
+    tr.parentNode.insertBefore(er, tr.nextSibling);
+  }
+  renderRows();
+
+  function show(name){
+    document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
+    document.querySelector('[data-screen="'+name+'"]').classList.add('active');
+    document.querySelector('.main-area').scrollTop=0;
+  }
+  function goCreate(){ resetForm(); show('Catat Pengeluaran'); }
+  function goList(){ show('Daftar Pengeluaran'); }
+
+  // Row action menu — di-portal ke <body> & posisi fixed via JS.
+  // Kenapa portal: ancestor `.table-wrap{overflow:hidden}` ngeclip absolute children,
+  // dan ancestor lain (mis. `#suxc-stage` di FLOW mode pakai will-change:transform)
+  // bisa jadi containing-block buat position:fixed → bikin koordinat fixed jadi
+  // relative ke ancestor, BUKAN viewport. Append ke <body> = guarantee fixed pakai
+  // viewport sebagai containing block.
+  function closeAllRowMenus(){
+    document.querySelectorAll('.row-act.open').forEach(function(x){ x.classList.remove('open'); });
+    document.querySelectorAll('.row-act__menu.open').forEach(function(m){
+      m.classList.remove('open');
+      // kembaliin menu ke parent aslinya (cleanup, walau nggak strictly perlu)
+      var owner=m.__owner; if(owner && m.parentNode!==owner){ owner.appendChild(m); }
+      m.style.top=''; m.style.left='';
+    });
+  }
+  function rowMenu(btn){
+    var ra=btn.closest('.row-act');
+    var menu=ra.querySelector('.row-act__menu') || ra.__menu;
+    var isOpen=menu && menu.classList.contains('open');
+    closeAllRowMenus();
+    if(isOpen) return;
+
+    // portal menu ke <body> sekali, simpan reference ke parent asal
+    if(!menu.__owner){ menu.__owner=menu.parentNode; }
+    if(menu.parentNode!==document.body){ document.body.appendChild(menu); }
+    ra.__menu=menu;
+    ra.classList.add('open');
+    menu.classList.add('open');
+
+    // ukur DULU (display:block via .open) baru posisi-in
+    var br=btn.getBoundingClientRect();
+    var mw=menu.offsetWidth, mh=menu.offsetHeight;
+    var vw=document.documentElement.clientWidth;   // exclude vertical scrollbar
+    var vh=document.documentElement.clientHeight;
+    var gap=4, pad=8;
+
+    // anchor menu's RIGHT edge = button's RIGHT edge (pakai LEFT, jangan RIGHT,
+    // biar nggak salah hitung gara-gara scrollbar di window.innerWidth)
+    var left=br.right-mw;
+    var top=br.bottom+gap;
+
+    // clamp dalam viewport
+    if(left<pad) left=pad;
+    if(left+mw>vw-pad) left=vw-pad-mw;
+    // flip ke atas kalau ngalahin bottom viewport
+    if(top+mh>vh-pad){ top=br.top-gap-mh; if(top<pad) top=pad; }
+
+    menu.style.left=left+'px';
+    menu.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    // klik tombol trigger di-handle oleh rowMenu(btn) → skip
+    if(e.target.closest('.row-act__btn')) return;
+    // klik item menu: biarin handler item jalan dulu, lalu close di akhir
+    if(e.target.closest('.row-act__menu')){ setTimeout(closeAllRowMenus,0); return; }
+    closeAllRowMenus();
+  });
+  // tutup waktu scroll/resize biar menu nggak nempel di tempat lama
+  ['scroll','resize'].forEach(function(ev){
+    window.addEventListener(ev, closeAllRowMenus, true);
+  });
+
+  function dismissBanner(){ var b=document.getElementById('banner'); if(b) b.style.display='none'; }
+
+  function toggleEmpty(){
+    var t=document.getElementById('tableWrap'), em=document.getElementById('empty');
+    var isEmpty=em.style.display==='flex';
+    em.style.display=isEmpty?'none':'flex';
+    t.style.display=isEmpty?'block':'none';
+  }
+
+  function markError(id,on){
+    var f=document.getElementById(id);
+    if(on) f.classList.add('field--error'); else f.classList.remove('field--error');
+  }
+  function fieldOf(inputId){ return document.getElementById(inputId).closest('.field'); }
+
+  function submitForm(){
+    var ok=true;
+    [['f-tgl'],['f-kat'],['f-pen'],['f-jml'],['f-met']].forEach(function(p){
+      var el=document.getElementById(p[0]); var fld=el.closest('.field');
+      if(!el.value){ fld.classList.add('field--error'); ok=false; } else { fld.classList.remove('field--error'); }
+    });
+    if(!ok) return;
+    // loading state
+    var btn=document.getElementById('saveBtn'); var txt=document.getElementById('saveTxt');
+    btn.disabled=true; txt.textContent='Menyimpan...';
+    setTimeout(function(){
+      btn.disabled=false; txt.textContent='Simpan Pengeluaran';
+      // approval logic
+      var jml=parseInt((document.getElementById('f-jml').value||'').replace(/[^0-9]/g,''),10)||0;
+      var needApproval = jml>=5000000;
+      // prepend new row via data model
+      EXP.unshift({
+        tgl:'19 Mei 2026',
+        kat:document.getElementById('f-kat').value,
+        pen:document.getElementById('f-pen').value,
+        jml:jml,
+        met:document.getElementById('f-met').value,
+        st: needApproval ? 'Menunggu Persetujuan' : 'Tercatat',
+        bukti:0,
+        ref:'EXP/2026/0049',
+        pajak:0,
+        total:jml,
+        akun:document.getElementById('f-akun').value||'Kas Kecil',
+        by:'Adam A.'
+      });
+      renderRows();
+      goList();
+      var sub=document.getElementById('toastSub');
+      sub.textContent = needApproval ? 'Menunggu persetujuan atasan (jumlah ≥ Rp 5jt).' : 'Pengeluaran baru sudah masuk ke daftar.';
+      fireToast();
+    },900);
+  }
+
+  function fireToast(){
+    var t=document.getElementById('toast'); t.classList.add('show');
+    clearTimeout(window._tt); window._tt=setTimeout(function(){t.classList.remove('show')},3600);
+  }
+
+  // cancel → confirmation modal kalau ada perubahan
+  function formDirty(){
+    return ['f-kat','f-pen','f-jml','f-met','f-akun','f-desc'].some(function(id){
+      return (document.getElementById(id).value||'')!=='';
+    });
+  }
+  function tryCancel(){
+    if(formDirty()){
+      var s=document.getElementById('confirmScrim'); s.classList.add('open');
+      document.getElementById('cfCancel').focus(); // default focus = aksi aman
+    } else { goList(); }
+  }
+  function closeConfirm(){ document.getElementById('confirmScrim').classList.remove('open'); }
+  function discardChanges(){ closeConfirm(); resetForm(); goList(); }
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){ var s=document.getElementById('confirmScrim'); if(s.classList.contains('open')) closeConfirm(); }
+  });
+
+  function resetForm(){
+    ['f-pen','f-jml','f-desc'].forEach(function(id){document.getElementById(id).value=''});
+    ['f-kat','f-met','f-akun'].forEach(function(id){document.getElementById(id).selectedIndex=0});
+    document.getElementById('f-tgl').value='2026-05-19';
+    document.querySelectorAll('.field--error').forEach(function(f){f.classList.remove('field--error')});
+  }
+</script>
 <!--
   ╔══════════════════════════════════════════════════════════════════╗
   ║  KOMEN OVERLAY ala Figma — SISIPKAN BLOK INI PERSIS SEBELUM </body> ║
@@ -1288,12 +1538,26 @@ body.suxc-on{outline:2px solid rgba(123,97,255,.4);outline-offset:-2px}
 body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
 
 /* ── STATE SWITCHER ── */
-.suxc-state-chip{position:absolute;top:6px;right:6px;z-index:9990;display:inline-flex;align-items:center;
-  gap:5px;background:rgba(65,153,213,.92);color:#fff;border:none;border-radius:20px;
-  padding:3px 10px 3px 7px;font:600 11px/1 'Lato',sans-serif;cursor:pointer;white-space:nowrap;
-  box-shadow:0 2px 8px rgba(0,0,0,.35);transition:background .12s}
-.suxc-state-chip:hover{background:rgba(65,153,213,1)}
-.suxc-state-chip::before{content:'◉';font-size:9px;opacity:.85}
+.suxc-sw{position:fixed;z-index:100003;display:inline-flex;flex-direction:column;align-items:flex-start;user-select:none}
+.suxc-sw-pill{display:inline-flex;align-items:center;gap:8px;background:#1C1C1E;color:#E5E5EA;
+  border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:12px 16px 12px 12px;
+  font:600 14px/1 'Lato',sans-serif;cursor:grab;white-space:nowrap;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);transition:background .12s,box-shadow .12s}
+.suxc-sw-pill:hover{background:#2C2C2E;box-shadow:0 6px 20px rgba(0,0,0,.65)}
+.suxc-sw-pill.drag{cursor:grabbing}
+.suxc-sw-dot{width:9px;height:9px;border-radius:50%;background:#48484A;flex:none;transition:background .2s}
+.suxc-sw-dot.on{background:#30D158}
+.suxc-sw-pop{position:absolute;top:calc(100% + 7px);left:0;background:#2C2C2E;
+  border:1px solid rgba(255,255,255,.10);border-radius:10px;min-width:172px;
+  box-shadow:0 10px 36px rgba(0,0,0,.65);overflow:hidden;display:none}
+.suxc-sw-pop.open{display:block}
+.suxc-sw-head{padding:8px 14px 6px;font:600 10px/1 'Lato',sans-serif;color:#636366;letter-spacing:.06em;text-transform:uppercase}
+.suxc-sw-item{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;
+  font:500 13px/1 'Lato',sans-serif;color:#E5E5EA;cursor:pointer;transition:background .1s}
+.suxc-sw-item:hover{background:rgba(255,255,255,.07)}
+.suxc-sw-item.active{color:#30D158}
+.suxc-sw-check{font-size:12px;opacity:0}
+.suxc-sw-item.active .suxc-sw-check{opacity:1}
 
 /* ── TOAST ── */
 #suxc-toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(10px);
@@ -1832,7 +2096,7 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
     var pT,pTs;
     if(FLOW){pT=stage.style.transform;pTs=stage.style.transition;stage.style.transition='none';stage.style.transform='none';void stage.offsetWidth;}
     var stickyOverrides=[];[].forEach.call(document.querySelectorAll('*'),function(el){var p=getComputedStyle(el).position;if(p==='sticky'||p==='-webkit-sticky'){stickyOverrides.push([el,el.style.position]);el.style.position='relative';}});
-    var screenReveal=[];[].forEach.call(document.querySelectorAll('[data-screen]'),function(el){var cs=getComputedStyle(el);if(cs.display==='none'){screenReveal.push([el,el.style.display,'d']);el.style.display='block';}else if(cs.visibility==='hidden'){screenReveal.push([el,el.style.visibility,'v']);el.style.visibility='visible';}});
+    var screenReveal=[];[].forEach.call(document.querySelectorAll('[data-screen]'),function(el){var cs=getComputedStyle(el);if(cs.display==='none'){screenReveal.push([el,el.style.display,'d']);el.style.display=el.getAttribute('data-screen-display')||'flex';}else if(cs.visibility==='hidden'){screenReveal.push([el,el.style.visibility,'v']);el.style.visibility='visible';}});
     if(screenReveal.length)void document.body.offsetWidth;
     var payload;try{payload=buildFigmaPayload();}catch(e){payload=null;}
     screenReveal.forEach(function(item){if(item[2]==='d')item[0].style.display=item[1];else item[0].style.visibility=item[1];});
@@ -1880,24 +2144,67 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
     nav.addEventListener('click',function(ev){if(ev.target.closest&&ev.target.closest('button'))setTimeout(hideNav,0);});
     document.addEventListener('mousedown',function(ev){if(navOpen&&ev.target.closest&&!ev.target.closest('#suxc-nav')&&!ev.target.closest('#suxc-fab'))hideNav();},true);}
   function initStates(){
-    [].forEach.call(document.querySelectorAll('[data-states]'),function(container){
+    [].forEach.call(document.querySelectorAll('[data-states]'),function(container,idx){
       var states=[].slice.call(container.querySelectorAll(':scope>[data-state]'));
       if(!states.length)return;
       if(getComputedStyle(container).position==='static')container.style.position='relative';
       var cur=0;
       states.forEach(function(s,i){if(s.getAttribute('data-state')==='default')cur=i;});
-      var chip=document.createElement('button');
-      chip.className='suxc-state-chip';
-      chip.title='Klik untuk ganti state';
-      function show(idx){
+      // widget
+      var widget=document.createElement('div');widget.className='suxc-sw';
+      var pill=document.createElement('div');pill.className='suxc-sw-pill';
+      var dot=document.createElement('span');dot.className='suxc-sw-dot';
+      var lbl=document.createElement('span');
+      pill.appendChild(dot);pill.appendChild(lbl);
+      var pop=document.createElement('div');pop.className='suxc-sw-pop';
+      var head=document.createElement('div');head.className='suxc-sw-head';head.textContent='Pilih State';
+      pop.appendChild(head);
+      widget.appendChild(pill);widget.appendChild(pop);
+      document.body.appendChild(widget);
+      // restore or set initial position
+      (function(){var key='suxc:sw:'+idx;var saved=null;try{saved=JSON.parse(localStorage.getItem(key)||'null');}catch(e){}
+        if(saved&&typeof saved.l==='number'){widget.style.left=saved.l+'px';widget.style.top=saved.t+'px';}
+        else{requestAnimationFrame(function(){widget.style.left='24px';widget.style.top=Math.max(8,window.innerHeight-widget.offsetHeight-24)+'px';});}})();
+      var popOpen=false;
+      function activate(idx){
         states.forEach(function(s,i){s.style.display=i===idx?'':'none';});
-        chip.setAttribute('data-label',states[idx].getAttribute('data-state'));
-        chip.lastChild&&chip.removeChild(chip.lastChild);
-        chip.appendChild(document.createTextNode(states[idx].getAttribute('data-state')));
-        cur=idx;}
-      chip.addEventListener('click',function(e){e.stopPropagation();show((cur+1)%states.length);});
-      container.appendChild(chip);
-      show(cur);});}
+        cur=idx;
+        var name=states[idx].getAttribute('data-state');
+        var isDefault=(name==='default'||idx===0&&name!=='default'&&!states.some(function(s){return s.getAttribute('data-state')==='default';}));
+        if(name==='default'){lbl.textContent='State';dot.classList.remove('on');}
+        else{lbl.textContent=name.charAt(0).toUpperCase()+name.slice(1)+' Active';dot.classList.add('on');}
+        // update items
+        [].forEach.call(pop.querySelectorAll('.suxc-sw-item'),function(el,i){
+          el.classList.toggle('active',i===idx);});}
+      function buildPop(){
+        var old=[].slice.call(pop.querySelectorAll('.suxc-sw-item'));
+        old.forEach(function(el){el.parentNode.removeChild(el);});
+        states.forEach(function(s,i){
+          var name=s.getAttribute('data-state');
+          var item=document.createElement('div');item.className='suxc-sw-item'+(i===cur?' active':'');
+          var nm=document.createElement('span');nm.textContent=name.charAt(0).toUpperCase()+name.slice(1);
+          var ck=document.createElement('span');ck.className='suxc-sw-check';ck.textContent='✓';
+          item.appendChild(nm);item.appendChild(ck);
+          item.addEventListener('mousedown',function(e){e.stopPropagation();});
+          item.addEventListener('click',function(e){e.stopPropagation();activate(i);closePop();});
+          pop.appendChild(item);});}
+      function openPop(){buildPop();pop.classList.add('open');popOpen=true;
+        var pr=pop.getBoundingClientRect();
+        if(pr.bottom>window.innerHeight-8){pop.style.top='auto';pop.style.bottom='calc(100% + 7px)';}
+        else{pop.style.top='calc(100% + 7px)';pop.style.bottom='auto';}}
+      function closePop(){pop.classList.remove('open');popOpen=false;}
+      // drag + click on pill
+      pill.addEventListener('mousedown',function(e){
+        if(e.button!==0)return;e.preventDefault();
+        var wr=widget.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,ox=e.clientX-wr.left,oy=e.clientY-wr.top,moved=false;
+        function mm(e){if(!moved&&Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4){moved=true;pill.classList.add('drag');}
+          if(moved){widget.style.left=Math.max(0,Math.min(e.clientX-ox,window.innerWidth-widget.offsetWidth))+'px';widget.style.top=Math.max(0,Math.min(e.clientY-oy,window.innerHeight-widget.offsetHeight))+'px';}}
+        function mu(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);pill.classList.remove('drag');
+          if(moved){try{localStorage.setItem('suxc:sw:'+idx,JSON.stringify({l:Math.round(parseFloat(widget.style.left)),t:Math.round(parseFloat(widget.style.top))}));}catch(e){}}
+          else{popOpen?closePop():openPop();}}
+        document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+      document.addEventListener('mousedown',function(e){if(popOpen&&!widget.contains(e.target))closePop();},true);
+      activate(cur);});}
   if(!FLOW){setupFab();initStates();}
   applyT();render();
 })();
@@ -1905,117 +2212,19 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
 
 
 
-<script>
-var selectedRows = new Set();
-var rowContacts = { '1': true, '2': true, '3': false }; // row-3 = kontak kosong
 
-function updateBulkToolbar() {
-  var toolbar = document.getElementById('bulk-toolbar');
-  var count   = document.getElementById('bulk-count');
-  if (selectedRows.size > 0) {
-    toolbar.classList.add('visible');
-    count.textContent = selectedRows.size + ' invoice dipilih';
-  } else {
-    toolbar.classList.remove('visible');
-  }
-}
 
-function checkWarning() {
-  var banner   = document.querySelector('.au-banner.danger-attention');
-  var kirimBtn = document.querySelector('#dialog-overlay .au-btn.primary');
-  var hasEmpty = Array.from(selectedRows).some(function(id){ return !rowContacts[id]; });
-  if (hasEmpty) {
-    banner.removeAttribute('hidden');
-    banner.querySelector('.au-banner-title').textContent = 'Data kontak klien belum lengkap';
-    banner.querySelector('.au-banner-sub').textContent   = 'Nomor WA atau email tersimpan — pengingat tidak bisa dikirim.';
-    kirimBtn.disabled = true;
-    kirimBtn.style.opacity = '0.5';
-  } else {
-    banner.setAttribute('hidden', '');
-    kirimBtn.disabled = false;
-    kirimBtn.style.opacity = '';
-  }
-}
 
-function openDialog() {
-  var dlg = document.getElementById('dialog-overlay');
-  document.querySelector('.dlg-summary-value').textContent =
-    (selectedRows.size || 1) + ' invoice dipilih';
-  checkWarning();
-  dlg.removeAttribute('hidden');
-}
 
-function closeDialog() {
-  document.getElementById('dialog-overlay').setAttribute('hidden', '');
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Row checkboxes
-  document.querySelectorAll('.row-check').forEach(function(cb) {
-    cb.addEventListener('change', function() {
-      var id = this.dataset.id;
-      if (this.checked) selectedRows.add(id);
-      else selectedRows.delete(id);
-      updateBulkToolbar();
-    });
-  });
 
-  // Header checkbox — select all
-  var headerCb = document.querySelector('thead .au-checkbox');
-  if (headerCb) {
-    headerCb.addEventListener('change', function() {
-      document.querySelectorAll('.row-check').forEach(function(cb) {
-        var row = cb.closest('tr');
-        // only rows not yet sent
-        if (!row.dataset.sent) {
-          cb.checked = headerCb.checked;
-          var id = cb.dataset.id;
-          if (headerCb.checked) selectedRows.add(id);
-          else selectedRows.delete(id);
-        }
-      });
-      updateBulkToolbar();
-    });
-  }
 
-  // Per-row "Tagih" buttons
-  document.querySelectorAll('.row-tagih-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var id = this.dataset.row;
-      selectedRows = new Set([id]);
-      openDialog();
-    });
-  });
 
-  // Bulk "Tagih" button
-  var bulkTagih = document.getElementById('btn-tagih-bulk');
-  if (bulkTagih) bulkTagih.addEventListener('click', openDialog);
 
-  // Batal & close
-  document.querySelector('#dialog-overlay .au-btn.tertiary').addEventListener('click', closeDialog);
-  document.querySelector('#dialog-overlay .au-dialog__close').addEventListener('click', closeDialog);
 
-  // Kirim Sekarang
-  document.querySelector('#dialog-overlay .au-btn.primary').addEventListener('click', function() {
-    if (this.disabled) return;
-    closeDialog();
-    // Mark selected rows as "Ditagih"
-    selectedRows.forEach(function(id) {
-      var row = document.getElementById('row-' + id);
-      if (row) {
-        var cell = row.querySelector('.col-menu .actions-cell');
-        if (cell) cell.innerHTML = '<span class="badge" style="background:var(--color-light-brand-50);color:#fff;padding:3px 8px;border-radius:var(--radius-sm);font-size:12px;font-weight:600">Ditagih</span>';
-        row.dataset.sent = '1';
-      }
-    });
-    selectedRows.clear();
-    document.querySelectorAll('.row-check').forEach(function(cb){ cb.checked = false; });
-    if (document.querySelector('thead .au-checkbox')) document.querySelector('thead .au-checkbox').checked = false;
-    updateBulkToolbar();
-    if (typeof toast === 'function') toast('Pengingat berhasil dikirim ✓');
-  });
-});
 
-</script>
+
+
+
 </body>
 </html>
