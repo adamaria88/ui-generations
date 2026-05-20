@@ -208,8 +208,19 @@
   .table-wrap{background:var(--color-surface-light-default);
     border:1px solid var(--color-border-default);
     border-radius:var(--radius-md);overflow:hidden}
-  .table-scroll{overflow-x:auto;overflow-y:visible;scrollbar-width:none;-ms-overflow-style:none}
-  .table-scroll::-webkit-scrollbar{display:none;height:0;width:0}
+  /* AURORA: au-scroll-container (struktur + size 4px)
+     Source: aurora/projects/ui/scroll-container/scroll-container.component.scss L1-24
+     Spec: --au-scrollbar-size = 4px (default scrollbarSize input)
+     OVERRIDE: thumb color — Aurora spec #4199d5 (blue) kesan loading indicator.
+     Override pakai neutral gray translucent (mimic native overlay scrollbar).
+     Approver: user 2026-05-20. Catat ke AURORA-OVERRIDES.md. */
+  .table-scroll{overflow-x:auto;overflow-y:hidden;--au-scrollbar-size:4px}
+  .table-scroll::-webkit-scrollbar{width:var(--au-scrollbar-size);height:var(--au-scrollbar-size)}
+  .table-scroll::-webkit-scrollbar:vertical{width:var(--au-scrollbar-size)}
+  .table-scroll::-webkit-scrollbar:horizontal{height:var(--au-scrollbar-size)}
+  .table-scroll::-webkit-scrollbar-track{background:transparent}
+  .table-scroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,.2);border-radius:2px}
+  .table-scroll::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.35)}
   table{width:100%;border-collapse:separate;border-spacing:0;font-size:var(--text-body-size-md);min-width:1680px}
 
   /* AURORA: au-table header cell — tinted block (label row + filter row cohesive) */
@@ -247,11 +258,21 @@
     transition:border-color var(--speed-normal) var(--ease-out-strong)}
   .col-f::placeholder{color:var(--color-text-muted);opacity:1}
   .col-f:focus{border-color:var(--color-action-primary-bg)}
-  /* Date input placeholder = text-muted (sama dengan input/select). Native calendar icon disembunyiin → di-overlay pakai Aurora calendar icon via .col-date wrapper */
-  input[type="date"].col-f{color:var(--color-text-muted)}
+  /* Date input placeholder = text-muted (sama dengan input/select). Native calendar icon disembunyiin → di-overlay pakai Aurora calendar icon via .col-date wrapper.
+     Force webkit datetime-edit pseudo-elements untuk konsistensi cross-browser — tanpa ini placeholder rendered dengan default UI color (darker/lighter dari CSS). */
+  input[type="date"].col-f{color:var(--color-text-muted);color-scheme:light}
   input[type="date"].col-f:valid{color:var(--color-text-primary)}
   input[type="date"].col-f::-webkit-calendar-picker-indicator{opacity:0;cursor:pointer;width:24px;height:24px;position:absolute;right:6px}
-  input[type="date"].col-f::-webkit-datetime-edit{color:inherit}
+  input[type="date"].col-f::-webkit-datetime-edit,
+  input[type="date"].col-f::-webkit-datetime-edit-text,
+  input[type="date"].col-f::-webkit-datetime-edit-month-field,
+  input[type="date"].col-f::-webkit-datetime-edit-day-field,
+  input[type="date"].col-f::-webkit-datetime-edit-year-field{color:var(--color-text-muted)}
+  input[type="date"].col-f:valid::-webkit-datetime-edit,
+  input[type="date"].col-f:valid::-webkit-datetime-edit-text,
+  input[type="date"].col-f:valid::-webkit-datetime-edit-month-field,
+  input[type="date"].col-f:valid::-webkit-datetime-edit-day-field,
+  input[type="date"].col-f:valid::-webkit-datetime-edit-year-field{color:var(--color-text-primary)}
   /* Dropdown chevron: filled triangle dark blue (match production look) */
   select.col-f{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M0 0h10L5 6z' fill='%23133f5d'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;cursor:pointer}
   select.col-f.is-placeholder{color:var(--color-text-muted)}
@@ -380,6 +401,30 @@
     font-weight:var(--text-body-weight-semibold);word-break:break-word}
   .info-list dd.num{font-variant-numeric:tabular-nums}
   .info-list dd.muted{color:var(--color-text-secondary);font-weight:var(--text-body-weight-regular)}
+
+  /* APPROVED-CUSTOM: Hero Total layout — Ringkasan Jumlah redesign
+     Big total number on top + small "Total" label, divider, then breakdown items below */
+  .hero-total{display:flex;flex-direction:column;align-items:flex-start;margin:0 0 var(--spacing-md) 0}
+  .hero-total__value{font-family:var(--text-heading-font-family);font-size:28px;line-height:36px;
+    font-weight:var(--text-body-weight-bold);color:var(--color-text-primary);
+    font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+  .hero-total__label{font-size:var(--text-body-size-sm);color:var(--color-text-secondary);
+    margin-top:var(--spacing-2xs)}
+  .hero-divider{height:1px;background:var(--color-border-default);margin:var(--spacing-md) 0 var(--spacing-lg) 0}
+
+  /* AURORA composition: meta-inline (count text + actions) — pakai Aurora pieces:
+     - container: flex gap-md (mirip .breadcrumb)
+     - separator dot 4×4: pakai pattern .breadcrumb .sep (light-grey-40, radius-full)
+     - action: .btn .btn--tertiary-plain (Aurora au-btn--tertiary-plain)
+     Bukan custom component, ini composition Aurora pieces. */
+  .meta-inline{display:flex;align-items:center;gap:var(--spacing-md);flex-wrap:wrap;
+    font-size:var(--text-body-size-md);color:var(--color-text-primary)}
+  .meta-inline__text{display:inline-flex;align-items:center;gap:var(--spacing-xs);
+    color:var(--color-text-primary);font-weight:var(--text-body-weight-semibold)}
+  .meta-inline__text svg{width:16px;height:16px;color:var(--color-text-secondary)}
+  .meta-inline .sep{background-color:var(--color-light-grey-40);border-radius:var(--radius-full);
+    width:var(--spacing-xs);height:var(--spacing-xs);display:inline-block;flex-shrink:0}
+  .meta-inline__empty{color:var(--color-text-muted);font-weight:var(--text-body-weight-regular)}
   /* Lampiran list items */
   .att-list{display:flex;flex-direction:column;gap:var(--spacing-sm);margin:0 0 var(--spacing-md) 0;padding:0;list-style:none}
   .att-item{display:flex;align-items:center;gap:var(--spacing-md);padding:var(--spacing-sm) var(--spacing-md);
@@ -503,23 +548,37 @@
   /* AURORA: au-dialog-actions__buttons (RIGHT-aligned per modal mode) */
   .dialog__actions__buttons{display:flex;gap:var(--spacing-md);align-items:center;justify-content:flex-end}
 
-  /* OVERRIDE: au-toast (width + radius)
+  /* OVERRIDE: au-toast (width + radius + 3-col layout + info icon + close X)
      Aurora spec: aurora/projects/ui/toast/toast.component.scss L1-10 → width 450px, radius lg (12px)
      See: paper-designer/ds/AURORA-OVERRIDES.md → "Override: au-toast (width + radius)"
-     Override: width 380px, radius md (8px). Approved by user 2026-05-19. */
+     Override values:
+     - width 380px, radius md (8px) — approved 2026-05-19
+     - Icon 32×32 light-blue circle with white "i" (default info variant) — approved 2026-05-20 (match production)
+     - 3-col layout: __icon | __text | __close (close X right) — approved 2026-05-20 (per Aurora source structure)
+     - __text flex column gap 2xs */
   .toast{position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-140px);
     width:380px;max-width:calc(100vw - 40px);padding:var(--spacing-md);border-radius:var(--radius-md);
     background:linear-gradient(90deg,#133f5d 0%,#0a1d28 100%);color:var(--color-text-inverse);
-    display:flex;align-items:center;gap:var(--spacing-md);box-shadow:0 3px 10px 0 rgb(0 0 0 / 8%);
+    box-shadow:0 3px 10px 0 rgb(0 0 0 / 8%);
     z-index:60;opacity:0;
     transition:transform var(--speed-slow) var(--ease-out-strong),opacity var(--speed-slow);
     animation:au-toast-slide-in var(--speed-slow) var(--ease-out-strong)}
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-  /* AURORA: au-toast__icon */
-  .toast svg{width:24px;height:24px;flex-shrink:0}
-  /* AURORA: au-toast__text */
-  .toast b{font-weight:var(--text-body-weight-bold);font-size:var(--text-body-size-md)}
-  .toast span{font-size:var(--text-body-size-sm);color:rgb(255 255 255 / 85%);display:block}
+  /* AURORA: au-toast__content (3-col row layout) */
+  .toast__content{display:flex;align-items:center;gap:var(--spacing-sm)}
+  /* AURORA: au-toast__icon (32×32 fixed, align-self start kalau ada title) */
+  .toast__icon{flex-shrink:0;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+  .toast__icon svg{width:32px;height:32px}
+  /* AURORA: au-toast__text (flex column gap 2xs) */
+  .toast__text{display:flex;flex-direction:column;gap:var(--spacing-2xs);flex:1;min-width:0}
+  .toast__text b{font-weight:var(--text-body-weight-bold);font-size:var(--text-body-size-md);line-height:20px}
+  .toast__text span{font-size:var(--text-body-size-sm);color:rgb(255 255 255 / 85%);line-height:18px}
+  /* AURORA: au-toast__close (color light-brand-50 default, inverse di danger variant) */
+  .toast__close{flex-shrink:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+    border:0;background:transparent;cursor:pointer;color:var(--color-light-brand-50);
+    border-radius:var(--radius-sm);transition:background-color var(--speed-fast) var(--ease-out-regular)}
+  .toast__close:hover{background:rgb(255 255 255 / 8%)}
+  .toast__close svg{width:18px;height:18px}
   @keyframes au-toast-slide-in{from{transform:translateX(-50%) translateY(-140px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
 
   /* AURORA: au-pagination
@@ -833,7 +892,10 @@
   color: var(--color-neutral-white);
 }
 .sidemenu__subitem.active {
-  color: var(--color-light-brand-50);
+  /* PRODUCTION sidebar item active color (locked 2026-05-20):
+     var(--sidebar-item-text-color-active, #b2ed7f) — light green
+     Source: Paper.id production CSS extracted by user */
+  color: var(--sidebar-item-text-color-active, #b2ed7f);
   font-weight: var(--text-body-weight-semibold);
 }
 .sidemenu__separator {
@@ -912,18 +974,19 @@
     </button>
 
     <!-- Aurora icon: document-si (strokes only) -->
-    <button class="sidemenu__item" data-menu="penjualan" onclick="toggleSubmenu('penjualan')">
+    <button class="sidemenu__item expanded" data-menu="penjualan" onclick="toggleSubmenu('penjualan')">
       <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 2.27V6.4C14 6.96 14 7.24 14.11 7.45C14.2 7.64 14.36 7.8 14.55 7.89C14.76 8 15.04 8 15.6 8H19.73M20 17.2C20 18.88 20 19.72 19.67 20.36C19.39 20.93 18.93 21.39 18.36 21.67C17.72 22 16.88 22 15.2 22H8.8C7.12 22 6.28 22 5.64 21.67C5.07 21.39 4.61 20.93 4.33 20.36C4 19.72 4 18.88 4 17.2V6.8C4 5.12 4 4.28 4.33 3.64C4.61 3.07 5.07 2.61 5.64 2.33C6.28 2 7.12 2 8.8 2H14L20 8V10.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       Penjualan
       <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </button>
-    <div class="sidemenu__submenu" id="submenu-penjualan">
+    <div class="sidemenu__submenu open" id="submenu-penjualan">
       <button class="sidemenu__subitem">Order Penjualan</button>
       <button class="sidemenu__subitem">Invoice Penjualan</button>
       <button class="sidemenu__subitem">Kuitansi Penjualan</button>
       <button class="sidemenu__subitem">Surat Jalan</button>
       <button class="sidemenu__subitem">BuyerConnect</button>
       <button class="sidemenu__subitem">Faktur Pajak</button>
+      <button class="sidemenu__subitem active">Pengeluaran</button>
     </div>
 
     <!-- Aurora icon: cart -->
@@ -1481,10 +1544,9 @@ function toggleSubmenu(menuId) {
         </div>
 
         <div class="detail-grid">
-          <!-- Card 1: Informasi Umum.
-               Rule (locked): label cuma kalau value AMBIGU. Tanggal & Penerima sudah ada di header
-               (page title + subtitle) → label redundant → drop. Sisanya tetap pakai label karena
-               value tanpa konteks bisa bikin user bingung (mis. "BCA - 2039xxxx" — akun apa?). -->
+          <!-- Card 1: Informasi Umum + Lampiran inline.
+               Rule (locked): label cuma kalau value AMBIGU. Tanggal & Penerima sudah ada di header.
+               Lampiran inline (BUKAN card sendiri) — bukan info utama, cukup metadata row + action link. -->
           <div class="info-card">
             <h3>Informasi Umum</h3>
             <dl class="info-list">
@@ -1493,30 +1555,22 @@ function toggleSubmenu(menuId) {
               <dt>Akun Bank</dt><dd id="d-akun">—</dd>
               <dt>No. Referensi</dt><dd class="muted" id="d-ref">—</dd>
               <dt>Status</dt><dd id="d-st">—</dd>
+              <dt>Lampiran</dt><dd id="d-lampiran-inline">—</dd>
             </dl>
           </div>
 
-          <!-- Card 2: Ringkasan Jumlah -->
+          <!-- Card 2: Ringkasan Jumlah — HERO TOTAL layout (Total besar di atas, breakdown di bawah) -->
           <div class="info-card">
             <h3>Ringkasan Jumlah</h3>
+            <div class="hero-total">
+              <div class="hero-total__value" id="d-total">—</div>
+              <div class="hero-total__label">Total</div>
+            </div>
+            <div class="hero-divider"></div>
             <dl class="info-list">
               <dt>Jumlah</dt><dd class="num" id="d-jml">—</dd>
               <dt>Pajak</dt><dd class="num" id="d-pajak">—</dd>
-              <dt>Total</dt><dd class="num" id="d-total" style="font-size:18px">—</dd>
             </dl>
-          </div>
-
-          <!-- Card 3: Lampiran (full row) -->
-          <div class="info-card full">
-            <div class="ic-actions">
-              <h3>Lampiran</h3>
-              <button class="btn btn--tertiary-plain" onclick="openLampiran()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                Tambah Lampiran
-              </button>
-            </div>
-            <ul class="att-list" id="d-attList"></ul>
-            <div class="att-empty" id="d-attEmpty" style="display:none">Belum ada lampiran untuk pengeluaran ini.</div>
           </div>
 
           <!-- Card 4: Riwayat (full row) -->
@@ -1611,10 +1665,25 @@ function toggleSubmenu(menuId) {
   </div>
 </div>
 
-<!-- Toast sukses -->
-<div class="toast" id="toast">
-  <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#97cc56"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  <div><b id="toastTitle">Pengeluaran berhasil dicatat</b><span id="toastSub">Pengeluaran baru sudah masuk ke daftar.</span></div>
+<!-- Toast info/sukses (Aurora sectioned: __icon | __text | __close) -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <div class="toast__content">
+    <div class="toast__icon">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" fill="#4199d5"/>
+        <path d="M12 11v5M12 8v.01" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="toast__text">
+      <b id="toastTitle">Pengeluaran berhasil dicatat</b>
+      <span id="toastSub">Pengeluaran baru sudah masuk ke daftar.</span>
+    </div>
+    <button class="toast__close" onclick="closeToast()" aria-label="Tutup notifikasi" type="button">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
 </div>
 
 <script>
@@ -1712,25 +1781,26 @@ function toggleSubmenu(menuId) {
   }
 
   function renderAttList(row){
-    var list = document.getElementById('d-attList');
-    var empty = document.getElementById('d-attEmpty');
+    // Render Lampiran INLINE di Info Umum dl/dd (BUKAN card sendiri lagi).
+    // Format: kalau ada file → "📎 N file [Lihat] [+ Tambah]". Kalau ga ada → "Belum ada [+ Tambah]".
+    var el = document.getElementById('d-lampiran-inline');
+    if(!el) return;
+    var ref = row.ref.replace(/'/g,"\\'");
+    var clipSvg = '<svg viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.34 3.34 0 014.72 4.72l-9.2 9.19a1.67 1.67 0 01-2.36-2.36l8.49-8.48" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     if(row.bukti>0){
-      var items=[];
-      for(var i=1;i<=row.bukti;i++){
-        items.push('<li class="att-item">'
-          + '<div class="att-item__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.34 3.34 0 014.72 4.72l-9.2 9.19a1.67 1.67 0 01-2.36-2.36l8.49-8.48" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
-          + '<div class="att-item__meta"><div class="att-item__name">bukti-'+row.ref.split('/').pop()+'-'+i+'.pdf</div><div class="att-item__sub">PDF · 124 KB</div></div>'
-          + '<div class="att-item__acts">'
-          + '<button class="att-item__act" title="Unduh" onclick="downloadBukti(\''+row.ref+'\')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
-          + '</div></li>');
-      }
-      list.innerHTML = items.join('');
-      list.style.display='';
-      empty.style.display='none';
+      el.innerHTML = '<span class="meta-inline">'
+        + '<span class="meta-inline__text">'+clipSvg+row.bukti+' file</span>'
+        + '<span class="sep"></span>'
+        + '<button class="btn btn--tertiary-plain" onclick="downloadBukti(\''+ref+'\')">Unduh</button>'
+        + '<span class="sep"></span>'
+        + '<button class="btn btn--tertiary-plain" onclick="openLampiran(\''+ref+'\')">+ Tambah</button>'
+        + '</span>';
     } else {
-      list.innerHTML='';
-      list.style.display='none';
-      empty.style.display='';
+      el.innerHTML = '<span class="meta-inline">'
+        + '<span class="meta-inline__empty">Belum ada</span>'
+        + '<span class="sep"></span>'
+        + '<button class="btn btn--tertiary-plain" onclick="openLampiran(\''+ref+'\')">+ Tambah Lampiran</button>'
+        + '</span>';
     }
   }
 
@@ -2004,6 +2074,10 @@ function toggleSubmenu(menuId) {
   // relative ke ancestor, BUKAN viewport. Append ke <body> = guarantee fixed pakai
   // viewport sebagai containing block.
   function closeAllRowMenus(){
+    // Fast-path: kalau ga ada menu open, skip querySelector heavy work (FIX scroll lag).
+    // Scroll listener call ini setiap tick → tanpa fast-path = jank di table dengan banyak row.
+    var firstOpen = document.querySelector('.row-act.open, .row-act__menu.open');
+    if(!firstOpen) return;
     document.querySelectorAll('.row-act.open').forEach(function(x){ x.classList.remove('open'); });
     document.querySelectorAll('.row-act__menu.open').forEach(function(m){
       // SKIP #detailMenu — punya handler sendiri (closeDetailMenu), jangan ke-close 2x
@@ -2187,6 +2261,10 @@ function toggleSubmenu(menuId) {
     var t=document.getElementById('toast'); t.classList.add('show');
     clearTimeout(window._tt); window._tt=setTimeout(function(){t.classList.remove('show')},3600);
   }
+  function closeToast(){
+    var t=document.getElementById('toast'); t.classList.remove('show');
+    clearTimeout(window._tt);
+  }
 
   // DIRTY STATE pakai snapshot diff (BUKAN "field has value").
   // Reason: di Edit mode form pre-filled — "field has value" selalu true → false positive.
@@ -2272,6 +2350,9 @@ body.suxc-on .suxc-pop,body.suxc-on .suxc-pop *{cursor:default !important}
   transform:translate(-2px,-30px);box-shadow:0 2px 8px rgba(0,0,0,.5);user-select:none;cursor:pointer;
   transition:transform .12s,box-shadow .12s}
 .suxc-pin:hover{transform:translate(-2px,-32px) scale(1.08);box-shadow:0 4px 16px rgba(123,97,255,.5)}
+.suxc-pin.submitted{background:transparent;border:2px dashed #7B61FF;color:#7B61FF;line-height:24px;
+  box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.suxc-pin.submitted:hover{background:rgba(123,97,255,.12);box-shadow:0 4px 12px rgba(123,97,255,.4)}
 
 /* ── AREA RECT ── */
 .suxc-rect{position:absolute;z-index:99997;border:2px dashed #7B61FF;background:rgba(123,97,255,.07);border-radius:6px;pointer-events:none}
@@ -2296,6 +2377,14 @@ body.suxc-on .suxc-pop,body.suxc-on .suxc-pop *{cursor:default !important}
   font:500 11px/1.4 'Lato',sans-serif;color:#9B8AFF}
 .suxc-pop-loc-ico{flex:none;opacity:.85}
 .suxc-pop-loc-txt{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.suxc-pop-sub{display:flex;align-items:center;gap:8px;padding:8px 12px;
+  background:rgba(155,138,255,.10);border-bottom:1px solid rgba(255,255,255,.06);
+  font:500 11px/1.4 'Lato',sans-serif;color:#C9BEFF}
+.suxc-pop-sub-txt{flex:1}
+.suxc-pop-unsubmit{flex:none;border:1px solid rgba(155,138,255,.4);background:transparent;
+  color:#C9BEFF;border-radius:5px;padding:3px 8px;font:600 11px 'Lato',sans-serif;cursor:pointer;
+  transition:background .12s,border-color .12s}
+.suxc-pop-unsubmit:hover{background:rgba(155,138,255,.18);border-color:rgba(155,138,255,.7)}
 .suxc-av{width:32px;height:32px;border-radius:50%;background:#7B61FF;color:#fff;
   font:700 13px/32px 'Lato',sans-serif;text-align:center;flex:none;user-select:none}
 .suxc-av.sm{width:28px;height:28px;font-size:11px;line-height:28px}
@@ -2348,6 +2437,14 @@ body.suxc-on .suxc-pop,body.suxc-on .suxc-pop *{cursor:default !important}
 #suxc-cbadge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9999px;
   background:#FF3B30;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;
   padding:0 3px;border:2px solid #2C2C2E}
+#suxc-sbadge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9999px;
+  background:#9B8AFF;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;
+  padding:0 3px;border:2px solid #2C2C2E}
+#suxc-abadge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9999px;
+  background:#30D158;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;
+  padding:0 3px;border:2px solid #2C2C2E}
+#suxc-approve{color:#30D158 !important}
+#suxc-approve:hover{background:rgba(48,209,88,.18) !important;color:#5CDE7F !important}
 
 /* ── FAB ── */
 #suxc-fab{position:fixed;right:24px;bottom:24px;z-index:100001;width:50px;height:50px;
@@ -2441,6 +2538,9 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
 .suxc-item:hover{border-color:rgba(255,255,255,.10)}
 .suxc-item.active{background:#3D3D5C;border-color:rgba(123,97,255,.4)}
 .suxc-item.resolved{opacity:.48}
+.suxc-item.submitted{border-color:rgba(123,97,255,.5);background:rgba(123,97,255,.06)}
+.suxc-item.submitted::before{content:"🕓 submitted";display:block;font:600 9px/1 'Lato',sans-serif;
+  color:#9B8AFF;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
 .suxc-item-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
 .suxc-item-acts{display:flex;gap:4px}
 .suxc-item-act{width:32px;height:32px;border:0;border-radius:7px;background:transparent;
@@ -2470,6 +2570,11 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
   <span class="sep"></span>
   <button id="suxc-submit" type="button" data-tip="Submit komen — copy (S)">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+    <span id="suxc-sbadge" style="display:none">0</span>
+  </button>
+  <button id="suxc-approve" type="button" data-tip="Approve submitted pins (A)" style="display:none">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="suxc-abadge">0</span>
   </button>
   <span class="sep"></span>
   <button id="suxc-figma" type="button" data-tip="Generate Figma (G)">
@@ -2590,7 +2695,9 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
   function zoomAt(cx,cy,ns){ns=clamp(ns,0.2,3);var L=toLocal(cx,cy);T.s=ns;T.x=cx-L.x*ns;T.y=cy-L.y*ns;applyT();}
   function smooth(fn){stage.style.transition='transform .22s ease';fn();setTimeout(function(){stage.style.transition='';},240);}
   function panTo(c){
-    if(c.fixedSel)return; // fixed pin sudah di viewport, nggak perlu scroll
+    if(c.fixedSel)return; // fixed pin sudah di viewport
+    if(c.scrollSel){var _sc=document.querySelector(c.scrollSel);
+      if(_sc&&_sc.scrollTo)_sc.scrollTo({left:Math.max(0,c.sx-120),top:Math.max(0,c.sy-160),behavior:'smooth'});return;}
     if(!FLOW){window.scrollTo({left:Math.max(0,c.x-120),top:Math.max(0,c.y-160),behavior:'smooth'});return;}
     smooth(function(){T.x=window.innerWidth/2-(c.x+(c.w||0)/2)*T.s;T.y=window.innerHeight/2-(c.y+(c.h||0)/2)*T.s;applyT();});}
   function setOn(v){on=v;document.body.classList.toggle('suxc-on',on);tgl.classList.toggle('on',on);
@@ -2607,6 +2714,12 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
       r.style.cssText='position:fixed;left:'+c.fx+'px;top:'+c.fy+'px;width:'+c.fw+'px;height:'+c.fh+'px';
       if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
       document.body.appendChild(r);return;}
+    if(c.scrollSel&&c.sw&&c.sh){
+      var _sc=document.querySelector(c.scrollSel);
+      if(_sc){var r=document.createElement('div');r.className='suxc-rect';
+        r.style.cssText='left:'+c.sx+'px;top:'+c.sy+'px;width:'+c.sw+'px;height:'+c.sh+'px';
+        if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
+        _sc.appendChild(r);return;}}
     if(!(c.w&&c.h))return;
     var r=document.createElement('div');r.className='suxc-rect';
     r.style.cssText='left:'+c.x+'px;top:'+c.y+'px;width:'+c.w+'px;height:'+c.h+'px';
@@ -2622,6 +2735,20 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
           var lyr=el.getAttribute('data-layer');if(lyr)return'[data-layer="'+lyr+'"]';
           return null;}}
       el=el.parentElement;}
+    return null;}
+  function findScrollContainer(el){
+    while(el&&el!==document.body&&el!==document.documentElement){
+      if(el.nodeType===1){var cs=getComputedStyle(el),oy=cs.overflowY,ox=cs.overflowX;
+        if(((oy==='auto'||oy==='scroll')&&el.scrollHeight>el.clientHeight+4)||
+           ((ox==='auto'||ox==='scroll')&&el.scrollWidth>el.clientWidth+4))return el;}
+      el=el.parentElement;}
+    return null;}
+  function selFor(el){
+    if(!el)return null;
+    if(el.id&&el.id.indexOf('suxc-')!==0)return'#'+el.id;
+    var dl=el.getAttribute&&el.getAttribute('data-layer');if(dl)return'[data-layer="'+dl+'"]';
+    var cls=(typeof el.className==='string'?el.className:'').trim().split(/\s+/)[0];
+    if(cls&&document.querySelectorAll('.'+cls).length===1)return'.'+cls;
     return null;}
   function anchorAtViewport(cx,cy){
     if(cx<0||cy<0||cx>window.innerWidth||cy>window.innerHeight)return'';
@@ -2647,6 +2774,15 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
         P.forEach(function(p){var a=anchorAtViewport(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
         if(seen.length)return seen.slice(0,2).join(' & ');}
       return anchorAtViewport(c.fx,c.fy);}
+    if(c.scrollSel){
+      var sc=document.querySelector(c.scrollSel);
+      if(sc){var r=sc.getBoundingClientRect();
+        var vx=r.left+c.sx-sc.scrollLeft,vy=r.top+c.sy-sc.scrollTop;
+        if(c.sw&&c.sh){
+          var P=[[vx+c.sw/2,vy+c.sh/2],[vx+10,vy+10],[vx+c.sw-10,vy+10],[vx+10,vy+c.sh-10],[vx+c.sw-10,vy+c.sh-10]],seen=[];
+          P.forEach(function(p){var a=anchorAtViewport(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
+          if(seen.length)return seen.slice(0,2).join(' & ');}
+        return anchorAtViewport(vx,vy);}}
     if(c.w&&c.h){
       var P=[[c.x+c.w/2,c.y+c.h/2],[c.x+10,c.y+10],[c.x+c.w-10,c.y+10],[c.x+10,c.y+c.h-10],[c.x+c.w-10,c.y+c.h-10]],seen=[];
       P.forEach(function(p){var a=anchorAt(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
@@ -2671,11 +2807,17 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
     document.querySelectorAll('.suxc-pin,.suxc-pop,.suxc-rect:not(.live)').forEach(function(e){e.remove();});
     var list=document.getElementById('suxc-list');list.innerHTML='';
     var openCount=data.filter(function(c){return !c.resolved;}).length;
+    var subCount=data.filter(function(c){return c.submitted&&!c.resolved;}).length;
+    var draftCount=openCount-subCount;
     var countEl=document.getElementById('suxc-count');
     if(countEl)countEl.textContent=data.length?'('+data.length+')':'';
     badge.style.display=openCount?'block':'none';badge.textContent=openCount;
     var fb=document.getElementById('suxc-fbadge');
     if(fb){fb.style.display=openCount?'block':'none';fb.textContent=openCount;}
+    var sb=document.getElementById('suxc-sbadge');
+    if(sb){sb.style.display=draftCount?'block':'none';sb.textContent=draftCount;}
+    var ap=document.getElementById('suxc-approve'),ab=document.getElementById('suxc-abadge');
+    if(ap){ap.style.display=subCount?'flex':'none';if(ab)ab.textContent=subCount;}
 
     var query=(searchInput&&searchInput.value||'').toLowerCase().trim();
 
@@ -2697,7 +2839,7 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
           var lyr=document.querySelector(c.fixedSel);
           if(lyr){var lcs=getComputedStyle(lyr);
             if(lcs.display!=='none'&&lcs.visibility!=='hidden'){
-              var p=document.createElement('div');p.className='suxc-pin';
+              var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
               p.style.position='fixed';p.style.left=c.fx+'px';p.style.top=c.fy+'px';p.textContent=num;
               p.onmousedown=function(ev){
                 ev.stopPropagation();ev.preventDefault();
@@ -2711,8 +2853,27 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
                 document.addEventListener('mousemove',mv);document.addEventListener('mouseup',upH);};
               p.onmouseenter=function(){if(on)openEditor(c);};
               document.body.appendChild(p);}}
+        }else if(c.scrollSel){
+          var sc=document.querySelector(c.scrollSel);
+          if(sc){
+            if(getComputedStyle(sc).position==='static')sc.style.position='relative';
+            var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
+            p.style.left=c.sx+'px';p.style.top=c.sy+'px';p.textContent=num;
+            p.onmousedown=(function(scEl){return function(ev){
+              ev.stopPropagation();ev.preventDefault();
+              var sx=ev.clientX,sy=ev.clientY,moved=false;
+              function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4)moved=true;
+                if(moved){var rr=scEl.getBoundingClientRect();
+                  c.sx=e.clientX-rr.left+scEl.scrollLeft;c.sy=e.clientY-rr.top+scEl.scrollTop;
+                  p.style.left=c.sx+'px';p.style.top=c.sy+'px';
+                  document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+              function upH(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',upH);
+                if(moved){save();render();}else{openEditor(c);}}
+              document.addEventListener('mousemove',mv);document.addEventListener('mouseup',upH);};})(sc);
+            p.onmouseenter=function(){if(on)openEditor(c);};
+            sc.appendChild(p);}
         }else{
-          var p=document.createElement('div');p.className='suxc-pin';
+          var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
           p.style.left=c.x+'px';p.style.top=c.y+'px';p.textContent=num;
           p.onmousedown=function(ev){
             ev.stopPropagation();ev.preventDefault();
@@ -2730,7 +2891,7 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
       // panel card — search filter
       if(query&&(!c.text||c.text.toLowerCase().indexOf(query)<0))return;
       var it=document.createElement('div');
-      it.className='suxc-item'+(c.resolved?' resolved':'');
+      it.className='suxc-item'+(c.resolved?' resolved':'')+(c.submitted&&!c.resolved?' submitted':'');
       it.innerHTML=
         '<div class="suxc-item-who">'+
           '<span class="suxc-item-name">'+UNAME+'</span>'+
@@ -2761,7 +2922,12 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
     document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});
     var isNew=data.indexOf(c)<0;
     var pop=document.createElement('div');pop.className='suxc-pop';
-    var sc=c.fixedSel?{x:c.fx,y:c.fy}:toClient(c.x,c.y);
+    var sc;
+    if(c.fixedSel)sc={x:c.fx,y:c.fy};
+    else if(c.scrollSel){var _sc=document.querySelector(c.scrollSel);
+      if(_sc){var _r=_sc.getBoundingClientRect();sc={x:_r.left+c.sx-_sc.scrollLeft,y:_r.top+c.sy-_sc.scrollTop};}
+      else sc={x:0,y:0};}
+    else sc=toClient(c.x,c.y);
     pop.style.cssText='position:fixed;left:'+Math.max(8,Math.min(sc.x+28,window.innerWidth-316))+'px;top:'+Math.max(8,Math.min(sc.y-10,window.innerHeight-300))+'px';
     showRect(c);
 
@@ -2782,7 +2948,8 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
         '</div>';}
 
     var locTxt=(c.ctx||'').replace(/</g,'&lt;');
-    var layerLbl=c.fixedSel?(c.fixedSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1')):'';
+    var layerLbl=c.fixedSel?(c.fixedSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1')):
+                 (c.scrollSel?(c.scrollSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1')):'');
     var locLine=(locTxt||layerLbl)?
       ('<div class="suxc-pop-loc">'+
         '<svg class="suxc-pop-loc-ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'+
@@ -2790,6 +2957,11 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
           (layerLbl?'<b>'+layerLbl+'</b>'+(locTxt?' · ':''):'')+
           (locTxt||'')+
         '</span>'+
+      '</div>'):'';
+    var subLine=(c.submitted&&!c.resolved)?
+      ('<div class="suxc-pop-sub">'+
+        '<span class="suxc-pop-sub-txt">🕓 <b>Submitted</b>'+(c.batchId?(' · batch '+c.batchId):'')+'</span>'+
+        '<button class="suxc-pop-unsubmit" type="button">Un-submit</button>'+
       '</div>'):'';
     pop.innerHTML=
       '<div class="suxc-pop-head">'+
@@ -2800,6 +2972,7 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
         '</div>'+
       '</div>'+
       locLine+
+      subLine+
       threadHtml+
       (isNew?'<div class="suxc-pop-reply">'+
         '<div class="suxc-reply-wrap">'+
@@ -2817,9 +2990,11 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
 
     var resBtn=pop.querySelector('.suxc-pop-resbtn');
     if(resBtn)resBtn.onclick=function(){
-      c.resolved=!c.resolved;resBtn.classList.toggle('on',c.resolved);
+      c.resolved=!c.resolved;if(c.resolved)c.submitted=false;resBtn.classList.toggle('on',c.resolved);
       logEvent(c,c.resolved?'resolve':'reopen');save();render();
       toast(c.resolved?'Ditandai selesai ✓':'Dibuka kembali ↩');closePop();};
+    var unsubBtn=pop.querySelector('.suxc-pop-unsubmit');
+    if(unsubBtn)unsubBtn.onclick=function(){unsubmit(c);closePop();};
 
     var moreBtn=pop.querySelector('.suxc-thread-morebtn');
     if(moreBtn)moreBtn.onclick=function(ev){
@@ -2893,8 +3068,25 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
         if(w>6&&h>6){c.fx=Math.min(vx0,e.clientX);c.fy=Math.min(vy0,e.clientY);c.fw=Math.abs(e.clientX-vx0);c.fh=Math.abs(e.clientY-vy0);}
         else{c.fx=e.clientX;c.fy=e.clientY;}
       }else{
-        c.x=Math.min(L0.x,L.x);c.y=Math.min(L0.y,L.y);
-        if(w>6&&h>6){c.w=w;c.h=h;}else{c.x=L0.x;c.y=L0.y;}
+        var scEl=anchorEl?findScrollContainer(anchorEl):null;
+        var scSel=scEl?selFor(scEl):null;
+        if(scSel){
+          c.scrollSel=scSel;
+          if(getComputedStyle(scEl).position==='static')scEl.style.position='relative';
+          var r=scEl.getBoundingClientRect();
+          var vx0=L0.x-scX(),vy0=L0.y-scY();
+          if(w>6&&h>6){
+            c.sx=Math.min(vx0,e.clientX)-r.left+scEl.scrollLeft;
+            c.sy=Math.min(vy0,e.clientY)-r.top+scEl.scrollTop;
+            c.sw=Math.abs(e.clientX-vx0);c.sh=Math.abs(e.clientY-vy0);
+          }else{
+            c.sx=e.clientX-r.left+scEl.scrollLeft;
+            c.sy=e.clientY-r.top+scEl.scrollTop;
+          }
+        }else{
+          c.x=Math.min(L0.x,L.x);c.y=Math.min(L0.y,L.y);
+          if(w>6&&h>6){c.w=w;c.h=h;}else{c.x=L0.x;c.y=L0.y;}
+        }
       }
       c.ctx=ctxFor(c);openEditor(c);}
     document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);},true);
@@ -2927,6 +3119,7 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
     if(k==='c'){ev.preventDefault();setOn(!on);}
     else if(k==='l'){ev.preventDefault();setPanel(panel.classList.contains('closed'));}
     else if(k==='s'){ev.preventDefault();doSubmit();}
+    else if(k==='a'){ev.preventDefault();approveSubmitted();}
     else if(k==='g'){ev.preventDefault();doFigma();}
     else if(FLOW&&k==='0'){ev.preventDefault();smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});}});
   document.addEventListener('keyup',function(ev){if(ev.code==='Space'||ev.key===' ')spaceDown=false;});
@@ -2935,15 +3128,30 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
     var active=data.filter(function(c){return !c.resolved;});
     if(!active.length){toast('Belum ada komen aktif');return;}
     var file=location.pathname.split('/').pop()||'flow';
-    var head='Revisi dari user di '+file+' (kerjakan sesuai lokasi tiap poin):\n\n';
+    var d=new Date(),pad=function(n){return n<10?'0'+n:n;};
+    var batchId=d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'-'+pad(d.getHours())+pad(d.getMinutes());
+    var head='Revisi dari user di '+file+' (kerjakan sesuai lokasi tiap poin):\n'+
+             'Batch: '+batchId+' ('+active.length+' komen)\n\n';
     var body=active.map(function(c,i){
-      var loc=c.ctx||(c.fixedSel?('area sekitar x'+Math.round(c.fx)+' y'+Math.round(c.fy)):('area sekitar x'+Math.round(c.x)+' y'+Math.round(c.y)));
-      var layer=c.fixedSel?(' [layer: '+c.fixedSel+']'):'';
+      var loc=c.ctx||(c.fixedSel?('area sekitar x'+Math.round(c.fx)+' y'+Math.round(c.fy)):
+                     c.scrollSel?('area sekitar x'+Math.round(c.sx)+' y'+Math.round(c.sy)):
+                     ('area sekitar x'+Math.round(c.x)+' y'+Math.round(c.y)));
+      var layer=c.fixedSel?(' [layer: '+c.fixedSel+']'):(c.scrollSel?(' [scroll: '+c.scrollSel+']'):'');
       return (i+1)+'. '+(c.text||'(kosong)')+'\n   ↳ lokasi: '+loc+layer;}).join('\n\n');
-    var t=head+body;
-    navigator.clipboard.writeText(t).then(function(){toast('Komen tersalin ✔ paste ke chat');},
-      function(){prompt('Copy komen ini, paste ke chat:',t);});}
+    var foot='\n\n---\nSetelah selesai semua, kasih tau user: "Done batch '+batchId+'. Cek hasil dan klik Approve di overlay buat resolve semua pin submitted."';
+    var t=head+body+foot;
+    function markSubmitted(){active.forEach(function(c){c.submitted=true;c.batchId=batchId;});save();render();}
+    navigator.clipboard.writeText(t).then(function(){markSubmitted();toast(active.length+' komen tersalin ✔ marked submitted');},
+      function(){prompt('Copy komen ini, paste ke chat:',t);markSubmitted();});}
+  function approveSubmitted(){
+    var sub=data.filter(function(c){return c.submitted&&!c.resolved;});
+    if(!sub.length){toast('Nggak ada pin submitted');return;}
+    if(!confirm('Approve & resolve '+sub.length+' pin submitted?'))return;
+    sub.forEach(function(c){c.resolved=true;c.submitted=false;logEvent(c,'resolve');});
+    save();render();toast(sub.length+' pin resolved ✓');}
+  function unsubmit(c){c.submitted=false;delete c.batchId;save();render();toast('Pin dikembalikan ke draft');}
   document.getElementById('suxc-submit').onclick=doSubmit;
+  var _apBtn=document.getElementById('suxc-approve');if(_apBtn)_apBtn.onclick=approveSubmitted;
 
   // ── GENERATE FIGMA ──
   function extractTree(rootEl){
@@ -3116,6 +3324,8 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
     _mo.observe(document.body,{attributes:true,subtree:true,attributeFilter:['class','style']});}catch(e){}
 })();
 </script>
+
+
 
 
 
