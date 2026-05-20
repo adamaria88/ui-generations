@@ -177,22 +177,7 @@ State wajib yang selalu ada (kecuali tidak relevan secara konteks):
 - `loading` — sedang memuat (pakai `.skel` shimmer dari Aurora)
 
 State tambahan sesuai kebutuhan: `error`, `no-akses`, `sukses`, `partial` dll.
-Kalau satu area memang hanya punya 1 kondisi → tidak perlu `[data-states]`.
-
-**⚠️ WAJIB — Auto-Layout Friendly HTML (tidak boleh dilewati):**
-HTML harus generate dengan pola flexbox konsisten, supaya **export ke Figma otomatis jadi auto-layout** (bukan absolute positioning). Pipeline `overlay.html` → Figma plugin sudah baca flex properties — yang penting HTML-nya disiplin pakai flex.
-
-Aturan:
-- **Container layout = `display:flex`** (kolom: `flex-direction:column`). Jangan pakai `display:block` untuk container yang punya children stack — pakai flex column.
-- **Spacing antar children = `gap`**, BUKAN `margin`. Margin pada child = absolute positioning di Figma, gap = auto-layout itemSpacing.
-- **Padding di container, bukan margin di child.** Container yang punya padding bakal jadi frame dengan padding auto-layout.
-- **Absolute positioning HANYA untuk:** FAB, modal scrim, dropdown menu, tooltip, toast — element yang memang "floating". Selain itu wajib flex.
-- **Jangan pakai `width`/`height` fixed di flex container** kecuali komponen spesifik (avatar, ikon, button width). Container biarin auto-size.
-- **`[data-screen]`, `.app-layout`, `.main-area`** wajib flex container (sudah convention engine).
-
-Hasilnya: setiap frame di Figma punya auto-layout dengan `layoutMode`, `itemSpacing`, `padding` yang persis seperti HTML — designer DS nggak perlu konversi manual.
-
-Pakai struktur 3-Zone dari `layout-rules.md` & template yang tepat
+Kalau satu area memang hanya punya 1 kondisi → tidak perlu `[data-states]`. Pakai struktur 3-Zone dari `layout-rules.md` & template yang tepat
 dari `page-templates.md`. Gunakan komponen shell dengan tag inject:
 `<!--SUXC:sidemenu-->`, `<!--SUXC:nav-header-->` — taruh di posisi yang tepat
 dalam layout. Deklarasikan token dari `ds/aurora-tokens.md` sebagai `:root` CSS vars.
