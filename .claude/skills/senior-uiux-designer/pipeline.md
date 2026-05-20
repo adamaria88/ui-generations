@@ -7,6 +7,59 @@ Memory disimpan di: `paper-designer/memory/<slug-fitur>.md`.
 
 ---
 
+## ⛔ ANTI-STUCK PROTOCOL (baca duluan, WAJIB dipatuhi)
+
+> **Kenapa ada section ini:** Claude sering stuck/interrupt saat generate prototype karena over-read sebelum nulis + Write file gede sekaligus. Protokol ini biar setiap tool call survivable dan setiap interrupt recoverable.
+
+### Read Budget (sebelum Write pertama)
+
+- **MAX 3 file read** sebelum mulai Write. Prioritas: brief user → `ds/ds-core.md` → memory terkait.
+- **`rules/design-rules.md` > 500 baris** — JANGAN read full. Baca section spesifik aja pakai `Read` dengan `offset` + `limit`. Header/index biasanya di baris 1-150.
+- **Aurora SCSS source (`/Users/working/aurora/projects/ui/...`)** — DILARANG read full file saat generate prototype. Pakai class name dari `ds-core.md`. Kalau bener-bener butuh detail value: `grep` aja, jangan `Read` full.
+- **LAZY file di CLAUDE.md** — read on-demand, hanya kalau konteks butuh.
+
+### Write/Edit Size Budget
+
+- **Write pertama = skeleton only**, max ~80 baris. Cuma struktur HTML kosong + slot/placeholder per section.
+- **Edit per section**, max 150 baris per pair. 1 screen = 1 Edit call. Script block = Edit terpisah. CSS overrides = Edit terpisah.
+- **Hindari satu Write besar** (>500 baris) — guaranteed timeout/interrupt risk.
+
+### Skeleton-First Pattern (wajib untuk prototype)
+
+```
+1. Write  → 02-ui.html skeleton (~80 baris)
+            <html><head>...</head><body>
+              <!-- SLOT: sidemenu -->
+              <!-- SLOT: nav-header -->
+              <!-- SLOT: screen-1 (Daftar X) -->
+              <!-- SLOT: screen-2 (Form X) -->
+              <!-- SLOT: scripts -->
+              <!-- SUXC:overlay -->
+            </body></html>
+2. Edit   → fill sidemenu
+3. Edit   → fill nav-header
+4. Edit   → fill screen-1 (data-states + content)
+5. Edit   → fill screen-2
+6. Edit   → fill scripts
+7. Run inject script untuk overlay
+```
+
+Interrupt? Skeleton + section yang udah ke-fill tetap ada. Tinggal lanjut Edit berikutnya.
+
+### Checkpoint Pattern
+
+Setelah tiap Edit besar, kasih comment singkat ke user: `✓ sidemenu (47 baris) → next: nav-header`. Kalau interrupt, user tau persis posisi terakhir.
+
+### Anti-pattern (DILARANG)
+
+- ❌ Read 5+ file sebelum Write pertama
+- ❌ Read Aurora SCSS source saat generate prototype
+- ❌ Read full `design-rules.md` (838 baris)
+- ❌ Satu Write file 2000+ baris langsung
+- ❌ Read file LAZY (lihat CLAUDE.md) tanpa alasan jelas
+
+---
+
 ## LANGKAH 0 — Routing (Tweak vs Full)
 
 - Brief = ubahan receh pada layar yang sudah ada & **tidak mengubah alur**
@@ -177,7 +230,22 @@ State wajib yang selalu ada (kecuali tidak relevan secara konteks):
 - `loading` — sedang memuat (pakai `.skel` shimmer dari Aurora)
 
 State tambahan sesuai kebutuhan: `error`, `no-akses`, `sukses`, `partial` dll.
-Kalau satu area memang hanya punya 1 kondisi → tidak perlu `[data-states]`. Pakai struktur 3-Zone dari `layout-rules.md` & template yang tepat
+Kalau satu area memang hanya punya 1 kondisi → tidak perlu `[data-states]`.
+
+**⚠️ WAJIB — Auto-Layout Friendly HTML (tidak boleh dilewati):**
+HTML harus generate dengan pola flexbox konsisten, supaya **export ke Figma otomatis jadi auto-layout** (bukan absolute positioning). Pipeline `overlay.html` → Figma plugin sudah baca flex properties — yang penting HTML-nya disiplin pakai flex.
+
+Aturan:
+- **Container layout = `display:flex`** (kolom: `flex-direction:column`). Jangan pakai `display:block` untuk container yang punya children stack — pakai flex column.
+- **Spacing antar children = `gap`**, BUKAN `margin`. Margin pada child = absolute positioning di Figma, gap = auto-layout itemSpacing.
+- **Padding di container, bukan margin di child.** Container yang punya padding bakal jadi frame dengan padding auto-layout.
+- **Absolute positioning HANYA untuk:** FAB, modal scrim, dropdown menu, tooltip, toast — element yang memang "floating". Selain itu wajib flex.
+- **Jangan pakai `width`/`height` fixed di flex container** kecuali komponen spesifik (avatar, ikon, button width). Container biarin auto-size.
+- **`[data-screen]`, `.app-layout`, `.main-area`** wajib flex container (sudah convention engine).
+
+Hasilnya: setiap frame di Figma punya auto-layout dengan `layoutMode`, `itemSpacing`, `padding` yang persis seperti HTML — designer DS nggak perlu konversi manual.
+
+Pakai struktur 3-Zone dari `layout-rules.md` & template yang tepat
 dari `page-templates.md`. Gunakan komponen shell dengan tag inject:
 `<!--SUXC:sidemenu-->`, `<!--SUXC:nav-header-->` — taruh di posisi yang tepat
 dalam layout. Deklarasikan token dari `ds/aurora-tokens.md` sebagai `:root` CSS vars.
