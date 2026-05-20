@@ -224,6 +224,8 @@ Cara kerja overlay: widget gelap **"State"** muncul otomatis di kiri bawah layar
 (draggable, ingat posisi terakhir via localStorage). Klik → pilih state → label
 berubah jadi **"Empty Active"** dll. Widget tidak ikut di-export Figma.
 
+> ⚠️ **KNOWN LIMITATION** — comment system overlay belum track `[data-screen]`/`[data-state]` context. Pin pindah-pindah ngambang saat user switch screen/state, submit output tidak nyebut screen/state asal komen. Kalau generate prototype multi-screen, **kasih warning ke user**: "FYI komen di overlay masih ambiguous untuk multi-screen — kasih konteks manual di teks komen, contoh: '[Daftar] tombol kekecilan'". Detail: `memory/shared/overlay-screenfigma-bugs.md` Bug 3.
+
 State wajib yang selalu ada (kecuali tidak relevan secara konteks):
 - `default` — UI dengan data / kondisi normal
 - `empty` — belum ada data, belum pernah diisi

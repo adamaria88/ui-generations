@@ -10,6 +10,7 @@ Selalu **Bahasa Indonesia santai/awam**, kalimat pendek, hindari jargon. Opsi be
 
 - **Overlay screenReveal** — hidden `[data-screen]` di-force `display:flex` saat Figma export. Sudah difix tapi belum confirmed working (user bilang masih broken). Detail: `paper-designer/memory/shared/overlay-screenfigma-bugs.md`
 - **Figma multi-screen flow** — kalau screen 2 off-viewport, `extractTree` mungkin return null → flow tidak ter-generate. Terkait bug screenReveal.
+- **Comment context tidak ter-track** — pin overlay flat per file, TIDAK capture `[data-screen]`/`[data-state]` aktif saat dibuat. Submit komen di prototype multi-screen jadi ambiguous (designer DS nggak tau komen di screen/state mana). Workaround sementara: kasih konteks manual di teks komen ("[Daftar] tombol terlalu kecil"). Fix engine pending.
 
 ## EAGER — Auto-load (5 file core)
 

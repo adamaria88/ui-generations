@@ -36,3 +36,41 @@ Bug di `paper-designer/components/overlay.html` yang belum selesai difix (2026-0
 
 **Why:** engine convention adalah `[data-screen]` = full-page screen container, seharusnya jadi Figma frame terpisah.
 **How to apply:** waktu lanjut debug, mulai dari cek apakah `extractTree(screen2)` return null atau trees.length, baru cari solusi reveal yang truly generic.
+
+## Bug 3 — Comment system TIDAK track screen/state context
+
+Storage pin sekarang flat: `suxc:<pathname>` → array of pins dengan `{x, y, text}`. **Tidak ada info tentang `[data-screen]` aktif atau `[data-state]` aktif saat pin dibuat.**
+
+**Akibatnya:**
+- User komen di "Daftar Pengeluaran" → pin di (500, 300) anchor "Operasional"
+- User switch ke "Catat Pengeluaran" via JS — `.screen.active` pindah
+- Pin lama tetap render di (500, 300) tapi sekarang di atas form Catat → visual ambiguous, anchor text nggak sinkron
+- Submit output: "Operasional [komen]" tanpa info screen mana → designer DS bingung
+
+**Sama untuk `[data-states]`:** komen di state "empty" vs "loading" vs "default" tidak ter-track. Switch state pakai widget → pin lama keliatan di state baru, salah konteks.
+
+**Yang perlu dibangun:**
+
+1. **Capture context saat pin create:**
+   ```js
+   pin.screen = currentScreen();  // baca [data-screen].active atau closest [data-screen]
+   pin.state = currentState();    // baca [data-state] container saat klik
+   ```
+
+2. **Visibility filter saat render pin:** pin yang `pin.screen` ≠ active screen → hide (tapi tetap di storage). Sama untuk state.
+
+3. **Hook state switcher:** widget state switcher harus trigger re-render pins saat state ganti (event dispatch atau callback).
+
+4. **Migration storage existing:** pin lama tanpa `screen/state` field → treat sebagai "global" (tampil di semua screen) sampai user manually re-anchor, atau force re-do.
+
+5. **Submit output enrichment:**
+   ```
+   [Screen: Daftar Pengeluaran | State: empty]
+   - "tombol 'Catat Pengeluaran' kurang prominent"
+   
+   [Screen: Catat Pengeluaran | State: default]
+   - "field tanggal harusnya default hari ini"
+   ```
+
+**Why:** Paper Designer mostly generate multi-screen prototypes (full user flow). Tanpa fix ini, semua komen di prototype multi-screen ambiguous — workflow designer ↔ designer DS jadi broken.
+**How to apply:** mulai dari design schema pin baru (backward compat dengan pin tanpa screen/state), implement currentScreen/currentState helper, modify create+render+submit flow.
