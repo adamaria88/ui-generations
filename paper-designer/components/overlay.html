@@ -781,6 +781,7 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
       return;}
     if(typing(ev.target))return;
     if(FLOW&&(ev.code==='Space'||ev.key===' ')){spaceDown=true;ev.preventDefault();return;}
+    if(ev.ctrlKey||ev.metaKey||ev.altKey)return; // biarkan browser handle (Cmd+S, Cmd+C, dll)
     var k=ev.key.toLowerCase();
     if(k==='c'){ev.preventDefault();setOn(!on);}
     else if(k==='l'){ev.preventDefault();setPanel(panel.classList.contains('closed'));}
