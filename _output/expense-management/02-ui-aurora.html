@@ -59,8 +59,31 @@
 
   /* ── Zone 3: Main Area ── */
   .main-area{flex:1;overflow-y:auto;padding:var(--spacing-2xl);background:var(--color-surface-light-platform);min-width:0}
-  .screen{display:none;flex-direction:column;gap:var(--spacing-md)}
-  .screen.active{display:flex}
+  /* APPROVED-CUSTOM: .screen — page-level container; uses Aurora --speed-fast + --ease-out-regular for fade.
+     Smooth nav per smooth-transitions-rule: fade-out current 160ms → swap → fade-in target 200ms. */
+  .screen{display:none;flex-direction:column;gap:var(--spacing-md);
+    opacity:0;transition:opacity 200ms var(--ease-out-regular,cubic-bezier(.16,1,.3,1))}
+  .screen.active{display:flex;opacity:1}
+  .screen.fade-out{opacity:0}
+
+  /* APPROVED-CUSTOM: post-mutation row highlight (smooth-transitions-rule §1.2.5).
+     New row dapat success-bg sebentar, fade out ke transparent dalam 2s. */
+  .row--just-added{background:var(--color-state-success-bg,#e8f7ed) !important;
+    animation:row-fade-highlight 2s ease-out forwards}
+  @keyframes row-fade-highlight{
+    0%{background-color:var(--color-state-success-bg,#e8f7ed)}
+    100%{background-color:transparent}
+  }
+
+  /* APPROVED-CUSTOM: row delete fade+collapse (smooth-transitions-rule §1.3).
+     Row di-fade out + slide kiri 200ms sebelum di-remove dari DOM. */
+  .row--removing{transition:opacity 200ms var(--ease-in-regular,cubic-bezier(.4,0,1,1)),
+    transform 200ms var(--ease-in-regular,cubic-bezier(.4,0,1,1));
+    opacity:0;transform:translateX(-12px)}
+
+  /* APPROVED-CUSTOM: spinner inline untuk button loading state (smooth-transitions-rule §1.2.1) */
+  .spin{display:inline-block;vertical-align:middle;animation:btn-spin 600ms linear infinite;margin-right:6px}
+  @keyframes btn-spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 
   /* AURORA: au-breadcrumb
      Source: aurora/projects/ui/breadcrumb/breadcrumb.component.scss L1-60
@@ -76,6 +99,19 @@
   .breadcrumb .sep{background-color:var(--color-light-grey-40);border-radius:var(--radius-full);
     width:var(--spacing-xs);height:var(--spacing-xs);display:inline-block}
   .breadcrumb .current{color:var(--color-text-primary);font-weight:var(--text-body-weight-semibold)}
+  /* AURORA: au-breadcrumb-back-button
+     Source: aurora/projects/ui/breadcrumb/breadcrumb.component.scss L13-26
+     Spec: bg transparent, flex center, gap sm, padding sm, color light-blue-50, font-weight semibold, border 0
+     WAJIB ada di setiap Detail / child page (back action paling natural untuk user) */
+  .bc-back{display:flex;align-items:center;justify-content:center;gap:var(--spacing-sm);
+    background:transparent;border:0;cursor:pointer;
+    padding:var(--spacing-sm) var(--spacing-sm);border-radius:var(--radius-sm);
+    color:var(--color-light-blue-50);
+    font-family:var(--text-body-font-family);font-size:var(--text-body-size-md);
+    font-weight:var(--text-body-weight-semibold);
+    transition:background var(--speed-fast) var(--ease-out-regular)}
+  .bc-back:hover{background:var(--color-light-grey-15)}
+  .bc-back svg{width:18px;height:18px;color:currentColor}
 
   /* APPROVED-CUSTOM (layout helper): page-head wrapper (title + subtitle stack) */
   .page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--spacing-lg);flex-wrap:wrap}
@@ -135,12 +171,12 @@
   .btn:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
 
   /* APPROVED-CUSTOM (layout helper, whitelisted): page-level action bar wrapper */
-  .action-bar{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-md);flex-wrap:wrap}
+  .action-bar{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-md);flex-wrap:wrap;
+    margin-bottom:10px}
 
-  /* APPROVED-CUSTOM (layout helper): in-card toolbar wrapper */
+  /* APPROVED-CUSTOM (layout helper): toolbar — testing mode (no border, no padding) */
   .tbl-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-md);
-    padding:var(--spacing-md) var(--spacing-lg);background:var(--color-surface-light-default);
-    border-bottom:1px solid var(--color-border-default);flex-wrap:wrap}
+    background:transparent;flex-wrap:wrap}
 
   /* AURORA: au-form-field (search variant via auFieldSuffix slot)
      Source: aurora/projects/ui/form-field/form-field.component.scss L1-50
@@ -158,10 +194,19 @@
   /* AURORA: au-icon search-sm (auFieldSuffix slot) */
   .search svg{width:18px;height:18px;color:var(--color-text-secondary);flex-shrink:0;margin-left:var(--spacing-sm)}
 
+  /* APPROVED-CUSTOM: list-card wrapper — bungkus toolbar + table + pagination dalam 1 white card.
+     Padding xl (20px), gap xl (20px). Background white, border, radius.
+     Per user spec 2026-05-20: <div bg:#fff padding:20px> wraps toolbar + table + pagination */
+  .list-card{background:var(--color-surface-light-default);
+    border:1px solid var(--color-border-default);border-radius:var(--radius-md);
+    padding:var(--spacing-xl);display:flex;flex-direction:column;gap:var(--spacing-xl)}
+
   /* AURORA: au-table (wrapper)
      Source: aurora/projects/ui/table/table.component.scss
-     Spec adapted: bordered card, radius-md, overflow hidden for sticky cols */
-  .table-wrap{background:var(--color-surface-light-default);border:1px solid var(--color-border-default);
+     Spec adapted: bordered card, radius-md, overflow hidden for sticky cols
+     (di dalam list-card jadi nested card visual per user spec 2026-05-20) */
+  .table-wrap{background:var(--color-surface-light-default);
+    border:1px solid var(--color-border-default);
     border-radius:var(--radius-md);overflow:hidden}
   .table-scroll{overflow-x:auto;overflow-y:visible;scrollbar-width:none;-ms-overflow-style:none}
   .table-scroll::-webkit-scrollbar{display:none;height:0;width:0}
@@ -318,6 +363,47 @@
     border-radius:var(--radius-md);padding:var(--spacing-4xl)}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-xl) var(--spacing-2xl)}
 
+  /* APPROVED-CUSTOM: Detail page layout — info-card grid + dl/dt/dd */
+  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-2xl);align-items:start}
+  .detail-grid .full{grid-column:1 / -1}
+  .info-card{background:var(--color-surface-light-default);border:1px solid var(--color-border-default);
+    border-radius:var(--radius-md);padding:var(--spacing-2xl)}
+  .info-card h3{font-family:var(--text-heading-font-family);font-size:16px;line-height:24px;
+    font-weight:var(--text-body-weight-bold);color:var(--color-text-primary);
+    margin:0 0 var(--spacing-lg) 0;padding-bottom:var(--spacing-md);border-bottom:1px solid var(--color-border-default)}
+  .info-card .ic-actions{display:flex;justify-content:space-between;align-items:center;
+    margin:0 0 var(--spacing-lg) 0;padding-bottom:var(--spacing-md);border-bottom:1px solid var(--color-border-default)}
+  .info-card .ic-actions h3{margin:0;padding:0;border:0}
+  .info-list{display:grid;grid-template-columns:140px 1fr;row-gap:var(--spacing-md);column-gap:var(--spacing-lg);margin:0}
+  .info-list dt{color:var(--color-text-secondary);font-size:var(--text-body-size-md)}
+  .info-list dd{margin:0;color:var(--color-text-primary);font-size:var(--text-body-size-md);
+    font-weight:var(--text-body-weight-semibold);word-break:break-word}
+  .info-list dd.num{font-variant-numeric:tabular-nums}
+  .info-list dd.muted{color:var(--color-text-secondary);font-weight:var(--text-body-weight-regular)}
+  /* Lampiran list items */
+  .att-list{display:flex;flex-direction:column;gap:var(--spacing-sm);margin:0 0 var(--spacing-md) 0;padding:0;list-style:none}
+  .att-item{display:flex;align-items:center;gap:var(--spacing-md);padding:var(--spacing-sm) var(--spacing-md);
+    background:var(--color-surface-light-platform);border:1px solid var(--color-border-default);border-radius:var(--radius-sm)}
+  .att-item__icon{width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;
+    background:var(--color-light-brand-15);border-radius:var(--radius-sm);color:var(--color-light-blue-50)}
+  .att-item__meta{flex:1;min-width:0}
+  .att-item__name{font-size:var(--text-body-size-md);font-weight:var(--text-body-weight-semibold);
+    color:var(--color-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .att-item__sub{font-size:var(--text-body-size-sm);color:var(--color-text-muted)}
+  .att-item__acts{display:flex;gap:var(--spacing-xs)}
+  .att-item__act{background:transparent;border:0;width:32px;height:32px;border-radius:var(--radius-sm);
+    color:var(--color-text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:background-color var(--speed-fast) var(--ease-out-regular)}
+  .att-item__act:hover{background:var(--color-border-default);color:var(--color-text-primary)}
+  .att-empty{color:var(--color-text-muted);font-size:var(--text-body-size-md);text-align:center;padding:var(--spacing-lg) 0}
+
+  /* Timeline (Riwayat) */
+  .timeline{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:var(--spacing-lg)}
+  .timeline li{display:grid;grid-template-columns:auto 1fr;gap:var(--spacing-md);align-items:flex-start}
+  .tl-dot{width:10px;height:10px;border-radius:50%;background:var(--color-light-blue-50);margin-top:6px}
+  .tl-meta .tl-title{font-size:var(--text-body-size-md);font-weight:var(--text-body-weight-semibold);color:var(--color-text-primary)}
+  .tl-meta .tl-sub{font-size:var(--text-body-size-sm);color:var(--color-text-muted)}
+
   /* AURORA: au-form-field
      Source: aurora/projects/ui/form-field/form-field.component.scss L1-50
      Spec: wrapper (label+control+hint stacked), control = grid prefix|input|suffix
@@ -373,20 +459,49 @@
   .empty p{font-size:var(--text-body-size-sm);color:var(--color-text-secondary);max-width:340px}
 
   /* AURORA: au-dialog (drag-wrapper)
-     Source: aurora/projects/ui/dialog/dialog-content.component.scss
-     Spec: bg surface-light-default, radius lg (12px), shadow 0 8px 24px rgb(0 0 0 / 15%)
-     Note: prototype uses simpler scrim+dialog markup (no drag handle / bottom-sheet variant) */
-  .scrim{position:fixed;inset:0;background:rgb(19 63 93 / 45%);display:none;align-items:center;justify-content:center;z-index:50}
+     Source: aurora/projects/ui/dialog/dialog.component.scss + dialog-content.component.scss + dialog-actions.component.scss + dialog-overlay.scss
+     Spec: SECTIONED (header / content / actions) — bukan centered+illustration.
+       Header: title left + close X right, border-bottom subtle, min-height 56px, padding lg xl
+       Content: padding lg xl, overflow auto max-h 65vh, LEFT-aligned
+       Actions: padding lg xl, border-top subtle, buttons RIGHT-aligned with gap md
+       Backdrop: rgb(0 0 0 / 50%) */
+  .scrim{position:fixed;inset:0;background:rgb(0 0 0 / 50%);display:none;align-items:center;justify-content:center;z-index:50;
+    transition:opacity 200ms cubic-bezier(0,0,.2,1)}
   .scrim.open{display:flex}
-  .dialog{background:var(--color-surface-light-default);border-radius:var(--radius-lg);
-    box-shadow:0 8px 24px rgb(0 0 0 / 15%);width:420px;max-width:calc(100vw - 32px);padding:var(--spacing-2xl);text-align:center;
-    font-family:var(--text-body-font-family);color:var(--color-text-primary)}
-  /* APPROVED-CUSTOM (decorative wrapper inside au-dialog): illustration */
-  .dialog__ill{width:64px;height:64px;margin:0 auto var(--spacing-md);color:var(--color-action-destructive-bg)}
-  .dialog h3{font-size:18px;font-weight:var(--text-body-weight-bold);color:var(--color-text-primary)}
-  .dialog p{font-size:var(--text-body-size-sm);color:var(--color-text-secondary);margin-top:6px}
-  /* AURORA: au-dialog-actions */
-  .dialog__actions{display:flex;gap:var(--spacing-md);justify-content:center;margin-top:var(--spacing-xl)}
+  .dialog{background:var(--color-surface-light-default);
+    border:1px solid var(--color-border-default); /* outer stroke per user reference 2026-05-20 */
+    border-radius:var(--radius-lg);
+    box-shadow:0 8px 24px rgb(0 0 0 / 15%);width:500px;max-width:calc(100vw - 32px);
+    max-height:calc(100vh - 80px);display:flex;flex-direction:column;
+    font-family:var(--text-body-font-family);color:var(--color-text-primary);position:relative}
+  /* AURORA: au-dialog-header (sectioned spec L61-68) */
+  .dialog__header{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-lg);
+    min-height:56px;padding:var(--spacing-lg) var(--spacing-xl);
+    border-bottom:1px solid var(--color-border-default);flex-shrink:0}
+  /* AURORA: au-dialog-title directive */
+  .dialog__title{margin:0;padding:0;font-family:var(--text-heading-font-family);
+    font-size:18px;font-weight:var(--text-body-weight-bold);line-height:26px;
+    color:var(--color-text-primary);text-align:left;flex:1;min-width:0}
+  /* AURORA: au-dialog-close (close X button, 32×32, top-right) */
+  .dialog__close{display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    width:32px;height:32px;padding:0;margin:0;border:0;background:transparent;cursor:pointer;
+    color:var(--color-text-secondary);border-radius:var(--radius-sm);
+    transition:background-color 200ms ease,color 200ms ease}
+  .dialog__close:hover{background:var(--color-surface-light-raised,var(--color-light-grey-15));color:var(--color-text-primary)}
+  .dialog__close svg{width:18px;height:18px}
+  /* AURORA: au-dialog-content — production: text dark blue (text-primary), size 16px, generous padding */
+  .dialog__content{padding:var(--spacing-xl) var(--spacing-xl);overflow:auto;max-height:65vh;text-align:left}
+  .dialog__content>:first-child{margin-top:0}
+  .dialog__content>:last-child{margin-bottom:0}
+  .dialog__content p{font-size:16px;color:var(--color-text-primary);
+    margin:0 0 var(--spacing-md) 0;line-height:24px;font-weight:var(--text-body-weight-regular)}
+  .dialog__content p:last-child{margin-bottom:0}
+  .dialog__content p b{font-weight:var(--text-body-weight-semibold)}
+  /* AURORA: au-dialog-actions (border-top, padding lg xl, flex column gap md) */
+  .dialog__actions{display:flex;flex-direction:column;gap:var(--spacing-md);
+    padding:var(--spacing-lg) var(--spacing-xl);border-top:1px solid var(--color-border-default);flex-shrink:0}
+  /* AURORA: au-dialog-actions__buttons (RIGHT-aligned per modal mode) */
+  .dialog__actions__buttons{display:flex;gap:var(--spacing-md);align-items:center;justify-content:flex-end}
 
   /* OVERRIDE: au-toast (width + radius)
      Aurora spec: aurora/projects/ui/toast/toast.component.scss L1-10 → width 450px, radius lg (12px)
@@ -409,30 +524,42 @@
 
   /* AURORA: au-pagination
      Source: aurora/projects/ui/pagination/pagination.component.scss L1-50
-     Spec: flex container, gap xs. Children: pagination-icon (chevron), pagination-number (page), pagination-label
-     Adapted: prototype uses 3-group layout center per production (label + nav + info) */
-  .pagination{display:flex;align-items:center;justify-content:center;gap:var(--spacing-2xl);
-    padding:var(--spacing-lg);font-size:var(--text-body-size-md);color:var(--color-text-secondary);flex-wrap:wrap}
-  /* AURORA: au-pagination-dropdown */
-  .pg-rows{display:flex;align-items:center;gap:var(--spacing-sm)}
-  .pg-rows select{height:32px;padding:4px 24px 4px 10px;border:1px solid var(--color-light-grey-40);
-    border-radius:var(--radius-sm);font-family:inherit;font-size:var(--text-body-size-sm);color:var(--color-text-primary);
-    background:var(--color-neutral-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3.5 5.5L7 9l3.5-3.5' stroke='%23718c9e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 8px center;appearance:none;outline:none;cursor:pointer}
+     Spec PRODUCTION (locked 2026-05-20 — match Paper.id production):
+       - Container: flex justify-end gap-lg (semua block right-aligned ke end card, BUKAN center)
+       - Group 1 (Jumlah Baris): label + BORDERLESS dropdown (font-weight semibold, no border box)
+       - Group 2 (Nav): chevron prev + page numbers + chevron next (gap xs, tight)
+       - Group 3 (Info): "Menampilkan X hingga Y dari Z entri" text-secondary
+       - Padding container: lg
+       - All items aligned to same baseline */
+  .pagination{display:flex;align-items:center;justify-content:flex-end;gap:var(--spacing-lg);
+    padding:0;font-size:var(--text-body-size-md);
+    color:var(--color-text-secondary);flex-wrap:wrap}
+  /* AURORA: au-pagination-dropdown — production = BORDERLESS, plain text + chevron */
+  .pg-rows{display:flex;align-items:center;gap:var(--spacing-sm);color:var(--color-text-primary)}
+  .pg-rows select{height:auto;padding:4px 20px 4px 4px;border:0;border-radius:var(--radius-sm);
+    font-family:inherit;font-size:var(--text-body-size-md);font-weight:var(--text-body-weight-semibold);
+    color:var(--color-text-primary);background:transparent;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3.5 5.5L7 9l3.5-3.5' stroke='%23133f5d' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 0 center;
+    appearance:none;outline:none;cursor:pointer}
+  .pg-rows select:hover{background-color:var(--color-light-grey-15)}
   .pg-nav{display:flex;align-items:center;gap:var(--spacing-xs)}
   /* AURORA: au-pagination-icon (chevron, no border, transparent bg, hover light-grey-25) */
   .pg-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;
-    background:transparent;border-radius:var(--radius-sm);cursor:pointer;color:var(--color-text-secondary);padding:0;
-    margin-top:var(--spacing-xs)}
+    background:transparent;border-radius:var(--radius-sm);cursor:pointer;color:var(--color-text-secondary);padding:0}
   .pg-btn:hover:not(:disabled){background:var(--color-light-grey-15);color:var(--color-text-primary)}
   .pg-btn:disabled{color:var(--color-text-muted);cursor:not-allowed;background:transparent;pointer-events:none}
   .pg-btn svg{width:18px;height:18px}
-  .pg-pages{display:flex;align-items:center;gap:2px;margin:0 var(--spacing-xs)}
-  /* AURORA: au-pagination-number (page button) */
-  .pg-page{min-width:32px;height:32px;padding:var(--spacing-xs) var(--spacing-md);display:flex;align-items:center;justify-content:center;
-    border:0;background:transparent;border-radius:var(--radius-sm);font-size:var(--text-body-size-md);color:var(--color-text-primary);cursor:pointer}
-  .pg-page:hover{background:var(--color-light-grey-15)}
-  /* AURORA: au-pagination-number.selected — light-blue-20 bg, brand-50 text, bold */
-  .pg-page.active{background:var(--color-light-brand-15);color:var(--color-text-primary);font-weight:var(--text-body-weight-bold)}
+  .pg-pages{display:flex;align-items:center;gap:2px}
+  /* AURORA: au-pagination-number (page button) — tighter padding per production */
+  .pg-page{min-width:32px;height:32px;padding:var(--spacing-xs) var(--spacing-sm);display:flex;align-items:center;justify-content:center;
+    border:0;background:transparent;border-radius:var(--radius-sm);
+    font-size:var(--text-body-size-md);color:var(--color-text-primary);cursor:pointer;
+    transition:background var(--speed-fast) var(--ease-out-regular)}
+  .pg-page:hover:not(.active){background:var(--color-light-grey-15)}
+  /* AURORA: au-pagination-number.selected — production override: light-brand-15 bg + text-primary bold */
+  .pg-page.active{background:var(--color-light-brand-15);color:var(--color-text-primary);
+    font-weight:var(--text-body-weight-bold);cursor:default}
   .pg-ell{padding:0 6px;color:var(--color-text-muted);user-select:none}
 
   /* AURORA: au-skeleton
@@ -1112,18 +1239,19 @@ function toggleSubmenu(menuId) {
         <div data-states>
 
           <div data-state="default">
-            <div class="table-wrap" id="tableWrap">
-              <!-- In-card toolbar: search bar kiri + action impact-table (Unduh) kanan -->
-              <div class="tbl-toolbar">
-                <div class="search">
-                  <input type="text" placeholder="Cari pengeluaran" aria-label="Cari pengeluaran">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M3 10.3281C3 13.9793 5.95991 16.9392 9.61113 16.9392C11.007 16.9392 12.7607 16.1029 13.8278 15.3645C9.19288 13.8056 10.6744 6.22244 3.81968 7.1371C3.2973 8.08318 3 9.17091 3 10.3281Z" fill="currentColor" fill-opacity="0.15"/><path d="M21 21L15.0001 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C12.2136 3 14.1872 4.02748 15.4699 5.63153" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </div>
-                <button class="btn btn--tertiary" title="Unduh data tabel">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  Unduh
-                </button>
+            <!-- LIST CARD WRAP: bungkus toolbar + table + pagination dalam 1 white card -->
+            <div class="list-card">
+            <div class="tbl-toolbar">
+              <div class="search">
+                <input type="text" placeholder="Cari pengeluaran" aria-label="Cari pengeluaran">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M3 10.3281C3 13.9793 5.95991 16.9392 9.61113 16.9392C11.007 16.9392 12.7607 16.1029 13.8278 15.3645C9.19288 13.8056 10.6744 6.22244 3.81968 7.1371C3.2973 8.08318 3 9.17091 3 10.3281Z" fill="currentColor" fill-opacity="0.15"/><path d="M21 21L15.0001 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C12.2136 3 14.1872 4.02748 15.4699 5.63153" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
+              <button class="btn btn--tertiary" title="Unduh data tabel">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Unduh
+              </button>
+            </div>
+            <div class="table-wrap" id="tableWrap">
               <div class="table-scroll">
               <table>
                 <thead>
@@ -1165,27 +1293,29 @@ function toggleSubmenu(menuId) {
                 <tbody id="tbody"></tbody>
               </table>
               </div>
-              <div class="pagination">
-                <div class="pg-rows">
-                  <span>Jumlah Baris:</span>
-                  <select id="pgSize" aria-label="Jumlah baris per halaman" onchange="renderRows()"><option>10</option><option>25</option><option>50</option><option>100</option></select>
-                </div>
-                <div class="pg-nav">
-                  <button class="pg-btn" aria-label="Sebelumnya"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></button>
-                  <div class="pg-pages">
-                    <button class="pg-page active">1</button>
-                    <button class="pg-page">2</button>
-                    <button class="pg-page">3</button>
-                    <button class="pg-page">4</button>
-                    <button class="pg-page">5</button>
-                    <span class="pg-ell">…</span>
-                    <button class="pg-page">24</button>
-                  </div>
-                  <button class="pg-btn" aria-label="Berikutnya"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></button>
-                </div>
-                <span id="pgInfo">Menampilkan 1 hingga 10 dari 233 entri</span>
-              </div>
             </div>
+            <!-- Pagination DI LUAR table-wrap card (sibling element) -->
+            <div class="pagination">
+              <div class="pg-rows">
+                <span>Jumlah Baris:</span>
+                <select id="pgSize" aria-label="Jumlah baris per halaman" onchange="renderRows()"><option>10</option><option>25</option><option>50</option><option>100</option></select>
+              </div>
+              <div class="pg-nav">
+                <button class="pg-btn" aria-label="Sebelumnya"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></button>
+                <div class="pg-pages">
+                  <button class="pg-page active">1</button>
+                  <button class="pg-page">2</button>
+                  <button class="pg-page">3</button>
+                  <button class="pg-page">4</button>
+                  <button class="pg-page">5</button>
+                  <span class="pg-ell">…</span>
+                  <button class="pg-page">24</button>
+                </div>
+                <button class="pg-btn" aria-label="Berikutnya"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></button>
+              </div>
+              <span id="pgInfo">Menampilkan 1 hingga 10 dari 233 entri</span>
+            </div>
+            </div><!-- /.list-card -->
           </div>
 
           <div data-state="empty">
@@ -1239,15 +1369,15 @@ function toggleSubmenu(menuId) {
         </div>
       </section>
 
-      <!-- ============ SCREEN 2: FORM CATAT PENGELUARAN ============ -->
+      <!-- ============ SCREEN 2: FORM CATAT / UBAH PENGELUARAN ============ -->
       <section class="screen" data-screen="Catat Pengeluaran">
         <div class="breadcrumb">
           <a onclick="goList()">Pengeluaran</a>
           <span class="sep" aria-hidden="true"></span>
-          <span class="current">Catat Pengeluaran</span>
+          <span class="current" id="bcCurrentForm">Catat Pengeluaran</span>
         </div>
         <div class="page-head">
-          <div class="page-title">Catat Pengeluaran</div>
+          <div class="page-title" id="formTitle">Catat Pengeluaran</div>
         </div>
 
         <div class="form-card">
@@ -1274,8 +1404,8 @@ function toggleSubmenu(menuId) {
             </div>
             <div class="field" id="fld-jml">
               <label class="label" for="f-jml">Jumlah<span class="req">*</span></label>
-              <input class="ctrl" id="f-jml" type="text" inputmode="numeric" placeholder="Rp 0" style="text-align:right">
-              <div class="hint">Pengeluaran ≥ Rp 5.000.000 perlu persetujuan atasan.</div>
+              <input class="ctrl" id="f-jml" type="text" inputmode="numeric" placeholder="0" style="text-align:right">
+              <div class="hint">Pengeluaran ≥ Rp 5,000,000 perlu persetujuan atasan.</div>
               <div class="err">⚠ Jumlah belum diisi</div>
             </div>
             <div class="field">
@@ -1315,19 +1445,168 @@ function toggleSubmenu(menuId) {
         </div>
       </section>
 
+      <!-- ============ SCREEN 3: DETAIL PENGELUARAN ============ -->
+      <section class="screen" data-screen="Detail Pengeluaran">
+        <div class="breadcrumb">
+          <button class="bc-back" onclick="goList()" aria-label="Kembali">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Kembali
+          </button>
+          <a onclick="goList()">Pengeluaran</a>
+          <span class="sep" aria-hidden="true"></span>
+          <span class="current" id="bcDetailRef">EXP/2026/0000</span>
+        </div>
+        <div class="page-head">
+          <div>
+            <div class="page-title" id="detailTitle">Detail Pengeluaran</div>
+            <div class="page-sub" id="detailSub">Dibuat oleh — pada —</div>
+          </div>
+          <div class="action-bar" style="margin-left:auto">
+            <button class="btn btn--tertiary-plain" onclick="toggleDetailMenu(this)" aria-haspopup="menu" id="detailMenuBtn">
+              Tindakan
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="row-act__menu" id="detailMenu">
+              <div class="row-act__item" id="dm-download"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Unduh Bukti</div>
+              <div class="row-act__item" id="dm-lampiran"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.34 3.34 0 014.72 4.72l-9.2 9.19a1.67 1.67 0 01-2.36-2.36l8.49-8.48" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Tambah Lampiran</div>
+              <div class="row-act__sep"></div>
+              <div class="row-act__item" id="dm-view"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>Lihat Detail</div>
+              <div class="row-act__item row-act__item--danger" id="dm-delete"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 4h4a1 1 0 011 1v2H9V5a1 1 0 011-1zM6 7l1 13a2 2 0 002 2h6a2 2 0 002-2l1-13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Hapus</div>
+            </div>
+            <button class="btn btn--secondary" id="detailEditBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M17 3l4 4-11 11H6v-4L17 3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Ubah
+            </button>
+          </div>
+        </div>
+
+        <div class="detail-grid">
+          <!-- Card 1: Informasi Umum.
+               Rule (locked): label cuma kalau value AMBIGU. Tanggal & Penerima sudah ada di header
+               (page title + subtitle) → label redundant → drop. Sisanya tetap pakai label karena
+               value tanpa konteks bisa bikin user bingung (mis. "BCA - 2039xxxx" — akun apa?). -->
+          <div class="info-card">
+            <h3>Informasi Umum</h3>
+            <dl class="info-list">
+              <dt>Kategori</dt><dd id="d-kat">—</dd>
+              <dt>Metode</dt><dd id="d-met">—</dd>
+              <dt>Akun Bank</dt><dd id="d-akun">—</dd>
+              <dt>No. Referensi</dt><dd class="muted" id="d-ref">—</dd>
+              <dt>Status</dt><dd id="d-st">—</dd>
+            </dl>
+          </div>
+
+          <!-- Card 2: Ringkasan Jumlah -->
+          <div class="info-card">
+            <h3>Ringkasan Jumlah</h3>
+            <dl class="info-list">
+              <dt>Jumlah</dt><dd class="num" id="d-jml">—</dd>
+              <dt>Pajak</dt><dd class="num" id="d-pajak">—</dd>
+              <dt>Total</dt><dd class="num" id="d-total" style="font-size:18px">—</dd>
+            </dl>
+          </div>
+
+          <!-- Card 3: Lampiran (full row) -->
+          <div class="info-card full">
+            <div class="ic-actions">
+              <h3>Lampiran</h3>
+              <button class="btn btn--tertiary-plain" onclick="openLampiran()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Tambah Lampiran
+              </button>
+            </div>
+            <ul class="att-list" id="d-attList"></ul>
+            <div class="att-empty" id="d-attEmpty" style="display:none">Belum ada lampiran untuk pengeluaran ini.</div>
+          </div>
+
+          <!-- Card 4: Riwayat (full row) -->
+          <div class="info-card full">
+            <h3>Riwayat</h3>
+            <ul class="timeline" id="d-timeline">
+              <li><div class="tl-dot"></div><div class="tl-meta"><div class="tl-title">Pengeluaran dibuat</div><div class="tl-sub">Adam A. — 18 Mei 2026 09:42</div></div></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 </div>
 
-<!-- Confirmation Modal: buang perubahan -->
+<!-- AURORA Dialog (sectioned): Buang perubahan? -->
 <div class="scrim" id="confirmScrim">
   <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
-    <svg class="dialog__ill" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 7v6M12 16v.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    <h3 id="cfTitle">Buang perubahan?</h3>
-    <p>Data yang sudah Anda isi belum tersimpan dan akan hilang. Tindakan ini tidak bisa dibatalkan.</p>
+    <header class="dialog__header">
+      <h2 class="dialog__title" id="cfTitle">Buang perubahan?</h2>
+      <button class="dialog__close" onclick="closeConfirm()" aria-label="Tutup">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </header>
+    <div class="dialog__content">
+      <p>Data yang sudah Anda isi belum tersimpan dan akan hilang. Tindakan ini tidak bisa dibatalkan.</p>
+    </div>
     <div class="dialog__actions">
-      <button class="btn btn--secondary" id="cfCancel" onclick="closeConfirm()">Batal</button>
-      <button class="btn btn--destructive" onclick="discardChanges()">Buang Perubahan</button>
+      <div class="dialog__actions__buttons">
+        <button class="btn btn--secondary" id="cfCancel" onclick="closeConfirm()">Batal</button>
+        <button class="btn btn--destructive" onclick="discardChanges()">Buang Perubahan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AURORA Dialog (sectioned): Hapus pengeluaran? (destructive) -->
+<div class="scrim" id="delScrim">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlTitle">
+    <header class="dialog__header">
+      <h2 class="dialog__title" id="dlTitle">Hapus pengeluaran ini?</h2>
+      <button class="dialog__close" onclick="closeDelete()" aria-label="Tutup">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </header>
+    <div class="dialog__content">
+      <p id="dlBody">Data pengeluaran <b id="dlRef">EXP/2026/0000</b> akan dihapus permanen dan tidak bisa dipulihkan.</p>
+    </div>
+    <div class="dialog__actions">
+      <div class="dialog__actions__buttons">
+        <button class="btn btn--secondary" id="dlCancel" onclick="closeDelete()">Batal</button>
+        <button class="btn btn--destructive" id="dlConfirm" onclick="confirmDelete()">
+          <span id="dlConfirmTxt">Hapus</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AURORA Dialog (sectioned): Modal Form Tambah Lampiran -->
+<div class="scrim" id="attScrim">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="atTitle">
+    <header class="dialog__header">
+      <h2 class="dialog__title" id="atTitle">Tambah Lampiran</h2>
+      <button class="dialog__close" onclick="closeLampiran()" aria-label="Tutup">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </header>
+    <div class="dialog__content">
+      <p>Unggah bukti / struk untuk pengeluaran <b id="atRef">EXP/2026/0000</b>.</p>
+      <div class="field" style="margin-top:var(--spacing-lg)">
+        <label class="label" for="at-file">File</label>
+        <div class="upload" onclick="document.getElementById('at-file').click()" style="cursor:pointer">
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.34 3.34 0 014.72 4.72l-9.2 9.19a1.67 1.67 0 01-2.36-2.36l8.49-8.48" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="at-fileLabel">Klik untuk pilih file — JPG / PNG / PDF (maks 5MB)</span></div>
+        </div>
+        <input type="file" id="at-file" style="display:none" accept=".jpg,.jpeg,.png,.pdf" onchange="onAttFile(this)">
+      </div>
+      <div class="field">
+        <label class="label" for="at-note">Catatan (opsional)</label>
+        <input class="ctrl" id="at-note" type="text" placeholder="mis. Bukti transfer">
+      </div>
+    </div>
+    <div class="dialog__actions">
+      <div class="dialog__actions__buttons">
+        <button class="btn btn--secondary" onclick="closeLampiran()">Batal</button>
+        <button class="btn btn--primary" id="atSaveBtn" onclick="saveLampiran()">
+          <span id="atSaveTxt">Unggah</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -1335,7 +1614,7 @@ function toggleSubmenu(menuId) {
 <!-- Toast sukses -->
 <div class="toast" id="toast">
   <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#97cc56"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  <div><b>Pengeluaran berhasil dicatat</b><span id="toastSub">Pengeluaran baru sudah masuk ke daftar.</span></div>
+  <div><b id="toastTitle">Pengeluaran berhasil dicatat</b><span id="toastSub">Pengeluaran baru sudah masuk ke daftar.</span></div>
 </div>
 
 <script>
@@ -1346,15 +1625,20 @@ function toggleSubmenu(menuId) {
   var IC_PENCIL = '<svg viewBox="0 0 24 24" fill="none"><path d="M17 3l4 4-11 11H6v-4L17 3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   var IC_TRASH = '<svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 4h4a1 1 0 011 1v2H9V5a1 1 0 011-1zM6 7l1 13a2 2 0 002 2h6a2 2 0 002-2l1-13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-  var ROWACT = '<div class="row-act"><button class="row-act__btn" onclick="rowMenu(this)" aria-label="Aksi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/></svg></button>'
-   + '<div class="row-act__menu">'
-   + '<div class="row-act__item">'+IC_DOWNLOAD+'Unduh Bukti</div>'
-   + '<div class="row-act__item">'+IC_CLIP_M+'Tambah Lampiran</div>'
-   + '<div class="row-act__sep"></div>'
-   + '<div class="row-act__item">'+IC_EYE+'Lihat Detail</div>'
-   + '<div class="row-act__item">'+IC_PENCIL+'Ubah</div>'
-   + '<div class="row-act__item row-act__item--danger" onclick="alert(\'Confirmation Modal hapus (mock) — entity tersimpan = destructive, focus Cancel\')">'+IC_TRASH+'Hapus</div>'
-   + '</div></div>';
+  // ROWACT per-row template (per row ref di-bake supaya tiap handler tau target).
+  // Tiap menu item WAJIB ada handler — complete-by-default-rule (no dead buttons).
+  function rowActHTML(ref){
+    var r = ref.replace(/'/g,"\\'");
+    return '<div class="row-act"><button class="row-act__btn" onclick="rowMenu(this)" aria-label="Aksi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/></svg></button>'
+     + '<div class="row-act__menu">'
+     + '<div class="row-act__item" onclick="downloadBukti(\''+r+'\')">'+IC_DOWNLOAD+'Unduh Bukti</div>'
+     + '<div class="row-act__item" onclick="openLampiran(\''+r+'\')">'+IC_CLIP_M+'Tambah Lampiran</div>'
+     + '<div class="row-act__sep"></div>'
+     + '<div class="row-act__item" onclick="viewDetail(\''+r+'\')">'+IC_EYE+'Lihat Detail</div>'
+     + '<div class="row-act__item" onclick="goEdit(\''+r+'\')">'+IC_PENCIL+'Ubah</div>'
+     + '<div class="row-act__item row-act__item--danger" onclick="openDelete(\''+r+'\')">'+IC_TRASH+'Hapus</div>'
+     + '</div></div>';
+  }
   var CLIP = '<svg class="ic-clip" viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.34 3.34 0 014.72 4.72l-9.2 9.19a1.67 1.67 0 01-2.36-2.36l8.49-8.48" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   var EXP = [
@@ -1378,7 +1662,8 @@ function toggleSubmenu(menuId) {
     var bukti = d.bukti>0 ? '<span class="muted att">'+CLIP+d.bukti+'</span>' : '<span class="muted">-</span>';
     var pajak = d.pajak>0 ? rp(d.pajak) : '<span class="muted">-</span>';
     // Row click = navigate ke View Detail (locked default — semua list page). Exclusion handled di rowClick().
-    return '<tr onclick="rowClick(event,\''+d.ref+'\')">'
+    // data-row-ref: untuk targeting row spesifik (highlight setelah add/edit, fade-out saat delete).
+    return '<tr data-row-ref="'+d.ref+'" onclick="rowClick(event,\''+d.ref+'\')">'
       + '<td class="col-chk"><input class="chk" type="checkbox" aria-label="Pilih baris" onclick="event.stopPropagation();syncAll()"></td>'
       + '<td class="col-exp"><button class="exp-btn" onclick="event.stopPropagation();toggleExpand(this)" aria-label="Perluas baris"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></td>'
       + '<td>'+d.tgl+'</td><td>'+d.kat+'</td><td>'+d.pen+'</td>'
@@ -1387,7 +1672,7 @@ function toggleSubmenu(menuId) {
       + '<td>'+bukti+'</td>'
       + '<td class="muted">'+d.ref+'</td><td class="num">'+pajak+'</td><td class="num">'+rp(d.total)+'</td>'
       + '<td class="muted">'+d.akun+'</td><td>'+d.by+'</td>'
-      + '<td class="col-act stk-r">'+ROWACT+'</td></tr>';
+      + '<td class="col-act stk-r">'+rowActHTML(d.ref)+'</td></tr>';
   }
   // Row click handler — locked default semua list page (klik row = view detail, kecuali area exclusion)
   function rowClick(event, rowId){
@@ -1395,11 +1680,265 @@ function toggleSubmenu(menuId) {
     if(event.target.closest('.col-chk,.col-exp,.row-act,input,button')) return;
     viewDetail(rowId);
   }
+  // CURRENT_DETAIL: ref pengeluaran yang sedang dibuka di Detail screen.
+  // Dipakai untuk Edit/Delete/Lampiran/Unduh handler dari Detail screen.
+  var CURRENT_DETAIL = null;
+
+  // Smooth navigation ke Detail (smooth-transitions-rule §1.1)
+  // Klik row → buka Detail screen. Populate semua field dari data EXP[].
   function viewDetail(rowId){
-    // Demo: prototype belum punya screen Detail Pengeluaran terpisah → fallback toast.
-    // Pada implementasi production: navigate ke /pengeluaran/<id> atau show('Detail Pengeluaran').
-    toast('Membuka detail pengeluaran '+rowId+'…');
+    var row = EXP.find(function(r){ return r.ref===rowId; });
+    if(!row){ toast('Pengeluaran tidak ditemukan'); return; }
+    CURRENT_DETAIL = rowId;
+    // Helper safe-set: skip kalau element tidak ada di DOM (mis. dt Tanggal/Penerima sudah dihapus
+    // karena info redundant dgn page header — label disambiguation rule).
+    function setText(id, val){ var el=document.getElementById(id); if(el) el.textContent=val; }
+    function setHTML(id, val){ var el=document.getElementById(id); if(el) el.innerHTML=val; }
+    setText('bcDetailRef', row.ref);
+    setText('detailTitle', row.pen);
+    setText('detailSub', 'Dibuat oleh '+row.by+' — '+row.tgl);
+    setText('d-tgl', row.tgl);      // safe — element mungkin removed
+    setText('d-kat', row.kat);
+    setText('d-pen', row.pen);      // safe — element mungkin removed
+    setText('d-met', row.met);
+    setText('d-akun', row.akun);
+    setText('d-ref', row.ref);
+    setHTML('d-st', '<span class="badge '+badgeOf(row.st)+'">'+row.st+'</span>');
+    setText('d-jml', rp(row.jml));
+    setText('d-pajak', row.pajak>0 ? rp(row.pajak) : '—');
+    setText('d-total', rp(row.total));
+    renderAttList(row);
+    show('Detail Pengeluaran');
   }
+
+  function renderAttList(row){
+    var list = document.getElementById('d-attList');
+    var empty = document.getElementById('d-attEmpty');
+    if(row.bukti>0){
+      var items=[];
+      for(var i=1;i<=row.bukti;i++){
+        items.push('<li class="att-item">'
+          + '<div class="att-item__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.34 3.34 0 014.72 4.72l-9.2 9.19a1.67 1.67 0 01-2.36-2.36l8.49-8.48" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
+          + '<div class="att-item__meta"><div class="att-item__name">bukti-'+row.ref.split('/').pop()+'-'+i+'.pdf</div><div class="att-item__sub">PDF · 124 KB</div></div>'
+          + '<div class="att-item__acts">'
+          + '<button class="att-item__act" title="Unduh" onclick="downloadBukti(\''+row.ref+'\')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
+          + '</div></li>');
+      }
+      list.innerHTML = items.join('');
+      list.style.display='';
+      empty.style.display='none';
+    } else {
+      list.innerHTML='';
+      list.style.display='none';
+      empty.style.display='';
+    }
+  }
+
+  // EDIT FLOW (smooth-transitions-rule §2)
+  // Pre-fill form dari row data → switch ke Catat form (re-used sebagai Ubah).
+  function goEdit(rowId){
+    var row = EXP.find(function(r){ return r.ref===rowId; });
+    if(!row){ toast('Pengeluaran tidak ditemukan'); return; }
+    EDIT_ID = rowId;
+    // pre-fill form (Jumlah pakai formatted separator — number-input rule)
+    document.getElementById('f-tgl').value = '2026-05-19';
+    document.getElementById('f-kat').value = row.kat;
+    document.getElementById('f-pen').value = row.pen;
+    document.getElementById('f-jml').value = formatNumberInput(row.jml);
+    document.getElementById('f-met').value = row.met;
+    document.getElementById('f-akun').value = row.akun;
+    document.getElementById('f-desc').value = '';
+    document.querySelectorAll('.field--error').forEach(function(f){f.classList.remove('field--error')});
+    updateFormMode();
+    captureFormSnapshot(); // snapshot AFTER pre-fill — initial = row values, dirty = user modifies
+    show('Catat Pengeluaran');
+  }
+
+  // NUMBER INPUT FORMATTER (locked rule lintas project)
+  // Setiap input jumlah WAJIB pakai separator ribuan saat user ngetik.
+  // Format: 5,000,000 (comma per user spec 2026-05-20). Parsing tetap strip non-digit.
+  // Cara pakai: addNumberSeparator('f-jml') → otomatis listen 'input' event dan re-format.
+  function formatNumberInput(v){
+    var n = String(v==null?'':v).replace(/[^0-9]/g,'');
+    if(!n) return '';
+    return Number(n).toLocaleString('en-US'); // 5000000 → "5,000,000"
+  }
+  function addNumberSeparator(id){
+    var el = document.getElementById(id); if(!el) return;
+    el.addEventListener('input', function(){
+      var oldVal = el.value;
+      var caretBefore = el.selectionStart || 0;
+      var digitsBefore = (oldVal.slice(0, caretBefore).match(/\d/g)||[]).length;
+      var newVal = formatNumberInput(oldVal);
+      el.value = newVal;
+      // restore caret: hitung posisi setelah digit ke-N di string baru
+      if(document.activeElement===el && newVal){
+        var pos=0, seen=0;
+        while(pos<newVal.length && seen<digitsBefore){
+          if(/\d/.test(newVal[pos])) seen++;
+          pos++;
+        }
+        try{ el.setSelectionRange(pos,pos); }catch(e){}
+      }
+    });
+    // format kalau ada initial value
+    if(el.value) el.value = formatNumberInput(el.value);
+  }
+
+  // DELETE FLOW (smooth-transitions-rule §3 — destructive, paperverse-design-decisions)
+  var DELETE_TARGET = null;
+  function openDelete(rowId){
+    DELETE_TARGET = rowId;
+    document.getElementById('dlRef').textContent = rowId;
+    document.getElementById('dlBody').innerHTML = 'Data pengeluaran <b>'+rowId+'</b> akan dihapus permanen dan tidak bisa dipulihkan.';
+    document.getElementById('delScrim').classList.add('open');
+    document.getElementById('dlConfirmTxt').textContent='Hapus';
+    document.getElementById('dlConfirm').disabled=false;
+    setTimeout(function(){ document.getElementById('dlCancel').focus(); },0); // focus aman default
+  }
+  function closeDelete(){ document.getElementById('delScrim').classList.remove('open'); DELETE_TARGET=null; }
+  function confirmDelete(){
+    if(!DELETE_TARGET) return;
+    var ref = DELETE_TARGET;
+    // STEP 1 — button loading state
+    var btn = document.getElementById('dlConfirm');
+    var txt = document.getElementById('dlConfirmTxt');
+    btn.disabled=true;
+    txt.innerHTML=IC_SPIN+'Menghapus...';
+    setTimeout(function(){
+      // STEP 2 — close modal (fade)
+      closeDelete();
+      // STEP 3 — kalau lagi di Detail, balik ke list dulu
+      var atDetail = document.querySelector('.screen.active') && document.querySelector('.screen.active').getAttribute('data-screen')==='Detail Pengeluaran';
+      if(atDetail){
+        show('Daftar Pengeluaran');
+        setTimeout(function(){ doDeleteRow(ref); }, 200);
+      } else {
+        doDeleteRow(ref);
+      }
+    }, 400);
+  }
+  function doDeleteRow(ref){
+    // STEP 4 — row fade-out + slide collapse (200ms)
+    var tr = document.querySelector('#tbody tr[data-row-ref="'+ref+'"]');
+    if(tr){
+      tr.classList.add('row--removing');
+      setTimeout(function(){
+        // STEP 5 — remove dari data + DOM + toast sukses
+        var idx = EXP.findIndex(function(r){ return r.ref===ref; });
+        if(idx>=0) EXP.splice(idx,1);
+        if(tr.parentNode) tr.parentNode.removeChild(tr);
+        document.getElementById('toastTitle').textContent='Berhasil dihapus';
+        document.getElementById('toastSub').textContent='Pengeluaran '+ref+' sudah dihapus dari daftar.';
+        fireToast();
+      }, 220);
+    } else {
+      // row tidak ada di view (mis. di Detail tanpa list di-render dulu) — langsung remove from data
+      var idx = EXP.findIndex(function(r){ return r.ref===ref; });
+      if(idx>=0) EXP.splice(idx,1);
+      renderRows();
+      document.getElementById('toastTitle').textContent='Berhasil dihapus';
+      document.getElementById('toastSub').textContent='Pengeluaran '+ref+' sudah dihapus dari daftar.';
+      fireToast();
+    }
+  }
+
+  // LAMPIRAN FLOW (smooth-transitions-rule §5)
+  var ATT_TARGET = null;
+  function openLampiran(rowId){
+    var ref = rowId || CURRENT_DETAIL;
+    if(!ref){ toast('Pilih pengeluaran dulu'); return; }
+    ATT_TARGET = ref;
+    document.getElementById('atRef').textContent = ref;
+    document.getElementById('at-file').value='';
+    document.getElementById('at-note').value='';
+    document.getElementById('at-fileLabel').textContent='Klik untuk pilih file — JPG / PNG / PDF (maks 5MB)';
+    document.getElementById('atSaveBtn').disabled=false;
+    document.getElementById('atSaveTxt').textContent='Unggah';
+    document.getElementById('attScrim').classList.add('open');
+  }
+  function closeLampiran(){ document.getElementById('attScrim').classList.remove('open'); ATT_TARGET=null; }
+  function onAttFile(input){
+    var f=input.files && input.files[0];
+    if(!f){ document.getElementById('at-fileLabel').textContent='Klik untuk pilih file — JPG / PNG / PDF (maks 5MB)'; return; }
+    document.getElementById('at-fileLabel').textContent = f.name + ' · ' + Math.round(f.size/1024) + ' KB';
+  }
+  function saveLampiran(){
+    if(!ATT_TARGET) return;
+    var ref = ATT_TARGET;
+    var btn=document.getElementById('atSaveBtn'); var txt=document.getElementById('atSaveTxt');
+    btn.disabled=true; txt.innerHTML=IC_SPIN+'Mengunggah...';
+    setTimeout(function(){
+      var row = EXP.find(function(r){ return r.ref===ref; });
+      if(row) row.bukti = (row.bukti||0)+1;
+      closeLampiran();
+      // refresh detail kalau lagi buka detail row ini
+      if(CURRENT_DETAIL===ref) renderAttList(row);
+      // refresh list kalau lagi di list (icon paperclip count update)
+      renderRows();
+      document.getElementById('toastTitle').textContent='Lampiran ditambahkan';
+      document.getElementById('toastSub').textContent='Bukti pengeluaran '+ref+' berhasil diunggah.';
+      fireToast();
+    }, 800);
+  }
+
+  // UNDUH BUKTI (smooth-transitions-rule §5 — side action dengan loading feedback)
+  function downloadBukti(rowId){
+    var ref = rowId || CURRENT_DETAIL;
+    if(!ref){ toast('Pilih pengeluaran dulu'); return; }
+    var row = EXP.find(function(r){ return r.ref===ref; });
+    if(!row || row.bukti===0){
+      document.getElementById('toastTitle').textContent='Tidak ada bukti';
+      document.getElementById('toastSub').textContent='Pengeluaran ini belum punya lampiran untuk diunduh.';
+      fireToast();
+      return;
+    }
+    document.getElementById('toastTitle').textContent='Mengunduh bukti...';
+    document.getElementById('toastSub').textContent='Bukti pengeluaran '+ref+' sedang disiapkan.';
+    fireToast();
+    setTimeout(function(){
+      document.getElementById('toastTitle').textContent='Bukti diunduh';
+      document.getElementById('toastSub').textContent='File bukti pengeluaran '+ref+' selesai diunduh.';
+      fireToast();
+    }, 700);
+  }
+
+  // DETAIL PAGE: tindakan dropdown — pakai portal+fixed pattern (sama spt rowMenu di table).
+  // Reason: kalau menu di-render dalam container ber-overflow / ancestor punya transform,
+  // position:fixed bisa drift. Portal ke body = guarantee viewport-relative.
+  function toggleDetailMenu(btn){
+    var menu=document.getElementById('detailMenu');
+    if(!menu) return;
+    var isOpen = menu.classList.contains('open');
+    if(isOpen){ closeDetailMenu(); return; }
+    // portal ke body
+    if(!menu.__owner){ menu.__owner=menu.parentNode; }
+    if(menu.parentNode!==document.body){ document.body.appendChild(menu); }
+    menu.classList.add('open');
+    // anchor right-aligned to button
+    var br=btn.getBoundingClientRect();
+    var mw=menu.offsetWidth, mh=menu.offsetHeight;
+    var vw=document.documentElement.clientWidth, vh=document.documentElement.clientHeight;
+    var left=br.right-mw, top=br.bottom+4, pad=8;
+    if(left<pad) left=pad;
+    if(left+mw>vw-pad) left=vw-pad-mw;
+    if(top+mh>vh-pad){ top=br.top-4-mh; if(top<pad) top=pad; }
+    menu.style.left=left+'px';
+    menu.style.top=top+'px';
+  }
+  function closeDetailMenu(){
+    var menu=document.getElementById('detailMenu');
+    if(!menu) return;
+    menu.classList.remove('open');
+    var owner=menu.__owner; if(owner && menu.parentNode!==owner){ owner.appendChild(menu); }
+    menu.style.top=''; menu.style.left='';
+  }
+  // Global click close for detail menu
+  document.addEventListener('click', function(e){
+    if(e.target.closest('#detailMenuBtn')) return;
+    if(e.target.closest('#detailMenu')){ setTimeout(closeDetailMenu,0); return; }
+    closeDetailMenu();
+  });
   function renderRows(){
     var size=parseInt((document.getElementById('pgSize')||{}).value||10,10);
     var tb=document.getElementById('tbody');
@@ -1426,12 +1965,36 @@ function toggleSubmenu(menuId) {
   }
   renderRows();
 
+  // SMOOTH SCREEN NAV (smooth-transitions-rule §1)
+  // Fade-out current (160ms) → swap active class → fade-in target (200ms via CSS).
+  // First load atau target=current → instant (no fade) supaya app ga keliatan delay pas refresh.
   function show(name){
-    document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});
-    document.querySelector('[data-screen="'+name+'"]').classList.add('active');
-    document.querySelector('.main-area').scrollTop=0;
+    var tgt=document.querySelector('[data-screen="'+name+'"]');
+    if(!tgt){ return; }
+    var cur=document.querySelector('.screen.active');
+    var ma=document.querySelector('.main-area');
+    if(!cur || cur===tgt){
+      document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active','fade-out')});
+      tgt.classList.add('active');
+      if(ma) ma.scrollTop=0;
+      return;
+    }
+    cur.classList.add('fade-out');
+    setTimeout(function(){
+      cur.classList.remove('active','fade-out');
+      tgt.classList.add('active');
+      if(ma) ma.scrollTop=0;
+    },160);
   }
-  function goCreate(){ resetForm(); show('Catat Pengeluaran'); }
+  // Helper switch antara state default/loading/empty di List screen.
+  // Dipakai mutation: navigate ke list → setListState('loading') → setTimeout → setListState('default')
+  function setListState(name){
+    var states=document.querySelectorAll('[data-screen="Daftar Pengeluaran"] [data-state]');
+    states.forEach(function(s){
+      s.style.display = s.getAttribute('data-state')===name ? '' : 'none';
+    });
+  }
+  function goCreate(){ resetForm(); EDIT_ID=null; updateFormMode(); captureFormSnapshot(); show('Catat Pengeluaran'); }
   function goList(){ show('Daftar Pengeluaran'); }
 
   // Row action menu — di-portal ke <body> & posisi fixed via JS.
@@ -1443,6 +2006,8 @@ function toggleSubmenu(menuId) {
   function closeAllRowMenus(){
     document.querySelectorAll('.row-act.open').forEach(function(x){ x.classList.remove('open'); });
     document.querySelectorAll('.row-act__menu.open').forEach(function(m){
+      // SKIP #detailMenu — punya handler sendiri (closeDetailMenu), jangan ke-close 2x
+      if(m.id === 'detailMenu') return;
       m.classList.remove('open');
       // kembaliin menu ke parent aslinya (cleanup, walau nggak strictly perlu)
       var owner=m.__owner; if(owner && m.parentNode!==owner){ owner.appendChild(m); }
@@ -1511,6 +2076,28 @@ function toggleSubmenu(menuId) {
   }
   function fieldOf(inputId){ return document.getElementById(inputId).closest('.field'); }
 
+  // SVG spinner inline (Aurora-style stroke 1.5, currentColor)
+  var IC_SPIN = '<svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="40 60" opacity="0.9"/></svg>';
+
+  // EDIT_ID: id ref row yang lagi di-edit. null = mode Create. Diset oleh goEdit(id).
+  var EDIT_ID = null;
+  function updateFormMode(){
+    var ttl=document.getElementById('formTitle');
+    var saveTxt=document.getElementById('saveTxt');
+    var bcCurrent=document.getElementById('bcCurrentForm');
+    if(EDIT_ID){
+      if(ttl) ttl.textContent='Ubah Pengeluaran';
+      if(saveTxt) saveTxt.textContent='Simpan Perubahan';
+      if(bcCurrent) bcCurrent.textContent='Ubah Pengeluaran';
+    } else {
+      if(ttl) ttl.textContent='Catat Pengeluaran';
+      if(saveTxt) saveTxt.textContent='Simpan Pengeluaran';
+      if(bcCurrent) bcCurrent.textContent='Catat Pengeluaran';
+    }
+  }
+
+  // SMOOTH SUBMIT (smooth-transitions-rule §2)
+  // Sequence: validate → button loading (800ms) → navigate list → skeleton (700ms) → render + highlight + toast
   function submitForm(){
     var ok=true;
     [['f-tgl'],['f-kat'],['f-pen'],['f-jml'],['f-met']].forEach(function(p){
@@ -1518,16 +2105,31 @@ function toggleSubmenu(menuId) {
       if(!el.value){ fld.classList.add('field--error'); ok=false; } else { fld.classList.remove('field--error'); }
     });
     if(!ok) return;
-    // loading state
+
+    // PRE-CHECK Edit mode tanpa perubahan → silent goList + toast info (snapshot-dirty rule)
+    if(EDIT_ID && !formDirty()){
+      show('Daftar Pengeluaran');
+      setTimeout(function(){
+        var ttl=document.getElementById('toastTitle'); var sub=document.getElementById('toastSub');
+        if(ttl) ttl.textContent='Tidak ada perubahan';
+        if(sub) sub.textContent='Form tidak memiliki perubahan untuk disimpan.';
+        fireToast();
+      }, 200);
+      EDIT_ID=null; resetForm(); updateFormMode(); FORM_SNAPSHOT=null;
+      return;
+    }
+
+    // STEP 1 — button loading state (simulate API call)
     var btn=document.getElementById('saveBtn'); var txt=document.getElementById('saveTxt');
-    btn.disabled=true; txt.textContent='Menyimpan...';
+    var origTxt=txt.textContent;
+    btn.disabled=true;
+    txt.innerHTML=IC_SPIN+(EDIT_ID?'Menyimpan perubahan...':'Menyimpan...');
+
     setTimeout(function(){
-      btn.disabled=false; txt.textContent='Simpan Pengeluaran';
-      // approval logic
+      // STEP 2 — prepare data
       var jml=parseInt((document.getElementById('f-jml').value||'').replace(/[^0-9]/g,''),10)||0;
       var needApproval = jml>=5000000;
-      // prepend new row via data model
-      EXP.unshift({
+      var rowData={
         tgl:'19 Mei 2026',
         kat:document.getElementById('f-kat').value,
         pen:document.getElementById('f-pen').value,
@@ -1535,18 +2137,50 @@ function toggleSubmenu(menuId) {
         met:document.getElementById('f-met').value,
         st: needApproval ? 'Menunggu Persetujuan' : 'Tercatat',
         bukti:0,
-        ref:'EXP/2026/0049',
+        ref: EDIT_ID || 'EXP/2026/0049',
         pajak:0,
         total:jml,
         akun:document.getElementById('f-akun').value||'Kas Kecil',
         by:'Adam A.'
-      });
-      renderRows();
-      goList();
-      var sub=document.getElementById('toastSub');
-      sub.textContent = needApproval ? 'Menunggu persetujuan atasan (jumlah ≥ Rp 5jt).' : 'Pengeluaran baru sudah masuk ke daftar.';
-      fireToast();
-    },900);
+      };
+      var isEdit = !!EDIT_ID;
+      if(isEdit){
+        // replace existing row by ref
+        var idx = EXP.findIndex(function(r){ return r.ref===EDIT_ID; });
+        if(idx>=0){ rowData.bukti=EXP[idx].bukti; EXP[idx]=rowData; }
+      } else {
+        EXP.unshift(rowData);
+      }
+      var highlightRef = rowData.ref;
+
+      // STEP 3 — navigate list dengan fade (show handles smooth)
+      show('Daftar Pengeluaran');
+
+      // STEP 4 — show skeleton brief (simulate fresh fetch)
+      setListState('loading');
+
+      setTimeout(function(){
+        // STEP 5 — render data + highlight row baru/baru di-edit
+        setListState('default');
+        renderRows();
+        // Tag row sesuai ref untuk dapat highlight
+        var tr=document.querySelector('#tbody tr[data-row-ref="'+highlightRef+'"]');
+        if(tr) tr.classList.add('row--just-added');
+
+        // STEP 6 — reset button + form state + clear snapshot (no longer dirty after save)
+        btn.disabled=false; txt.textContent=origTxt;
+        EDIT_ID=null; resetForm(); updateFormMode(); FORM_SNAPSHOT=null;
+
+        // STEP 7 — toast sukses (last, setelah data render)
+        var sub=document.getElementById('toastSub');
+        var ttl=document.getElementById('toastTitle');
+        if(ttl) ttl.textContent = isEdit ? 'Pengeluaran berhasil diubah' : 'Pengeluaran berhasil dicatat';
+        if(sub) sub.textContent = needApproval
+          ? 'Menunggu persetujuan atasan (jumlah ≥ Rp 5jt).'
+          : (isEdit ? 'Perubahan sudah tersimpan.' : 'Pengeluaran baru sudah masuk ke daftar.');
+        fireToast();
+      },700); // skeleton brief — feels real, not too long
+    },800); // submit API simulate
   }
 
   function fireToast(){
@@ -1554,12 +2188,29 @@ function toggleSubmenu(menuId) {
     clearTimeout(window._tt); window._tt=setTimeout(function(){t.classList.remove('show')},3600);
   }
 
-  // cancel → confirmation modal kalau ada perubahan
-  function formDirty(){
-    return ['f-kat','f-pen','f-jml','f-met','f-akun','f-desc'].some(function(id){
-      return (document.getElementById(id).value||'')!=='';
+  // DIRTY STATE pakai snapshot diff (BUKAN "field has value").
+  // Reason: di Edit mode form pre-filled — "field has value" selalu true → false positive.
+  // Pattern locked: snapshot saat masuk form, compare current vs snapshot saat cancel/submit.
+  var FORM_SNAPSHOT = null;
+  var FIELD_IDS = ['f-tgl','f-kat','f-pen','f-jml','f-met','f-akun','f-desc'];
+
+  function captureFormSnapshot(){
+    FORM_SNAPSHOT = {};
+    FIELD_IDS.forEach(function(id){
+      var el = document.getElementById(id);
+      FORM_SNAPSHOT[id] = el ? (el.value||'') : '';
     });
   }
+
+  function formDirty(){
+    if(!FORM_SNAPSHOT) return false;
+    return FIELD_IDS.some(function(id){
+      var el = document.getElementById(id);
+      var cur = el ? (el.value||'') : '';
+      return cur !== FORM_SNAPSHOT[id];
+    });
+  }
+
   function tryCancel(){
     if(formDirty()){
       var s=document.getElementById('confirmScrim'); s.classList.add('open');
@@ -1567,10 +2218,34 @@ function toggleSubmenu(menuId) {
     } else { goList(); }
   }
   function closeConfirm(){ document.getElementById('confirmScrim').classList.remove('open'); }
-  function discardChanges(){ closeConfirm(); resetForm(); goList(); }
+  function discardChanges(){ closeConfirm(); resetForm(); FORM_SNAPSHOT=null; goList(); }
   document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'){ var s=document.getElementById('confirmScrim'); if(s.classList.contains('open')) closeConfirm(); }
+    if(e.key==='Escape'){
+      var cs=document.getElementById('confirmScrim'); if(cs && cs.classList.contains('open')){ closeConfirm(); return; }
+      var ds=document.getElementById('delScrim'); if(ds && ds.classList.contains('open')){ closeDelete(); return; }
+      var as=document.getElementById('attScrim'); if(as && as.classList.contains('open')){ closeLampiran(); return; }
+      closeDetailMenu();
+    }
   });
+
+  // Wire Detail screen "Ubah" + tindakan dropdown items + number separator inputs.
+  // Pakai listener langsung supaya selalu pakai CURRENT_DETAIL terbaru.
+  function wireDetailActions(){
+    var editBtn=document.getElementById('detailEditBtn');
+    if(editBtn) editBtn.addEventListener('click', function(){ if(CURRENT_DETAIL) goEdit(CURRENT_DETAIL); });
+    var dmDown=document.getElementById('dm-download');
+    if(dmDown) dmDown.addEventListener('click', function(){ closeDetailMenu(); if(CURRENT_DETAIL) downloadBukti(CURRENT_DETAIL); });
+    var dmLamp=document.getElementById('dm-lampiran');
+    if(dmLamp) dmLamp.addEventListener('click', function(){ closeDetailMenu(); if(CURRENT_DETAIL) openLampiran(CURRENT_DETAIL); });
+    var dmView=document.getElementById('dm-view');
+    if(dmView) dmView.addEventListener('click', function(){ closeDetailMenu(); if(CURRENT_DETAIL) viewDetail(CURRENT_DETAIL); });
+    var dmDel=document.getElementById('dm-delete');
+    if(dmDel) dmDel.addEventListener('click', function(){ closeDetailMenu(); if(CURRENT_DETAIL) openDelete(CURRENT_DETAIL); });
+    // Number input formatter — wajib di semua input jumlah (locked rule).
+    addNumberSeparator('f-jml');
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', wireDetailActions); }
+  else { wireDetailActions(); }
 
   function resetForm(){
     ['f-pen','f-jml','f-desc'].forEach(function(id){document.getElementById(id).value=''});
@@ -1616,6 +2291,11 @@ body.suxc-on .suxc-pop,body.suxc-on .suxc-pop *{cursor:default !important}
 .suxc-pop-hacts button:hover,.suxc-pop-closebtn:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
 .suxc-pop-resbtn.on{color:#30D158}
 .suxc-pop-resbtn:hover{color:#30D158 !important}
+.suxc-pop-loc{display:flex;align-items:center;gap:6px;padding:8px 12px;
+  background:rgba(123,97,255,.08);border-bottom:1px solid rgba(255,255,255,.06);
+  font:500 11px/1.4 'Lato',sans-serif;color:#9B8AFF}
+.suxc-pop-loc-ico{flex:none;opacity:.85}
+.suxc-pop-loc-txt{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .suxc-av{width:32px;height:32px;border-radius:50%;background:#7B61FF;color:#fff;
   font:700 13px/32px 'Lato',sans-serif;text-align:center;flex:none;user-select:none}
 .suxc-av.sm{width:28px;height:28px;font-size:11px;line-height:28px}
@@ -1910,6 +2590,7 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
   function zoomAt(cx,cy,ns){ns=clamp(ns,0.2,3);var L=toLocal(cx,cy);T.s=ns;T.x=cx-L.x*ns;T.y=cy-L.y*ns;applyT();}
   function smooth(fn){stage.style.transition='transform .22s ease';fn();setTimeout(function(){stage.style.transition='';},240);}
   function panTo(c){
+    if(c.fixedSel)return; // fixed pin sudah di viewport, nggak perlu scroll
     if(!FLOW){window.scrollTo({left:Math.max(0,c.x-120),top:Math.max(0,c.y-160),behavior:'smooth'});return;}
     smooth(function(){T.x=window.innerWidth/2-(c.x+(c.w||0)/2)*T.s;T.y=window.innerHeight/2-(c.y+(c.h||0)/2)*T.s;applyT();});}
   function setOn(v){on=v;document.body.classList.toggle('suxc-on',on);tgl.classList.toggle('on',on);
@@ -1920,13 +2601,36 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
   document.getElementById('suxc-close').onclick=function(){setPanel(false);};
 
   function clearRects(){document.querySelectorAll('.suxc-rect:not(.live)').forEach(function(e){e.remove();});}
-  function showRect(c){clearRects();if(!(c.w&&c.h))return;
+  function showRect(c){clearRects();
+    if(c.fixedSel&&c.fw&&c.fh){
+      var r=document.createElement('div');r.className='suxc-rect';
+      r.style.cssText='position:fixed;left:'+c.fx+'px;top:'+c.fy+'px;width:'+c.fw+'px;height:'+c.fh+'px';
+      if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
+      document.body.appendChild(r);return;}
+    if(!(c.w&&c.h))return;
     var r=document.createElement('div');r.className='suxc-rect';
     r.style.cssText='left:'+c.x+'px;top:'+c.y+'px;width:'+c.w+'px;height:'+c.h+'px';
     if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
     stage.appendChild(r);}
 
   function txt(e){return((e.innerText||e.textContent||'').replace(/\s+/g,' ').trim());}
+  function findFixedLayer(el){
+    while(el&&el!==document.body&&el!==document.documentElement){
+      if(el.nodeType===1){var cs=getComputedStyle(el);
+        if(cs.position==='fixed'&&cs.display!=='none'){
+          var id=el.id;if(id&&id.indexOf('suxc-')!==0)return'#'+id;
+          var lyr=el.getAttribute('data-layer');if(lyr)return'[data-layer="'+lyr+'"]';
+          return null;}}
+      el=el.parentElement;}
+    return null;}
+  function anchorAtViewport(cx,cy){
+    if(cx<0||cy<0||cx>window.innerWidth||cy>window.innerHeight)return'';
+    var els=document.elementsFromPoint?document.elementsFromPoint(cx,cy):[document.elementFromPoint(cx,cy)];
+    for(var k=0;k<els.length;k++){var e=els[k];
+      if(!e||!e.closest||e===document.body||e===document.documentElement)continue;
+      if(e.closest('#suxc-nav,#suxc-panel,.suxc-pop,.suxc-pin,.suxc-rect'))continue;
+      var s=txt(e);if(s&&s.length<=110)return s.length>80?s.slice(0,80)+'…':s;}
+    return'';}
   function anchorAt(px,py){
     var sc=toClient(px,py),cx=sc.x,cy=sc.y;
     if(cx<0||cy<0||cx>window.innerWidth||cy>window.innerHeight)return'';
@@ -1937,6 +2641,12 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
       var s=txt(e);if(s&&s.length<=110)return s.length>80?s.slice(0,80)+'…':s;}
     return'';}
   function ctxFor(c){
+    if(c.fixedSel){
+      if(c.fw&&c.fh){
+        var P=[[c.fx+c.fw/2,c.fy+c.fh/2],[c.fx+10,c.fy+10],[c.fx+c.fw-10,c.fy+10],[c.fx+10,c.fy+c.fh-10],[c.fx+c.fw-10,c.fy+c.fh-10]],seen=[];
+        P.forEach(function(p){var a=anchorAtViewport(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
+        if(seen.length)return seen.slice(0,2).join(' & ');}
+      return anchorAtViewport(c.fx,c.fy);}
     if(c.w&&c.h){
       var P=[[c.x+c.w/2,c.y+c.h/2],[c.x+10,c.y+10],[c.x+c.w-10,c.y+10],[c.x+10,c.y+c.h-10],[c.x+c.w-10,c.y+c.h-10]],seen=[];
       P.forEach(function(p){var a=anchorAt(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
@@ -1983,20 +2693,39 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
       var c=entry.c, num=si+1;
       // pin — hanya unresolved
       if(!c.resolved){
-        var p=document.createElement('div');p.className='suxc-pin';
-        p.style.left=c.x+'px';p.style.top=c.y+'px';p.textContent=num;
-        p.onmousedown=function(ev){
-          ev.stopPropagation();ev.preventDefault();
-          var sx=ev.clientX,sy=ev.clientY,moved=false;
-          function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4)moved=true;
-            if(moved){var L=toLocal(e.clientX,e.clientY);c.x=L.x;c.y=L.y;
-              p.style.left=c.x+'px';p.style.top=c.y+'px';
-              document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
-          function up(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);
-            if(moved){save();render();}else{openEditor(c);}}
-          document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);};
-        p.onmouseenter=function(){if(on)openEditor(c);};
-        stage.appendChild(p);}
+        if(c.fixedSel){
+          var lyr=document.querySelector(c.fixedSel);
+          if(lyr){var lcs=getComputedStyle(lyr);
+            if(lcs.display!=='none'&&lcs.visibility!=='hidden'){
+              var p=document.createElement('div');p.className='suxc-pin';
+              p.style.position='fixed';p.style.left=c.fx+'px';p.style.top=c.fy+'px';p.textContent=num;
+              p.onmousedown=function(ev){
+                ev.stopPropagation();ev.preventDefault();
+                var sx=ev.clientX,sy=ev.clientY,moved=false;
+                function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4)moved=true;
+                  if(moved){c.fx=e.clientX;c.fy=e.clientY;
+                    p.style.left=c.fx+'px';p.style.top=c.fy+'px';
+                    document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+                function upH(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',upH);
+                  if(moved){save();render();}else{openEditor(c);}}
+                document.addEventListener('mousemove',mv);document.addEventListener('mouseup',upH);};
+              p.onmouseenter=function(){if(on)openEditor(c);};
+              document.body.appendChild(p);}}
+        }else{
+          var p=document.createElement('div');p.className='suxc-pin';
+          p.style.left=c.x+'px';p.style.top=c.y+'px';p.textContent=num;
+          p.onmousedown=function(ev){
+            ev.stopPropagation();ev.preventDefault();
+            var sx=ev.clientX,sy=ev.clientY,moved=false;
+            function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4)moved=true;
+              if(moved){var L=toLocal(e.clientX,e.clientY);c.x=L.x;c.y=L.y;
+                p.style.left=c.x+'px';p.style.top=c.y+'px';
+                document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+            function up(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);
+              if(moved){save();render();}else{openEditor(c);}}
+            document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);};
+          p.onmouseenter=function(){if(on)openEditor(c);};
+          stage.appendChild(p);}}
 
       // panel card — search filter
       if(query&&(!c.text||c.text.toLowerCase().indexOf(query)<0))return;
@@ -2032,7 +2761,7 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
     document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});
     var isNew=data.indexOf(c)<0;
     var pop=document.createElement('div');pop.className='suxc-pop';
-    var sc=toClient(c.x,c.y);
+    var sc=c.fixedSel?{x:c.fx,y:c.fy}:toClient(c.x,c.y);
     pop.style.cssText='position:fixed;left:'+Math.max(8,Math.min(sc.x+28,window.innerWidth-316))+'px;top:'+Math.max(8,Math.min(sc.y-10,window.innerHeight-300))+'px';
     showRect(c);
 
@@ -2052,6 +2781,16 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
           '</div>'+
         '</div>';}
 
+    var locTxt=(c.ctx||'').replace(/</g,'&lt;');
+    var layerLbl=c.fixedSel?(c.fixedSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1')):'';
+    var locLine=(locTxt||layerLbl)?
+      ('<div class="suxc-pop-loc">'+
+        '<svg class="suxc-pop-loc-ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'+
+        '<span class="suxc-pop-loc-txt">'+
+          (layerLbl?'<b>'+layerLbl+'</b>'+(locTxt?' · ':''):'')+
+          (locTxt||'')+
+        '</span>'+
+      '</div>'):'';
     pop.innerHTML=
       '<div class="suxc-pop-head">'+
         '<span class="suxc-pop-title">'+(isNew?'New comment':'Comment')+'</span>'+
@@ -2060,6 +2799,7 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
           '<button class="suxc-pop-closebtn">✕</button>'+
         '</div>'+
       '</div>'+
+      locLine+
       threadHtml+
       (isNew?'<div class="suxc-pop-reply">'+
         '<div class="suxc-reply-wrap">'+
@@ -2144,8 +2884,18 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
       document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);
       if(rect)rect.remove();
       var L=toLocal(e.clientX,e.clientY),w=Math.abs(L.x-L0.x),h=Math.abs(L.y-L0.y);
-      var c={x:Math.min(L0.x,L.x),y:Math.min(L0.y,L.y),text:'',resolved:false};
-      if(w>6&&h>6){c.w=w;c.h=h;}else{c.x=L0.x;c.y=L0.y;}
+      var anchorEl=document.elementFromPoint(e.clientX,e.clientY);
+      var fixedSel=anchorEl?findFixedLayer(anchorEl):null;
+      var c={text:'',resolved:false};
+      if(fixedSel){
+        c.fixedSel=fixedSel;
+        var vx0=L0.x-scX(),vy0=L0.y-scY();
+        if(w>6&&h>6){c.fx=Math.min(vx0,e.clientX);c.fy=Math.min(vy0,e.clientY);c.fw=Math.abs(e.clientX-vx0);c.fh=Math.abs(e.clientY-vy0);}
+        else{c.fx=e.clientX;c.fy=e.clientY;}
+      }else{
+        c.x=Math.min(L0.x,L.x);c.y=Math.min(L0.y,L.y);
+        if(w>6&&h>6){c.w=w;c.h=h;}else{c.x=L0.x;c.y=L0.y;}
+      }
       c.ctx=ctxFor(c);openEditor(c);}
     document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);},true);
 
@@ -2187,8 +2937,9 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
     var file=location.pathname.split('/').pop()||'flow';
     var head='Revisi dari user di '+file+' (kerjakan sesuai lokasi tiap poin):\n\n';
     var body=active.map(function(c,i){
-      var loc=c.ctx||('area sekitar x'+Math.round(c.x)+' y'+Math.round(c.y));
-      return (i+1)+'. '+(c.text||'(kosong)')+'\n   ↳ lokasi: '+loc;}).join('\n\n');
+      var loc=c.ctx||(c.fixedSel?('area sekitar x'+Math.round(c.fx)+' y'+Math.round(c.fy)):('area sekitar x'+Math.round(c.x)+' y'+Math.round(c.y)));
+      var layer=c.fixedSel?(' [layer: '+c.fixedSel+']'):'';
+      return (i+1)+'. '+(c.text||'(kosong)')+'\n   ↳ lokasi: '+loc+layer;}).join('\n\n');
     var t=head+body;
     navigator.clipboard.writeText(t).then(function(){toast('Komen tersalin ✔ paste ke chat');},
       function(){prompt('Copy komen ini, paste ke chat:',t);});}
@@ -2358,8 +3109,16 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
       activate(cur);});}
   if(!FLOW){setupFab();initStates();}
   applyT();render();
+  // Re-render fixed-layer pins when modal/popup visibility changes
+  try{var _mo=new MutationObserver(function(){
+    if(!data.some(function(c){return c.fixedSel;}))return;
+    if(_mo._rt)return;_mo._rt=setTimeout(function(){_mo._rt=null;render();},80);});
+    _mo.observe(document.body,{attributes:true,subtree:true,attributeFilter:['class','style']});}catch(e){}
 })();
 </script>
+
+
+
 
 
 
