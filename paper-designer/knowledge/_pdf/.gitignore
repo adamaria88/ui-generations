@@ -1,0 +1,7 @@
+# Default: gitignore semua PDF arsip mentah (gede, bisa pakai Git LFS kalau perlu commit)
+# Kalau mau commit PDF, hapus 2 baris di bawah dan tambah `git lfs track "*.pdf"`
+*.pdf
+*.epub
+
+# Whitelist file ini
+!.gitignore

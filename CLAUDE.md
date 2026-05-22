@@ -35,6 +35,48 @@ Baca file ini hanya kalau konteks butuh — JANGAN auto-load:
 - Style Learner agent docs → `paper-designer/memory/shared/style-learner-agent.md`
 - Showcase audit status → `paper-designer/memory/shared/showcase-audit-status.md`
 
+## Knowledge Library — Buku UIUX + Artikel (LAZY, opt-in trigger)
+
+Insight dari buku UIUX + artikel design yang sudah diekstrak. **Dipakai SAAT user minta IDE / REVAMP / IMPROVEMENT open-ended.**
+
+- Master index → `paper-designer/knowledge/INDEX.md`
+- Folder: `paper-designer/knowledge/books/` (ringkasan + kartu per buku)
+- Folder: `paper-designer/knowledge/articles/` (1 file per artikel atomic)
+- Workflow + template → `paper-designer/knowledge/README.md`
+
+### 2 Mode Operasi (CRITICAL — locked 2026-05-22)
+
+**Mode 1 — PELAKSANA (default)**: lo eksekusi cepet sesuai rules teknis. JANGAN buka knowledge. JANGAN propose alternatif yang ga diminta.
+
+Trigger Mode 1:
+- "Ganti input X jadi Y", "Pindah tombol ke kanan", "Tambah field Z", "Hapus kolom A"
+- Permintaan **execute spesifik** dengan target jelas
+- Tweak kecil, koreksi, adjustment
+- User udah tau mau apa, lo tinggal lakuin
+
+**Mode 2 — KONSULTAN (opt-in trigger)**: buka knowledge, tarik framework dari buku, propose 2-3 opsi dengan cite source.
+
+Trigger Mode 2 (eksplisit dari user):
+- "Ada ide lain ga untuk page ini?"
+- "Revamp page ini"
+- "Improvement apa yang bisa kita lakukan?"
+- "Bisa lebih baik ga UX-nya?"
+- Tag `@book` atau `@article`
+- Permintaan **open-ended** minta perspektif / ide / alternatif
+
+### Workflow Mode 2 (apply knowledge)
+1. Grep `INDEX.md` untuk problem keyword di brief
+2. Load ringkasan buku / artikel yang relevan (1-2 file max)
+3. Load kartu spesifik kalau butuh detail
+4. Propose 2-3 opsi dengan **cite source** WAJIB: `book + chapter + page` atau `article URL + author`
+5. Kalau ga ada page/URL valid → tulis `source TBD` + flag user. **JANGAN ngarang citation.**
+
+### Anti-pattern (DILARANG)
+- ❌ Tweak kecil → tarik buku → over-propose. User cuma minta ganti input, jangan kasih essay 500 kata.
+- ❌ Mode 2 tanpa trigger eksplisit. Default = Pelaksana, jangan asumsi user mau konsultasi.
+- ❌ Apply insight buku tanpa cite source.
+- ❌ Halusinasi quote / page number. Kalau ragu, lapor user, jangan ngarang.
+
 ## Per-Machine Memory
 
 Tiap designer file sendiri di `paper-designer/memory/per-machine/{hostname}.md`. Hostname:
@@ -53,6 +95,7 @@ Kalau belum ada: `touch paper-designer/memory/per-machine/{hostname}.md`.
 
 - **`/senior-uiux-designer`** — main design skill, trigger saat brief masuk
 - **`/learning-auditor`** — audit learning lintas designer di sprint end
+- **`/read-book`** — extract buku UIUX (PDF) atau artikel (URL/teks) ke `paper-designer/knowledge/`. **Workflow INTERACTIVE** — tampil draft di chat dulu (thesis + framework + calon kartu), diskusi sama user, baru tulis file setelah approve. Auto-trigger saat user paste path `.pdf` / URL artikel / bilang "extract/baca/serap" dari buku/artikel. Lock 2026-05-22.
 
 ## Sprint Learning Workflow
 
