@@ -353,6 +353,99 @@ Pola navigasi di halaman child/detail. **3 elemen**: Back Link + Breadcrumb + Pa
 
 ---
 
+## Template 4: View Document Page (Detail View)
+
+> **SOURCE**: Paperverse 1.0 — View Document + reference hidup `_output/expense-management/02-ui-aurora.html` (Detail Pengeluaran)
+
+### Kapan Dipakai
+- User klik baris di list → masuk Detail untuk lihat info lengkap entity
+- Aksi read-only utama + handoff ke Edit / aksi lain via tombol/menu
+- Mengandung metadata, content section, attachment, history (optional)
+
+### Kapan TIDAK Dipakai
+- Quick preview yang ga butuh full screen → pakai **Side Sheet** atau **Tooltip**
+- Inline edit cepat tanpa standalone view → pakai **Modal Form** atau **inline editing di list**
+
+### Anatomy
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│ ‹ Kembali  ·  Pengeluaran  ·  EXP/2026/0042                 │  ← Breadcrumb + back button
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  EXP/2026/0042                          [ Ubah ]  [Tindakan ▾]│  ← Title + entity actions
+│  Rp 4.551.000   ·   12 Mei 2026                             │     (Ubah extracted, sisanya di menu)
+│                                                              │
+│  ┌─────────────────────────┐  ┌────────────────────────────┐│
+│  │ Informasi Umum          │  │ Status & Pembayaran        ││  ← Info cards (grid 2-col)
+│  │ ─────────────────────── │  │ ─────────────────────────  ││
+│  │ Kategori    Operasional │  │ Status     ● Lunas         ││
+│  │ Penerima    PT XYZ      │  │ Metode     Transfer Bank   ││
+│  │ Tanggal     12 Mei 2026 │  │ Akun       BCA 1234        ││
+│  │ Jatuh Tempo 26 Mei 2026 │  │ Lampiran   [📎] 2 file ·   ││
+│  │ Deskripsi   Sewa kantor │  │             Unduh · +Tambah ││
+│  └─────────────────────────┘  └────────────────────────────┘│
+│                                                              │
+│  [History / Activity Log — optional, kalau relevant]         │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Komponen wajib:**
+1. **Breadcrumb + Back Button** (Aurora `au-breadcrumb` + `au-breadcrumb-back-button`) — kiri atas, "‹ Kembali" navigate balik ke list
+2. **Title block** — entity ID + secondary metadata (nominal, tanggal) di bawah title. Hero treatment (font lebih besar)
+3. **Entity actions** — `Ubah` (extracted standalone primary action) + `Tindakan ▾` dropdown (sisa aksi: Hapus, Duplikat, dst sesuai `[[action-menu-derivation-rule]]`)
+4. **Info cards** — minimum 2 card layout (grid 2-col responsive ke 1-col mobile):
+   - **Informasi Umum** — metadata identitas entity
+   - **Status & Pembayaran** (atau equivalent) — status badge, payment info, attachment metadata
+5. **(Optional) Activity / History section** — kalau entity punya audit trail relevant
+
+**Komponen optional:**
+- **Pagination Detail** (kanan atas, "X dari Y entries") — kalau user mungkin navigate antar entries via Detail
+- **Tabs** — kalau Detail punya multi-section yang berbeda secara konteks (mis. Detail + Items + History)
+- **Banner** — kalau ada notice/warning relevant (mis. "Pembayaran sudah jatuh tempo")
+
+### Aturan View Document
+
+#### 1. Label Disambiguation (default no-label)
+Detail card **default tanpa label** untuk value yang ga ambigu. Label dipakai HANYA kalau:
+- Multi-instance value (mis. 2 tanggal: "Tanggal" + "Jatuh Tempo")
+- Value tanpa konteks bingung (mis. "BCA 1234" — perlu label "Akun")
+- Status yang ga obvious dari value
+
+Lihat `[[label-disambiguation-rule]]`.
+
+#### 2. Lampiran Inline Pattern (composition)
+Lampiran/attachment **bukan card terpisah** — jadi field metadata di Info card. Pakai composition `.meta-inline` (lihat `[[composition-thinking-rule]]`):
+```
+Lampiran   [📎] 2 file · Unduh · + Tambah
+```
+Kalau belum ada lampiran: "Belum ada · + Tambah Lampiran".
+
+#### 3. Action Hierarchy
+**Maksimum 1 primary action** di Detail page (biasanya `Ubah`). Sisanya di `Tindakan ▾` dropdown menu. Aksi yang sudah jadi standalone TIDAK boleh muncul lagi di dropdown menu (konsistensi mental model — lihat `[[action-menu-derivation-rule]]`).
+
+#### 4. Read-only ≠ Static
+Walaupun View, tetap interaktif:
+- Klik row attachment → download bukti
+- Klik status badge → tooltip explain status
+- Klik nominal → boleh copy ke clipboard (optional)
+
+#### 5. Back Navigation
+`‹ Kembali` di breadcrumb WAJIB balik ke origin list dengan **state preserved** (scroll position, filter applied, page selected). JANGAN reset list ke default state.
+
+#### 6. Edit Handoff (smooth)
+Klik `Ubah` → pre-fill form Edit dengan data sekarang → switch screen smooth (fade out Detail → fade in Edit form). JANGAN open Edit di modal/sheet (kecuali Edit cepat ≤3 field).
+
+#### 7. Delete Flow (destructive)
+Hapus di dropdown menu = trigger **Confirmation Modal** (Aurora sectioned spec, primary destructive button). Setelah konfirmasi → smooth delete (fade out row di list) → toast "Pengeluaran berhasil dihapus" → back to list. Lihat `[[smooth-transitions-rule]]`.
+
+### Reference Hidup
+- Implementasi: `_output/expense-management/02-ui-aurora.html` → search `viewDetail()` function + Detail screen markup
+- Action menu derivation: lihat juga `[[action-menu-derivation-rule]]`
+
+---
+
 ## Behaviour Guidelines
 
 ### 1. Input Behavior — Pilih Format Jawaban Paling Sederhana

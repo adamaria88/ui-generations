@@ -60,7 +60,78 @@ Setelah tiap Edit besar, kasih comment singkat ke user: `✓ sidemenu (47 baris)
 
 ---
 
-## LANGKAH 0 — Routing (Tweak vs Full)
+## ⛔ OVERLAY INJECTION (HARGA MATI — TIDAK BOLEH SKIP)
+
+**Setiap HTML yang lo generate WAJIB ada overlay-nya.** Tanpa overlay, user nggak bisa komen, nggak bisa Submit, nggak bisa Generate Figma — workflow Paper Designer mati.
+
+### Aturan absolut
+
+1. **Marker WAJIB ditulis** — taruh `<!--SUXC:overlay-->` tepat sebelum `</body>` di SETIAP file HTML yang lo generate. Berlaku untuk:
+   - `01-flow.html`
+   - `02-ui.html`
+   - Semua varian: `02-ui-aurora.html`, `03-figma.html`, dst
+   - File HTML lain yang masuk workflow Paper Designer
+
+2. **Inject script WAJIB di-run** setelah generate file selesai (sebelum lapor ke user):
+   ```bash
+   python3 /Users/working/ui-generations/.claude/skills/senior-uiux-designer/inject-components.py <absolute-path-to-file.html>
+   ```
+   Script ini mengganti `<!--SUXC:overlay-->` marker dengan isi `paper-designer/components/overlay.html` terkini, **plus auto-insert favicon** ke `<head>` kalau belum ada. Selalu pakai overlay versi engine yang lagi committed — JANGAN copy paste manual.
+
+3. **Verify setelah inject** — quick grep untuk pastikan:
+   ```bash
+   grep -c "KOMEN OVERLAY" <file>  # harus >= 1
+   grep -c "findFixedLayer\|findScrollContainer" <file>  # harus >= 1
+   ```
+   Kalau 0, inject gagal — debug script dulu, jangan lapor "selesai".
+
+### Kenapa wajib pakai inject script (bukan manual)
+
+- Engine overlay sering update (bug fix, fitur baru — modal pin, scroll container, submit/approve workflow)
+- Manual copy-paste = drift cepat → file lama ketinggalan fitur baru
+- Inject script always sync dengan `paper-designer/components/overlay.html` terkini
+- Kalau lo Edit overlay.html, semua file yang udah ke-inject akan otomatis dapet update di run berikutnya
+
+### Anti-pattern (DILARANG)
+
+- ❌ Generate HTML tanpa `<!--SUXC:overlay-->` marker
+- ❌ Skip inject script "biar cepet"
+- ❌ Copy-paste overlay manual dari file lain
+- ❌ Lapor "selesai" tanpa verify overlay ke-inject
+
+### Edge case
+
+- **File yang sudah ada overlay** → tetap jalanin inject script, dia detect `KOMEN OVERLAY` marker dan replace dengan versi terkini. Aman.
+- **File HTML internal (komponen, fragment)** yang nggak dipakai langsung user → boleh skip overlay. Tapi default-nya: kalau ragu, inject.
+
+---
+
+## LANGKAH 0 — Routing (Mode + Tweak vs Full)
+
+### 0a — Mode Classification (locked 2026-05-22, ref [[knowledge-mode-trigger-rule]])
+
+**Default: Mode 1 (PELAKSANA)** — execute spesifik pakai rules teknis. JANGAN buka knowledge folder.
+
+**Mode 2 (KONSULTAN)** — TRIGGER kalau user EKSPLISIT minta ide/revamp/improvement open-ended:
+- "Ada ide lain ga untuk page ini?"
+- "Revamp page ini" / "Improvement apa yang bisa kita lakukan?"
+- "Bisa lebih baik ga UX-nya?" / "Gimana cara bikin ini lebih ___?"
+- Tag `@book` / `@article` di brief
+- Permintaan **curate ide / perspektif baru**
+
+**Behavior Mode 2:**
+1. Grep `paper-designer/knowledge/INDEX.md` untuk problem keyword
+2. Load ringkasan + kartu relevan (max 1-2 file)
+3. Propose 2-3 opsi dengan **cite source verbatim** (book + chapter + page, atau article URL + author)
+4. Kalau knowledge ga cover → lapor "knowledge ga cover topik ini, improvise dari rules" — JANGAN ngarang citation
+5. Lalu lanjut ke 0b setelah user pilih opsi
+
+**Anti-pattern absolute:**
+- ❌ Mode 1 brief → over-propose alternatif yg ga diminta
+- ❌ Mode 2 tanpa trigger eksplisit dari user
+- ❌ Halusinasi page/quote dari buku
+
+### 0b — Tweak vs Full Routing
 
 - Brief = ubahan receh pada layar yang sudah ada & **tidak mengubah alur**
   (hapus/ubah field, warna, teks, posisi) → **JALUR TWEAK** (lihat bawah).
@@ -100,39 +171,87 @@ Tanya: **"Cepet apa Mateng?"** (lihat SKILL.md untuk teks). Tunggu jawaban.
 
 ### Langkah 2.5 — ⛔ AURORA COMPONENT MAPPING (WAJIB sebelum coding UI prototype)
 
-> **Phase ini dikunci user 2026-05-20** setelah audit Expense Management nemu 15 dari 17 komponen ternyata custom/ngarang. Rincian mekanisme: `rules/design-rules.md` section "HARGA MATI — Aurora Component Lookup Ritual".
+> **Phase ini dikunci user 2026-05-20** setelah audit Expense Management nemu 15 dari 17 komponen ternyata custom/ngarang. Rincian mekanisme: `rules/design-rules.md` section "HARGA MATI — Aurora Component Lookup Ritual". A+B mechanism (Intent Scan + Mapping Table) dikunci user 2026-05-20 sesi audit "ada di rules ga lo pake".
 
 **Phase ini WAJIB jalan SEBELUM Langkah 5 (HTML UI Prototype) — bukan boleh-skip.** Hasilnya = mapping table yang user **approve eksplisit** sebelum coding dimulai.
 
+**Prosedur (4 substep urut):**
+
+#### 2.5a — Aurora Intent Scan (WAJIB, baca lookup table DULU)
+
+**Tujuan:** discovery komponen Aurora yang lo MUNGKIN ga ke pikiran kalau cuma jalan dari ingatan. Aurora punya 33 komponen, sering "luput dari radar" karena lo default ke yang familiar.
+
 **Prosedur:**
 
-1. **List semua UI element** yang dibutuhkan di prototype (button, input, badge, table, modal, toast, dst).
+1. **Pecah brief** jadi list "interaction need" (mis. "user pilih tanggal", "input PIN", "konfirmasi hapus", "step-by-step onboarding").
 
-2. **Untuk tiap element**, jalankan Aurora Lookup Ritual:
-   - `ls /Users/working/aurora/projects/ui/` — cek folder yang ada
-   - Kalau ada match → baca `<component>/<component>.component.scss` (VALUE) + `.interface.ts` (variants)
-   - Kalau tidak ada → mark ❌ TIDAK ADA → STOP & lapor (HUKUM MATI #2)
+2. **Buka `paper-designer/ds/aurora-intent-lookup.md`** — itu reverse lookup table (intent → Aurora component).
 
-3. **Susun mapping table** dengan format:
+3. **Untuk tiap interaction need, cocokin ke tabel.** Catat kandidat komponen Aurora. Bisa lebih dari satu kandidat (mis. "pilih 1 dari banyak" → `au-dropdown-menu` atau `au-autocomplete` tergantung searchable).
 
-   | UI Need | Aurora Component | Variant | Aurora source file | Notes |
-   |---------|------------------|---------|---------------------|-------|
-   | Primary action btn | `au-btn` | `primary` | `button/button.component.scss` | pill filled #4199d5 |
-   | Bulk action trigger | `au-btn` | `tertiary-plain` | `button/button.component.scss` | text-link no border |
-   | Table data display | `au-table` | default | `table/table.component.scss` | sticky action col |
-   | Status indicator | `au-chip-status` | success/danger/warning | `chip-status/chip-status.component.scss` | — |
-   | Empty state | ❌ TIDAK ADA | — | — | **STOP & lapor — minta user pilih (a/b/c)** |
+4. **Catat hasil scan** dalam format:
 
-4. **Share mapping table ke user** — minta approve eksplisit ("oke lanjut" / "ganti komponen X" / "yang ini override jadi custom").
+   ```
+   Brief intent           → Aurora kandidat        | Override?
+   ──────────────────────────────────────────────────────────────────
+   pilih tanggal            au-datepicker            -
+   step-by-step onboarding  au-stepper               -
+   konfirmasi hapus         au-dialog sectioned      YES (override)
+   table list bawah         au-pagination            YES (override)
+   loading skeleton         au-skeleton              -
+   ```
 
-5. **Catat keputusan override** kalau ada — kalau user bilang "Aurora-nya jelek, pakai custom" → record di `paper-designer/ds/AURORA-OVERRIDES.md` dengan alasan + tanggal.
+5. **Cek override status** untuk tiap kandidat:
+   - Buka `paper-designer/ds/AURORA-OVERRIDES.md` — cari entry per komponen
+   - Kalau ada → mark "YES (override)" + spec override menang vs Aurora source
+   - Kalau tidak ada → mark "-" → pakai Aurora source persis
 
-6. **Setelah user approve mapping table** → boleh lanjut Langkah 3 (User Flow) → Langkah 5 (UI Prototype).
+**Anti-pattern 2.5a:**
+- Skip baca aurora-intent-lookup.md → langsung mikir UI element → guaranteed lo lewatin komponen Aurora yang available
+- Lupa cek AURORA-OVERRIDES.md → pakai Aurora source padahal ada override locked → revert progress user
 
-**Anti-pattern yang dilarang:**
-- Lompat ke coding tanpa mapping table — guaranteed bakal ngarang
+#### 2.5b — Aurora Source Lookup (per kandidat dari 2.5a)
+
+Untuk tiap kandidat komponen dari Intent Scan, jalankan lookup detail:
+
+1. **`ls /Users/working/aurora/projects/ui/`** — confirm folder exist
+2. **Baca `<component>/<component>.component.scss`** untuk CSS VALUE (color, padding, radius, font, transition)
+3. **Baca `<component>/<component>.interface.ts`** untuk VARIANTS (size, type, color enum)
+4. **Kalau folder tidak ada** → mark ❌ TIDAK ADA → STOP & lapor (HUKUM MATI #2)
+
+#### 2.5c — Susun Component Mapping Table
+
+Format:
+
+| UI Need | Aurora Component | Variant | Source file | Override? | Notes |
+|---------|------------------|---------|-------------|-----------|-------|
+| Primary action btn | `au-btn` | `primary` | `button/button.component.scss` | — | pill filled #4199d5 |
+| Bulk action trigger | `au-btn` | `tertiary-plain` | `button/button.component.scss` | — | text-link no border |
+| Pick tanggal (form) | `au-datepicker` | default | `datepicker/datepicker.component.scss` | — | NOT native input type=date |
+| Konfirmasi hapus | `au-dialog` | sectioned | `dialog/dialog.component.scss` | **YES** (sectioned + outer stroke + body text-primary 16px) | Lihat AURORA-OVERRIDES.md entry au-dialog |
+| Pagination | `au-pagination` | default | `pagination/pagination.component.scss` | **YES** (justify-end + borderless + active light-brand-15 + inside list-card) | Lihat AURORA-OVERRIDES.md entry au-pagination |
+| Empty state | ❌ TIDAK ADA → custom `.empty` | — | — | **YES** (no Aurora — custom dengan token) | Lihat AURORA-OVERRIDES.md entry Empty State |
+
+#### 2.5d — Approval User + Catat Override Baru
+
+1. **Share mapping table ke user** — minta approve eksplisit:
+   - "oke lanjut" → boleh coding
+   - "ganti komponen X" → revisi mapping
+   - "yang ini override jadi custom" → record entry baru di AURORA-OVERRIDES.md
+   - "skip fitur Y karena Aurora ga punya" → drop from scope
+
+2. **Catat override baru kalau ada** (user bilang "Aurora-nya jelek, pakai custom" / "value beda sama production"):
+   - Tulis entry di `paper-designer/ds/AURORA-OVERRIDES.md` dengan format standard
+   - Alasan + tanggal + approver
+   - Class CSS yang dipakai (anotasi `OVERRIDE:` bukan `AURORA:`)
+
+3. **Setelah user approve mapping table** → boleh lanjut Langkah 3 (User Flow) → Langkah 5 (UI Prototype).
+
+**Anti-pattern 2.5 keseluruhan yang dilarang:**
+- Lompat ke coding tanpa Intent Scan + Mapping Table — guaranteed bakal ngarang
 - Build mapping table tapi ga share/approve dulu — gerbang harus dilewati
 - Custom komponen tanpa entry di AURORA-OVERRIDES.md — pelanggaran
+- Pakai Aurora source padahal ada override locked di AURORA-OVERRIDES.md — pelanggaran HARD RULE [[frozen-baseline-overrides-rule]]
 
 **Kapan phase ini boleh di-skip?** **TIDAK PERNAH** untuk full prototype. Boleh skip cuma di **JALUR TWEAK** (ubahan receh di file yang sudah ada — komponennya sudah ter-map sebelumnya).
 
