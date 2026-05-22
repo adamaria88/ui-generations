@@ -3,12 +3,12 @@ source:
   book: "Refactoring UI"
   author: "Adam Wathan & Steve Schoger"
   chapter: "Chapter 2: Hierarchy is Everything"
-  page: TBD
-  quote_verbatim: ""
+  page: 60
+  quote_verbatim: "Every action on a page sits somewhere in a pyramid of importance. Most pages only have one true primary action, a couple of less important secondary actions, and a few seldom used tertiary actions."
 slug: "action-hierarchy-semantics"
 buku_slug: "refactoring-ui"
 extracted_at: "2026-05-22"
-review_status: "draft"
+review_status: "reviewed"
 tags: [hierarchy, button, action, destructive]
 apply_value: "high"
 problem_domain: "hierarchy"
@@ -53,7 +53,7 @@ problem_domain: "hierarchy"
 
 - Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
 - Bab: Ch2 — Hierarchy is Everything
-- Halaman: TBD
-- Quote verbatim: —
+- Halaman: 60
+- Quote verbatim: "Every action on a page sits somewhere in a pyramid of importance. Most pages only have one true primary action, a couple of less important secondary actions, and a few seldom used tertiary actions."
 - Tanggal ekstrak: 2026-05-22
-- Reviewed by user: no
+- Reviewed by user: no (Claude-verified via PDF read)

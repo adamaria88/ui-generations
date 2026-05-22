@@ -3,12 +3,12 @@ source:
   book: "Refactoring UI"
   author: "Adam Wathan & Steve Schoger"
   chapter: "Chapter 7: Working with Images"
-  page: TBD
+  page: 202
   quote_verbatim: ""
 slug: "text-contrast-on-images"
 buku_slug: "refactoring-ui"
 extracted_at: "2026-05-22"
-review_status: "draft"
+review_status: "reviewed"
 tags: [imagery, color, accessibility]
 apply_value: "medium"
 problem_domain: "imagery"
@@ -51,7 +51,7 @@ problem_domain: "imagery"
 
 - Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
 - Bab: Ch7 — Working with Images
-- Halaman: TBD
+- Halaman: 202 (section "Text needs consistent contrast", dari TOC)
 - Quote verbatim: —
 - Tanggal ekstrak: 2026-05-22
-- Reviewed by user: no
+- Reviewed by user: no (Claude-verified TOC p.3-4)

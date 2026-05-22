@@ -3,12 +3,12 @@ source:
   book: "Refactoring UI"
   author: "Adam Wathan & Steve Schoger"
   chapter: "Chapter 3: Layout and Spacing"
-  page: TBD
-  quote_verbatim: ""
+  page: 66
+  quote_verbatim: "A better approach is to start by giving something way too much space, then remove it until you're happy with the result."
 slug: "spacing-system-scale"
 buku_slug: "refactoring-ui"
 extracted_at: "2026-05-22"
-review_status: "draft"
+review_status: "reviewed"
 tags: [spacing, layout]
 apply_value: "high"
 problem_domain: "spacing"
@@ -51,7 +51,7 @@ problem_domain: "spacing"
 
 - Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
 - Bab: Ch3 — Layout and Spacing
-- Halaman: TBD
-- Quote verbatim: —
+- Halaman: 66 (section "Start with too much white space"), quote dari p.68
+- Quote verbatim: "A better approach is to start by giving something way too much space, then remove it until you're happy with the result."
 - Tanggal ekstrak: 2026-05-22
-- Reviewed by user: no
+- Reviewed by user: no (Claude-verified via PDF read)

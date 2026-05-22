@@ -3,12 +3,12 @@ source:
   book: "Refactoring UI"
   author: "Adam Wathan & Steve Schoger"
   chapter: "Chapter 6: Depth"
-  page: TBD
+  page: 186
   quote_verbatim: ""
 slug: "shadow-two-layers"
 buku_slug: "refactoring-ui"
 extracted_at: "2026-05-22"
-review_status: "draft"
+review_status: "reviewed"
 tags: [depth, shadow, visual-polish]
 apply_value: "medium"
 problem_domain: "depth"
@@ -55,7 +55,7 @@ problem_domain: "depth"
 
 - Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
 - Bab: Ch6 — Depth / Ch8 screenshot p.239
-- Halaman: TBD (Ch6) + 239 (Ch8 shadow example)
+- Halaman: 186 (section "Shadows can have two parts", dari TOC) + 239 (Ch8 shadow example)
 - Quote verbatim: —
 - Tanggal ekstrak: 2026-05-22
-- Reviewed by user: no
+- Reviewed by user: no (Claude-verified TOC p.3-4)

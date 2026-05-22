@@ -3,12 +3,12 @@ source:
   book: "Refactoring UI"
   author: "Adam Wathan & Steve Schoger"
   chapter: "Chapter 2: Hierarchy is Everything"
-  page: TBD
-  quote_verbatim: ""
+  page: 38
+  quote_verbatim: "Instead of leaving all of the heavy lifting to font size alone, try using font weight or color to do the same job."
 slug: "hierarchy-weight-color"
 buku_slug: "refactoring-ui"
 extracted_at: "2026-05-22"
-review_status: "draft"
+review_status: "reviewed"
 tags: [hierarchy, typography, color]
 apply_value: "high"
 problem_domain: "hierarchy"
@@ -52,7 +52,7 @@ problem_domain: "hierarchy"
 
 - Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
 - Bab: Ch2 — Hierarchy is Everything
-- Halaman: TBD (halaman tidak di-verify saat ekstraksi)
-- Quote verbatim: —
+- Halaman: 38
+- Quote verbatim: "Instead of leaving all of the heavy lifting to font size alone, try using font weight or color to do the same job."
 - Tanggal ekstrak: 2026-05-22
-- Reviewed by user: no
+- Reviewed by user: no (Claude-verified via PDF read)

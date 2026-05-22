@@ -6,8 +6,8 @@ isbn: ""
 slug: "refactoring-ui"
 extracted_at: "2026-05-22"
 extracted_by: "claude-sonnet-4-6"
-review_status: "draft"
-reviewer: ""
+review_status: "reviewed"
+reviewer: "claude-verified-pages"
 tags: [hierarchy, spacing, color, typography, depth, visual-polish, empty-state, form, component]
 ---
 
@@ -25,19 +25,19 @@ Good-looking UI is not a talent — it's the result of applying specific learnab
 - **When to invoke:** Anytime a page feels "noisy" or you want to highlight a primary element but everything looks the same weight
 - **The thinking:** Hierarchy is created through three levers: size, weight (bold/regular), and color (primary vs muted). The instinct is to make primary things bigger — but it's often more effective to de-emphasize secondary things (make labels grey, make supporting text lighter) so the primary element wins by contrast. Visual hierarchy is independent from semantic hierarchy (h1-h6).
 - **Anti-pattern:** Making every action a filled button, every label the same color as its value, every section header as bold as body text — everything shouts, nothing stands out
-- **Source:** Ch2 — Hierarchy is Everything, page TBD
+- **Source:** Ch2 — Hierarchy is Everything, p.36
 
 ### Framework 2: Spacing System — Start Big, Then Tighten
 - **When to invoke:** Any time you start a new layout, add a new component, or a page feels cramped
 - **The thinking:** Default to more whitespace than you think you need — it's easier to reduce than to add. Use a systematic scale (multiples of 4: 4/8/12/16/24/32/48/64/96/128) instead of arbitrary pixel values. Proximity signals relationship: elements that belong together should be closer than elements that don't.
 - **Anti-pattern:** Filling available width because the space exists; using inconsistent spacing values; placing labels right next to unrelated elements because there's room
-- **Source:** Ch3 — Layout and Spacing, page TBD
+- **Source:** Ch3 — Layout and Spacing, p.66
 
 ### Framework 3: Color Palette — HSL + Intentional Shades
 - **When to invoke:** Setting up a color system, extending a DS palette, or when colors feel inconsistent or clash
 - **The thinking:** Use HSL (not hex/RGB) — adjusting lightness and saturation is intuitive. Each hue needs 8-10 shades (100 lightest → 900 darkest). Pure greys (#777, #ccc) look wrong on screen — add a subtle hue hint (blue-grey, warm grey). Never use color as the sole signal for state — pair with icon, weight, or text.
 - **Anti-pattern:** Random hex values that don't relate to each other; true grey (#888) that looks lifeless; blue link on colored background that fails WCAG
-- **Source:** Ch5 — Working with Color, page TBD
+- **Source:** Ch5 — Working with Color, p.138
 
 ### Framework 4: Finishing Touches Checklist
 - **When to invoke:** UI is "functional but plain" — ready for polish pass before delivery

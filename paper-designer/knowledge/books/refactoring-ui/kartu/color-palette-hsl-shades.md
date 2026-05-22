@@ -3,12 +3,12 @@ source:
   book: "Refactoring UI"
   author: "Adam Wathan & Steve Schoger"
   chapter: "Chapter 5: Working with Color"
-  page: TBD
-  quote_verbatim: ""
+  page: 138
+  quote_verbatim: "HSB is more common than HSL in design software, but browsers only understand HSL, so if you're designing for the web, HSL should be your weapon of choice."
 slug: "color-palette-hsl-shades"
 buku_slug: "refactoring-ui"
 extracted_at: "2026-05-22"
-review_status: "draft"
+review_status: "reviewed"
 tags: [color, accessibility, design-system]
 apply_value: "high"
 problem_domain: "color"
@@ -52,7 +52,7 @@ problem_domain: "color"
 
 - Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
 - Bab: Ch5 — Working with Color
-- Halaman: TBD
-- Quote verbatim: —
+- Halaman: 138 (section "Ditch hex for HSL"), quote dari p.141
+- Quote verbatim: "HSB is more common than HSL in design software, but browsers only understand HSL, so if you're designing for the web, HSL should be your weapon of choice."
 - Tanggal ekstrak: 2026-05-22
-- Reviewed by user: no
+- Reviewed by user: no (Claude-verified via PDF read)

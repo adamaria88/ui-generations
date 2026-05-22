@@ -3,12 +3,12 @@ source:
   book: "Refactoring UI"
   author: "Adam Wathan & Steve Schoger"
   chapter: "Chapter 4: Designing Text"
-  page: TBD
+  page: 122
   quote_verbatim: ""
 slug: "line-height-by-context"
 buku_slug: "refactoring-ui"
 extracted_at: "2026-05-22"
-review_status: "draft"
+review_status: "reviewed"
 tags: [typography, readability]
 apply_value: "high"
 problem_domain: "typography"
@@ -55,7 +55,7 @@ problem_domain: "typography"
 
 - Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
 - Bab: Ch4 — Designing Text
-- Halaman: TBD
+- Halaman: 122 (section "Line-height is proportional", dari TOC)
 - Quote verbatim: —
 - Tanggal ekstrak: 2026-05-22
-- Reviewed by user: no
+- Reviewed by user: no (Claude-verified TOC p.3-4)

@@ -3,12 +3,12 @@ source:
   book: "Refactoring UI"
   author: "Adam Wathan & Steve Schoger"
   chapter: "Chapter 2: Hierarchy is Everything"
-  page: TBD
-  quote_verbatim: ""
+  page: 48
+  quote_verbatim: "The data itself is what matters, the label is just there for clarity."
 slug: "labels-secondary-value-primary"
 buku_slug: "refactoring-ui"
 extracted_at: "2026-05-22"
-review_status: "draft"
+review_status: "reviewed"
 tags: [hierarchy, typography, form, detail-page]
 apply_value: "high"
 problem_domain: "hierarchy"
@@ -52,7 +52,7 @@ problem_domain: "hierarchy"
 
 - Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
 - Bab: Ch2 — Hierarchy is Everything
-- Halaman: TBD
-- Quote verbatim: —
+- Halaman: 48 (section "Labels are a last resort"), quote dari p.51
+- Quote verbatim: "The data itself is what matters, the label is just there for clarity."
 - Tanggal ekstrak: 2026-05-22
-- Reviewed by user: no
+- Reviewed by user: no (Claude-verified via PDF read)
