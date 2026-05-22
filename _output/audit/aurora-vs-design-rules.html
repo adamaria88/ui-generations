@@ -1,0 +1,2375 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Audit: Aurora SCSS vs design-rules.md</title>
+<style>
+  :root{
+    --bg:#f8fbfe; --surface:#ffffff; --surface-raised:#f3f6f9; --border:#dbe2e8;
+    --text:#133f5d; --text-2:#718c9e; --muted:#a5b6c1;
+    --brand:#4199d5; --brand-15:#e3f0fa;
+    --ok:#356021; --ok-bg:#eaf6e3; --ok-bd:#c3e3a8;
+    --warn:#8a6400; --warn-bg:#fdf3d9; --warn-bd:#f3dca0;
+    --gap:#b52b55; --gap-bg:#fce8ec; --gap-bd:#f3c2cf;
+    --over:#1f6fa8; --over-bg:#e3f0fa; --over-bd:#a9d3ee;
+    --filled:#356021; --filled-bg:#eaf6e3; --filled-bd:#c3e3a8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Lato',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;padding:32px 24px}
+  .container{max-width:1280px;margin:0 auto}
+  h1{font-size:28px;font-weight:700;margin-bottom:8px}
+  h2{font-size:18px;font-weight:700;margin-bottom:4px}
+  .lead{color:var(--text-2);font-size:14px;margin-bottom:24px}
+  .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+  .stat__n{font-size:32px;font-weight:700}
+  .stat__l{font-size:12px;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+  .stat--ok .stat__n{color:var(--ok)}
+  .stat--gap .stat__n{color:var(--gap)}
+  .stat--over .stat__n{color:var(--over)}
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;border:1px solid transparent}
+  .badge--ok{background:var(--ok-bg);color:var(--ok);border-color:var(--ok-bd)}
+  .badge--gap{background:var(--gap-bg);color:var(--gap);border-color:var(--gap-bd)}
+  .badge--over{background:var(--over-bg);color:var(--over);border-color:var(--over-bd)}
+  .badge--filled{background:var(--filled-bg);color:var(--filled);border-color:var(--filled-bd)}
+  .stat--filled .stat__n{color:var(--filled)}
+  .update-banner{background:#eaf6e3;border:1px solid #c3e3a8;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#356021}
+  .update-banner b{font-weight:700}
+
+  /* ── Portal Belajar styles ── */
+  .portal-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:24px;overflow:hidden}
+  .portal-section__hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 22px;background:linear-gradient(135deg,#fff 0%,#f3f7fb 100%);border-bottom:1px solid var(--border)}
+  .portal-section__title{font-size:18px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+  .portal-section__sub{font-size:13px;color:var(--text-2);margin-top:4px}
+  .portal-section__bd{padding:20px 22px}
+
+  /* Question / discussion card */
+  .qa-card{background:#fffbf0;border:1px solid #f3dca0;border-radius:8px;padding:14px 16px;margin-bottom:12px}
+  .qa-card__q{font-size:14px;font-weight:600;color:#8a6400;display:flex;gap:8px;align-items:flex-start}
+  .qa-card__q::before{content:"❓";flex-shrink:0}
+  .qa-card__ctx{font-size:13px;color:var(--text);margin-top:6px;line-height:1.6}
+  .qa-card__slot{font-size:12px;color:var(--text-2);margin-top:10px;padding-top:10px;border-top:1px dashed #f3dca0;font-style:italic}
+
+  /* Insight card (catatan gue) */
+  .insight-card{background:#e3f0fa;border:1px solid #a9d3ee;border-radius:8px;padding:14px 16px;margin-bottom:12px}
+  .insight-card__l{font-size:14px;font-weight:600;color:#1f6fa8;display:flex;gap:8px;align-items:flex-start}
+  .insight-card__l::before{content:"💡";flex-shrink:0}
+  .insight-card__bd{font-size:13px;color:var(--text);margin-top:6px;line-height:1.6}
+
+  /* Inline note di component block (catatan dari Claude) */
+  .claude-note{background:#fffbf0;border-left:3px solid #f3dca0;padding:10px 14px;margin-top:12px;border-radius:0 6px 6px 0;font-size:13px;color:var(--text)}
+  .claude-note b{color:#8a6400}
+
+  /* Rule entry */
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+  .rule{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .rule__head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+  .rule__name{font-size:14px;font-weight:700;color:var(--text);line-height:1.4}
+  .rule__sum{font-size:13px;color:var(--text);line-height:1.55}
+  .rule__when{font-size:12px;color:var(--text-2);background:#f3f6f9;padding:6px 10px;border-radius:4px;border-left:3px solid var(--brand)}
+  .rule__when b{color:var(--text)}
+  .rule__tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;flex-shrink:0;align-self:flex-start}
+  .rule__tag--locked{background:#eaf6e3;color:#356021;border:1px solid #c3e3a8}
+  .rule__tag--review{background:#fdf3d9;color:#8a6400;border:1px solid #f3dca0}
+  .rule__tag--pending{background:#fce8ec;color:#b52b55;border:1px solid #f3c2cf}
+  .rule__cat{font-size:11px;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+
+  .rule-cat-head{font-size:15px;font-weight:700;color:var(--text);margin:24px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--brand-15);display:flex;align-items:center;gap:8px}
+  .rule-cat-head:first-of-type{margin-top:0}
+
+  /* Visual demo block dalam qa-card / insight */
+  .demo-box{background:#fff;border:1px dashed #e0e8ef;border-radius:6px;padding:18px;margin:10px 0;position:relative}
+  .demo-box__lab{position:absolute;top:-9px;left:12px;background:#fffbf0;padding:0 6px;font-size:10px;font-weight:600;color:#8a6400;text-transform:uppercase;letter-spacing:.5px}
+  .demo-box--ins{background:#fff;border-color:#cce2f0}
+  .demo-box--ins .demo-box__lab{background:#e3f0fa;color:#1f6fa8}
+
+  /* Meta-inline demo */
+  .demo-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .demo-meta__text{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:#133f5d;font-size:14px}
+  .demo-meta__dot{width:4px;height:4px;background:#a5b6c1;border-radius:50%;display:inline-block}
+  .demo-meta__btn{background:none;border:0;padding:0;color:#4199d5;font-weight:600;cursor:pointer;font-size:14px;font-family:inherit}
+  .demo-meta__empty{color:#a5b6c1;font-size:14px}
+
+  /* Number input demo */
+  .demo-numinput{background:#fff;padding:14px 16px;border:1px solid #e0e8ef;border-radius:6px;display:flex;flex-direction:column;gap:6px}
+  .demo-numinput label{font-size:12px;color:#718c9e;font-weight:600}
+  .demo-numinput input{width:100%;padding:10px 12px;border:1px solid #dbe2e8;border-radius:4px;font-size:14px;color:#133f5d;font-family:inherit}
+  .demo-hint{font-size:12px;color:#718c9e;margin-top:4px}
+
+  /* Sidemenu color demo */
+  .demo-side{background:#133f5d;padding:14px 0;border-radius:6px;display:flex;flex-direction:column;gap:2px;font-family:inherit;max-width:240px}
+  .demo-side__cat{color:#fff;opacity:0.85;padding:8px 18px;font-size:13px;font-weight:600}
+  .demo-side__item{color:#fff;opacity:0.65;padding:8px 18px 8px 38px;font-size:13px;font-weight:400}
+  .demo-side__item--active{color:#b2ed7f;opacity:1;font-weight:400}
+  .demo-side__legend{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--text-2)}
+  .demo-side__swatch{width:16px;height:16px;border-radius:3px;display:inline-block;border:1px solid #dbe2e8}
+  .filter{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .filter button{background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:8px 16px;font:inherit;font-size:13px;color:var(--text);cursor:pointer;font-weight:500}
+  .filter button.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .comp{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden}
+  .comp__hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;background:var(--surface-raised);border-bottom:1px solid var(--border)}
+  .comp__name{font-size:16px;font-weight:700}
+  .comp__name code{background:rgba(19,63,93,.06);padding:2px 6px;border-radius:4px;font-size:13px;color:var(--brand)}
+  .comp__body{padding:20px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  @media (max-width:768px){.cols{grid-template-columns:1fr}}
+  .col{border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .col__hd{padding:8px 12px;background:var(--surface-raised);font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-2);font-weight:600;border-bottom:1px solid var(--border)}
+  .col__bd{padding:12px;font-size:12px;font-family:'SF Mono','Menlo',monospace;color:var(--text);white-space:pre-wrap;line-height:1.6;max-height:340px;overflow-y:auto}
+  .col__bd em{font-style:normal;color:var(--gap);font-weight:600}
+  .col__bd strong{font-weight:700;color:var(--brand)}
+  .empty{padding:24px 12px;text-align:center;color:var(--muted);font-style:italic;font-family:inherit;font-size:13px}
+  .note{background:var(--surface-raised);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--text);border-left:3px solid var(--brand)}
+  .note b{font-weight:700;color:var(--brand)}
+  .footer-rec{background:var(--brand-15);border:1px solid var(--brand);border-radius:12px;padding:24px;margin-top:32px}
+  .footer-rec h2{color:var(--brand)}
+  .footer-rec ul{padding-left:20px;margin-top:12px}
+  .footer-rec li{margin-bottom:8px;font-size:14px}
+  .footer-rec code{background:rgba(255,255,255,.7);padding:2px 6px;border-radius:4px;font-size:12px}
+
+  /* ─── Visual preview block per component card ─── */
+  .visual{margin-top:16px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .visual__hd{padding:8px 12px;background:var(--surface-raised);font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-2);font-weight:600;border-bottom:1px solid var(--border)}
+  .visual__bd{padding:24px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;background:#fafcfe}
+  .visual__bd.dark{background:var(--text)}
+  .visual__split{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .visual__split > div{padding:20px;border-right:1px dashed var(--border)}
+  .visual__split > div:last-child{border-right:0}
+  .visual__lab{font-size:11px;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:8px;display:block}
+
+  /* ──── Button viz ──── */
+  .viz-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;border-radius:9999px;font:500 14px/22px 'Lato',sans-serif;border:none;cursor:pointer;white-space:nowrap}
+  .viz-btn--primary{background:#4199d5;color:#fff;box-shadow:0 0 0 1px rgb(10 13 18 / 18%) inset,0 1px 0 1px rgb(255 255 255 / 10%) inset,0 -2px 0 0 rgb(10 13 18 / 5%) inset,0 1px 2px 0 rgb(10 13 18 / 5%)}
+  .viz-btn--secondary{background:#fff;color:#3c5467;box-shadow:0 0 0 1px rgb(10 13 18 / 18%) inset,0 1px 0 1px rgb(10 13 18 / 5%) inset,0 -2px 0 0 rgb(10 13 18 / 5%) inset,0 1px 2px 0 rgb(10 13 18 / 5%)}
+  .viz-btn--destructive{background:#e35273;color:#fff;box-shadow:0 0 0 1px rgb(10 13 18 / 18%) inset,0 1px 0 1px rgb(255 255 255 / 10%) inset,0 -2px 0 0 rgb(10 13 18 / 5%) inset,0 1px 2px 0 rgb(10 13 18 / 5%)}
+  .viz-btn--tertiary{background:transparent;color:#4199d5}
+  .viz-btn--tertiary-plain{background:transparent;color:#4199d5;padding:0;border-radius:0}
+
+  /* ──── Banner viz ──── */
+  .viz-banner{box-sizing:border-box;width:100%;max-width:520px;padding:12px;border-radius:8px;border:1px solid #a9d3ee;background:#fff;color:#133f5d;display:flex;gap:8px;align-items:flex-start}
+  .viz-banner__ic{flex-shrink:0;width:24px;height:24px;color:#4199d5;display:flex}
+  .viz-banner__tx{flex:1;font-size:13px}
+  .viz-banner__tx b{font-weight:700}
+
+  /* ──── Breadcrumb viz ──── */
+  .viz-bc{display:flex;align-items:center;gap:12px;font:600 14px 'Lato',sans-serif}
+  .viz-bc__back{background:transparent;display:flex;align-items:center;gap:8px;padding:8px;color:#4199d5;border:0;cursor:pointer;font:inherit}
+  .viz-bc__back svg{width:16px;height:16px}
+  .viz-bc__sep{background:#c4d0d9;border-radius:9999px;width:4px;height:4px}
+  .viz-bc__it{color:#718c9e}
+  .viz-bc__it--cur{color:#133f5d;font-weight:700}
+
+  /* ──── Checkbox viz ──── */
+  .viz-chk-row{display:flex;align-items:center;gap:8px;font-size:14px;color:#133f5d}
+  .viz-chk{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid #dbe2e8;border-radius:4px;background:#fff;cursor:pointer;margin:0;position:relative;flex-shrink:0}
+  .viz-chk:hover{border-color:#89bde5}
+  .viz-chk:checked{background:#4199d5;border-color:#4199d5}
+  .viz-chk:checked::after{content:"";position:absolute;left:5px;top:1.5px;width:4px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .viz-chk:indeterminate{background:#4199d5;border-color:#4199d5}
+  .viz-chk:indeterminate::after{content:"";position:absolute;left:3px;top:7px;width:9px;height:2px;background:#fff;border-radius:1px}
+  .viz-chk:disabled{opacity:.75;cursor:not-allowed}
+
+  /* ──── Chip-status viz ──── */
+  .viz-cs{border-radius:99px;padding:4px 12px;border:1px solid transparent;font:600 14px/20px 'Lato',sans-serif;display:inline-block}
+  .viz-cs--compact{padding:2px 8px;font-size:12px;line-height:18px}
+  .viz-cs--lb50{color:#1f6fa8;border-color:#1f6fa8}
+  .viz-cs--lb50.inv{color:#fff;background:#1f6fa8;border-color:#1f6fa8}
+  .viz-cs--lg50{color:#52a847;border-color:#52a847}
+  .viz-cs--lg50.inv{color:#fff;background:#52a847}
+  .viz-cs--lr50{color:#e35273;border-color:#e35273}
+  .viz-cs--lr50.inv{color:#fff;background:#e35273}
+  .viz-cs--lo50{color:#d97706;border-color:#d97706}
+  .viz-cs--lo50.inv{color:#fff;background:#d97706}
+  .viz-cs--db45{color:#3c5467;border-color:#3c5467}
+  .viz-cs--db45.inv{color:#fff;background:#3c5467}
+
+  /* ──── Context-menu viz ──── */
+  .viz-cm{background:#fff;border-radius:4px;min-width:160px;box-shadow:0 3px 10px rgb(0 0 0 / 8%);color:#133f5d;padding:4px 0;display:inline-block}
+  .viz-cm__it{display:flex;align-items:center;gap:8px;padding:8px 16px;font-size:14px;cursor:pointer;color:#133f5d}
+  .viz-cm__it:hover{background:#e3f0fa}
+  .viz-cm__it svg{width:18px;height:18px;flex-shrink:0}
+
+  /* ──── Dialog viz ──── */
+  .viz-dlg{background:#fff;border-radius:12px;box-shadow:0 8px 24px rgb(0 0 0 / 15%);width:380px;max-width:100%;color:#133f5d;font:13px 'Lato',sans-serif;overflow:hidden}
+  .viz-dlg__hd{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;padding:16px 20px;border-bottom:1px solid #eef2f5}
+  .viz-dlg__ti{font-family:'Lato',sans-serif;font-size:16px;font-weight:700;color:#133f5d}
+  .viz-dlg__cl{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:transparent;border:0;cursor:pointer;border-radius:4px;color:#718c9e}
+  .viz-dlg__bd{padding:16px 20px;font-size:13px;color:#718c9e}
+  .viz-dlg__ac{display:flex;justify-content:flex-end;gap:8px;padding:12px 20px;border-top:1px solid #eef2f5}
+
+  /* ──── Dropdown-menu viz ──── */
+  .viz-dm{background:#fff;border-radius:4px;min-width:200px;box-shadow:0 3px 10px rgb(0 0 0 / 8%);padding:4px 0;display:inline-block}
+  .viz-dm__it{display:flex;align-items:flex-start;gap:8px;padding:8px 24px;color:#133f5d;font-size:14px;cursor:pointer;text-align:left;background:transparent;border:none;width:100%}
+  .viz-dm__it:hover{background:#e3f0fa}
+  .viz-dm__it--title{cursor:default;padding:4px 24px;font-size:12px;color:#718c9e;font-weight:600;line-height:18px}
+  .viz-dm__it svg{width:20px;height:20px;flex-shrink:0;color:#718c9e}
+
+  /* ──── Form Field viz ──── */
+  .viz-ff{display:flex;flex-direction:column;gap:8px;max-width:320px;width:100%}
+  .viz-ff__lab{font-size:14px;font-weight:700;color:#133f5d}
+  .viz-ff__ctrl{display:grid;grid-template-columns:auto 1fr auto;align-items:center;border:1px solid #c4d0d9;border-radius:4px;background:#fff;transition:border-color 300ms}
+  .viz-ff__ctrl:focus-within{border-color:#4199d5;background:#f2f7fc}
+  .viz-ff__pre,.viz-ff__suf{color:#a5b6c1;display:flex;align-items:center;padding:8px 0 8px 12px}
+  .viz-ff__suf{padding:8px 12px 8px 0}
+  .viz-ff__in{grid-column:2;border:none;outline:none;font:14px 'Lato',sans-serif;color:#133f5d;background:transparent;padding:8px 12px;min-height:40px;width:100%;min-width:0}
+  .viz-ff__in::placeholder{color:#a5b6c1}
+  .viz-ff--err .viz-ff__ctrl{border-color:#e35273}
+  .viz-ff__err{font-size:12px;color:#e35273;display:none}
+  .viz-ff--err .viz-ff__err{display:block}
+
+  /* ──── Pagination viz ──── */
+  .viz-pg{display:flex;align-items:center;gap:4px;color:#3c5467;font-size:14px}
+  .viz-pg__num{padding:4px 12px;background:transparent;border:0;font:inherit;color:#3c5467;cursor:pointer;border-radius:4px}
+  .viz-pg__num:hover{background:#eef2f5}
+  .viz-pg__num.viz-pg__num--ic{margin-top:4px;display:flex;align-items:center;justify-content:center;width:32px;height:32px;padding:0}
+  .viz-pg__num--sel-aurora{color:#4199d5;font-weight:700;background:#daeefb}
+  .viz-pg__num--sel-proto{color:#133f5d;font-weight:700;background:#e3f0fa}
+
+  /* ──── Skeleton viz ──── */
+  .viz-sk{position:relative;overflow:hidden;background:#e2e8f0;border-radius:4px;height:14px;width:100%;max-width:240px}
+  .viz-sk::after{content:'';position:absolute;top:0;left:0;right:0;height:100%;transform:translateX(-100%);background:linear-gradient(90deg,rgb(255 255 255 / 0%),rgb(255 255 255 / 40%),rgb(255 255 255 / 0%));animation:viz-sk-an 1.2s infinite}
+  @keyframes viz-sk-an{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+
+  /* ──── Table viz (mini) ──── */
+  .viz-tbl{background:#fff;border:1px solid #dbe2e8;border-radius:8px;overflow:hidden;width:100%;max-width:540px}
+  .viz-tbl table{width:100%;border-collapse:separate;border-spacing:0;font:14px 'Lato',sans-serif}
+  .viz-tbl thead th{background:#f3f6f9;text-align:left;padding:12px 16px;font-weight:700;color:#133f5d;font-size:13px;border-bottom:1px solid #dbe2e8}
+  .viz-tbl tbody td{padding:14px 16px;border-bottom:1px solid #dbe2e8;color:#133f5d}
+  .viz-tbl tbody tr:hover td{background:#daeefb}
+  .viz-tbl tbody tr:last-child td{border-bottom:0}
+
+  /* ──── Toast viz ──── */
+  .viz-toast{box-sizing:border-box;padding:12px;background:linear-gradient(90deg,#133f5d 0%,#0a1d28 100%);color:#fff;display:flex;align-items:center;gap:8px;box-shadow:0 3px 10px 0 rgb(0 0 0 / 8%);font:14px 'Lato',sans-serif}
+  .viz-toast b{font-weight:700;font-size:14px;display:block}
+  .viz-toast span{font-size:13px;color:rgba(255,255,255,.85);display:block}
+  .viz-toast--aurora{width:450px;border-radius:12px}
+  .viz-toast--proto{width:380px;border-radius:8px}
+  .viz-toast__ic{width:32px;height:32px;flex-shrink:0;display:flex}
+</style>
+</head>
+<body data-suxc="prototype">
+<div class="container">
+  <h1>Audit: Aurora SCSS vs <code style="font-size:22px">design-rules.md</code></h1>
+  <p class="lead">Bandingin spec per komponen antara <b>Aurora SCSS source</b> (<code>/Users/working/aurora/projects/ui/</code>) sama dokumentasi <b><code>paper-designer/rules/design-rules.md</code></b>. Tujuan: cari diskrepansi, putus source of truth, isi gap dokumentasi.</p>
+
+  <div class="update-banner">
+    <b>✓ Updated 2026-05-20 — Action B executed:</b> 6 GAP filled di <code>design-rules.md</code> (Breadcrumb, Chip-Status, Context-Menu, Dropdown-Menu, Pagination, Skeleton). Pagination jadi <b>OVERRIDE-locked</b> (production spec menang vs Aurora). <code>AURORA-OVERRIDES.md</code> sekarang 9 entries (was 3). A+B mechanism live: <code>paper-designer/ds/aurora-intent-lookup.md</code> + pipeline Langkah 2.5a.
+  </div>
+
+  <!-- ═════ PORTAL BELAJAR — Cara pakai ═════ -->
+  <div class="portal-section">
+    <div class="portal-section__hd">
+      <div>
+        <div class="portal-section__title">📚 Portal Belajar — Rules & Components</div>
+        <div class="portal-section__sub">Halaman ini dipakai buat diskusi rules dan komponen bareng user. Komen di overlay, copy-paste balik ke chat, gue jawab.</div>
+      </div>
+    </div>
+    <div class="portal-section__bd">
+      <p style="font-size:13px;line-height:1.6;margin-bottom:10px"><b>Cara pakai:</b></p>
+      <ol style="font-size:13px;line-height:1.7;padding-left:20px;color:var(--text)">
+        <li>Baca rules / komponen di halaman ini</li>
+        <li>Mau koreksi / nambah / tanya? Klik tombol 💬 kanan bawah → klik area di layar → tulis komen</li>
+        <li>"Salin semua komen" → paste ke chat → gue jawab + revisi rule/komponen</li>
+        <li>Gue juga taro pertanyaan / catatan gue di sini (tanda <span style="color:#8a6400">❓</span> = pertanyaan dari gue, <span style="color:#1f6fa8">💡</span> = catatan/insight gue)</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ═════ QUESTIONS FROM CLAUDE — Diskusi terbuka ═════ -->
+  <div class="portal-section">
+    <div class="portal-section__hd">
+      <div>
+        <div class="portal-section__title">❓ Pertanyaan dari Gue (Claude)</div>
+        <div class="portal-section__sub">Ada beberapa hal yang gue merasa belum jelas / masih ambigu. Tolong dijawab biar lebih solid.</div>
+      </div>
+    </div>
+    <div class="portal-section__bd">
+
+      <div class="qa-card">
+        <div class="qa-card__q">Pattern "info + tombol kecil sebaris" — kasih nama apa?</div>
+        <div class="qa-card__ctx">
+          Pattern ini sering muncul di Detail page. Contoh paling jelas: <b>Lampiran</b> di Detail Pengeluaran. Bentuknya seperti ini:
+        </div>
+        <div class="demo-box">
+          <span class="demo-box__lab">Visual</span>
+          <div style="margin-bottom:14px">
+            <div style="font-size:12px;color:#718c9e;margin-bottom:4px">Lampiran</div>
+            <div class="demo-meta">
+              <span class="demo-meta__text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.34 3.34 0 014.72 4.72l-9.2 9.19a1.67 1.67 0 01-2.36-2.36l8.49-8.48" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                2 file
+              </span>
+              <span class="demo-meta__dot"></span>
+              <button class="demo-meta__btn">Unduh</button>
+              <span class="demo-meta__dot"></span>
+              <button class="demo-meta__btn">+ Tambah</button>
+            </div>
+          </div>
+          <div style="border-top:1px dashed #e0e8ef;padding-top:14px">
+            <div style="font-size:12px;color:#718c9e;margin-bottom:4px">Lampiran (kosong)</div>
+            <div class="demo-meta">
+              <span class="demo-meta__empty">Belum ada</span>
+              <span class="demo-meta__dot"></span>
+              <button class="demo-meta__btn">+ Tambah Lampiran</button>
+            </div>
+          </div>
+        </div>
+        <div class="qa-card__ctx">
+          <b>Kenapa gue tanya nama:</b> pattern ini dipake banyak tempat (bukan cuma Lampiran). Misalnya: <b>Status + tombol Ubah</b>, <b>Tag + tombol Hapus semua</b>, <b>Counter + tombol Reset</b>. Jadi gue kasih nama umum biar 1 pattern dipake banyak feature, BUKAN bikin nama per feature kayak "lampiran-row", "status-row", "tag-row" (jadi banyak nama padahal bentuknya sama).
+        </div>
+        <div class="qa-card__ctx">
+          <b>Sekarang gue pake nama "info-aksi sebaris" (di kode: <code>meta-inline</code>).</b> Alternatif yang gue pikirin: "baris-info", "info-tombol", "baris-aksi". Atau lo mau kasih nama sendiri yang lebih cocok?
+        </div>
+        <div class="qa-card__slot">→ Komen: nama yang lo pengen, atau bilang "yang sekarang OK".</div>
+      </div>
+
+      <div class="qa-card">
+        <div class="qa-card__q">View Document pattern (Gap #13 Paperverse) — anatomy belum jelas</div>
+        <div class="qa-card__ctx">Paperverse 1.0 punya doc "View Document" tapi belum diserap jadi rule eksplisit. Gue udah implement Detail Pengeluaran di prototype tapi belum compile jadi pattern. Lo pengen anatomi-nya seperti apa? (header info + tabs + actions? Atau full panel layout dengan side info?)</div>
+        <div class="qa-card__slot">→ Komen reference page-nya (mis. Detail Sales Invoice production) atau jelasin anatomy yang lo prefer.</div>
+      </div>
+
+      <div class="qa-card">
+        <div class="qa-card__q">Input angka dengan format koma (5,000,000) — udah OK?</div>
+        <div class="qa-card__ctx">
+          Setiap input nominal/jumlah pakai format koma otomatis saat ngetik (5,000,000 bukan 5000000). Aurora belum punya komponen dedicated buat ini, jadi gue gabungin komponen input biasa + script kecil buat format-nya. Hasilnya:
+        </div>
+        <div class="demo-box">
+          <span class="demo-box__lab">Visual</span>
+          <div class="demo-numinput">
+            <label>Jumlah Pengeluaran</label>
+            <input type="text" value="5,000,000" readonly>
+          </div>
+          <div class="demo-hint" style="margin-top:10px"><b>Behavior:</b> user ngetik <code style="background:#f3f6f9;padding:2px 4px;border-radius:3px">5000000</code> → otomatis berubah jadi <code style="background:#f3f6f9;padding:2px 4px;border-radius:3px">5,000,000</code> live saat ngetik. Pas submit, koma dihapus lagi jadi angka biasa buat server.</div>
+        </div>
+        <div class="qa-card__ctx">
+          <b>Apa yang gue tanya:</b> ini cara gue (gabung 2 komponen + script) udah jadi "aturan resmi" di catatan rules. Tapi gue mau confirm — visualnya OK, behaviornya OK, atau ada yang mau diubah? Misalnya:
+          <ul style="margin:8px 0 0 18px;font-size:13px;line-height:1.6">
+            <li>Mau format pake titik (5.000.000) gaya Indonesia, bukan koma?</li>
+            <li>Threshold kapan pake separator (sekarang gue bilang "kalau angka &gt;100 baru pake separator")?</li>
+            <li>Boleh negatif (-100,000) atau ga pernah?</li>
+          </ul>
+        </div>
+        <div class="qa-card__slot">→ Komen: setuju format koma + behavior, atau ada yang mau direvisi.</div>
+      </div>
+
+      <div class="qa-card">
+        <div class="qa-card__q">Carousel — di Paper.id production ada/tidak?</div>
+        <div class="qa-card__ctx">Aurora punya komponen <code>au-carousel</code> (slides + nav + indicator). Gue udah document di rules tapi BELUM PERNAH lihat dipake di production Paper.id. Wajib include di prototype, atau optional (cuma kalau brief minta explicit)?</div>
+        <div class="qa-card__slot">→ Komen: ada/tidak di production, dan kapan boleh dipake.</div>
+      </div>
+
+      <div class="qa-card">
+        <div class="qa-card__q">Connection-icon — use case spesifik?</div>
+        <div class="qa-card__ctx">Aurora punya <code>au-connection-icon</code>. Gue assume buat status sync / real-time / websocket. Lo punya context Paper.id pake ini di fitur apa? (mis. realtime collaboration, payment status sync, dll). Kalau ga ada use case → skip dari aurora-intent-lookup.</div>
+        <div class="qa-card__slot">→ Komen use case atau bilang "skip aja".</div>
+      </div>
+
+      <div class="qa-card">
+        <div class="qa-card__q">Sidemenu — warna hijau pas aktif, selalu begini ya?</div>
+        <div class="qa-card__ctx">
+          Lo kunci warna <b>hijau muda</b> buat menu yang lagi aktif. Bentuknya gini:
+        </div>
+        <div class="demo-box">
+          <span class="demo-box__lab">Visual</span>
+          <div class="demo-side">
+            <div class="demo-side__cat">Penjualan</div>
+            <div class="demo-side__item">Invoice</div>
+            <div class="demo-side__item demo-side__item--active">Pengeluaran &nbsp; ← lagi aktif</div>
+            <div class="demo-side__item">Pembayaran</div>
+            <div class="demo-side__item">Produk</div>
+          </div>
+          <div class="demo-side__legend">
+            <span class="demo-side__swatch" style="background:#b2ed7f"></span> Hijau muda = item aktif
+            <span style="margin-left:16px"></span>
+            <span class="demo-side__swatch" style="background:rgba(255,255,255,0.65);border-color:#a5b6c1"></span> Putih transparan = item biasa
+          </div>
+        </div>
+        <div class="qa-card__ctx">
+          <b>Apa yang gue tanya:</b> hijau ini berlaku <b>SELALU</b> di semua sidemenu Paper.id? Atau ada konteks tertentu boleh ganti? Misalnya:
+          <ul style="margin:8px 0 0 18px;font-size:13px;line-height:1.6">
+            <li>Theme khusus / dark mode toggle?</li>
+            <li>Sub-product Paper.id yang punya brand color sendiri?</li>
+            <li>Atau memang sekali selamanya hijau?</li>
+          </ul>
+        </div>
+        <div class="qa-card__slot">→ Komen "selalu hijau" atau "ada exception: ___".</div>
+      </div>
+
+      <div class="qa-card">
+        <div class="qa-card__q">Empty State + File Upload Dropzone — lapor maintainer Aurora kapan?</div>
+        <div class="qa-card__ctx">Sekarang 3 custom component sengaja (no Aurora): <code>.empty</code>, <code>.upload</code>, <code>.list-card</code>. Semua locked di OVERRIDES.md sebagai TODO "lapor maintainer Aurora untuk develop component baru". Apakah ada timeline / kontak maintainer Aurora, atau ini cuma noted dan lanjut custom?</div>
+        <div class="qa-card__slot">→ Komen: kontak Aurora maintainer (siapa, channel apa) atau "lanjut custom aja dulu".</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="stat stat--ok"><div class="stat__n">6</div><div class="stat__l">Match ✓</div></div>
+    <div class="stat stat--filled"><div class="stat__n">5</div><div class="stat__l">Filled (new)</div></div>
+    <div class="stat stat--over"><div class="stat__n">2</div><div class="stat__l">Override</div></div>
+    <div class="stat"><div class="stat__n">13</div><div class="stat__l">Total komponen</div></div>
+  </div>
+
+  <div class="filter">
+    <button class="active" data-f="all">Semua (13)</button>
+    <button data-f="ok">Match (6)</button>
+    <button data-f="filled">Filled (5)</button>
+    <button data-f="over">Override (2)</button>
+  </div>
+
+  <!-- ═════ 1. BUTTON ═════ -->
+  <div class="comp" data-status="ok">
+    <div class="comp__hd">
+      <div class="comp__name">1. Button <code>au-btn</code></div>
+      <span class="badge badge--ok">✓ Match</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>button.component.scss</code></div>
+          <div class="col__bd"><strong>Base</strong>: pill, padding sm lg (8 16), font-size body-md (14), weight medium (500), line-height md, transition slow ease-out-relax.
+<strong>5 variants</strong>: primary, secondary, destructive, tertiary, tertiary-plain.
+<strong>2 sizes</strong>: default | compact (padding xs md / 4 12).
+<strong>Icon-only</strong>: 38px default / 30px compact, radius-lg.
+<strong>tertiary fg</strong>: light-brand-50 #4199d5
+<strong>shadow 4-layer</strong> primary/secondary/destructive.</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Button"</div>
+          <div class="col__bd"><strong>Tabel Property × Default/Compact</strong>: padding 8 16 / 4 12, gap 8/4, font 14 weight 500, line-height 22, icon 18, icon-only 38/30 radius-lg.
+<strong>Tabel Variants</strong>: 5 lengkap (primary, secondary, destructive, tertiary, tertiary-plain, disabled), warna bg/fg/hover/active match hex Aurora.
+<strong>Box-shadow 4-layer</strong> documented persis (inset 1px + 1px + -2px + outset 1px).</div>
+        </div>
+      </div>
+      <div class="note"><b>Analisa gue:</b> Documented persis nilai Aurora. Tabel design-rules bahkan tambah kolom Compact yang ga eksplisit di SCSS snippet (Aurora pakai map function untuk size). <b>Lengkap & accurate.</b> Bisa langsung pakai design-rules sebagai authoritative reference untuk Button.</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — 5 variants rendered per Aurora spec (= design-rules)</div>
+        <div class="visual__bd">
+          <button class="viz-btn viz-btn--primary">Primary</button>
+          <button class="viz-btn viz-btn--secondary">Secondary</button>
+          <button class="viz-btn viz-btn--destructive">Destructive</button>
+          <button class="viz-btn viz-btn--tertiary">Tertiary</button>
+          <button class="viz-btn viz-btn--tertiary-plain">Tertiary Plain</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ 2. BANNER ═════ -->
+  <div class="comp" data-status="ok">
+    <div class="comp__hd">
+      <div class="comp__name">2. Banner <code>au-banner</code></div>
+      <span class="badge badge--ok">✓ Match</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>banner.component.scss</code></div>
+          <div class="col__bd"><strong>Base</strong>: padding md, radius-md (8), border 1px state-active-border, bg surface-light-default.
+<strong>Struktur</strong>: __content > __icon (24×24) + __text + __actions/__action-slot.
+<strong>5 states</strong>: success, danger, warning, help, informative (default state).
+<strong>--type-attention modifier</strong>: filled bg (light-green-20 untuk success, light-red-20 untuk danger, dst), warna border lebih saturated (interactive-*).
+<strong>--no-title</strong>: align-items center.</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Banner"</div>
+          <div class="col__bd"><strong>Tabel Property</strong>: padding md (12), radius md (8), bg surface-light-default, icon 24, content gap 8, text gap 4.
+<strong>Subtle borders</strong>: 5 states match Aurora.
+<strong>Attention filled</strong>: 4 states (informative, success, danger, warning) — bg & border keluar lengkap.</div>
+        </div>
+      </div>
+      <div class="note"><b>Analisa gue:</b> Match 100%. Bonus: design-rules dokumentasikan kedua type (subtle vs attention) eksplisit. <em>Catatan kecil:</em> Aurora juga punya "help" state border (light-grey-45) yang belum ada di attention variant — bukan critical gap, cuma incomplete coverage.</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — Banner state "informative" (default subtle border)</div>
+        <div class="visual__bd">
+          <div class="viz-banner">
+            <div class="viz-banner__ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 7.5v.01M12 11v5.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div class="viz-banner__tx"><b>Lacak pengeluaran lebih rapi.</b> Kategorikan tiap pengeluaran supaya laporan keuangan otomatis terbentuk.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ 4. CHECKBOX ═════ -->
+  <div class="comp" data-status="ok">
+    <div class="comp__hd">
+      <div class="comp__name">4. Checkbox <code>au-checkbox</code></div>
+      <span class="badge badge--ok">✓ Match</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>checkbox.component.scss</code></div>
+          <div class="col__bd"><strong>Visual</strong>: 18×18, radius-sm, border stroke-md (1.5px) border-default, bg neutral-white.
+<strong>Checked / indeterminate</strong>: bg action-primary-bg, border match, icon white.
+<strong>Disabled</strong>: bg & border action-disabled-bg.
+<strong>Hover (not disabled)</strong>: border action-primary-hover.
+<strong>Focus visible</strong>: outline stroke-lg solid focus-ring, offset 2xs, radius-sm.
+<strong>Container disabled</strong>: opacity 0.75, cursor not-allowed.
+<strong>Struktur</strong>: container > input (visually hidden) + label-wrapper > .au-checkbox visual.</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Checkbox"</div>
+          <div class="col__bd"><strong>Tabel Property</strong>: 18px, radius-sm, border 1.5px border-default, bg neutral-white, transition 200ms ease-out-regular.
+<strong>States</strong>: Checked (action-primary-bg), Hover (action-primary-hover border), Disabled (opacity 0.75).
+<strong>Label</strong>: font 14, weight 400, container gap 8.
+<strong>Focus</strong>: outline 2px focus-ring, offset 2.</div>
+        </div>
+      </div>
+      <div class="note"><b>Analisa gue:</b> Match. <em>Catatan struktural:</em> Aurora pakai pattern visually-hidden input + sibling .au-checkbox visual. Prototype gue pakai `appearance:none` + ::after pseudo (simpler markup, visually identical). <b>Beda implementasi, sama outcome.</b> Sudah didokumentasikan di code anotasi.</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — Checkbox 4 states</div>
+        <div class="visual__bd">
+          <label class="viz-chk-row"><input type="checkbox" class="viz-chk"> Default</label>
+          <label class="viz-chk-row"><input type="checkbox" class="viz-chk" checked> Checked</label>
+          <label class="viz-chk-row"><input type="checkbox" class="viz-chk" id="viz-chk-ind"> Indeterminate</label>
+          <label class="viz-chk-row"><input type="checkbox" class="viz-chk" disabled> Disabled</label>
+          <script>document.getElementById('viz-chk-ind').indeterminate=true;</script>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ 5. CHIP-STATUS ═════ -->
+  <div class="comp" data-status="filled">
+    <div class="comp__hd">
+      <div class="comp__name">5. Chip-Status <code>au-chip-status</code></div>
+      <span class="badge badge--filled">✓ Filled — added 2026-05-20</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>chip-status.component.scss</code></div>
+          <div class="col__bd"><strong>Base</strong>: radius 99px (hardcoded, BUKAN radius-full token), padding xs md, border 1px transparent, weight 600, font body-md.
+<strong>Compact</strong>: padding 2xs sm, font body-sm.
+<strong>Variants by COLOR NAME</strong>: light-blue-50, light-blue-30, light-green-50, dark-blue-45, light-red-50, light-orange-50, dst (6+).
+<strong>Mode 1 — default (outline)</strong>: border + color sama warna, bg transparent.
+<strong>Mode 2 — --inverse (filled)</strong>: bg + border sama warna, text inverse white.
+<strong>Text color overrides</strong>: dual-class selector (mis. .au-chip-status--text-dark-blue-40) untuk override warna text.</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Chip-Status" ✓</div>
+          <div class="col__bd"><strong>Status: ADDED</strong> per Action B 2026-05-20 (line 473-517 design-rules.md).
+
+Documented:
+• Properties table: Default + Compact (radius, padding, font, weight, line-height, text-transform)
+• Color variants table (10 tokens: light-blue-50/30, light-green-50, dark-blue-45, light-red-50/25, light-yellow-25/50, light-grey-50, light-orange-50)
+• Two modes: Default (outline) vs Inverse (filled)
+• Mapping use case → variant (panduan, bukan locked): Sukses/Lunas → light-green-50, Pending → light-yellow-25, Gagal → light-red-50, dll</div>
+        </div>
+      </div>
+      <div class="note"><b>Status:</b> ✓ DONE. Documented mengikuti Aurora source persis (no override). Semantic→color mapping ditulis sebagai panduan, bukan locked — biar fleksibel per modul.</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — Chip-Status variants (outline mode + inverse filled)</div>
+        <div class="visual__bd">
+          <span class="visual__lab" style="width:100%;margin-bottom:0">DEFAULT — OUTLINE MODE</span>
+          <span class="viz-cs viz-cs--lb50">Info</span>
+          <span class="viz-cs viz-cs--lg50">Lunas</span>
+          <span class="viz-cs viz-cs--lo50">Menunggu</span>
+          <span class="viz-cs viz-cs--lr50">Gagal</span>
+          <span class="viz-cs viz-cs--db45">Draft</span>
+        </div>
+        <div class="visual__bd" style="border-top:1px dashed var(--border)">
+          <span class="visual__lab" style="width:100%;margin-bottom:0">--INVERSE MODE (FILLED)</span>
+          <span class="viz-cs viz-cs--lb50 inv">Info</span>
+          <span class="viz-cs viz-cs--lg50 inv">Lunas</span>
+          <span class="viz-cs viz-cs--lo50 inv">Menunggu</span>
+          <span class="viz-cs viz-cs--lr50 inv">Gagal</span>
+          <span class="viz-cs viz-cs--db45 inv">Draft</span>
+        </div>
+        <div class="visual__bd" style="border-top:1px dashed var(--border)">
+          <span class="visual__lab" style="width:100%;margin-bottom:0">--COMPACT (in-table size)</span>
+          <span class="viz-cs viz-cs--compact viz-cs--lg50">Tercatat</span>
+          <span class="viz-cs viz-cs--compact viz-cs--lo50">Menunggu Persetujuan</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ 6. CONTEXT-MENU ═════ -->
+  <div class="comp" data-status="filled">
+    <div class="comp__hd">
+      <div class="comp__name">6. Context-Menu <code>au-context-menu</code></div>
+      <span class="badge badge--filled">✓ Filled — added 2026-05-20</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>context-menu.component.scss</code></div>
+          <div class="col__bd"><strong>Base</strong>: bg neutral-white, radius spacing-xs (4px), shadow 0 3px 10px rgb(0 0 0 / 8%), min-width 160px (via --width-card), color text-primary.
+<strong>Animation</strong>: fade-in opacity 0→1 + scale 0.9→1, durasi speed-fast (200ms) ease-out-regular.
+<strong>__submenu</strong>: sama base, animation pure opacity fade-in speed-normal ease-out-strong.
+<strong>__content</strong>: flex column, full width.</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Context-Menu" ✓</div>
+          <div class="col__bd"><strong>Status: ADDED</strong> per Action B 2026-05-20 (line 519-541 design-rules.md).
+
+Documented:
+• Properties: bg, radius, shadow, min-width, color, animation, content/submenu structure
+• Signature animation: au-context-menu-fade-in (opacity 0+scale 0.9 → opacity 1+scale 1)
+• Use case note: floating action menu (3-dot row, right-click) vs dropdown trigger (au-dropdown-menu)
+• Portal pattern WAJIB kalau di dalam overflow:hidden container — ref [[prototyping-gap-lessons]] 0g</div>
+        </div>
+      </div>
+      <div class="note"><b>Status:</b> ✓ DONE. Aurora source persis (no override). Documented include portal pattern guidance untuk anti-clipping.</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — Context-Menu (popover for row action ⋮)</div>
+        <div class="visual__bd">
+          <div class="viz-cm">
+            <div class="viz-cm__it"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Unduh Bukti</div>
+            <div class="viz-cm__it"><svg viewBox="0 0 24 24" fill="none"><path d="M14.83 14.18l5.83-5.83a3.5 3.5 0 00-4.95-4.95L7.6 11.5a5 5 0 007.07 7.07l5.66-5.66" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Tambah Lampiran</div>
+            <div class="viz-cm__it" style="border-top:1px solid #eef2f5;margin-top:4px;padding-top:8px"><svg viewBox="0 0 24 24" fill="none"><path d="M2.04 12.32a1 1 0 010-.64C3.42 7.51 7.36 4.5 12 4.5s8.58 3.01 9.96 7.18a1 1 0 010 .64C20.58 16.49 16.64 19.5 12 19.5s-8.58-3.01-9.96-7.18z" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>Lihat Detail</div>
+            <div class="viz-cm__it"><svg viewBox="0 0 24 24" fill="none"><path d="M16.5 3.5a2.12 2.12 0 113 3L7 19l-4 1 1-4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ubah</div>
+            <div class="viz-cm__it" style="color:#e35273"><svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Hapus</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ 8. DROPDOWN-MENU ═════ -->
+  <div class="comp" data-status="filled">
+    <div class="comp__hd">
+      <div class="comp__name">8. Dropdown-Menu <code>au-dropdown-menu</code></div>
+      <span class="badge badge--filled">✓ Filled — added 2026-05-20</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>dropdown-menu.component.scss</code></div>
+          <div class="col__bd"><strong>Base</strong>: bg neutral-white, radius-sm, min-width 200px (var --width), shadow 0 3px 10px rgb(0 0 0 / 8%).
+<strong>__content</strong>: flex column, padding xs 0, align-items stretch.
+<strong>__item</strong>: flex align-items-start gap sm, padding sm lg (8 24), bg transparent, color action-neutral-fg, transition background 200ms ease-out-relax. text-align left.
+<strong>--title modifier</strong>: cursor default, padding xs xs. Label: ellipsis, text-secondary, body-sm 12px, weight 600.
+<strong>Item hover/focus/active</strong> (not title/disabled): bg light-brand-15 / light-brand-25 (active).
+<strong>--disabled</strong>: cursor default, color action-disabled-fg, text muted, transparent on hover/active.
+<strong>__icon</strong> (or [auDropdownMenuIcon]): 20×20, flex-shrink 0.</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Dropdown-Menu" ✓</div>
+          <div class="col__bd"><strong>Status: ADDED</strong> per Action B 2026-05-20 (line 543-591 design-rules.md).
+
+Documented:
+• Properties: bg, radius, min-width 200, shadow, content padding xs 0
+• Item table: flex align-items-start, gap sm, padding sm lg, hover/focus/active light-brand-15/25
+• Title item table (group label, non-clickable): cursor default, label ellipsis text-secondary body-sm 12px weight 600
+• Disabled state: color action-disabled-fg, text muted
+• Use case: trigger dropdown via label (Tindakan ▾, filter selector) — distinct from au-context-menu (floating row action)
+• Tindakan ▾ menu di Detail = derive dari table 3-dot MINUS Ubah → ref [[action-menu-derivation-rule]]</div>
+        </div>
+      </div>
+      <div class="note"><b>Status:</b> ✓ DONE. Aurora source persis (no override). Documented dibedakan jelas dari au-context-menu (different pattern, min-width, padding, no animation).</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — Dropdown-Menu (list from trigger button)</div>
+        <div class="visual__bd">
+          <div class="viz-dm">
+            <div class="viz-dm__it viz-dm__it--title">Pilih Aksi</div>
+            <button class="viz-dm__it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>Cari Pengeluaran</button>
+            <button class="viz-dm__it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke-linecap="round" stroke-linejoin="round"/></svg>Ekspor CSV</button>
+            <button class="viz-dm__it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16v6H4zM4 14h16v6H4z"/></svg>Atur Tampilan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ 9. FORM FIELD ═════ -->
+  <div class="comp" data-status="ok">
+    <div class="comp__hd">
+      <div class="comp__name">9. Form Field <code>au-form-field</code></div>
+      <span class="badge badge--ok">✓ Match (minor detail)</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>form-field.component.scss</code></div>
+          <div class="col__bd"><strong>Wrapper</strong>: flex column, gap sm.
+<strong>Control</strong>: grid auto 1fr auto (prefix|input|suffix), border 1px light-grey-40, radius-sm, bg neutral-white, transition border-color speed-normal ease-out-powerful (300ms).
+<strong>Input</strong> (via [auFieldInput]): padding sm md, min-height 40, font body-md, color dark-brand-50, bg transparent, grid-column 2.
+<strong>Placeholder</strong>: color dark-brand-25.
+<strong>auFieldPrefix</strong>: color dark-blue-25, grid-column 1, padding sm 0 sm md.
+<strong>auFieldSuffix</strong>: color dark-blue-25, grid-column 3, padding sm md sm 0.
+<strong>--with-prefix</strong>: input padding-left sm.</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Form Field"</div>
+          <div class="col__bd"><strong>Tabel Default × Compact</strong>: gap 8, border light-grey-40 radius-sm, bg neutral-white.
+<strong>Input</strong>: padding 8 12 (4 8 compact), min-height 40 (30 compact), font-size 14, color dark-brand-50.
+<strong>Placeholder</strong>: dark-brand-25.
+<strong>States</strong>: Default | Active/Focus (bg light-blue-10, border light-brand-40) | Error (light-red-30 border) | Disabled (bg light-grey-30).
+<strong>Transition</strong>: speed-normal ease-out-powerful (300ms).</div>
+        </div>
+      </div>
+      <div class="note"><b>Analisa gue:</b> Match. design-rules <em>extra</em> documented focus state bg shift (light-blue-10) yang ga ada di SCSS snippet utama — kemungkinan ada di sub-component input.scss (gue ga read full). Catatan: Aurora pakai <em>grid + slot directives</em>, prototype HTML harus translate ke flex (lihat aurora-lookup-ritual memory tentang grid→flex adaptation).</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — Form Field (3 states: default + focus + error)</div>
+        <div class="visual__bd">
+          <div class="viz-ff">
+            <label class="viz-ff__lab">Tanggal</label>
+            <div class="viz-ff__ctrl">
+              <input class="viz-ff__in" type="text" placeholder="dd/mm/yyyy">
+              <span class="viz-ff__suf"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+            </div>
+          </div>
+          <div class="viz-ff">
+            <label class="viz-ff__lab">Penerima</label>
+            <div class="viz-ff__ctrl" style="border-color:#4199d5;background:#f2f7fc">
+              <input class="viz-ff__in" type="text" value="PLN (Listrik Kantor)">
+            </div>
+            <span style="font-size:12px;color:#718c9e">Active/focus state</span>
+          </div>
+          <div class="viz-ff viz-ff--err">
+            <label class="viz-ff__lab">Jumlah <span style="color:#e35273">*</span></label>
+            <div class="viz-ff__ctrl">
+              <input class="viz-ff__in" type="text" placeholder="Rp 0">
+            </div>
+            <span class="viz-ff__err">⚠ Jumlah belum diisi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ 10. PAGINATION ═════ -->
+  <div class="comp" data-status="over">
+    <div class="comp__hd">
+      <div class="comp__name">10. Pagination <code>au-pagination</code></div>
+      <span class="badge badge--over">⚙ Override LOCKED — added 2026-05-20</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>pagination.component.scss</code></div>
+          <div class="col__bd"><strong>Container</strong>: flex, gap xs.
+<strong>pagination-icon</strong> (chevron): bg transparent, border 0, hover bg light-grey-25, margin-top xs.
+<strong>pagination-number</strong>: color dark-blue-50, padding xs md, transparent bg, font body-md, radius-sm. <em>Selected</em>: color brand-50, weight bold, <em>bg light-blue-20</em>.
+<strong>pagination-label</strong>: font body-md.
+<strong>pagination-dropdown</strong>: color dark-brand-50, font Arial (!), margin-right lg. Trigger button + list popup (radius-md, shadow 0 2px 8px rgb(0 0 0 / 10%)).</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Pagination" ✓ + OVERRIDES.md</div>
+          <div class="col__bd"><strong>Status: ADDED + OVERRIDE LOCKED</strong> per Action B 2026-05-20 (line 593-664 design-rules.md).
+
+Aurora source DIBATALKAN per item — pakai spec PRODUCTION (locked):
+• Container: <strong>justify-end</strong> (BUKAN center), gap lg, padding lg 2xl, position <strong>INSIDE .list-card</strong>
+• Dropdown "Jumlah Baris": <strong>BORDERLESS</strong> (border:0, bg transparent, chevron inline SVG), bold value
+• Nav chevron prev/next: 32×32 transparent, hover light-grey-15
+• Page number: 32×32, transparent default
+• <strong>Active page</strong>: bg <strong>light-brand-15</strong> + color text-primary + weight bold (OVERRIDE Aurora brand-50 + light-blue-20)
+• Ellipsis: padding 0 6px, color text-muted
+• Wording WAJIB: "Jumlah Baris" + "Menampilkan X hingga Y dari Z entri"
+
+<strong>OVERRIDE recorded</strong> di AURORA-OVERRIDES.md → "Override: au-pagination (justify-end + borderless + active light-brand-15)". Alasan: production Paper.id reference 2026-05-20 — pagination right-aligned, dropdown borderless, active light-brand-15 (soft, tidak terlalu kontras dgn body teks). User instruksi eksplisit: "ubah kayak production dan lock ya".</div>
+        </div>
+      </div>
+      <div class="note"><b>Status:</b> ⚙ DONE + OVERRIDE LOCKED. Aurora source spec untuk active page (brand-50 + light-blue-20) sengaja BUKAN dipakai — production override menang. Class CSS pakai anotasi <code>OVERRIDE:</code> bukan <code>AURORA:</code>. Ref [[production-pagination-rule]].</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — Active page color DISKREPANSI</div>
+        <div class="visual__split">
+          <div>
+            <span class="visual__lab">Aurora — Active: <code>brand-50</code> text + <code>light-blue-20</code> bg</span>
+            <div class="viz-pg">
+              <button class="viz-pg__num viz-pg__num--ic">‹</button>
+              <button class="viz-pg__num">1</button>
+              <button class="viz-pg__num viz-pg__num--sel-aurora">2</button>
+              <button class="viz-pg__num">3</button>
+              <button class="viz-pg__num">4</button>
+              <span style="color:#a5b6c1;padding:0 6px">…</span>
+              <button class="viz-pg__num">24</button>
+              <button class="viz-pg__num viz-pg__num--ic">›</button>
+            </div>
+          </div>
+          <div>
+            <span class="visual__lab">Prototype gue — Active: <code>text-primary</code> + <code>light-brand-15</code></span>
+            <div class="viz-pg">
+              <button class="viz-pg__num viz-pg__num--ic">‹</button>
+              <button class="viz-pg__num">1</button>
+              <button class="viz-pg__num viz-pg__num--sel-proto">2</button>
+              <button class="viz-pg__num">3</button>
+              <button class="viz-pg__num">4</button>
+              <span style="color:#a5b6c1;padding:0 6px">…</span>
+              <button class="viz-pg__num">24</button>
+              <button class="viz-pg__num viz-pg__num--ic">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ 7. DIALOG ═════ -->
+  <div class="comp" data-status="ok">
+    <div class="comp__hd">
+      <div class="comp__name">7. Dialog <code>au-dialog</code></div>
+      <span class="badge badge--ok">✓ Match</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>dialog-content.component.scss</code></div>
+          <div class="col__bd"><strong>Wrapper</strong>: bg surface-light-default, radius-lg (12), shadow 0 8px 24px rgb(0 0 0 / 15%).
+<strong>Header</strong>: min-height 56px, padding lg xl (16 20), border-bottom 1px border-subtle, flex space-between gap lg.
+<strong>Title</strong>: heading family, heading-sm size, weight bold.
+<strong>Close button</strong>: 32×32, flex shrink 0.
+<strong>Bottom-sheet variant</strong>: radius lg lg 0 0 atas only, height 100%.
+<strong>Drag handle</strong>: 40×4px, centered top, bg border-default, radius-full.</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Dialog"</div>
+          <div class="col__bd"><strong>Tabel Property</strong>: radius-lg (12), bg surface-light-default, shadow 0 8px 24px rgb(0 0 0 / 15%).
+<strong>Header</strong>: padding 16px 20px, min-height 56px, border-bottom 1px border-subtle.
+<strong>Title</strong>: font-size 16px (heading-sm), weight 700.
+<strong>Content</strong>: padding 16px 20px, max-height 65vh.
+<strong>Close</strong>: 32×32, radius-sm.
+<strong>Bottom sheet</strong>: radius 12px 12px 0 0.
+<strong>Drag handle</strong>: 40×4, centered, border-default, radius-full.</div>
+        </div>
+      </div>
+      <div class="note"><b>Analisa gue:</b> Match. design-rules dokumentasikan max-height content (65vh) yang berguna utk constraint. Lengkap.</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — Confirmation Dialog (radius-lg + shadow)</div>
+        <div class="visual__bd">
+          <div class="viz-dlg">
+            <div class="viz-dlg__hd">
+              <span class="viz-dlg__ti">Hapus Pengeluaran?</span>
+              <button class="viz-dlg__cl">✕</button>
+            </div>
+            <div class="viz-dlg__bd">Pengeluaran <b>EXP/2026/0001</b> akan dihapus permanen. Tindakan ini tidak bisa dibatalkan.</div>
+            <div class="viz-dlg__ac">
+              <button class="viz-btn viz-btn--secondary">Batal</button>
+              <button class="viz-btn viz-btn--destructive">Hapus</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="comp" data-status="filled">
+    <div class="comp__hd">
+      <div class="comp__name">3. Breadcrumb <code>au-breadcrumb</code></div>
+      <span class="badge badge--filled">✓ Filled — added 2026-05-20</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>breadcrumb.component.scss</code></div>
+          <div class="col__bd"><strong>Container</strong>: flex, gap md, font body.
+<strong>back-button</strong> ← KRITIS: transparent bg, color light-blue-50, weight semibold, padding sm sm, gap sm, no border/shadow. Display flex center.
+<strong>Separator</strong>: 4×4 dot, light-grey-55, radius-full.
+<strong>Item</strong>: font body-md semibold, color text-secondary; hover action-primary-hover; active text-primary.
+<strong>Modifiers</strong>: .black-bold (text-primary, weight bold), .last-item (pointer-events: none), .dropdown (position relative).
+<strong>dropdown-menu</strong>: position absolute, bg white, radius-md, shadow 0 2px 6px rgb(0 0 0 / 15%).</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Breadcrumb" ✓</div>
+          <div class="col__bd"><strong>Status: ADDED</strong> per Action B 2026-05-20 (line 433-471 design-rules.md).
+
+Documented:
+• Container properties (flex, justify-start, align-center, gap md, font body-md)
+• Item properties (font, weight semibold, color text-secondary, hover/active states)
+• Last-item: pointer-events none (non-clickable current page)
+• Separator: 4×4 dot light-grey-55 radius-full (NOT chevron/arrow)
+• <strong>Back button variant table</strong> (au-breadcrumb-back-button): transparent bg, color light-blue-50, weight semibold, padding sm, gap sm, "‹ Kembali" content
+• Rule: WAJIB di child page (Detail/Edit/sub-screen) → ref [[breadcrumb-back-button-rule]]</div>
+        </div>
+      </div>
+      <div class="note"><b>Status:</b> ✓ DONE. Aurora source persis (no override). Back button variant ditambahkan sebagai sub-table dengan WAJIB-rule note.</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — Breadcrumb with BACK BUTTON + dot separator (per Aurora)</div>
+        <div class="visual__bd">
+          <nav class="viz-bc">
+            <button class="viz-bc__back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Kembali</button>
+            <span class="viz-bc__sep"></span>
+            <span class="viz-bc__it">Pengeluaran</span>
+            <span class="viz-bc__sep"></span>
+            <span class="viz-bc__it viz-bc__it--cur">Detail Pengeluaran</span>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ 11. SKELETON ═════ -->
+  <div class="comp" data-status="filled">
+    <div class="comp__hd">
+      <div class="comp__name">11. Skeleton <code>au-skeleton</code></div>
+      <span class="badge badge--filled">✓ Filled — added 2026-05-20</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>skeleton.component.scss</code></div>
+          <div class="col__bd"><strong>Base</strong>: position relative, overflow hidden, <em>bg #e2e8f0 HARDCODED</em> (BUKAN token).
+<strong>::after</strong> shimmer: animation au-skeleton-animation 1.2s infinite. Linear-gradient(90deg, white 0%, white 40%, white 0%). Translate -100% → 100%.
+<strong>--none modifier</strong>: animation none (static state).</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Skeleton" ✓</div>
+          <div class="col__bd"><strong>Status: ADDED</strong> per Action B 2026-05-20 (line 666-698 design-rules.md).
+
+Documented:
+• Properties table: position relative, overflow hidden, bg #e2e8f0 (FLAG: hardcoded, Aurora bug)
+• Shimmer overlay (::after): animation au-skeleton-animation 1.2s infinite, transform -100% → 100%, gradient white 0%→40%→0%
+• Disable shimmer: class au-skeleton-none → animation none
+• Use case: mimic content shape (text line, card title, avatar circle, table row) — JANGAN spinner generic
+• Common shapes (panduan): text 100%×14px×radius 4, title 60%×20px, avatar 32×32 circle
+• Smooth transition pattern: 700ms skeleton brief setelah submit → ref [[smooth-transitions-rule]]
+
+TODO follow-up: lapor Aurora maintainer untuk replace hardcoded #e2e8f0 → token --color-skeleton-bg.</div>
+        </div>
+      </div>
+      <div class="note"><b>Status:</b> ✓ DONE. Aurora source persis (no override) plus catatan use case + common shapes + smooth transition integration. Aurora bug #e2e8f0 hardcoded didocument sebagai TODO follow-up.</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — Skeleton shimmer (loading placeholder)</div>
+        <div class="visual__bd" style="flex-direction:column;align-items:flex-start;gap:10px">
+          <div class="viz-sk" style="max-width:280px;height:14px"></div>
+          <div class="viz-sk" style="max-width:220px;height:14px"></div>
+          <div class="viz-sk" style="max-width:160px;height:14px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ 12. TABLE ═════ -->
+  <div class="comp" data-status="ok">
+    <div class="comp__hd">
+      <div class="comp__name">12. Table <code>au-table</code></div>
+      <span class="badge badge--ok">✓ Match (with verification needed)</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>table.component.scss</code></div>
+          <div class="col__bd"><strong>Container</strong>: flex column gap 16, full width.
+<strong>Paginator</strong>: flex justify-end gap 16, wrap. Container query untuk space-aware wrapping (≤600px → column).
+<strong>Wrapper</strong>: grid (minmax(100%, max-content)), border 1px border-default, radius 8, bg surface-light-default, overflow hidden. Children grid-area 1/1.
+<strong>--scrollable</strong>: overflow auto visible, table width max-content min-width 100%.
+<strong>--has-border</strong>: sticky actions column border line.</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Table"</div>
+          <div class="col__bd"><strong>Tabel Property</strong>: wrapper border 1px border-default, radius 8, bg surface-light-default.
+<strong>Header</strong>: bg surface-light-raised, padding 12 16, weight 700, font 14.
+<strong>Body cell</strong>: padding 14 16, font 14, weight 400.
+<strong>Row</strong>: border-bottom 1px border-default, hover bg light-brand-20.
+<strong>Selected row</strong>: bg state-active-bg.
+<strong>Footer</strong>: bg surface-light-raised, weight 600.
+<strong>Action button</strong>: 32×32, radius-md.
+<strong>Mobile</strong>: padding 12, font 12.</div>
+        </div>
+      </div>
+      <div class="note"><b>Analisa gue:</b> design-rules <em>lebih granular</em> (row hover, selected, action button) yang ga ke-show di SCSS snippet (kemungkinan ada di sub-component table-row.scss yang ga gue read). <em>Catatan verifikasi:</em> design-rules bilang row hover = light-brand-20 — perlu cross-check dengan Aurora source full. Sticky action column via --has-border modifier baru ditemui di SCSS, tidak ada di design-rules — bisa ditambah.</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — Table mini (header tinted, body row hover light-brand-20)</div>
+        <div class="visual__bd">
+          <div class="viz-tbl">
+            <table>
+              <thead><tr><th>Tanggal</th><th>Kategori</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>18 Mei 2026</td><td>Operasional</td><td><span class="viz-cs viz-cs--compact viz-cs--lg50">Tercatat</span></td></tr>
+                <tr><td>17 Mei 2026</td><td>ATK</td><td><span class="viz-cs viz-cs--compact viz-cs--lo50">Menunggu</span></td></tr>
+                <tr><td>15 Mei 2026</td><td>Marketing</td><td><span class="viz-cs viz-cs--compact viz-cs--lg50">Tercatat</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ 13. TOAST ═════ -->
+  <div class="comp" data-status="over">
+    <div class="comp__hd">
+      <div class="comp__name">13. Toast <code>au-toast</code></div>
+      <span class="badge badge--over">⚙ Override — sengaja beda</span>
+    </div>
+    <div class="comp__body">
+      <div class="cols">
+        <div class="col">
+          <div class="col__hd">Aurora SCSS — <code>toast.component.scss</code></div>
+          <div class="col__bd"><strong>Base</strong>: <em>width 450px</em>, padding md (12), <em>radius lg (12)</em>, bg gradient #133f5d → #0a1d28, color text-inverse, animation slide-in speed-slow ease-out-strong, shadow 0 3px 10px rgb(0 0 0 / 8%).
+<strong>--danger</strong>: bg light-red-60.
+<strong>__icon</strong>: 32×32.
+<strong>__content</strong>: flex gap sm.
+<strong>__text</strong>: flex column gap 4.
+<strong>--dismissing/--completing</strong>: slide-out 200ms cubic-bezier(0.4, 0, 0.2, 1).
+<strong>Mobile (≤768px)</strong>: max-width calc(100vw - spacing-xl × 2).</div>
+        </div>
+        <div class="col">
+          <div class="col__hd">design-rules.md — Section "Toast" + OVERRIDES.md ✓ (expanded 2026-05-20)</div>
+          <div class="col__bd"><strong>width 380px</strong> (OVERRIDE — Aurora 450px)
+<strong>radius-md (8)</strong> (OVERRIDE — Aurora radius-lg 12)
+Padding 12, bg gradient match.
+<strong>__content</strong>: 3-col flex row (icon | text | close) gap-sm.
+<strong>__icon</strong>: 32×32 round circle filled <strong>#4199d5</strong> + white "i" lowercase (INFO variant default — NEW 2026-05-20, BUKAN green checkmark).
+<strong>__text</strong>: flex column gap-2xs, flex:1, title bold 20px line, sub 13px white 85% 18px line.
+<strong>__close</strong>: 24×24 button, color light-brand-50, 18px X stroke 1.5, hover bg rgb(255 255 255 / 8%) — NEW 2026-05-20.
+<strong>Danger</strong> bg light-red-60 match.
+Slide-in animation translateY(-140px)→0, slide-out 200ms.
+<strong>Mobile</strong> max-width calc(100vw - 40px).
+
+<strong>OVERRIDE recorded</strong> (paper-designer/ds/AURORA-OVERRIDES.md):
+• 2026-05-19: width 380 + radius 8 (vs Aurora 450/12) — proporsional
+• <strong>2026-05-20: icon info "i" + close X + 3-col layout</strong> (NEW) — match production Paper.id, info "i" lebih neutral untuk variety (sukses/info/peringatan) vs greencheck specific success-only. Close X = user dismiss control. 3-col = per Aurora source structure.</div>
+        </div>
+      </div>
+      <div class="note"><b>Status:</b> ⚙ EXPANDED 2026-05-20. Override entry diperbarui dengan 3 deviasi tambahan dari Aurora source: icon info "i" light blue, close X button, 3-col layout per Aurora source. CSS prototype + AURORA-OVERRIDES.md keduanya sync.</div>
+      <div class="visual">
+        <div class="visual__hd">🖼 Visual — Aurora 450/radius-lg vs Paper.id Override 380/radius-md</div>
+        <div class="visual__bd dark" style="flex-direction:column;gap:16px;align-items:flex-start">
+          <div>
+            <span class="visual__lab" style="color:#a5b6c1">Aurora original (450 × radius 12)</span>
+            <div class="viz-toast viz-toast--aurora">
+              <div class="viz-toast__ic"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="#fff" stroke-width="2"/><path d="M11 16l3 3 7-7" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+              <div style="flex:1"><b>Pengeluaran berhasil dicatat</b><span>EXP/2026/0042 — Rp 4.551.000</span></div>
+            </div>
+          </div>
+          <div>
+            <span class="visual__lab" style="color:#a5b6c1">Paper.id override (380 × radius 8) — user 2026-05-19</span>
+            <div class="viz-toast viz-toast--proto">
+              <div class="viz-toast__ic"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="#fff" stroke-width="2"/><path d="M11 16l3 3 7-7" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+              <div style="flex:1"><b>Pengeluaran berhasil dicatat</b><span>EXP/2026/0042 — Rp 4.551.000</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════ RULES SUMMARY & DISCUSSION ═════ -->
+  <div class="portal-section">
+    <div class="portal-section__hd">
+      <div>
+        <div class="portal-section__title">📋 Rules Summary — semua aturan yang udah dikunci</div>
+        <div class="portal-section__sub">Bahasa awam, summary singkat per rule. Klik komen kalau ada yang aneh / mau koreksi / pengen ngerti lebih dalam.</div>
+      </div>
+    </div>
+    <div class="portal-section__bd">
+
+      <!-- ── A. Layout & Struktur ── -->
+      <div class="rule-cat-head">🏗 A. Layout & Struktur Halaman</div>
+      <div class="rule-grid">
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">3-Zone Layout</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Setiap halaman = sidemenu kiri (240px fixed) + nav header atas (~88px) + main area (scrollable). Sidemenu &amp; nav header SELALU sama di semua halaman, cuma item aktif yang berubah. Konten utama (list/form/detail) di-render di main area, BUKAN buka modal/tab baru.</div>
+          <div class="rule__when"><b>Pakai saat:</b> bikin halaman apa pun. Default semua project.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">3 Tipe Form Page</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Decision tree: <b>Form Page</b> (full main area, form panjang/kompleks) → <b>Side Sheet</b> (40-50% kanan, edit kontekstual) → <b>Modal Form</b> (≤3 field quick input). Bukan pilih bebas — ada decision rule per kompleksitas form.</div>
+          <div class="rule__when"><b>Pakai saat:</b> mau bikin form Create/Edit. Pilih tipe sesuai jumlah field + konteks.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">List Page Default Pattern</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Semua list page (Invoice, Pengeluaran, Mitra, dll) struktur sama: page head → action bar di luar card (Tindakan + primary CTA) → list-card putih bungkus (toolbar in-card + table + pagination). Konsisten antar modul.</div>
+          <div class="rule__when"><b>Pakai saat:</b> bikin halaman daftar/list dokumen.</div>
+        </div>
+
+      </div>
+
+      <!-- ── B. Komponen-Level Rules ── -->
+      <div class="rule-cat-head">🧩 B. Aturan per Komponen</div>
+      <div class="rule-grid">
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Sidemenu Active Color</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Subitem aktif di sidemenu warna <b>light green</b> (<code>#b2ed7f</code>), BUKAN brand blue. Font weight 400 di semua item (yang aktif beda warna doang, bukan weight). High contrast di dark navy background.</div>
+          <div class="rule__when"><b>Pakai saat:</b> set 1 item aktif di sidemenu per halaman.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Breadcrumb Back Button</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Setiap halaman anak (Detail, Edit, sub-screen) <b>WAJIB ada tombol "‹ Kembali"</b> di kiri breadcrumb. Warna biru light-blue-50. Bukan optional.</div>
+          <div class="rule__when"><b>Pakai saat:</b> bikin halaman child / detail / edit. Kalau halaman list utama, ga perlu back button.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Aurora Sectioned Modal</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Semua modal (Confirmation / Information / Form) pakai struktur <b>3 bagian</b>: header (title + close X + garis bawah) | content (kiri rata) | actions (kanan rata + garis atas). JANGAN modal model lama "centered + illustration".</div>
+          <div class="rule__when"><b>Pakai saat:</b> bikin modal apapun.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Production Pagination</div>
+            <span class="rule__tag rule__tag--locked">Locked + Override</span>
+          </div>
+          <div class="rule__sum">Pagination di bawah table: rata kanan, dropdown "Jumlah Baris" borderless (cuma teks + chevron), active page light-brand-15 + text-primary bold (BUKAN Aurora default). Posisi INSIDE list-card. Wording "Menampilkan X hingga Y dari Z entri".</div>
+          <div class="rule__when"><b>Pakai saat:</b> setiap table list dengan data &gt; 1 page.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Action Menu Derivation</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Menu "Tindakan ▾" di halaman Detail = menu 3-titik di table list, MINUS "Lihat Detail" (udah di Detail) MINUS aksi yang udah dikeluarin jadi tombol standalone (biasanya Ubah). Konsistensi mental model.</div>
+          <div class="rule__when"><b>Pakai saat:</b> bikin Tindakan dropdown di Detail page.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Label Disambiguation</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Detail / Info card: <b>DEFAULT tidak pakai label</b>. Label dipake HANYA kalau ambigu — kayak 2 tanggal (Tanggal Dibuat vs Jatuh Tempo) atau value yang bingung tanpa konteks. Jangan overlabel.</div>
+          <div class="rule__when"><b>Pakai saat:</b> render Detail data. Tanya "kalau tanpa label bingung ga?" → kalau ya, pakai label.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Number Input Separator</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Setiap input angka <b>WAJIB ada thousand separator</b> live saat ngetik. Format 5,000,000. Pakai helper <code>formatNumberInput</code> + <code>addNumberSeparator</code>. JANGAN raw <code>type=number</code> tanpa format.</div>
+          <div class="rule__when"><b>Pakai saat:</b> bikin input nominal / jumlah / quantity besar.</div>
+        </div>
+
+      </div>
+
+      <!-- ── C. Behavior & Flow ── -->
+      <div class="rule-cat-head">🔄 C. Behavior & Flow</div>
+      <div class="rule-grid">
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Smooth Transitions</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Setiap navigasi antar halaman + mutation (submit/delete) WAJIB smooth: fade transition (160ms out / 200ms in) + skeleton loading (700ms) + button loading state (800ms simulate) + toast setelah render. JANGAN instant — kelihatan murahan.</div>
+          <div class="rule__when"><b>Pakai saat:</b> setiap flow Create/Edit/Delete + nav antar screen.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Snapshot Dirty State</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Form Edit/Create deteksi "ada perubahan" pakai <b>snapshot diff</b> (compare value awal vs sekarang), BUKAN "field has value". Modal "Buang Perubahan?" cuma muncul kalau BENAR ada perubahan. Submit di Edit mode tanpa perubahan = silent + toast "Tidak ada perubahan".</div>
+          <div class="rule__when"><b>Pakai saat:</b> bikin form Create/Edit dengan cancel/submit handler.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Complete-by-Default</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Analisa <b>complexity dulu</b> sebelum eksekusi. Brief "buat halaman X" = full CRUD + entity actions (Create + Edit + Delete + Detail + Lampiran). Brief "ubah X di Y" = tweak only. Jangan setengah-setengah.</div>
+          <div class="rule__when"><b>Pakai saat:</b> brief baru masuk. Tanya "ini full atau tweak?"</div>
+        </div>
+
+      </div>
+
+      <!-- ── D. Process & Discipline ── -->
+      <div class="rule-cat-head">⚙ D. Proses Kerja Gue (Discipline)</div>
+      <div class="rule-grid">
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Aurora Lookup Ritual (4 Mekanisme)</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">HARGA MATI: setiap komponen UI WAJIB dari Aurora source. Kalau ga ada → STOP &amp; lapor user (jangan diam-diam custom). 4 mekanisme: M1 pre-coding lookup, M2 anotasi <code>AURORA:</code>/<code>OVERRIDE:</code> wajib, M3 audit pre-delivery, M4 mapping table phase di pipeline.</div>
+          <div class="rule__when"><b>Pakai saat:</b> SEMUA prototype. Sebelum nulis CSS class baru.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Aurora Intent Lookup (A+B)</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Reverse index: dari intent brief ("pilih tanggal", "input PIN") → komponen Aurora yang dipertimbangkan. Wajib baca dulu sebelum mikir UI element, biar ga lewatin komponen Aurora yang available.</div>
+          <div class="rule__when"><b>Pakai saat:</b> brief baru masuk, di pipeline Langkah 2.5a Aurora Intent Scan.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Frozen Baseline + Overrides</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">15 komponen baseline di <code>02-ui-aurora.html</code> + 9 entry di <code>AURORA-OVERRIDES.md</code> = <b>imutable</b>. Saat fill rules baru / bulk port Aurora, WAJIB cek AURORA-OVERRIDES.md dulu. Override yang udah locked TIDAK di-revert ke Aurora source "demi konsistensi".</div>
+          <div class="rule__when"><b>Pakai saat:</b> bulk port Aurora SCSS, atau apply A+B mechanism untuk brief baru.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Composition Thinking</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">Setiap "metadata + inline actions" / "text + button row" pattern → <b>KOMPOSE Aurora pieces</b> (separator dot + <code>btn--tertiary-plain</code> + flex gap), BUKAN bikin class chain custom (<code>.lampiran-inline*</code>). Wrapper class semantic-neutral (<code>.meta-inline</code>).</div>
+          <div class="rule__when"><b>Pakai saat:</b> sebelum nulis CSS class baru. Tanya "compose-able ga?" → kalau ya, kompose Aurora pieces.</div>
+        </div>
+
+      </div>
+
+      <!-- ── E. References & Decisions ── -->
+      <div class="rule-cat-head">📚 E. References &amp; Keputusan</div>
+      <div class="rule-grid">
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Paperverse 1.0 (14 doc)</div>
+            <span class="rule__tag rule__tag--review">Verify Gap</span>
+          </div>
+          <div class="rule__sum">14 halaman doc Paperverse 1.0 yang lo share sebagai JPG: Form Structure, Button, Modal (Confirmation + Info), Create Document, Page Navigation, Error Message, Autocomplete, Side Sheet, Tab, Table List, Toast, View Document, Number Input-OTP. 12 udah ter-serap. <b>2 gap:</b> View Document + Number Input section explicit.</div>
+          <div class="rule__when"><b>Pakai saat:</b> arbitrer saat Aurora vs Paperverse konflik (user keputusan final).</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Paperverse Design Decisions</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">4 keputusan user override: <b>Toast 380/8</b> (vs Aurora 450/12), <b>Radio ≤4 opsi</b> (Dropdown ≥5), <b>Side Sheet 40-50%</b> width, <b>Destructive = permanen susah dibatalkan</b> (hapus baris form belum tersimpan = BUKAN destructive).</div>
+          <div class="rule__when"><b>Pakai saat:</b> referensi nilai default. User keputusan menang vs doc Aurora/Paperverse kalau konflik.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Plain Indonesian Language</div>
+            <span class="rule__tag rule__tag--locked">Locked</span>
+          </div>
+          <div class="rule__sum">User berkomunikasi pakai Bahasa Indonesia santai/awam, jangan istilah teknis tinggi. Pakai opsi berlabel ([1]/[2]/[A]/[B]) untuk pilih cepat, bukan pertanyaan terbuka panjang.</div>
+          <div class="rule__when"><b>Pakai saat:</b> selalu, di semua jawaban + pertanyaan.</div>
+        </div>
+
+      </div>
+
+      <!-- ── F. Active Pending / Bugs ── -->
+      <div class="rule-cat-head">⚠ F. Pending &amp; Bugs (perlu attention)</div>
+      <div class="rule-grid">
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Overlay screenReveal Bug</div>
+            <span class="rule__tag rule__tag--pending">Active Bug</span>
+          </div>
+          <div class="rule__sum">Bug di engine overlay: hidden <code>[data-screen]</code> dipaksa <code>display:flex</code> saat Figma export → muncul double / overlap. Sudah difix tapi belum confirmed working. Plus Figma multi-screen flow mungkin gagal generate kalau screen 2 off-viewport.</div>
+          <div class="rule__when"><b>Affects:</b> Figma export multi-screen prototype.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Comment Context Not Tracked</div>
+            <span class="rule__tag rule__tag--pending">Active Bug</span>
+          </div>
+          <div class="rule__sum">Pin overlay flat per file, TIDAK capture <code>[data-screen]</code>/<code>[data-state]</code> aktif saat dibuat. Komen submit di prototype multi-screen ambiguous — designer DS ga tau komen di screen/state mana. Workaround: kasih konteks manual di teks komen ("[Daftar] tombol kekecilan").</div>
+          <div class="rule__when"><b>Affects:</b> portal belajar ini juga! Saat komen, kasih prefix konteks manual ya.</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">View Document Pattern (Gap #13)</div>
+            <span class="rule__tag rule__tag--pending">Pending</span>
+          </div>
+          <div class="rule__sum">Pattern halaman Detail/View document belum eksplisit jadi rule. Sudah implement di prototype (Detail Pengeluaran) tapi belum compile. Need: anatomy (header + meta + content + action) + behavior (back to list, action menu, edit handoff).</div>
+          <div class="rule__when"><b>Next:</b> mau gue compile dari prototype atau lo kasih reference baru?</div>
+        </div>
+
+        <div class="rule">
+          <div class="rule__head">
+            <div class="rule__name">Number Input Section (Gap #14)</div>
+            <span class="rule__tag rule__tag--pending">Pending</span>
+          </div>
+          <div class="rule__sum">Aurora ga punya <code>au-number-input</code> dedicated. Composition <code>au-form-field</code> + separator helper. Behavior locked di memory <code>number-input-separator-rule.md</code> tapi belum compile ke <code>design-rules.md</code> sebagai section.</div>
+          <div class="rule__when"><b>Next:</b> tunggu jawaban Q3 (compile section / variant form-field / cukup memory).</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer-rec">
+    <h2>🎯 Action Plan — Status Update 2026-05-20</h2>
+    <p style="margin-top:8px;font-size:14px">Dari 13 komponen yang diaudit. <strong>6 GAP filled</strong>, AURORA-OVERRIDES.md expand dari 3 → 9 entries, A+B mechanism live.</p>
+
+    <h2 style="margin-top:20px;font-size:15px">1. Source of Truth: <code>Aurora SCSS = Primary</code> + <code>AURORA-OVERRIDES.md = arbiter</code></h2>
+    <p style="font-size:13px;color:var(--text)">Aurora source <em>lebih lengkap</em>. <code>design-rules.md</code> = compiled documentation yang sekarang udah cover 19 dari 33 komponen Aurora. Saat ada konflik nilai, Aurora menang KECUALI ada entry di <code>AURORA-OVERRIDES.md</code> — override yang udah locked TIDAK akan di-revert ke Aurora "demi konsistensi". Production Paper.id menang. Ref [[frozen-baseline-overrides-rule]].</p>
+
+    <h2 style="margin-top:20px;font-size:15px">2. ✓ DONE — Fill 6 Gap di design-rules.md</h2>
+    <ul>
+      <li>✓ <b>Breadcrumb</b> — added line 433-471 (Aurora source persis + back button variant table).</li>
+      <li>✓ <b>Chip-Status</b> — added line 473-517 (color-named variants table + 2 modes + semantic→color mapping panduan).</li>
+      <li>✓ <b>Context-Menu</b> — added line 519-541 (Aurora source + portal pattern guidance untuk anti-clipping).</li>
+      <li>✓ <b>Dropdown-Menu</b> — added line 543-591 (item + title variants + distinct dari au-context-menu).</li>
+      <li>⚙ <b>Pagination — OVERRIDE LOCKED</b> — added line 593-664. Aurora active spec (brand-50+light-blue-20) DIBATALKAN, pakai production override (light-brand-15+text-primary bold). justify-end + borderless dropdown + INSIDE list-card. Ref [[production-pagination-rule]].</li>
+      <li>✓ <b>Skeleton</b> — added line 666-698 (Aurora source + use case + common shapes + TODO lapor Aurora utk #e2e8f0 hardcoded).</li>
+    </ul>
+
+    <h2 style="margin-top:20px;font-size:15px">3. ✓ DONE — A+B Mechanism Live</h2>
+    <ul>
+      <li>✓ <b>A — Aurora Intent Lookup Table</b>: <code>paper-designer/ds/aurora-intent-lookup.md</code> — reverse index dari brief intent → Aurora component (8 category, decision tree). Wajib baca DULU per brief baru.</li>
+      <li>✓ <b>B — Pipeline Langkah 2.5a Aurora Intent Scan</b>: <code>.claude/skills/senior-uiux-designer/pipeline.md</code> — restructured 2.5 jadi 4 substep (Intent Scan → Source Lookup → Mapping Table → Approval) dengan kolom Override? baru.</li>
+    </ul>
+
+    <h2 style="margin-top:20px;font-size:15px">4. ✓ DONE — Baseline + Overrides Locked</h2>
+    <ul>
+      <li>✓ <b>15 komponen baseline</b> di <code>02-ui-aurora.html</code> = FROZEN. JANGAN di-revert ke Aurora source.</li>
+      <li>✓ <b>AURORA-OVERRIDES.md</b> 9 active entries (was 3): au-toast (expanded 2026-05-20 with icon i + close X + 3-col), au-dialog, au-pagination, au-scroll-container, au-sidemenu, au-table, .list-card, Empty State, File Upload Dropzone.</li>
+      <li>✓ <b>Hard Rule Memory</b>: [[frozen-baseline-overrides-rule]] — A+B mechanism + bulk port WAJIB respect AURORA-OVERRIDES.md.</li>
+      <li>✓ <b>Lampiran inline</b>: refactored dari custom .lampiran-inline* ke Aurora composition (.btn--tertiary-plain + .sep dot pattern). Lesson: layout composition thinking, BUKAN bikin component baru per kebutuhan.</li>
+    </ul>
+
+    <h2 style="margin-top:20px;font-size:15px">5. Pending (next sessions)</h2>
+    <ul>
+      <li><b>Composition Thinking rule</b> — META principle: setiap "metadata + inline actions" pattern, KOMPOSE Aurora pieces, BUKAN bikin component baru. Save sebagai memory + tambah ke aurora-intent-lookup.md.</li>
+      <li><b>12 komponen Aurora yang belum di rules</b> — Datepicker, Stepper, Otp-input, Autocomplete, Country-code-select, Currency-select, Progress-bar, Carousel, Connection-icon, Infinite-loader, Text, Icons. Tambah on-demand per brief, atau bulk batch dengan default "follow Aurora persis".</li>
+      <li><b>Recipes</b> — <code>paper-designer/recipes/list-page.md</code>, <code>detail-page.md</code>, <code>form-page.md</code>, <code>modal-overlay.md</code> sebagai compiled view dari rules.</li>
+      <li><b>Cross-verify Match Components</b> (low priority):
+        <ul>
+          <li>Form Field — verify focus state bg shift (light-blue-10) read input.scss</li>
+          <li>Table — verify row hover bg vs Aurora source</li>
+          <li>Banner — add "help" state ke attention variant</li>
+        </ul>
+      </li>
+      <li>Pipeline Langkah 5 — tambah step "WAJIB baca recipe sebelum coding" (setelah recipes ready).</li>
+      <li>Pipeline Langkah 6 — tambah pre-setor audit checklist + Bash regex audit (Mekanisme 3 enforcement).</li>
+    </ul>
+
+    <h2 style="margin-top:20px;font-size:15px">6. Coverage Summary</h2>
+    <ul>
+      <li><b>Aurora total komponen</b>: 33 di <code>aurora/projects/ui/</code></li>
+      <li><b>Documented di design-rules.md</b>: 19/33 (58%) — was 13/33 (39%)</li>
+      <li><b>Implemented di prototype</b> 02-ui-aurora.html: 15 komponen baseline FROZEN</li>
+      <li><b>Override entries di AURORA-OVERRIDES.md</b>: 9 active (was 3)</li>
+      <li><b>Overlap rules ↔ prototype</b>: 15/15 (full coverage — was 7/15)</li>
+    </ul>
+  </div>
+</div>
+<script>
+  document.querySelectorAll('.filter button').forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll('.filter button').forEach(function(x){x.classList.remove('active')});
+      b.classList.add('active');
+      var f=b.dataset.f;
+      document.querySelectorAll('.comp').forEach(function(c){
+        c.style.display=(f==='all'||c.dataset.status===f)?'':'none';
+      });
+    };
+  });
+</script>
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  KOMEN OVERLAY ala Figma — SISIPKAN BLOK INI PERSIS SEBELUM </body> ║
+  ║  Self-contained. data-suxc="flow" = kanvas; "prototype" = scroll.║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<style>
+body.suxc-on,body.suxc-on *{cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="%23cdd8df" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>') 4 4,crosshair !important}
+#suxc-panel,#suxc-panel *,#suxc-nav,#suxc-nav *,.suxc-pop,.suxc-pop *{cursor:default !important}
+body.suxc-on .suxc-pop,body.suxc-on .suxc-pop *{cursor:default !important}
+#suxc-panel .suxc-item,#suxc-nav button,.suxc-pop button,.suxc-item-act{cursor:pointer !important}
+
+/* ── PINS ── */
+.suxc-pin{position:absolute;z-index:99998;width:28px;height:28px;border-radius:50% 50% 50% 4px;
+  background:#7B61FF;color:#fff;font:700 11px/28px 'Lato',sans-serif;text-align:center;
+  transform:translate(-2px,-30px);box-shadow:0 2px 8px rgba(0,0,0,.5);user-select:none;cursor:pointer;
+  transition:transform .12s,box-shadow .12s}
+.suxc-pin:hover{transform:translate(-2px,-32px) scale(1.08);box-shadow:0 4px 16px rgba(123,97,255,.5)}
+.suxc-pin.submitted{background:transparent;border:2px dashed #7B61FF;color:#7B61FF;line-height:24px;
+  box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.suxc-pin.submitted:hover{background:rgba(123,97,255,.12);box-shadow:0 4px 12px rgba(123,97,255,.4)}
+
+/* ── AREA RECT ── */
+.suxc-rect{position:absolute;z-index:99997;border:2px dashed #7B61FF;background:rgba(123,97,255,.07);border-radius:6px;pointer-events:none}
+.suxc-rect.live{z-index:99996}
+
+/* ── POPUP ── */
+.suxc-pop{position:fixed;z-index:100000;width:340px;background:#2C2C2E;
+  border:1px solid rgba(255,255,255,.10);border-radius:12px;
+  box-shadow:0 12px 40px rgba(0,0,0,.65);font-family:'Lato',sans-serif;overflow:hidden}
+.suxc-pop-head{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px 8px;border-bottom:1px solid rgba(255,255,255,.07)}
+.suxc-pop-title{font:600 13px 'Lato',sans-serif;color:#E5E5EA}
+.suxc-pop-hacts{display:flex;align-items:center;gap:2px}
+.suxc-pop-hacts button,.suxc-pop-closebtn{width:28px;height:28px;border:0;border-radius:6px;background:transparent;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;color:#8A8A8E;
+  font-size:14px;transition:background .12s,color .12s}
+.suxc-pop-hacts button:hover,.suxc-pop-closebtn:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+.suxc-pop-resbtn.on{color:#30D158}
+.suxc-pop-resbtn:hover{color:#30D158 !important}
+.suxc-pop-loc{display:flex;align-items:center;gap:6px;padding:8px 12px;
+  background:rgba(123,97,255,.08);border-bottom:1px solid rgba(255,255,255,.06);
+  font:500 11px/1.4 'Lato',sans-serif;color:#9B8AFF}
+.suxc-pop-loc-ico{flex:none;opacity:.85}
+.suxc-pop-loc-txt{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.suxc-pop-sub{display:flex;align-items:center;gap:8px;padding:8px 12px;
+  background:rgba(155,138,255,.10);border-bottom:1px solid rgba(255,255,255,.06);
+  font:500 11px/1.4 'Lato',sans-serif;color:#C9BEFF}
+.suxc-pop-sub-txt{flex:1}
+.suxc-pop-unsubmit{flex:none;border:1px solid rgba(155,138,255,.4);background:transparent;
+  color:#C9BEFF;border-radius:5px;padding:3px 8px;font:600 11px 'Lato',sans-serif;cursor:pointer;
+  transition:background .12s,border-color .12s}
+.suxc-pop-unsubmit:hover{background:rgba(155,138,255,.18);border-color:rgba(155,138,255,.7)}
+.suxc-av{width:32px;height:32px;border-radius:50%;background:#7B61FF;color:#fff;
+  font:700 13px/32px 'Lato',sans-serif;text-align:center;flex:none;user-select:none}
+.suxc-av.sm{width:28px;height:28px;font-size:11px;line-height:28px}
+
+/* thread */
+.suxc-pop-thread{padding:12px;display:flex;gap:10px;align-items:flex-start}
+.suxc-thread-msg{flex:1;min-width:0}
+.suxc-thread-meta{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.suxc-thread-user{font:600 13px 'Lato',sans-serif;color:#E5E5EA}
+.suxc-thread-time{font:400 11px 'Lato',sans-serif;color:#8A8A8E;flex:1}
+.suxc-thread-morebtn{width:24px;height:24px;border:0;border-radius:4px;background:transparent;
+  color:#636366;font:600 14px 'Lato',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.suxc-thread-morebtn:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+.suxc-thread-text{font:400 13px/20px 'Lato',sans-serif;color:#E5E5EA;word-break:break-word}
+.suxc-thread-editta{display:none;width:100%;box-sizing:border-box;font:400 13px/20px 'Lato',sans-serif;
+  background:#3A3A3C;color:#E5E5EA;border:1px solid rgba(255,255,255,.15);border-radius:6px;
+  padding:6px 8px;resize:none;min-height:48px;margin-top:4px;font-family:'Lato',sans-serif;outline:none}
+.suxc-thread-editta.show{display:block}
+
+/* reply input */
+.suxc-pop-reply{padding:8px 12px 12px;border-top:1px solid rgba(255,255,255,.06)}
+.suxc-reply-wrap{position:relative}
+.suxc-reply-ta{width:100%;box-sizing:border-box;font:400 13px/20px 'Lato',sans-serif;
+  background:#3A3A3C;color:#E5E5EA;border:1px solid rgba(255,255,255,.12);border-radius:8px;
+  padding:8px 10px 32px 10px;resize:none;min-height:72px;max-height:140px;
+  transition:border-color .15s;font-family:'Lato',sans-serif;outline:none}
+.suxc-reply-ta::placeholder{color:#636366}
+.suxc-reply-ta:focus{border-color:rgba(123,97,255,.6)}
+.suxc-send-btn{position:absolute;bottom:8px;right:8px;width:26px;height:26px;border:0;
+  border-radius:50%;background:#0A84FF;color:#fff;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s}
+.suxc-send-btn:disabled{background:transparent;color:#48484A;cursor:not-allowed}
+.suxc-send-btn:not(:disabled):hover{background:#0070D1}
+
+/* ── NAV BAR ── */
+#suxc-nav{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:100001;
+  display:flex;gap:4px;background:#2C2C2E;border-radius:14px;padding:6px;
+  box-shadow:0 8px 32px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.08)}
+#suxc-nav button{position:relative;width:40px;height:40px;border:0;border-radius:10px;background:transparent;
+  color:#98989D;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .12s,color .12s}
+#suxc-nav button:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+#suxc-nav button:disabled{opacity:.3;cursor:not-allowed}
+#suxc-nav button[data-tip]:hover:after{content:attr(data-tip);position:absolute;bottom:50px;left:50%;
+  transform:translateX(-50%);background:#1C1C1E;color:#E5E5EA;font:600 11px 'Lato',sans-serif;
+  padding:5px 10px;border-radius:6px;white-space:nowrap;pointer-events:none;
+  border:1px solid rgba(255,255,255,.10)}
+#suxc-nav button.on{background:rgba(123,97,255,.22);color:#9B8AFF}
+#suxc-nav .sep{width:1px;align-self:stretch;background:rgba(255,255,255,.10);margin:3px 2px}
+#suxc-cbadge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9999px;
+  background:#FF3B30;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;
+  padding:0 3px;border:2px solid #2C2C2E}
+#suxc-sbadge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9999px;
+  background:#9B8AFF;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;
+  padding:0 3px;border:2px solid #2C2C2E}
+#suxc-abadge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9999px;
+  background:#30D158;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;
+  padding:0 3px;border:2px solid #2C2C2E}
+#suxc-approve{color:#30D158 !important}
+#suxc-approve:hover{background:rgba(48,209,88,.18) !important;color:#5CDE7F !important}
+
+/* ── FAB ── */
+#suxc-fab{position:fixed;right:24px;bottom:24px;z-index:100001;width:50px;height:50px;
+  border-radius:50%;background:#2C2C2E;color:#E5E5EA;border:1px solid rgba(255,255,255,.12);
+  cursor:grab;display:none;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px rgba(0,0,0,.45);touch-action:none;user-select:none;transition:background .12s}
+#suxc-fab.show{display:flex}
+#suxc-fab.drag{cursor:grabbing}
+#suxc-fab:hover{background:#3A3A3C}
+#suxc-fbadge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9999px;
+  background:#FF3B30;color:#fff;font:700 11px/18px 'Lato',sans-serif;text-align:center;
+  padding:0 4px;display:none;border:2px solid #2C2C2E}
+#suxc-nav.suxc-asmenu{left:auto;right:auto;bottom:auto;top:auto;transform:none}
+
+/* ── FLOW canvas ── */
+html.suxc-flow,body.suxc-flow{margin:0;height:100%;overflow:hidden}
+#suxc-stage{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;min-width:100vw;box-sizing:border-box;padding:40px}
+body.suxc-on{outline:2px solid rgba(123,97,255,.4);outline-offset:-2px}
+body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
+
+/* ── STATE SWITCHER ── */
+.suxc-sw{position:fixed;z-index:100003;display:inline-flex;flex-direction:column;align-items:flex-start;user-select:none}
+.suxc-sw-pill{display:inline-flex;align-items:center;gap:8px;background:#1C1C1E;color:#E5E5EA;
+  border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:12px 16px 12px 12px;
+  font:600 14px/1 'Lato',sans-serif;cursor:grab;white-space:nowrap;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);transition:background .12s,box-shadow .12s}
+.suxc-sw-pill:hover{background:#2C2C2E;box-shadow:0 6px 20px rgba(0,0,0,.65)}
+.suxc-sw-pill.drag{cursor:grabbing}
+.suxc-sw-dot{width:9px;height:9px;border-radius:50%;background:#48484A;flex:none;transition:background .2s}
+.suxc-sw-dot.on{background:#30D158}
+.suxc-sw-pop{position:absolute;top:calc(100% + 7px);left:0;background:#2C2C2E;
+  border:1px solid rgba(255,255,255,.10);border-radius:10px;min-width:172px;
+  box-shadow:0 10px 36px rgba(0,0,0,.65);overflow:hidden;display:none}
+.suxc-sw-pop.open{display:block}
+.suxc-sw-head{padding:8px 14px 6px;font:600 10px/1 'Lato',sans-serif;color:#636366;letter-spacing:.06em;text-transform:uppercase}
+.suxc-sw-item{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;
+  font:500 13px/1 'Lato',sans-serif;color:#E5E5EA;cursor:pointer;transition:background .1s}
+.suxc-sw-item:hover{background:rgba(255,255,255,.07)}
+.suxc-sw-item.active{color:#30D158}
+.suxc-sw-check{font-size:12px;opacity:0}
+.suxc-sw-item.active .suxc-sw-check{opacity:1}
+
+/* ── TOAST ── */
+#suxc-toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(10px);
+  background:#1C1C1E;color:#E5E5EA;font:600 12px 'Lato',sans-serif;padding:9px 16px;
+  border-radius:9999px;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:100002;opacity:0;
+  pointer-events:none;transition:opacity .18s,transform .18s;border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;gap:10px;white-space:nowrap}
+#suxc-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.suxc-toast-undo{border:0;background:rgba(255,255,255,.15);color:#E5E5EA;padding:3px 10px;
+  border-radius:6px;cursor:pointer;font:700 11px 'Lato',sans-serif;flex:none;
+  transition:background .12s;font-family:'Lato',sans-serif}
+.suxc-toast-undo:hover{background:rgba(255,255,255,.28)}
+
+/* ── ZOOM ── */
+#suxc-zoom{position:fixed;left:16px;bottom:18px;z-index:100001;display:flex;gap:4px;
+  background:#2C2C2E;border-radius:10px;padding:5px;box-shadow:0 8px 24px rgba(0,0,0,.4);
+  border:1px solid rgba(255,255,255,.08)}
+#suxc-zoom button{width:32px;height:32px;border:0;border-radius:7px;background:transparent;
+  color:#98989D;font:700 14px 'Lato',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#suxc-zoom button:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+#suxc-zoom span{min-width:44px;text-align:center;align-self:center;color:#636366;font:600 11px 'Lato',sans-serif}
+
+/* ── PANEL ── */
+#suxc-panel{position:fixed;top:0;right:0;height:100vh;width:240px;background:#1C1C1E;
+  border-left:1px solid rgba(255,255,255,.08);box-shadow:-6px 0 24px rgba(0,0,0,.4);
+  z-index:99999;font-family:'Lato',sans-serif;display:flex;flex-direction:column;
+  transition:transform .2s ease}
+#suxc-panel.closed{transform:translateX(240px)}
+#suxc-ph{padding:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+#suxc-ph-title{font:700 13px 'Lato',sans-serif;color:#E5E5EA;padding:2px 0 10px;
+  display:flex;align-items:center;justify-content:space-between}
+#suxc-ph-title span{font:400 12px 'Lato',sans-serif;color:#636366}
+#suxc-search-row{display:flex;gap:6px;align-items:center}
+#suxc-search-wrap{flex:1;display:flex;align-items:center;gap:7px;background:#3A3A3C;
+  border-radius:8px;padding:7px 10px}
+#suxc-search-wrap svg{color:#8A8A8E;flex:none}
+#suxc-search-input{flex:1;border:0;background:transparent;color:#E5E5EA;
+  font:400 13px 'Lato',sans-serif;outline:none}
+#suxc-search-input::placeholder{color:#636366}
+#suxc-close{width:34px;height:34px;border:0;border-radius:8px;background:#3A3A3C;
+  color:#8A8A8E;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:background .12s}
+#suxc-close:hover{background:#4A4A4E;color:#E5E5EA}
+#suxc-list{flex:1;overflow:auto;padding:8px}
+#suxc-empty{padding:32px 16px;color:#636366;font:400 13px/20px 'Lato',sans-serif;text-align:center}
+
+/* panel cards */
+.suxc-item{padding:12px;border-radius:10px;margin-bottom:6px;cursor:pointer;
+  background:#2C2C2E;border:1px solid transparent;transition:border-color .12s,background .12s}
+.suxc-item:hover{border-color:rgba(255,255,255,.10)}
+.suxc-item.active{background:#3D3D5C;border-color:rgba(123,97,255,.4)}
+.suxc-item.resolved{opacity:.48}
+.suxc-item.submitted{border-color:rgba(123,97,255,.5);background:rgba(123,97,255,.06)}
+.suxc-item.submitted::before{content:"🕓 submitted";display:block;font:600 9px/1 'Lato',sans-serif;
+  color:#9B8AFF;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.suxc-item-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+.suxc-item-acts{display:flex;gap:4px}
+.suxc-item-act{width:32px;height:32px;border:0;border-radius:7px;background:transparent;
+  color:#636366;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;
+  transition:background .12s,color .12s}
+.suxc-item-act:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+.suxc-item-act.ok.on{color:#30D158}
+.suxc-item-act.ok:hover{color:#30D158}
+.suxc-item-act.del:hover{color:#FF453A}
+.suxc-item-ref{font:400 11px 'Lato',sans-serif;color:#636366;align-self:center}
+.suxc-item-who{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.suxc-item-name{font:600 12px 'Lato',sans-serif;color:#E5E5EA}
+.suxc-item-time{font:400 11px 'Lato',sans-serif;color:#636366}
+.suxc-item-text{font:400 12px/18px 'Lato',sans-serif;color:#98989D;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.suxc-item.resolved .suxc-item-text{text-decoration:line-through}
+</style>
+
+<div id="suxc-nav">
+  <button id="suxc-tgl" type="button" data-tip="Mode komen (C)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
+    <span id="suxc-cbadge" style="display:none">0</span>
+  </button>
+  <button id="suxc-tab" type="button" data-tip="Daftar komen (L)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+  </button>
+  <span class="sep"></span>
+  <button id="suxc-submit" type="button" data-tip="Submit komen — copy (S)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+    <span id="suxc-sbadge" style="display:none">0</span>
+  </button>
+  <button id="suxc-approve" type="button" data-tip="Approve submitted pins (A)" style="display:none">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="suxc-abadge">0</span>
+  </button>
+  <span class="sep"></span>
+  <button id="suxc-figma" type="button" data-tip="Generate Figma (G)">
+    <svg width="16" height="16" viewBox="0 0 38 57" fill="currentColor"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>
+  </button>
+</div>
+
+<div id="suxc-panel" class="closed">
+  <div id="suxc-ph">
+    <div id="suxc-ph-title">Comments <span id="suxc-count"></span></div>
+    <div id="suxc-search-row">
+      <div id="suxc-search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="suxc-search-input" placeholder="Search" type="text">
+      </div>
+      <button id="suxc-close">✕</button>
+    </div>
+  </div>
+  <div id="suxc-list"></div>
+</div>
+
+<div id="suxc-zoom">
+  <button id="suxc-zout" type="button">−</button>
+  <span id="suxc-zlvl">100%</span>
+  <button id="suxc-zin" type="button">+</button>
+  <button id="suxc-zfit" type="button">⤢</button>
+</div>
+
+<button id="suxc-fab" type="button" aria-label="Tools review">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
+  <span id="suxc-fbadge">0</span>
+</button>
+
+<script>
+(function(){
+  var MODE=(document.body.getAttribute('data-suxc')||'prototype').toLowerCase();
+  var FLOW=(MODE==='flow');
+  var KEY='suxc:'+location.pathname, on=false, data=[];
+  var UNAME='Working', UINIT='W';
+  try{data=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(data))data=[];}
+  catch(e){data=[];try{localStorage.removeItem(KEY);}catch(_){}}
+
+  var panel=document.getElementById('suxc-panel'),
+      tab=document.getElementById('suxc-tab'),
+      tgl=document.getElementById('suxc-tgl'),
+      badge=document.getElementById('suxc-cbadge'),
+      nav=document.getElementById('suxc-nav'),
+      fab=document.getElementById('suxc-fab'),
+      searchInput=document.getElementById('suxc-search-input');
+
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}}
+  var LOGKEY='suxc:log';
+  function logEvent(c,act){try{
+    var L=JSON.parse(localStorage.getItem(LOGKEY)||'[]');if(!Array.isArray(L))L=[];
+    L.push({t:new Date().toISOString(),file:(location.pathname.split('/').pop()||''),
+      act:act,text:(c.text||''),loc:(c.ctx||''),x:Math.round(c.x),y:Math.round(c.y),area:!!(c.w&&c.h)});
+    localStorage.setItem(LOGKEY,JSON.stringify(L));}catch(e){}}
+  window.suxcDownloadLog=function(){
+    var blob=new Blob([localStorage.getItem(LOGKEY)||'[]'],{type:'application/json'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='comment-log.json';document.body.appendChild(a);a.click();a.remove();};
+
+  var toastT,toastUndoFn=null;
+  function toast(msg){
+    var el=document.getElementById('suxc-toast');
+    if(!el){el=document.createElement('div');el.id='suxc-toast';document.body.appendChild(el);}
+    toastUndoFn=null;
+    el.innerHTML='<span>'+msg+'</span>';
+    el.classList.add('show');
+    clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove('show');},2400);}
+  function toastUndo(msg,fn){
+    var el=document.getElementById('suxc-toast');
+    if(!el){el=document.createElement('div');el.id='suxc-toast';document.body.appendChild(el);}
+    toastUndoFn=fn;
+    el.innerHTML='<span>'+msg+'</span><button class="suxc-toast-undo">Undo</button>';
+    el.classList.add('show');
+    clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove('show');toastUndoFn=null;},4500);
+    el.querySelector('.suxc-toast-undo').onclick=function(){
+      clearTimeout(toastT);el.classList.remove('show');
+      var f=toastUndoFn;toastUndoFn=null;if(f)f();};}
+
+  function fmtFull(ts){
+    if(!ts)return'';
+    var d=new Date(ts),z=function(n){return n<10?'0'+n:''+n;};
+    return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())+
+      ' '+z(d.getHours())+':'+z(d.getMinutes())+':'+z(d.getSeconds());}
+
+  function fmtRel(ts){
+    if(!ts)return'';
+    var d=Date.now()-ts;
+    if(d<60000)return'Just now';
+    if(d<3600000)return Math.floor(d/60000)+'m ago';
+    if(d<86400000)return Math.floor(d/3600000)+'h ago';
+    return Math.floor(d/86400000)+'d ago';}
+
+  var stage,T={x:0,y:0,s:1},spaceDown=false;
+  if(FLOW){
+    document.documentElement.classList.add('suxc-flow');
+    document.body.classList.add('suxc-flow');
+    stage=document.createElement('div');stage.id='suxc-stage';
+    (function(){var ns=[].slice.call(document.body.childNodes);
+      ns.forEach(function(n){
+        if(n.nodeType===1){var id=n.id||'',tg=n.tagName;
+          if(id.indexOf('suxc-')===0||tg==='SCRIPT'||tg==='STYLE'||tg==='LINK')return;}
+        else if(n.nodeType!==3)return;
+        stage.appendChild(n);});
+      document.body.appendChild(stage);})();
+  }else{stage=document.body;}
+
+  function applyT(){if(!FLOW)return;
+    stage.style.transform='translate('+T.x+'px,'+T.y+'px) scale('+T.s+')';
+    var z=document.getElementById('suxc-zlvl');if(z)z.textContent=Math.round(T.s*100)+'%';}
+  function scX(){return window.scrollX||window.pageXOffset||0;}
+  function scY(){return window.scrollY||window.pageYOffset||0;}
+  function toLocal(cx,cy){return FLOW?{x:(cx-T.x)/T.s,y:(cy-T.y)/T.s}:{x:cx+scX(),y:cy+scY()};}
+  function toClient(lx,ly){return FLOW?{x:T.x+lx*T.s,y:T.y+ly*T.s}:{x:lx-scX(),y:ly-scY()};}
+  function clamp(v,a,b){return v<a?a:v>b?b:v;}
+  function zoomAt(cx,cy,ns){ns=clamp(ns,0.2,3);var L=toLocal(cx,cy);T.s=ns;T.x=cx-L.x*ns;T.y=cy-L.y*ns;applyT();}
+  function smooth(fn){stage.style.transition='transform .22s ease';fn();setTimeout(function(){stage.style.transition='';},240);}
+  function panTo(c){
+    if(c.fixedSel)return; // fixed pin sudah di viewport
+    if(c.scrollSel){var _sc=document.querySelector(c.scrollSel);
+      if(_sc&&_sc.scrollTo)_sc.scrollTo({left:Math.max(0,c.sx-120),top:Math.max(0,c.sy-160),behavior:'smooth'});return;}
+    if(!FLOW){window.scrollTo({left:Math.max(0,c.x-120),top:Math.max(0,c.y-160),behavior:'smooth'});return;}
+    smooth(function(){T.x=window.innerWidth/2-(c.x+(c.w||0)/2)*T.s;T.y=window.innerHeight/2-(c.y+(c.h||0)/2)*T.s;applyT();});}
+  function setOn(v){on=v;document.body.classList.toggle('suxc-on',on);tgl.classList.toggle('on',on);
+    if(on){setPanel(true);toast('Mode komen aktif 💬');}else{clearRects();toast('Mode komen nonaktif');}}
+  function setPanel(o){panel.classList.toggle('closed',!o);}
+  tgl.onclick=function(){setOn(!on);};
+  tab.onclick=function(){setPanel(panel.classList.contains('closed'));};
+  document.getElementById('suxc-close').onclick=function(){setPanel(false);};
+
+  function clearRects(){document.querySelectorAll('.suxc-rect:not(.live)').forEach(function(e){e.remove();});}
+  function showRect(c){clearRects();
+    if(c.fixedSel&&c.fw&&c.fh){
+      var r=document.createElement('div');r.className='suxc-rect';
+      r.style.cssText='position:fixed;left:'+c.fx+'px;top:'+c.fy+'px;width:'+c.fw+'px;height:'+c.fh+'px';
+      if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
+      document.body.appendChild(r);return;}
+    if(c.scrollSel&&c.sw&&c.sh){
+      var _sc=document.querySelector(c.scrollSel);
+      if(_sc){var r=document.createElement('div');r.className='suxc-rect';
+        r.style.cssText='left:'+c.sx+'px;top:'+c.sy+'px;width:'+c.sw+'px;height:'+c.sh+'px';
+        if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
+        _sc.appendChild(r);return;}}
+    if(!(c.w&&c.h))return;
+    var r=document.createElement('div');r.className='suxc-rect';
+    r.style.cssText='left:'+c.x+'px;top:'+c.y+'px;width:'+c.w+'px;height:'+c.h+'px';
+    if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
+    stage.appendChild(r);}
+
+  function txt(e){return((e.innerText||e.textContent||'').replace(/\s+/g,' ').trim());}
+  function findFixedLayer(el){
+    while(el&&el!==document.body&&el!==document.documentElement){
+      if(el.nodeType===1){var cs=getComputedStyle(el);
+        if(cs.position==='fixed'&&cs.display!=='none'){
+          var id=el.id;if(id&&id.indexOf('suxc-')!==0)return'#'+id;
+          var lyr=el.getAttribute('data-layer');if(lyr)return'[data-layer="'+lyr+'"]';
+          return null;}}
+      el=el.parentElement;}
+    return null;}
+  function findScrollContainer(el){
+    while(el&&el!==document.body&&el!==document.documentElement){
+      if(el.nodeType===1){var cs=getComputedStyle(el),oy=cs.overflowY,ox=cs.overflowX;
+        if(((oy==='auto'||oy==='scroll')&&el.scrollHeight>el.clientHeight+4)||
+           ((ox==='auto'||ox==='scroll')&&el.scrollWidth>el.clientWidth+4))return el;}
+      el=el.parentElement;}
+    return null;}
+  function selFor(el){
+    if(!el)return null;
+    if(el.id&&el.id.indexOf('suxc-')!==0)return'#'+el.id;
+    var dl=el.getAttribute&&el.getAttribute('data-layer');if(dl)return'[data-layer="'+dl+'"]';
+    var cls=(typeof el.className==='string'?el.className:'').trim().split(/\s+/)[0];
+    if(cls&&document.querySelectorAll('.'+cls).length===1)return'.'+cls;
+    return null;}
+  function anchorAtViewport(cx,cy){
+    if(cx<0||cy<0||cx>window.innerWidth||cy>window.innerHeight)return'';
+    var els=document.elementsFromPoint?document.elementsFromPoint(cx,cy):[document.elementFromPoint(cx,cy)];
+    for(var k=0;k<els.length;k++){var e=els[k];
+      if(!e||!e.closest||e===document.body||e===document.documentElement)continue;
+      if(e.closest('#suxc-nav,#suxc-panel,.suxc-pop,.suxc-pin,.suxc-rect'))continue;
+      var s=txt(e);if(s&&s.length<=110)return s.length>80?s.slice(0,80)+'…':s;}
+    return'';}
+  function anchorAt(px,py){
+    var sc=toClient(px,py),cx=sc.x,cy=sc.y;
+    if(cx<0||cy<0||cx>window.innerWidth||cy>window.innerHeight)return'';
+    var els=document.elementsFromPoint?document.elementsFromPoint(cx,cy):[document.elementFromPoint(cx,cy)];
+    for(var k=0;k<els.length;k++){var e=els[k];
+      if(!e||!e.closest||e===document.body||e===document.documentElement)continue;
+      if(e.closest('#suxc-nav,#suxc-panel,.suxc-pop,.suxc-pin,.suxc-rect'))continue;
+      var s=txt(e);if(s&&s.length<=110)return s.length>80?s.slice(0,80)+'…':s;}
+    return'';}
+  function ctxFor(c){
+    if(c.fixedSel){
+      if(c.fw&&c.fh){
+        var P=[[c.fx+c.fw/2,c.fy+c.fh/2],[c.fx+10,c.fy+10],[c.fx+c.fw-10,c.fy+10],[c.fx+10,c.fy+c.fh-10],[c.fx+c.fw-10,c.fy+c.fh-10]],seen=[];
+        P.forEach(function(p){var a=anchorAtViewport(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
+        if(seen.length)return seen.slice(0,2).join(' & ');}
+      return anchorAtViewport(c.fx,c.fy);}
+    if(c.scrollSel){
+      var sc=document.querySelector(c.scrollSel);
+      if(sc){var r=sc.getBoundingClientRect();
+        var vx=r.left+c.sx-sc.scrollLeft,vy=r.top+c.sy-sc.scrollTop;
+        if(c.sw&&c.sh){
+          var P=[[vx+c.sw/2,vy+c.sh/2],[vx+10,vy+10],[vx+c.sw-10,vy+10],[vx+10,vy+c.sh-10],[vx+c.sw-10,vy+c.sh-10]],seen=[];
+          P.forEach(function(p){var a=anchorAtViewport(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
+          if(seen.length)return seen.slice(0,2).join(' & ');}
+        return anchorAtViewport(vx,vy);}}
+    if(c.w&&c.h){
+      var P=[[c.x+c.w/2,c.y+c.h/2],[c.x+10,c.y+10],[c.x+c.w-10,c.y+10],[c.x+10,c.y+c.h-10],[c.x+c.w-10,c.y+c.h-10]],seen=[];
+      P.forEach(function(p){var a=anchorAt(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
+      if(seen.length)return seen.slice(0,2).join(' & ');
+      var n=nearest(c.x+c.w/2,c.y+c.h/2);return n?'di dekat: '+n:'';}
+    var d=anchorAt(c.x,c.y);if(d)return d;
+    var nn=nearest(c.x,c.y);return nn?'di dekat: '+nn:'';}
+  function nearest(lx,ly){
+    var sc=toClient(lx,ly),best=null,bd=1e9;
+    var all=stage.querySelectorAll('div,span,h1,h2,h3,p,td,li,b,a,button');
+    for(var i=0;i<all.length;i++){var e=all[i];
+      if(e.children.length>2)continue;
+      var s=txt(e);if(!s||s.length<3||s.length>90)continue;
+      var r=e.getBoundingClientRect();if(!r.width)continue;
+      var dx=Math.max(r.left-sc.x,0,sc.x-r.right),dy=Math.max(r.top-sc.y,0,sc.y-r.bottom);
+      var dist=dx*dx+dy*dy;if(dist<bd){bd=dist;best=s;}}
+    return best?(best.length>70?best.slice(0,70)+'…':best):'';}
+
+  var fileName=(location.pathname.split('/').pop()||'page').replace(/\.html?$/i,'');
+
+  function render(){
+    document.querySelectorAll('.suxc-pin,.suxc-pop,.suxc-rect:not(.live)').forEach(function(e){e.remove();});
+    var list=document.getElementById('suxc-list');list.innerHTML='';
+    var openCount=data.filter(function(c){return !c.resolved;}).length;
+    var subCount=data.filter(function(c){return c.submitted&&!c.resolved;}).length;
+    var draftCount=openCount-subCount;
+    var countEl=document.getElementById('suxc-count');
+    if(countEl)countEl.textContent=data.length?'('+data.length+')':'';
+    badge.style.display=openCount?'block':'none';badge.textContent=openCount;
+    var fb=document.getElementById('suxc-fbadge');
+    if(fb){fb.style.display=openCount?'block':'none';fb.textContent=openCount;}
+    var sb=document.getElementById('suxc-sbadge');
+    if(sb){sb.style.display=draftCount?'block':'none';sb.textContent=draftCount;}
+    var ap=document.getElementById('suxc-approve'),ab=document.getElementById('suxc-abadge');
+    if(ap){ap.style.display=subCount?'flex':'none';if(ab)ab.textContent=subCount;}
+
+    var query=(searchInput&&searchInput.value||'').toLowerCase().trim();
+
+    if(!data.length){
+      list.innerHTML='<div id="suxc-empty">Belum ada komen.<br><br>Nyalain mode komen (💬 / tekan C) lalu klik area di layar.</div>';
+      return;}
+
+    // sorted: unresolved newest first, resolved oldest last
+    var sorted=data.map(function(c,i){return{c:c};});
+    sorted.sort(function(a,b){
+      if(a.c.resolved===b.c.resolved)return(b.c.ts||0)-(a.c.ts||0);
+      return a.c.resolved?1:-1;});
+
+    sorted.forEach(function(entry,si){
+      var c=entry.c, num=si+1;
+      // pin — hanya unresolved
+      if(!c.resolved){
+        if(c.fixedSel){
+          var lyr=document.querySelector(c.fixedSel);
+          if(lyr){var lcs=getComputedStyle(lyr);
+            if(lcs.display!=='none'&&lcs.visibility!=='hidden'){
+              var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
+              p.style.position='fixed';p.style.left=c.fx+'px';p.style.top=c.fy+'px';p.textContent=num;
+              p.onmousedown=function(ev){
+                ev.stopPropagation();ev.preventDefault();
+                var sx=ev.clientX,sy=ev.clientY,moved=false;
+                function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4)moved=true;
+                  if(moved){c.fx=e.clientX;c.fy=e.clientY;
+                    p.style.left=c.fx+'px';p.style.top=c.fy+'px';
+                    document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+                function upH(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',upH);
+                  if(moved){save();render();}else{openEditor(c);}}
+                document.addEventListener('mousemove',mv);document.addEventListener('mouseup',upH);};
+              p.onmouseenter=function(){if(on)openEditor(c);};
+              document.body.appendChild(p);}}
+        }else if(c.scrollSel){
+          var sc=document.querySelector(c.scrollSel);
+          if(sc){
+            if(getComputedStyle(sc).position==='static')sc.style.position='relative';
+            var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
+            p.style.left=c.sx+'px';p.style.top=c.sy+'px';p.textContent=num;
+            p.onmousedown=(function(scEl){return function(ev){
+              ev.stopPropagation();ev.preventDefault();
+              var sx=ev.clientX,sy=ev.clientY,moved=false;
+              function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4)moved=true;
+                if(moved){var rr=scEl.getBoundingClientRect();
+                  c.sx=e.clientX-rr.left+scEl.scrollLeft;c.sy=e.clientY-rr.top+scEl.scrollTop;
+                  p.style.left=c.sx+'px';p.style.top=c.sy+'px';
+                  document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+              function upH(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',upH);
+                if(moved){save();render();}else{openEditor(c);}}
+              document.addEventListener('mousemove',mv);document.addEventListener('mouseup',upH);};})(sc);
+            p.onmouseenter=function(){if(on)openEditor(c);};
+            sc.appendChild(p);}
+        }else{
+          var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
+          p.style.left=c.x+'px';p.style.top=c.y+'px';p.textContent=num;
+          p.onmousedown=function(ev){
+            ev.stopPropagation();ev.preventDefault();
+            var sx=ev.clientX,sy=ev.clientY,moved=false;
+            function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4)moved=true;
+              if(moved){var L=toLocal(e.clientX,e.clientY);c.x=L.x;c.y=L.y;
+                p.style.left=c.x+'px';p.style.top=c.y+'px';
+                document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+            function up(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);
+              if(moved){save();render();}else{openEditor(c);}}
+            document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);};
+          p.onmouseenter=function(){if(on)openEditor(c);};
+          stage.appendChild(p);}}
+
+      // panel card — search filter
+      if(query&&(!c.text||c.text.toLowerCase().indexOf(query)<0))return;
+      var it=document.createElement('div');
+      it.className='suxc-item'+(c.resolved?' resolved':'')+(c.submitted&&!c.resolved?' submitted':'');
+      it.innerHTML=
+        '<div class="suxc-item-who">'+
+          '<span class="suxc-item-name">'+UNAME+'</span>'+
+          '<span class="suxc-item-time">'+fmtRel(c.ts)+'</span>'+
+          '<div class="suxc-item-acts" style="margin-left:auto">'+
+            '<button class="suxc-item-act ok'+(c.resolved?' on':'')+'" title="Tandai selesai">✓</button>'+
+            '<button class="suxc-item-act del" title="Hapus">✕</button>'+
+          '</div>'+
+        '</div>'+
+        '<div class="suxc-item-text">'+((c.text||'(kosong)').replace(/</g,'&lt;'))+'</div>';
+
+      it.onclick=function(ev){if(ev.target.closest('.suxc-item-act'))return;panTo(c);openEditor(c);};
+      it.onmouseenter=function(){showRect(c);};
+      it.onmouseleave=function(){if(!document.querySelector('.suxc-pop'))clearRects();};
+      it.querySelector('.ok').onclick=function(ev){
+        ev.stopPropagation();c.resolved=!c.resolved;
+        logEvent(c,c.resolved?'resolve':'reopen');save();render();
+        toast(c.resolved?'Ditandai selesai ✓':'Dibuka kembali ↩');};
+      it.querySelector('.del').onclick=function(ev){
+        ev.stopPropagation();
+        var oi=data.indexOf(c);if(oi<0)return;
+        var snap=c,snapIdx=oi;
+        logEvent(c,'delete');data.splice(oi,1);save();render();
+        toastUndo('Komen dihapus',function(){data.splice(snapIdx,0,snap);save();render();toast('Dikembalikan ✓');});};
+      list.appendChild(it);});}
+
+  function openEditor(c){
+    document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});
+    var isNew=data.indexOf(c)<0;
+    var pop=document.createElement('div');pop.className='suxc-pop';
+    var sc;
+    if(c.fixedSel)sc={x:c.fx,y:c.fy};
+    else if(c.scrollSel){var _sc=document.querySelector(c.scrollSel);
+      if(_sc){var _r=_sc.getBoundingClientRect();sc={x:_r.left+c.sx-_sc.scrollLeft,y:_r.top+c.sy-_sc.scrollTop};}
+      else sc={x:0,y:0};}
+    else sc=toClient(c.x,c.y);
+    pop.style.cssText='position:fixed;left:'+Math.max(8,Math.min(sc.x+28,window.innerWidth-316))+'px;top:'+Math.max(8,Math.min(sc.y-10,window.innerHeight-300))+'px';
+    showRect(c);
+
+    var EDIT_ICON='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>';
+    var threadHtml='';
+    if(!isNew&&c.text){
+      threadHtml=
+        '<div class="suxc-pop-thread">'+
+          '<div class="suxc-thread-msg">'+
+            '<div class="suxc-thread-meta">'+
+              '<span class="suxc-thread-user">'+UNAME+'</span>'+
+              '<span class="suxc-thread-time">'+fmtRel(c.ts)+'</span>'+
+              '<button class="suxc-thread-morebtn" title="Edit">'+EDIT_ICON+'</button>'+
+            '</div>'+
+            '<div class="suxc-thread-text">'+((c.text||'').replace(/</g,'&lt;'))+'</div>'+
+            '<textarea class="suxc-thread-editta" rows="2"></textarea>'+
+          '</div>'+
+        '</div>';}
+
+    var locTxt=(c.ctx||'').replace(/</g,'&lt;');
+    var layerLbl=c.fixedSel?(c.fixedSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1')):
+                 (c.scrollSel?(c.scrollSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1')):'');
+    var locLine=(locTxt||layerLbl)?
+      ('<div class="suxc-pop-loc">'+
+        '<svg class="suxc-pop-loc-ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'+
+        '<span class="suxc-pop-loc-txt">'+
+          (layerLbl?'<b>'+layerLbl+'</b>'+(locTxt?' · ':''):'')+
+          (locTxt||'')+
+        '</span>'+
+      '</div>'):'';
+    var subLine=(c.submitted&&!c.resolved)?
+      ('<div class="suxc-pop-sub">'+
+        '<span class="suxc-pop-sub-txt">🕓 <b>Submitted</b>'+(c.batchId?(' · batch '+c.batchId):'')+'</span>'+
+        '<button class="suxc-pop-unsubmit" type="button">Un-submit</button>'+
+      '</div>'):'';
+    pop.innerHTML=
+      '<div class="suxc-pop-head">'+
+        '<span class="suxc-pop-title">'+(isNew?'New comment':'Comment')+'</span>'+
+        '<div class="suxc-pop-hacts">'+
+          (!isNew?'<button class="suxc-pop-resbtn'+(c.resolved?' on':'')+'" title="Mark resolved">✓</button>':'')+
+          '<button class="suxc-pop-closebtn">✕</button>'+
+        '</div>'+
+      '</div>'+
+      locLine+
+      subLine+
+      threadHtml+
+      (isNew?'<div class="suxc-pop-reply">'+
+        '<div class="suxc-reply-wrap">'+
+          '<textarea class="suxc-reply-ta" placeholder="Add a comment…" rows="3"></textarea>'+
+          '<button class="suxc-send-btn" disabled type="button">'+
+            '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>'+
+          '</button>'+
+        '</div>'+
+      '</div>':'');
+
+    var ta=pop.querySelector('.suxc-reply-ta');
+    var sendBtn=pop.querySelector('.suxc-send-btn');
+
+    pop.querySelector('.suxc-pop-closebtn').onclick=closePop;
+
+    var resBtn=pop.querySelector('.suxc-pop-resbtn');
+    if(resBtn)resBtn.onclick=function(){
+      c.resolved=!c.resolved;if(c.resolved)c.submitted=false;resBtn.classList.toggle('on',c.resolved);
+      logEvent(c,c.resolved?'resolve':'reopen');save();render();
+      toast(c.resolved?'Ditandai selesai ✓':'Dibuka kembali ↩');closePop();};
+    var unsubBtn=pop.querySelector('.suxc-pop-unsubmit');
+    if(unsubBtn)unsubBtn.onclick=function(){unsubmit(c);closePop();};
+
+    var moreBtn=pop.querySelector('.suxc-thread-morebtn');
+    if(moreBtn)moreBtn.onclick=function(ev){
+      ev.stopPropagation();
+      var textEl=pop.querySelector('.suxc-thread-text');
+      var editEl=pop.querySelector('.suxc-thread-editta');
+      if(!textEl||!editEl)return;
+      var editing=editEl.classList.contains('show');
+      if(editing){textEl.style.display='';editEl.classList.remove('show');}
+      else{
+        editEl.value=c.text||'';textEl.style.display='none';editEl.classList.add('show');editEl.focus();
+        editEl.onkeydown=function(e){
+          if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();
+            var v=editEl.value.trim();if(v){c.text=v;logEvent(c,'edit');save();render();toast('Komen diperbarui ✓');}closePop();}
+          if(e.key==='Escape'){textEl.style.display='';editEl.classList.remove('show');}};
+        editEl.onblur=function(){
+          var v=editEl.value.trim();
+          if(v&&v!==c.text){c.text=v;logEvent(c,'edit');save();render();toast('Komen diperbarui ✓');}};}};
+
+    if(ta&&sendBtn){
+      ta.oninput=function(){sendBtn.disabled=!ta.value.trim();};
+      ta.onkeydown=function(ev){
+        if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();commit();}
+        if(ev.key==='Escape')closePop();};
+      sendBtn.onclick=commit;}
+
+    function commit(){
+      if(!ta)return;var v=ta.value.trim();if(!v)return;
+      var wasNew=isNew;
+      if(isNew){c.text=v;c.ts=Date.now();data.push(c);logEvent(c,'add');}
+      else{c.text=c.text?(c.text+'\n'+v):v;logEvent(c,'edit');}
+      save();render();closePop();
+      toast(wasNew?'Komen ditambah ✓':'Komen diperbarui ✓');}
+
+    function closePop(){
+      document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});clearRects();}
+
+    pop.onclick=function(ev){ev.stopPropagation();};
+    document.body.appendChild(pop);if(ta)ta.focus();}
+
+  if(searchInput)searchInput.oninput=function(){render();};
+
+  function isChrome(t){return t.closest&&(t.closest('#suxc-panel')||t.closest('#suxc-nav')||t.closest('#suxc-zoom')||t.closest('#suxc-fab')||t.closest('.suxc-pop')||t.closest('.suxc-pin'));}
+  document.addEventListener('click',function(ev){if(on&&!spaceDown&&!isChrome(ev.target)){ev.preventDefault();ev.stopPropagation();}},true);
+  document.addEventListener('mousedown',function(ev){
+    if(isChrome(ev.target))return;
+    var doPan=FLOW&&((ev.button===1)||spaceDown||(!on&&ev.button===0));
+    var doCmt=on&&ev.button===0&&!spaceDown;
+    if(!doPan&&!doCmt)return;
+    ev.preventDefault();
+    if(doPan){
+      var sx=ev.clientX,sy=ev.clientY,ox=T.x,oy=T.y;document.body.classList.add('suxc-pan');
+      function pm(e){T.x=ox+(e.clientX-sx);T.y=oy+(e.clientY-sy);applyT();}
+      function pu(){document.removeEventListener('mousemove',pm);document.removeEventListener('mouseup',pu);document.body.classList.remove('suxc-pan');}
+      document.addEventListener('mousemove',pm);document.addEventListener('mouseup',pu);return;}
+    var L0=toLocal(ev.clientX,ev.clientY),rect=null;
+    function mv(e){
+      var L=toLocal(e.clientX,e.clientY),w=Math.abs(L.x-L0.x),h=Math.abs(L.y-L0.y);
+      if(!rect&&(w+h)>6){rect=document.createElement('div');rect.className='suxc-rect live';stage.appendChild(rect);}
+      if(rect){rect.style.left=Math.min(L0.x,L.x)+'px';rect.style.top=Math.min(L0.y,L.y)+'px';rect.style.width=w+'px';rect.style.height=h+'px';}}
+    function up(e){
+      document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);
+      if(rect)rect.remove();
+      var L=toLocal(e.clientX,e.clientY),w=Math.abs(L.x-L0.x),h=Math.abs(L.y-L0.y);
+      var anchorEl=document.elementFromPoint(e.clientX,e.clientY);
+      var fixedSel=anchorEl?findFixedLayer(anchorEl):null;
+      var c={text:'',resolved:false};
+      if(fixedSel){
+        c.fixedSel=fixedSel;
+        var vx0=L0.x-scX(),vy0=L0.y-scY();
+        if(w>6&&h>6){c.fx=Math.min(vx0,e.clientX);c.fy=Math.min(vy0,e.clientY);c.fw=Math.abs(e.clientX-vx0);c.fh=Math.abs(e.clientY-vy0);}
+        else{c.fx=e.clientX;c.fy=e.clientY;}
+      }else{
+        var scEl=anchorEl?findScrollContainer(anchorEl):null;
+        var scSel=scEl?selFor(scEl):null;
+        if(scSel){
+          c.scrollSel=scSel;
+          if(getComputedStyle(scEl).position==='static')scEl.style.position='relative';
+          var r=scEl.getBoundingClientRect();
+          var vx0=L0.x-scX(),vy0=L0.y-scY();
+          if(w>6&&h>6){
+            c.sx=Math.min(vx0,e.clientX)-r.left+scEl.scrollLeft;
+            c.sy=Math.min(vy0,e.clientY)-r.top+scEl.scrollTop;
+            c.sw=Math.abs(e.clientX-vx0);c.sh=Math.abs(e.clientY-vy0);
+          }else{
+            c.sx=e.clientX-r.left+scEl.scrollLeft;
+            c.sy=e.clientY-r.top+scEl.scrollTop;
+          }
+        }else{
+          c.x=Math.min(L0.x,L.x);c.y=Math.min(L0.y,L.y);
+          if(w>6&&h>6){c.w=w;c.h=h;}else{c.x=L0.x;c.y=L0.y;}
+        }
+      }
+      c.ctx=ctxFor(c);openEditor(c);}
+    document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);},true);
+
+  document.addEventListener('wheel',function(ev){
+    if(!FLOW)return;if(isChrome(ev.target))return;ev.preventDefault();
+    if(ev.ctrlKey||ev.metaKey){zoomAt(ev.clientX,ev.clientY,T.s*Math.exp(-ev.deltaY*0.0028));}
+    else{T.x-=ev.deltaX;T.y-=ev.deltaY;applyT();}},{passive:false});
+  document.getElementById('suxc-zin').onclick=function(){smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s*1.2);});};
+  document.getElementById('suxc-zout').onclick=function(){smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s/1.2);});};
+  document.getElementById('suxc-zfit').onclick=function(){smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});};
+
+  function typing(t){return t&&(t.tagName==='TEXTAREA'||t.tagName==='INPUT'||t.isContentEditable);}
+  document.addEventListener('keydown',function(ev){
+    if(ev.key==='Escape'){
+      if(!FLOW&&navOpen){hideNav();return;}
+      var pop=document.querySelector('.suxc-pop');
+      if(pop){pop.remove();clearRects();return;}
+      if(on){setOn(false);return;}
+      setPanel(false);return;}
+    if(FLOW&&(ev.ctrlKey||ev.metaKey)){
+      var z=ev.key;
+      if(z==='='||z==='+'){ev.preventDefault();smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s*1.2);});}
+      else if(z==='-'||z==='_'){ev.preventDefault();smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s/1.2);});}
+      else if(z==='0'){ev.preventDefault();smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});}
+      return;}
+    if(typing(ev.target))return;
+    if(FLOW&&(ev.code==='Space'||ev.key===' ')){spaceDown=true;ev.preventDefault();return;}
+    if(ev.ctrlKey||ev.metaKey||ev.altKey)return; // biarkan browser handle (Cmd+S, Cmd+C, dll)
+    var k=ev.key.toLowerCase();
+    if(k==='c'){ev.preventDefault();setOn(!on);}
+    else if(k==='l'){ev.preventDefault();setPanel(panel.classList.contains('closed'));}
+    else if(k==='s'){ev.preventDefault();doSubmit();}
+    else if(k==='a'){ev.preventDefault();approveSubmitted();}
+    else if(k==='g'){ev.preventDefault();doFigma();}
+    else if(FLOW&&k==='0'){ev.preventDefault();smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});}});
+  document.addEventListener('keyup',function(ev){if(ev.code==='Space'||ev.key===' ')spaceDown=false;});
+
+  function doSubmit(){
+    var active=data.filter(function(c){return !c.resolved;});
+    if(!active.length){toast('Belum ada komen aktif');return;}
+    var file=location.pathname.split('/').pop()||'flow';
+    var d=new Date(),pad=function(n){return n<10?'0'+n:n;};
+    var batchId=d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'-'+pad(d.getHours())+pad(d.getMinutes());
+    var head='Revisi dari user di '+file+' (kerjakan sesuai lokasi tiap poin):\n'+
+             'Batch: '+batchId+' ('+active.length+' komen)\n\n';
+    var body=active.map(function(c,i){
+      var loc=c.ctx||(c.fixedSel?('area sekitar x'+Math.round(c.fx)+' y'+Math.round(c.fy)):
+                     c.scrollSel?('area sekitar x'+Math.round(c.sx)+' y'+Math.round(c.sy)):
+                     ('area sekitar x'+Math.round(c.x)+' y'+Math.round(c.y)));
+      var layer=c.fixedSel?(' [layer: '+c.fixedSel+']'):(c.scrollSel?(' [scroll: '+c.scrollSel+']'):'');
+      return (i+1)+'. '+(c.text||'(kosong)')+'\n   ↳ lokasi: '+loc+layer;}).join('\n\n');
+    var foot='\n\n---\nSetelah selesai semua, kasih tau user: "Done batch '+batchId+'. Cek hasil dan klik Approve di overlay buat resolve semua pin submitted."';
+    var t=head+body+foot;
+    function markSubmitted(){active.forEach(function(c){c.submitted=true;c.batchId=batchId;});save();render();}
+    navigator.clipboard.writeText(t).then(function(){markSubmitted();toast(active.length+' komen tersalin ✔ marked submitted');},
+      function(){prompt('Copy komen ini, paste ke chat:',t);markSubmitted();});}
+  function approveSubmitted(){
+    var sub=data.filter(function(c){return c.submitted&&!c.resolved;});
+    if(!sub.length){toast('Nggak ada pin submitted');return;}
+    if(!confirm('Approve & resolve '+sub.length+' pin submitted?'))return;
+    sub.forEach(function(c){c.resolved=true;c.submitted=false;logEvent(c,'resolve');});
+    save();render();toast(sub.length+' pin resolved ✓');}
+  function unsubmit(c){c.submitted=false;delete c.batchId;save();render();toast('Pin dikembalikan ke draft');}
+  document.getElementById('suxc-submit').onclick=doSubmit;
+  var _apBtn=document.getElementById('suxc-approve');if(_apBtn)_apBtn.onclick=approveSubmitted;
+
+  // ── GENERATE FIGMA ──
+  function extractTree(rootEl){
+    function dirText(el){var t='';for(var i=0;i<el.childNodes.length;i++){var n=el.childNodes[i];if(n.nodeType===3){var s=n.textContent.trim();if(s)t+=(t?' ':'')+s;}}return t;}
+    function st(cs){return{backgroundColor:cs.backgroundColor,backgroundImage:cs.backgroundImage,borderTopLeftRadius:parseFloat(cs.borderTopLeftRadius)||0,borderTopRightRadius:parseFloat(cs.borderTopRightRadius)||0,borderBottomRightRadius:parseFloat(cs.borderBottomRightRadius)||0,borderBottomLeftRadius:parseFloat(cs.borderBottomLeftRadius)||0,borderTopWidth:parseFloat(cs.borderTopWidth)||0,borderRightWidth:parseFloat(cs.borderRightWidth)||0,borderBottomWidth:parseFloat(cs.borderBottomWidth)||0,borderLeftWidth:parseFloat(cs.borderLeftWidth)||0,borderTopColor:cs.borderTopColor,borderRightColor:cs.borderRightColor,borderBottomColor:cs.borderBottomColor,borderLeftColor:cs.borderLeftColor,boxShadow:cs.boxShadow,opacity:parseFloat(cs.opacity),overflow:cs.overflow};}
+    function ts(cs){return{fontFamily:cs.fontFamily.split(',')[0].replace(/['"]/g,'').trim(),fontSize:parseFloat(cs.fontSize),fontWeight:parseInt(cs.fontWeight),color:cs.color,lineHeight:cs.lineHeight==='normal'?Math.round(parseFloat(cs.fontSize)*1.4):parseFloat(cs.lineHeight),textAlign:cs.textAlign,letterSpacing:cs.letterSpacing==='normal'?0:parseFloat(cs.letterSpacing)};}
+    function lay(cs){var d=cs.display||'';if(d.indexOf('flex')<0)return null;return{display:'flex',flexDirection:cs.flexDirection||'row',flexWrap:cs.flexWrap||'nowrap',justifyContent:cs.justifyContent||'flex-start',alignItems:cs.alignItems||'stretch',rowGap:parseFloat(cs.rowGap)||0,columnGap:parseFloat(cs.columnGap)||0,pt:parseFloat(cs.paddingTop)||0,pr:parseFloat(cs.paddingRight)||0,pb:parseFloat(cs.paddingBottom)||0,pl:parseFloat(cs.paddingLeft)||0};}
+    function skip(el){var id=el.id||'';if(id.indexOf('suxc-')===0)return true;if(el.classList){for(var _i=0;_i<el.classList.length;_i++){if(el.classList[_i].indexOf('suxc-')===0)return true;}}return false;}
+    function ex(el,pr,pe){
+      if(skip(el))return null;
+      var r=el.getBoundingClientRect();if(r.width<=0||r.height<=0)return null;
+      var cs=getComputedStyle(el);if(cs.display==='none'||cs.visibility==='hidden')return null;
+      var tag=el.tagName.toLowerCase(),cn=el.classList.length>0?el.classList[0]:'',id=el.id||'';
+      var nm=id||cn||tag,pos=cs.position;
+      var sl=pe?pe.scrollLeft:0,st2=pe?pe.scrollTop:0,px=pr?pr.left:0,py=pr?pr.top:0;
+      var x=r.left-px+sl,y=r.top-py+st2,w=r.width,h=r.height;
+      if(tag==='svg')return{type:'SVG',name:cn||'svg',x:x,y:y,width:w,height:h,pos:pos,svg:el.outerHTML};
+      if(tag==='img'){var du=null;try{var cv=document.createElement('canvas');cv.width=el.naturalWidth||w;cv.height=el.naturalHeight||h;cv.getContext('2d').drawImage(el,0,0);du=cv.toDataURL('image/png');}catch(e){}return{type:'IMAGE',name:el.alt||'image',x:x,y:y,width:w,height:h,pos:pos,src:el.src,dataUrl:du};}
+      var hasKids=el.children.length>0,dt=dirText(el);
+      if(!hasKids&&dt){var pl=parseFloat(cs.paddingLeft)||0,pt=parseFloat(cs.paddingTop)||0,prr=parseFloat(cs.paddingRight)||0,pb=parseFloat(cs.paddingBottom)||0;
+        var hasPad=pl>0||pt>0||prr>0||pb>0,hasBg=cs.backgroundColor!=='rgba(0, 0, 0, 0)'&&cs.backgroundColor!=='transparent';
+        if(hasPad||hasBg)return{type:'FRAME',name:nm,x:x,y:y,width:w,height:h,pos:pos,styles:st(cs),children:[{type:'TEXT',name:dt.slice(0,40),text:dt,x:pl,y:pt,width:Math.max(1,w-pl-prr),height:Math.max(1,h-pt-pb),textStyles:ts(cs)}]};
+        return{type:'TEXT',name:dt.slice(0,40),text:dt,x:x,y:y,width:w,height:h,pos:pos,styles:st(cs),textStyles:ts(cs)};}
+      var node={type:'FRAME',name:nm,x:x,y:y,width:w,height:h,pos:pos,styles:st(cs),layout:lay(cs),children:[]};
+      for(var i=0;i<el.childNodes.length;i++){var ch=el.childNodes[i];
+        if(ch.nodeType===1){var cl=ex(ch,r,el);if(cl)node.children.push(cl);}
+        else if(ch.nodeType===3&&ch.textContent.trim()){var rg=document.createRange();rg.selectNodeContents(ch);var tr=rg.getBoundingClientRect();
+          if(tr.width>0&&tr.height>0)node.children.push({type:'TEXT',name:ch.textContent.trim().slice(0,40),text:ch.textContent.trim(),x:tr.left-r.left,y:tr.top-r.top,width:tr.width,height:tr.height,textStyles:ts(cs)});}}
+      return node;}
+    return ex(rootEl,null,null);}
+  function topScreens(){var all=[].slice.call(document.querySelectorAll('[data-screen]'));return all.filter(function(e){return !e.parentElement||!e.parentElement.closest('[data-screen]');});}
+  function buildFigmaPayload(){
+    var screens=topScreens();
+    if(screens.length>=2){
+      var names=screens.map(function(e){return e.getAttribute('data-screen')||'screen';});
+      var trees=[],edges=[],hasExplicit=false;
+      screens.forEach(function(e,i){var t=extractTree(e);if(t){t.name=names[i];trees.push({name:names[i],tree:t});}
+        var nx=e.getAttribute('data-flow-next');
+        if(nx){hasExplicit=true;nx.split(',').forEach(function(to){to=to.trim();if(to)edges.push({from:names[i],to:to,label:e.getAttribute('data-flow-label')||''});});}});
+      if(!hasExplicit)for(var i=0;i<trees.length-1;i++)edges.push({from:trees[i].name,to:trees[i+1].name,label:''});
+      return{type:'FLOW',name:(location.pathname.split('/').pop()||'flow').replace(/\.html?$/i,''),screens:trees,edges:edges};}
+    var root=document.querySelector('.app-layout')||(stage&&stage.firstElementChild)||document.body;
+    return extractTree(root);}
+  function doFigma(){
+    var chrome=[];
+    ['suxc-nav','suxc-panel','suxc-zoom','suxc-toast','suxc-fab'].forEach(function(id){var e=document.getElementById(id);if(e)chrome.push(e);});
+    [].forEach.call(document.querySelectorAll('.suxc-pin,.suxc-rect,.suxc-pop'),function(e){chrome.push(e);});
+    var prev=chrome.map(function(e){return e.style.display;});
+    chrome.forEach(function(e){e.style.display='none';});
+    var hadOn=document.body.classList.contains('suxc-on');if(hadOn)document.body.classList.remove('suxc-on');
+    function restore(){chrome.forEach(function(e,i){e.style.display=prev[i];});if(hadOn)document.body.classList.add('suxc-on');}
+    var pT,pTs;
+    if(FLOW){pT=stage.style.transform;pTs=stage.style.transition;stage.style.transition='none';stage.style.transform='none';void stage.offsetWidth;}
+    var stickyOverrides=[];[].forEach.call(document.querySelectorAll('*'),function(el){var p=getComputedStyle(el).position;if(p==='sticky'||p==='-webkit-sticky'){stickyOverrides.push([el,el.style.position]);el.style.position='relative';}});
+    var screenReveal=[];[].forEach.call(document.querySelectorAll('[data-screen]'),function(el){var cs=getComputedStyle(el);if(cs.display==='none'){screenReveal.push([el,el.style.display,'d']);el.style.display=el.getAttribute('data-screen-display')||'flex';}else if(cs.visibility==='hidden'){screenReveal.push([el,el.style.visibility,'v']);el.style.visibility='visible';}});
+    if(screenReveal.length)void document.body.offsetWidth;
+    var payload;try{payload=buildFigmaPayload();}catch(e){payload=null;}
+    screenReveal.forEach(function(item){if(item[2]==='d')item[0].style.display=item[1];else item[0].style.visibility=item[1];});
+    stickyOverrides.forEach(function(item){item[0].style.position=item[1];});
+    if(FLOW){stage.style.transform=pT;stage.style.transition=pTs;}
+    if(!payload){restore();toast('Gagal ekstrak — konten kosong');return;}
+    function cnt(n){if(!n)return 0;var c=1;(n.children||[]).forEach(function(k){c+=cnt(k);});return c;}
+    var total,extra;
+    if(payload.type==='FLOW'){total=payload.screens.reduce(function(a,s){return a+cnt(s.tree);},0);extra=payload.screens.length+' screen + '+payload.edges.length+' panah';}
+    else{total=cnt(payload);extra='1 screen';}
+    var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var name=(location.pathname.split('/').pop()||'ui').replace(/\.html?$/i,'')+'.figma.json';
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
+    document.body.appendChild(a);a.click();a.remove();
+    restore();toast(total+' layer · '+extra+' → '+name+' · overlay balik ✓');}
+  window.suxcGenerateFigma=doFigma;
+  var _fSrc=document.body.getAttribute('data-figma-src');
+  if(_fSrc){document.getElementById('suxc-figma').onclick=function(){window.open(_fSrc,'_blank');};}
+  else{document.getElementById('suxc-figma').onclick=doFigma;}
+
+  // ── FAB (prototype) ──
+  var navOpen=false;
+  function placeNav(){
+    nav.classList.add('suxc-asmenu');nav.style.display='flex';nav.style.left='-9999px';nav.style.top='0px';
+    var nw=nav.offsetWidth,nh=nav.offsetHeight,fr=fab.getBoundingClientRect();
+    var L=fr.right-nw;if(L<8)L=8;if(L+nw>window.innerWidth-8)L=window.innerWidth-8-nw;
+    var Tp=fr.top-nh-12;if(Tp<8)Tp=fr.bottom+12;if(Tp+nh>window.innerHeight-8)Tp=Math.max(8,window.innerHeight-8-nh);
+    nav.style.left=L+'px';nav.style.top=Tp+'px';}
+  function showNav(){placeNav();navOpen=true;}
+  function hideNav(){nav.style.display='none';navOpen=false;}
+  function setupFab(){
+    var zoomEl=document.getElementById('suxc-zoom');if(zoomEl)zoomEl.style.display='none';
+    nav.style.display='none';fab.classList.add('show');
+    try{var fp=JSON.parse(localStorage.getItem('suxc:fab')||'null');}catch(e){fp=null;}
+    if(fp&&typeof fp.l==='number'){fab.style.left=fp.l+'px';fab.style.top=fp.t+'px';fab.style.right='auto';fab.style.bottom='auto';}
+    fab.addEventListener('mousedown',function(ev){
+      if(ev.button!==0)return;ev.preventDefault();
+      var sx=ev.clientX,sy=ev.clientY,fr=fab.getBoundingClientRect(),ox=ev.clientX-fr.left,oy=ev.clientY-fr.top,moved=false;
+      function mm(e){if(!moved&&Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4){moved=true;fab.classList.add('drag');}
+        if(moved){var l=Math.min(Math.max(4,e.clientX-ox),window.innerWidth-fab.offsetWidth-4);var t=Math.min(Math.max(4,e.clientY-oy),window.innerHeight-fab.offsetHeight-4);fab.style.left=l+'px';fab.style.top=t+'px';fab.style.right='auto';fab.style.bottom='auto';if(navOpen)placeNav();}}
+      function mu(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);fab.classList.remove('drag');
+        if(moved){var f2=fab.getBoundingClientRect();try{localStorage.setItem('suxc:fab',JSON.stringify({l:Math.round(f2.left),t:Math.round(f2.top)}));}catch(e){}}
+        else{navOpen?hideNav():showNav();}}
+      document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+    nav.addEventListener('click',function(ev){if(ev.target.closest&&ev.target.closest('button'))setTimeout(hideNav,0);});
+    document.addEventListener('mousedown',function(ev){if(navOpen&&ev.target.closest&&!ev.target.closest('#suxc-nav')&&!ev.target.closest('#suxc-fab'))hideNav();},true);}
+  function initStates(){
+    [].forEach.call(document.querySelectorAll('[data-states]'),function(container,idx){
+      var states=[].slice.call(container.querySelectorAll(':scope>[data-state]'));
+      if(!states.length)return;
+      if(getComputedStyle(container).position==='static')container.style.position='relative';
+      var cur=0;
+      states.forEach(function(s,i){if(s.getAttribute('data-state')==='default')cur=i;});
+      // widget
+      var widget=document.createElement('div');widget.className='suxc-sw';
+      var pill=document.createElement('div');pill.className='suxc-sw-pill';
+      var dot=document.createElement('span');dot.className='suxc-sw-dot';
+      var lbl=document.createElement('span');
+      pill.appendChild(dot);pill.appendChild(lbl);
+      var pop=document.createElement('div');pop.className='suxc-sw-pop';
+      var head=document.createElement('div');head.className='suxc-sw-head';head.textContent='Pilih State';
+      pop.appendChild(head);
+      widget.appendChild(pill);widget.appendChild(pop);
+      document.body.appendChild(widget);
+      // restore or set initial position
+      (function(){var key='suxc:sw:'+idx;var saved=null;try{saved=JSON.parse(localStorage.getItem(key)||'null');}catch(e){}
+        if(saved&&typeof saved.l==='number'){widget.style.left=saved.l+'px';widget.style.top=saved.t+'px';}
+        else{requestAnimationFrame(function(){widget.style.left='24px';widget.style.top=Math.max(8,window.innerHeight-widget.offsetHeight-24)+'px';});}})();
+      var popOpen=false;
+      function activate(idx){
+        states.forEach(function(s,i){s.style.display=i===idx?'':'none';});
+        cur=idx;
+        var name=states[idx].getAttribute('data-state');
+        var isDefault=(name==='default'||idx===0&&name!=='default'&&!states.some(function(s){return s.getAttribute('data-state')==='default';}));
+        if(name==='default'){lbl.textContent='State';dot.classList.remove('on');}
+        else{lbl.textContent=name.charAt(0).toUpperCase()+name.slice(1)+' Active';dot.classList.add('on');}
+        // update items
+        [].forEach.call(pop.querySelectorAll('.suxc-sw-item'),function(el,i){
+          el.classList.toggle('active',i===idx);});}
+      function buildPop(){
+        var old=[].slice.call(pop.querySelectorAll('.suxc-sw-item'));
+        old.forEach(function(el){el.parentNode.removeChild(el);});
+        states.forEach(function(s,i){
+          var name=s.getAttribute('data-state');
+          var item=document.createElement('div');item.className='suxc-sw-item'+(i===cur?' active':'');
+          var nm=document.createElement('span');nm.textContent=name.charAt(0).toUpperCase()+name.slice(1);
+          var ck=document.createElement('span');ck.className='suxc-sw-check';ck.textContent='✓';
+          item.appendChild(nm);item.appendChild(ck);
+          item.addEventListener('mousedown',function(e){e.stopPropagation();});
+          item.addEventListener('click',function(e){e.stopPropagation();activate(i);closePop();});
+          pop.appendChild(item);});}
+      function openPop(){buildPop();pop.classList.add('open');popOpen=true;
+        var pr=pop.getBoundingClientRect();
+        if(pr.bottom>window.innerHeight-8){pop.style.top='auto';pop.style.bottom='calc(100% + 7px)';}
+        else{pop.style.top='calc(100% + 7px)';pop.style.bottom='auto';}}
+      function closePop(){pop.classList.remove('open');popOpen=false;}
+      // drag + click on pill
+      pill.addEventListener('mousedown',function(e){
+        if(e.button!==0)return;e.preventDefault();
+        var wr=widget.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,ox=e.clientX-wr.left,oy=e.clientY-wr.top,moved=false;
+        function mm(e){if(!moved&&Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4){moved=true;pill.classList.add('drag');}
+          if(moved){widget.style.left=Math.max(0,Math.min(e.clientX-ox,window.innerWidth-widget.offsetWidth))+'px';widget.style.top=Math.max(0,Math.min(e.clientY-oy,window.innerHeight-widget.offsetHeight))+'px';}}
+        function mu(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);pill.classList.remove('drag');
+          if(moved){try{localStorage.setItem('suxc:sw:'+idx,JSON.stringify({l:Math.round(parseFloat(widget.style.left)),t:Math.round(parseFloat(widget.style.top))}));}catch(e){}}
+          else{popOpen?closePop():openPop();}}
+        document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+      document.addEventListener('mousedown',function(e){if(popOpen&&!widget.contains(e.target))closePop();},true);
+      activate(cur);});}
+  if(!FLOW){setupFab();initStates();}
+  applyT();render();
+  // Re-render fixed-layer pins when modal/popup visibility changes
+  try{var _mo=new MutationObserver(function(){
+    if(!data.some(function(c){return c.fixedSel;}))return;
+    if(_mo._rt)return;_mo._rt=setTimeout(function(){_mo._rt=null;render();},80);});
+    _mo.observe(document.body,{attributes:true,subtree:true,attributeFilter:['class','style']});}catch(e){}
+})();
+</script>
+
+
+</body>
+</html>
