@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practical UI — Review Interaktif</title>
+<style>
+:root {
+  --navy:#133f5d; --brand:#4199d5; --brand-light:#e8f4fd; --brand-15:rgba(65,153,213,.15);
+  --muted:#6b7280; --text:#2a3038; --bg:#f8fafc; --white:#fff; --border:#e2e8f0;
+  --red:#dc2626; --red-light:#fee2e2; --green:#16a34a; --green-light:#dcfce7;
+  --yellow:#d97706; --yellow-light:#fef3c7;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+/* ── Layout ── */
+.sidebar{width:260px;background:var(--navy);color:#fff;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;padding:24px 0;z-index:100}
+.main{margin-left:260px;padding-bottom:100px}
+
+/* ── Sidebar ── */
+.sb-head{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:16px}
+.sb-badge{background:var(--brand);color:#fff;font-size:11px;font-weight:700;padding:2px 10px;border-radius:99px;letter-spacing:.5px;display:inline-block;margin-bottom:8px}
+.sb-title{font-size:15px;font-weight:700;color:#fff;line-height:1.3}
+.sb-author{font-size:12px;color:rgba(255,255,255,.55);margin-top:4px}
+.sb-progress{padding:12px 20px 8px}
+.pb-label{font-size:11px;color:rgba(255,255,255,.55);display:flex;justify-content:space-between;margin-bottom:6px}
+.pb-label span{color:rgba(255,255,255,.9);font-weight:700}
+.pb-wrap{background:rgba(255,255,255,.15);height:6px;border-radius:99px;overflow:hidden}
+.pb-fill{background:#b2ed7f;height:100%;border-radius:99px;transition:width .4s ease;width:0%}
+.sb-nav{padding:0 12px}
+.nav-sec{font-size:10px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1px;padding:8px 8px 4px;margin-top:8px}
+.nav-a{display:flex;align-items:center;gap:8px;padding:8px;border-radius:6px;text-decoration:none;color:rgba(255,255,255,.7);font-size:13px;transition:all .15s;cursor:pointer}
+.nav-a:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+.nav-dot.done{background:#b2ed7f}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,#f0f7ff,#e8f4fd 60%,#dbeafe);padding:64px 64px 52px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero-inner{display:flex;align-items:center;gap:48px;max-width:960px}
+.hero-text{flex:1}
+.hero-pre{font-size:12px;font-weight:700;color:var(--brand);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+.hero-title{font-size:64px;font-weight:800;color:var(--navy);line-height:1.05;margin-bottom:6px}
+.hero-sub{font-size:22px;font-weight:500;color:var(--brand);margin-bottom:10px}
+.hero-meta{font-size:14px;color:var(--muted);margin-bottom:28px}
+.hero-chips{display:flex;gap:8px;flex-wrap:wrap}
+.hero-chip{background:rgba(65,153,213,.12);color:var(--navy);font-size:13px;font-weight:500;padding:5px 14px;border-radius:99px;border:1px solid rgba(65,153,213,.25)}
+.hero-visual{flex-shrink:0;width:220px;display:flex;flex-direction:column;gap:10px}
+.ui-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.07),0 3px 8px rgba(0,0,0,.05)}
+.ui-card-lbl{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.ui-card-input{border:1px solid #d1d5db;border-radius:4px;padding:7px 10px;font-size:13px;color:var(--text);width:100%}
+.ui-card-btn{background:var(--brand);color:#fff;border:none;border-radius:6px;padding:9px 14px;font-size:13px;font-weight:600;width:100%;margin-top:8px}
+.swatch-row{display:flex;gap:3px}
+.sw{flex:1;height:18px;border-radius:3px}
+
+/* ── Outline nav ── */
+.outline{background:#fff;border-bottom:1px solid var(--border);padding:0 64px;display:flex;overflow-x:auto}
+.ol-chip{font-size:13px;font-weight:500;color:var(--muted);padding:14px 18px;border-bottom:2px solid transparent;white-space:nowrap;text-decoration:none;transition:all .15s}
+.ol-chip:hover{color:var(--brand);border-bottom-color:var(--brand-light)}
+.ol-letter{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--brand-light);color:var(--brand);font-weight:700;font-size:11px;margin-right:6px}
+
+/* ── Section ── */
+.sec{padding:52px 64px;border-bottom:1px solid var(--border)}
+.sec-head{display:flex;align-items:center;gap:16px;margin-bottom:32px}
+.sec-badge{width:48px;height:48px;border-radius:50%;background:var(--brand);color:#fff;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-badge.yellow{background:#d97706}
+.sec-badge.green{background:var(--green)}
+.sec-ttl h2{font-size:24px;font-weight:700;color:var(--navy)}
+.sec-ttl p{font-size:14px;color:var(--muted);margin-top:2px}
+
+/* ── Body text ── */
+.body{font-size:16px;line-height:1.8;color:var(--text);max-width:720px;margin-bottom:20px}
+.body b{color:var(--navy)}
+
+/* ── Pillar diagram ── */
+.pillar-row{display:flex;gap:16px;margin:28px 0;max-width:760px}
+.pillar{flex:1;background:#fff;border:2px solid var(--border);border-radius:12px;padding:24px;text-align:center;transition:all .2s}
+.pillar:hover{border-color:var(--brand);box-shadow:0 4px 12px var(--brand-15)}
+.p-icon{font-size:36px;display:block;margin-bottom:10px}
+.p-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.p-sub{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* ── Insights ── */
+.insight{display:flex;gap:18px;padding:24px 0;border-bottom:1px solid var(--border);max-width:800px}
+.insight:last-child{border-bottom:none}
+.i-num{width:34px;height:34px;border-radius:50%;background:var(--brand-15);color:var(--brand);font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.i-body{flex:1}
+.i-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.i-text{font-size:15px;line-height:1.75;color:var(--text);margin-bottom:12px}
+.i-example{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--muted);line-height:1.6}
+.i-example strong{color:var(--text)}
+
+/* ── Visual blocks ── */
+.vblock{background:#fff;border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin:18px 0;max-width:800px}
+.vblock-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+.cmp{border-radius:10px;padding:18px;border:1px solid}
+.cmp.bad{background:#fff5f5;border-color:#fca5a5}
+.cmp.good{background:#f0fdf4;border-color:#86efac}
+.cmp-lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.cmp.bad .cmp-lbl{color:#dc2626}
+.cmp.good .cmp-lbl{color:#16a34a}
+
+/* btn demos */
+.btn-demo-row{display:flex;gap:12px;align-items:center;padding:16px;background:#f8fafc;border-radius:8px;flex-wrap:wrap}
+.bd-wrap{text-align:center}
+.bd-lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px}
+.bd-sub{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4}
+.mock-primary{background:var(--brand);color:#fff;border:none;border-radius:6px;padding:9px 18px;font-size:13px;font-weight:600}
+.mock-secondary{background:#fff;color:var(--brand);border:1.5px solid var(--brand);border-radius:6px;padding:8px 18px;font-size:13px;font-weight:600}
+.mock-tertiary{background:none;color:var(--brand);border:none;padding:9px 18px;font-size:13px;font-weight:500;text-decoration:underline}
+
+/* form demo */
+.form-demo{border-radius:8px;padding:16px;margin:4px 0}
+.form-demo.bad{background:#fff5f5}
+.form-demo.good{background:#f0fdf4}
+.fd-row{display:flex;gap:10px;margin-bottom:10px}
+.fd-field{display:flex;flex-direction:column;gap:3px;flex:1}
+.fd-field.short{max-width:110px}
+.fd-field.med{max-width:180px}
+.fd-lbl{font-size:11px;font-weight:600;color:#4b5563}
+.fd-input{border:1px solid #d1d5db;border-radius:4px;padding:5px 8px;font-size:12px;background:#fff}
+.fd-zig{font-size:12px;color:#dc2626;margin-top:4px}
+.fd-arrow{font-size:12px;color:#16a34a;margin-top:4px}
+
+/* friction ladder */
+.fl{display:flex;flex-direction:column;max-width:580px}
+.fl-tier{display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1px solid var(--border);border-bottom:none}
+.fl-tier:first-child{border-radius:8px 8px 0 0}
+.fl-tier:last-child{border-radius:0 0 8px 8px;border-bottom:1px solid var(--border)}
+.fl-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.fl-body{flex:1}
+.fl-name{font-size:13px;font-weight:600;color:var(--navy)}
+.fl-desc{font-size:12px;color:var(--muted)}
+.fl-alt{margin-top:10px;background:var(--green-light);border:1px solid #86efac;border-radius:8px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.fl-alt-icon{font-size:20px;flex-shrink:0}
+.fl-alt-lbl{font-size:13px;font-weight:700;color:var(--green)}
+.fl-alt-desc{font-size:12px;color:#166534;margin-top:2px}
+
+/* grouping methods */
+.gm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gm{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px}
+.gm-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.gm-desc{font-size:11px;color:var(--muted);margin-top:6px}
+.lv-row{display:flex;gap:8px;padding:2px 0;font-size:12px}
+.lv-l{color:var(--muted);width:90px;flex-shrink:0}
+.lv-v{color:var(--navy);font-weight:500}
+.gm-container{border:1px solid #d1d5db;border-radius:4px;padding:8px}
+.gm-proximity{display:flex;flex-direction:column;gap:3px}
+.gm-similarity .lv-l{font-size:10px;font-weight:700;text-transform:uppercase;color:#6b7280}
+.gm-continuity{padding-left:8px;border-left:3px solid var(--border)}
+
+/* palette */
+.palette{display:flex;gap:4px;margin:12px 0}
+.pal-sw{flex:1;height:52px;border-radius:6px;display:flex;flex-direction:column;justify-content:flex-end;padding:4px 6px}
+.pal-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.8)}
+.pal-use{font-size:9px;color:rgba(255,255,255,.6)}
+
+/* type scale */
+.ts-demo{padding:20px;background:#f8fafc;border-radius:8px;display:flex;flex-direction:column;gap:6px}
+.ts-row{display:flex;align-items:baseline;gap:12px}
+.ts-tag{font-size:10px;font-weight:600;color:var(--muted);width:130px;flex-shrink:0}
+
+/* anatomy */
+.anatomy{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px;max-width:380px}
+.an-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.an-req{color:var(--red)}
+.an-hint{font-size:12px;color:var(--muted);margin-bottom:6px}
+.an-input{border:1px solid #d1d5db;border-radius:4px;padding:8px 12px;font-size:14px;width:100%;background:#fff}
+.an-tag{font-size:11px;font-weight:600;background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:4px}
+.an-annot{display:flex;flex-direction:column;gap:4px;margin-top:12px;padding:10px;background:#f0fdf4;border-radius:6px}
+.an-annot span{font-size:12px;color:#166534}
+
+/* line length */
+.ll-demo{display:flex;flex-direction:column;gap:14px;max-width:700px}
+.ll-item{display:flex;gap:12px;align-items:flex-start}
+.ll-lbl{font-size:11px;font-weight:700;flex-shrink:0;width:120px;padding-top:2px}
+.ll-item.bad .ll-lbl{color:#dc2626}
+.ll-item.ok .ll-lbl{color:#16a34a}
+.ll-item.long .ll-lbl{color:#d97706}
+.ll-text{font-size:14px;line-height:1.7;color:var(--text);background:#fff;border:1px solid var(--border);padding:10px 14px;border-radius:6px}
+
+/* ── Quotes ── */
+.q-poster{background:#fff;border:1px solid var(--border);border-radius:16px;padding:44px 52px;margin:24px 0;max-width:720px;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.q-poster::before{content:'"';position:absolute;top:-30px;left:20px;font-size:180px;color:var(--brand-light);font-family:Georgia,serif;line-height:1;z-index:0}
+.q-num{font-size:11px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:1px;margin-bottom:18px;position:relative;z-index:1}
+.q-text{font-size:24px;font-weight:700;color:var(--navy);line-height:1.45;margin-bottom:14px;position:relative;z-index:1;font-style:italic}
+.q-src{font-size:13px;color:var(--muted);margin-bottom:20px;position:relative;z-index:1}
+.q-para{border-top:1px solid var(--border);padding-top:18px;font-size:15px;color:var(--text);line-height:1.7;position:relative;z-index:1}
+
+/* ── Chapter cards ── */
+.ch-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:28px;margin:18px 0;max-width:820px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.ch-head{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.ch-num{width:54px;height:54px;border-radius:50%;background:var(--navy);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ch-info-title{font-size:18px;font-weight:700;color:var(--navy)}
+.ch-info-pages{font-size:13px;color:var(--muted);margin-top:2px}
+.ch-body{border-left:3px solid var(--brand);padding-left:20px;font-size:15px;line-height:1.78;color:var(--text);margin-bottom:14px}
+.ch-tldr{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;font-size:13px;color:#92400e}
+.ch-tldr strong{color:#78350f}
+
+/* ── Actionables ── */
+.action-banner{background:var(--navy);border-radius:16px;padding:40px 48px;color:#fff;margin-bottom:28px;max-width:820px}
+.action-banner h2{font-size:28px;font-weight:800;color:#fff;margin-bottom:6px}
+.action-banner p{font-size:15px;color:rgba(255,255,255,.7)}
+.action-cards{display:flex;flex-direction:column;gap:14px;max-width:820px}
+.ac{display:flex;gap:18px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.ac-num{width:54px;height:54px;border-radius:50%;background:var(--brand);color:#fff;font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ac-body{flex:1}
+.ac-title{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.ac-text{font-size:14px;line-height:1.75;color:var(--text)}
+
+/* ── Conflicts ── */
+.conflict-intro{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:20px 24px;margin-bottom:24px;max-width:820px}
+.conflict-intro h3{font-size:16px;font-weight:700;color:#92400e;margin-bottom:4px}
+.conflict-intro p{font-size:14px;color:#a16207}
+.cf{background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px;margin:16px 0;max-width:820px;transition:all .2s}
+.cf.confirmed{border-color:#86efac;background:#f0fdf4}
+.cf.rejected{border-color:#fca5a5;background:#fff5f5}
+.cf-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cf-badge{background:var(--yellow-light);color:var(--yellow);font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px}
+.cf-status{font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px}
+.cf-status.pending{background:#fef3c7;color:#92400e}
+.cf-status.confirmed{background:var(--green-light);color:var(--green)}
+.cf-status.rejected{background:var(--red-light);color:var(--red)}
+.cf-title{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:16px}
+.cf-sides{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.cf-side{border-radius:8px;padding:14px;font-size:13px;line-height:1.6}
+.cf-side.book{background:#eff6ff;border:1px solid #bfdbfe}
+.cf-side.paperid{background:#f0fdf4;border:1px solid #bbf7d0}
+.cf-side-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.cf-side.book .cf-side-lbl{color:#1d4ed8}
+.cf-side.paperid .cf-side-lbl{color:#16a34a}
+.cf-rationale{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.cf-rationale strong{color:var(--text)}
+.cf-actions{display:flex;gap:8px}
+.btn-ok{background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-ok:hover{background:#15803d;transform:translateY(-1px)}
+.btn-reject{background:#fff;color:var(--red);border:1px solid #fca5a5;border-radius:8px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-reject:hover{background:var(--red-light);transform:translateY(-1px)}
+.btn-reset{background:#fff;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer}
+
+/* ── Bottom bar ── */
+.bottom-bar{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid var(--border);padding:14px 64px;display:flex;align-items:center;justify-content:space-between;z-index:90;box-shadow:0 -4px 12px rgba(0,0,0,.06)}
+.bb-left{font-size:14px;color:var(--muted)}
+.bb-left strong{color:var(--text)}
+.btn-lock{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;opacity:.4;pointer-events:none}
+.btn-lock.ready{opacity:1;pointer-events:auto;background:var(--green)}
+.btn-lock.ready:hover{background:#15803d;transform:translateY(-1px);box-shadow:0 4px 12px rgba(22,163,74,.3)}
+.btn-lock.locked{opacity:1;pointer-events:none;background:#9ca3af}
+
+/* utils */
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;margin-right:4px;margin-bottom:4px}
+.tag.blue{background:var(--brand-light);color:var(--brand)}
+.tag.yellow{background:var(--yellow-light);color:var(--yellow)}
+.tag.green{background:var(--green-light);color:var(--green)}
+.tag.red{background:var(--red-light);color:var(--red)}
+.callout{background:var(--brand-light);border-left:4px solid var(--brand);border-radius:0 8px 8px 0;padding:18px 22px;margin:20px 0;max-width:720px}
+.callout p{font-size:15px;color:var(--navy);line-height:1.6}
+.callout strong{font-weight:700}
+.mt16{margin-top:16px}
+.mt24{margin-top:24px}
+.conflict-locked-note{display:none;background:var(--green-light);border:1px solid #86efac;border-radius:8px;padding:16px 20px;margin-top:16px;font-size:14px;color:#166534;max-width:820px}
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<nav class="sidebar">
+  <div class="sb-head">
+    <span class="sb-badge">Buku #2</span>
+    <div class="sb-title">Practical UI</div>
+    <div class="sb-author">Adham Dannaway · 2022 · 282 hal</div>
+  </div>
+  <div class="sb-progress">
+    <div class="pb-label">Konflik direview <span id="pbCount">0/5</span></div>
+    <div class="pb-wrap"><div class="pb-fill" id="pbFill"></div></div>
+  </div>
+  <div class="sb-nav">
+    <div class="nav-sec">Isi Buku</div>
+    <a class="nav-a" href="#thesis"><span class="nav-dot" id="dot-a"></span>A — Thesis</a>
+    <a class="nav-a" href="#insights"><span class="nav-dot" id="dot-b"></span>B — Top 10 Insights</a>
+    <a class="nav-a" href="#quotes"><span class="nav-dot" id="dot-c"></span>C — 5 Money Quotes</a>
+    <a class="nav-a" href="#chapters"><span class="nav-dot" id="dot-d"></span>D — Per Chapter</a>
+    <a class="nav-a" href="#actionables"><span class="nav-dot" id="dot-e"></span>E — 3 Actionables</a>
+    <div class="nav-sec">Review</div>
+    <a class="nav-a" href="#conflicts"><span class="nav-dot" id="dot-f"></span>Konflik Review (5)</a>
+  </div>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-pre">Bacaan Santai · Review Interaktif</div>
+      <div class="hero-title">Practical UI</div>
+      <div class="hero-sub">Bacaan Santai ~18 Menit</div>
+      <div class="hero-meta">by Adham Dannaway · 2022 · ISBN 978-0-6456766-0-0</div>
+      <div class="hero-chips">
+        <span class="hero-chip">📖 ~2700 kata</span>
+        <span class="hero-chip">⏱ 18–20 menit</span>
+        <span class="hero-chip">🎯 B2B finance designer</span>
+        <span class="hero-chip">45 kartu</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="ui-card">
+        <div class="ui-card-lbl">Email Bisnis *</div>
+        <input class="ui-card-input" type="email" placeholder="kontak@perusahaan.com">
+      </div>
+      <div class="ui-card">
+        <div class="ui-card-lbl">Sistem warna</div>
+        <div class="swatch-row">
+          <div class="sw" style="background:#133f5d"></div>
+          <div class="sw" style="background:#1e5f8a"></div>
+          <div class="sw" style="background:#4199d5"></div>
+          <div class="sw" style="background:#a8d4f0"></div>
+          <div class="sw" style="background:#e8f4fd"></div>
+        </div>
+      </div>
+      <div class="ui-card">
+        <button class="ui-card-btn">Simpan invoice</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Outline nav -->
+<nav class="outline">
+  <a class="ol-chip" href="#thesis"><span class="ol-letter">A</span>Thesis</a>
+  <a class="ol-chip" href="#insights"><span class="ol-letter">B</span>Top 10 Insights</a>
+  <a class="ol-chip" href="#quotes"><span class="ol-letter">C</span>5 Quote</a>
+  <a class="ol-chip" href="#chapters"><span class="ol-letter">D</span>Per Chapter</a>
+  <a class="ol-chip" href="#actionables"><span class="ol-letter">E</span>3 Actionables</a>
+  <a class="ol-chip" href="#conflicts"><span class="ol-letter">!</span>Konflik Review</a>
+</nav>
+
+<!-- ══ A — THESIS ══ -->
+<section class="sec" id="thesis">
+  <div class="sec-head">
+    <div class="sec-badge">A</div>
+    <div class="sec-ttl">
+      <h2>Thesis Buku</h2>
+      <p>Kenapa buku ini ditulis — 1 kalimat inti</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p><strong>"UI design itu bukan intuisi magis, tapi sistem rules logical — setiap detail WAJIB ada <em>logical reason</em> di belakangnya yang memenuhi 3 prinsip: minimise usability risks, minimise interaction cost, minimise cognitive load."</strong></p>
+  </div>
+
+  <div class="body">
+    Quote verbatim author: <em>"Most of my UI design decisions are governed by a system of logical rules. Not artistic flair or magical intuition, just simple rules."</em> — hal 11
+  </div>
+
+  <div class="body">
+    Adham Dannaway pengen ngebongkar mitos bahwa UI design itu soal "bakat" atau "selera estetik magis". Hampir semua keputusan desain interface yang bagus itu sebenernya hasil dari sekumpulan aturan logika sederhana yang bisa dipelajari. Setiap detail — ukuran tombol, warna, jarak antar elemen, urutan field di form — harus punya alasan rasional yang bisa diucapkan, bukan sekadar "feel-nya enak".
+  </div>
+
+  <div class="body">
+    Dia ngerangkum 2 dekade pengalamannya jadi <strong>tiga prinsip pengukur</strong>. Kalau lo bisa jawab "kenapa begini" pake tiga ukuran itu — bukan "karena keren" — desain lo udah ngalahin 80% UI di luar sana.
+  </div>
+
+  <div class="pillar-row">
+    <div class="pillar">
+      <span class="p-icon">⚠️</span>
+      <div class="p-title">Usability Risk</div>
+      <div class="p-sub">Ada yang bingung, ga jelas, atau ambigu? Simplify dulu sebelum testing.</div>
+    </div>
+    <div class="pillar">
+      <span class="p-icon">🖱️</span>
+      <div class="p-title">Interaction Cost</div>
+      <div class="p-sub">Jumlah klik, scroll, search, baca yang user harus lakuin. Tiap extra step = real cost.</div>
+    </div>
+    <div class="pillar">
+      <span class="p-icon">🧠</span>
+      <div class="p-title">Cognitive Load</div>
+      <div class="p-sub">Berapa banyak user harus mikir, inget, atau decide simultan. Kurangi beban otak.</div>
+    </div>
+  </div>
+
+  <div class="body">
+    <strong>Kenapa powerful:</strong> Dia ngubah review meeting dari debat selera ("gue ngerasa tombolnya kurang gede") jadi debat objektif ("tombol Save itu primary action — di-squint masih dominant ga? kalau nggak, gedein"). Semua 282 halaman buku konsisten pakai framework ini — dari color sampai copywriting.
+  </div>
+  <div class="body" style="font-size:14px;color:var(--muted)">Catatan: buku ini bukan textbook teoritik. Adham kasih panduan praktis yang "work well in most cases." Treat semua rules sebagai <em>default</em>, bukan dogma.</div>
+</section>
+
+<!-- ══ B — TOP 10 INSIGHTS ══ -->
+<section class="sec" id="insights">
+  <div class="sec-head">
+    <div class="sec-badge">B</div>
+    <div class="sec-ttl">
+      <h2>Top 10 Insights</h2>
+      <p>Urut by impact — yang paling gede duluan</p>
+    </div>
+  </div>
+
+  <!-- Insight 1 -->
+  <div class="insight">
+    <div class="i-num">1</div>
+    <div class="i-body">
+      <div class="i-title">Setiap detail desain harus punya "logical reason" yang bisa diucapkan</div>
+      <div class="i-text">Ini fondasi semua bab. Sebelum lo gedein tombol atau ganti warna border, tanyain ke diri sendiri: <b>"kenapa"</b>. Kalau jawabannya "karena lebih cakep" atau "biar konsisten" tanpa lanjutan, itu bukan rationale — itu opini. Rationale yang sah selalu nyangkut ke: bantu user lihat, kurangin effort, atau kurangin beban otak.</div>
+      <div class="i-example"><strong>Contoh di buku:</strong> Adham nolak feedback "I just feel like the button should be bigger" sebagai non-rationale. Dia minta penanya jawab "lebih gede untuk apa — biar lebih ke-klik di mobile? biar lebih dominant dibanding secondary?" Begitu specific, baru bisa di-decide. (Bab 1, hal 17-18)</div>
+    </div>
+  </div>
+
+  <!-- Insight 2 -->
+  <div class="insight">
+    <div class="i-num">2</div>
+    <div class="i-body">
+      <div class="i-title">Tiga ukuran pengganti "selera": usability risk, interaction cost, cognitive load</div>
+      <div class="i-text">Framework audit yang bisa lo pake ke semua: form, table, modal, sampe copy. Kalau salah satu naik tanpa ada gain di yang lain, desainnya rugi.</div>
+      <div class="i-example"><strong>Contoh:</strong> Text abu-abu muda "biar sleek" — usability risk tinggi (orang lansia atau outdoor ga bisa baca). Form 2 kolom "save space" — mata user zig-zag (interaction cost naik) + harus inget posisi field (cognitive load naik). (Bab 1, hal 15-23)</div>
+    </div>
+  </div>
+
+  <!-- Insight 3 — with squint test visual -->
+  <div class="insight">
+    <div class="i-num">3</div>
+    <div class="i-body">
+      <div class="i-title">"If everything is important, nothing is important"</div>
+      <div class="i-text">Visual hierarchy itu cara user tau mana yang harus dilihat duluan. Lo punya <b>6 tuas</b>: ukuran, warna, kontras, jarak, posisi, kedalaman (shadow). Validate dengan <b>Squint Test</b>: tutup mata sampai 50% atau blur Figma — kalau lo masih bisa nunjuk satu titik fokus utama, hierarchy lo bener.</div>
+
+      <div class="vblock">
+        <div class="vblock-title">Squint Test — Before / After</div>
+        <div class="compare">
+          <div class="cmp bad">
+            <div class="cmp-lbl">❌ Semua sama berat</div>
+            <div class="btn-demo-row" style="flex-wrap:wrap;gap:8px">
+              <button class="mock-primary" style="font-size:12px;padding:7px 12px">Filter</button>
+              <button class="mock-primary" style="font-size:12px;padding:7px 12px">Sort</button>
+              <button class="mock-primary" style="font-size:12px;padding:7px 12px">Export</button>
+              <button class="mock-primary" style="font-size:12px;padding:7px 12px">Buat Invoice</button>
+            </div>
+            <div class="blur-label" style="font-size:11px;color:#dc2626;margin-top:8px">Blur = 4 blob biru sama besar. Ga ada focal point.</div>
+          </div>
+          <div class="cmp good">
+            <div class="cmp-lbl">✅ 1 anchor dominant</div>
+            <div style="display:flex;align-items:center;gap:8px;padding:12px;background:#f0fdf4;border-radius:6px;flex-wrap:wrap">
+              <button class="mock-tertiary" style="font-size:12px">Filter</button>
+              <button class="mock-tertiary" style="font-size:12px">Sort</button>
+              <button class="mock-tertiary" style="font-size:12px">Export</button>
+              <button class="mock-primary" style="font-size:12px;padding:7px 12px">Buat Invoice</button>
+            </div>
+            <div class="blur-label" style="font-size:11px;color:#16a34a;margin-top:8px">Blur = 1 blob biru dominant. Sisanya samar.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="i-example"><strong>Contoh:</strong> Page punya 4 tombol pill biru sama berat ("Filter", "Sort", "Export", "Buat Invoice") — squint test kasih 4 titik dominant, user bingung. Fix: cuma "Buat Invoice" yang primary pill, sisanya text link. (Bab 4 + Bab 8, hal 120 & 259)</div>
+    </div>
+  </div>
+
+  <!-- Insight 4 — 3-tier buttons -->
+  <div class="insight">
+    <div class="i-num">4</div>
+    <div class="i-body">
+      <div class="i-title">Satu primary button per halaman. Maksimal.</div>
+      <div class="i-text">Primary button (filled, warna brand) itu <b>anchor visual</b> — dia jadi titik fokus karena LANGKA. Begitu lo pasang 2-3 primary di satu page, dominance-nya hilang. Untuk action lain: secondary (border only) untuk equal-weight, tertiary (text link) untuk paling rendah atau destructive.</div>
+
+      <div class="vblock">
+        <div class="vblock-title">3-Tier Button System</div>
+        <div class="btn-demo-row">
+          <div class="bd-wrap">
+            <div class="bd-lbl">Primary</div>
+            <button class="mock-primary">Simpan invoice</button>
+            <div class="bd-sub">1 per page MAX<br>Filled brand color</div>
+          </div>
+          <div class="bd-wrap">
+            <div class="bd-lbl">Secondary</div>
+            <button class="mock-secondary">Simpan &amp; buat baru</button>
+            <div class="bd-sub">Equal-weight actions<br>Border only</div>
+          </div>
+          <div class="bd-wrap">
+            <div class="bd-lbl">Tertiary</div>
+            <button class="mock-tertiary">Batal</button>
+            <div class="bd-sub">Least important<br>Text + underline</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-size:12px;color:var(--muted)">💡 Hierarchy ga boleh cuma andalan warna — filled vs border vs text tetap beda dalam grayscale.</div>
+      </div>
+
+      <div class="i-example"><strong>Contoh:</strong> Form Tambah Mitra: "Simpan" primary, "Simpan & Tambah Lagi" secondary (border), "Batal" tertiary (text link). (Bab 8, hal 258)</div>
+    </div>
+  </div>
+
+  <!-- Insight 5 — form layout -->
+  <div class="insight">
+    <div class="i-num">5</div>
+    <div class="i-body">
+      <div class="i-title">Form WAJIB single column, label di atas input</div>
+      <div class="i-text">Mata orang baca ke bawah, bukan zigzag. Single column = momentum jelas dari atas ke bawah. Label di atas input — karena begitu user fokus ngetik, label di samping ke-cover keyboard mobile. <b>Field width match expected input</b> (kode pos ga perlu selebar nama panjang).</div>
+
+      <div class="vblock">
+        <div class="vblock-title">Single Column vs Multi Column</div>
+        <div class="compare">
+          <div class="cmp bad">
+            <div class="cmp-lbl">❌ Multi-column + full-width</div>
+            <div class="form-demo bad">
+              <div class="fd-row">
+                <div class="fd-field"><div class="fd-lbl">Tanggal</div><input class="fd-input" placeholder="dd/mm/yyyy"></div>
+                <div class="fd-field"><div class="fd-lbl">Jumlah</div><input class="fd-input" placeholder="Rp ..."></div>
+              </div>
+              <div class="fd-row">
+                <div class="fd-field"><div class="fd-lbl">Vendor</div><input class="fd-input" placeholder="Nama vendor"></div>
+              </div>
+              <div class="fd-zig">→ ↓ → ↓ Mata zig-zag</div>
+            </div>
+          </div>
+          <div class="cmp good">
+            <div class="cmp-lbl">✅ Single column + match width</div>
+            <div class="form-demo good">
+              <div style="margin-bottom:10px">
+                <div class="fd-lbl">Tanggal</div>
+                <input class="fd-input" style="max-width:130px" placeholder="dd/mm/yyyy">
+              </div>
+              <div style="margin-bottom:10px">
+                <div class="fd-lbl">Jumlah</div>
+                <input class="fd-input" style="max-width:180px" placeholder="Rp 5.000.000">
+              </div>
+              <div>
+                <div class="fd-lbl">Vendor</div>
+                <input class="fd-input" style="width:100%" placeholder="PT Kopi Nusantara">
+              </div>
+              <div class="fd-arrow">↓ ↓ ↓ Downward momentum</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px">Width field = hint silent ke user soal panjang input yang diharapkan.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insight 6 — undo vs modal -->
+  <div class="insight">
+    <div class="i-num">6</div>
+    <div class="i-body">
+      <div class="i-title">Untuk destructive action: kasih UNDO, jangan modal konfirmasi</div>
+      <div class="i-text">Counter-intuitive tapi research-backed. Toast "Item dihapus — Urungkan?" yang muncul 5-10 detik kasih safety net tanpa block flow. Modal interupsi user yang yakin (95% yang klik Delete itu yakin). <b>Heavy modal cuma sah untuk nuclear option</b>: hapus akun, hapus organisasi.</div>
+
+      <div class="vblock">
+        <div class="vblock-title">Friction Ladder + Toast Undo Alternative</div>
+        <div class="fl">
+          <div class="fl-tier">
+            <div class="fl-num" style="background:#f3f4f6;color:#6b7280">1</div>
+            <div class="fl-body"><div class="fl-name">No friction</div><div class="fl-desc">Action tersembunyi / jarang dipake.</div></div>
+          </div>
+          <div class="fl-tier">
+            <div class="fl-num" style="background:#fef3c7;color:#d97706">2</div>
+            <div class="fl-body"><div class="fl-name">Light confirm</div><div class="fl-desc">Modal simple "Hapus item?" + Batal + Hapus.</div></div>
+          </div>
+          <div class="fl-tier">
+            <div class="fl-num" style="background:#fee2e2;color:#dc2626">3</div>
+            <div class="fl-body"><div class="fl-name">Medium</div><div class="fl-desc">Modal ⚠️ + button filled merah + warning icon.</div></div>
+          </div>
+          <div class="fl-tier">
+            <div class="fl-num" style="background:#450a0a;color:#fff">4</div>
+            <div class="fl-body"><div class="fl-name">Heavy (nuclear)</div><div class="fl-desc">Checkbox required + ketik nama untuk confirm. Hapus akun / hapus organisasi.</div></div>
+          </div>
+        </div>
+        <div class="fl-alt">
+          <div class="fl-alt-icon">↩️</div>
+          <div>
+            <div class="fl-alt-lbl">Better alternative: Toast Undo</div>
+            <div class="fl-alt-desc">Untuk 80% destructive sehari-hari — toast "Pengeluaran dihapus · Urungkan?" 7 detik. 1 klik + auto-dismiss = jauh lebih cepat dari modal.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="i-example"><strong>Contoh:</strong> Gmail archive email langsung + toast "Pesan dihapus — Urungkan" vs modal "Yakin hapus?" tiap kali. (Bab 8, hal 277-279)</div>
+    </div>
+  </div>
+
+  <!-- Insight 7 — grouping methods -->
+  <div class="insight">
+    <div class="i-num">7</div>
+    <div class="i-body">
+      <div class="i-title">4 cara grouping: container, proximity, similarity, continuity — combine 2-3</div>
+      <div class="i-text">Container (kotak/border) paling kuat tapi paling clutter. <b>Proximity</b> sering udah cukup. <b>Similarity</b> + <b>continuity</b> bisa nambahin. Yang penting: inner spacing dalam grup harus selalu &lt; outer spacing antar grup.</div>
+
+      <div class="vblock">
+        <div class="vblock-title">4 Grouping Methods (data sama, teknik beda)</div>
+        <div class="gm-grid">
+          <div class="gm">
+            <div class="gm-title">📦 Container</div>
+            <div class="gm-container">
+              <div class="lv-row"><span class="lv-l">Tanggal</span><span class="lv-v">22 Mei 2026</span></div>
+              <div class="lv-row"><span class="lv-l">Jumlah</span><span class="lv-v">Rp 1.500.000</span></div>
+              <div class="lv-row"><span class="lv-l">Vendor</span><span class="lv-v">PT Kopi Nusantara</span></div>
+            </div>
+            <div class="gm-desc">Paling kuat, tapi paling crowded.</div>
+          </div>
+          <div class="gm">
+            <div class="gm-title">📏 Proximity</div>
+            <div class="gm-proximity">
+              <div class="lv-row"><span class="lv-l">Tanggal</span><span class="lv-v">22 Mei 2026</span></div>
+              <div class="lv-row"><span class="lv-l">Jumlah</span><span class="lv-v">Rp 1.500.000</span></div>
+              <div class="lv-row"><span class="lv-l">Vendor</span><span class="lv-v">PT Kopi Nusantara</span></div>
+            </div>
+            <div class="gm-desc">Cukup untuk grouping ringan — tanpa border.</div>
+          </div>
+          <div class="gm gm-similarity">
+            <div class="gm-title">🎨 Similarity</div>
+            <div class="lv-row"><span class="lv-l">TANGGAL</span><span class="lv-v">22 Mei 2026</span></div>
+            <div class="lv-row"><span class="lv-l">JUMLAH</span><span class="lv-v">Rp 1.500.000</span></div>
+            <div class="lv-row"><span class="lv-l">VENDOR</span><span class="lv-v">PT Kopi Nusantara</span></div>
+            <div class="gm-desc">Visual treatment seragam = signal grouping.</div>
+          </div>
+          <div class="gm">
+            <div class="gm-title">➡️ Continuity</div>
+            <div class="gm-continuity">
+              <div class="lv-row"><span class="lv-l">Tanggal</span><span class="lv-v">22 Mei 2026</span></div>
+              <div class="lv-row"><span class="lv-l">Jumlah</span><span class="lv-v">Rp 1.500.000</span></div>
+              <div class="lv-row"><span class="lv-l">Vendor</span><span class="lv-v">PT Kopi Nusantara</span></div>
+            </div>
+            <div class="gm-desc">Mata mengikuti garis lurus = signal grup.</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-size:12px;color:var(--muted)">💡 Rekomendasi: combine 2-3 method. Inner spacing &lt; outer spacing — selalu.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insight 8 — disabled buttons -->
+  <div class="insight">
+    <div class="i-num">8</div>
+    <div class="i-body">
+      <div class="i-title">Hindari disabled submit button — enable + validate on submit</div>
+      <div class="i-text">Pattern populer "Submit disabled sampai form valid" punya masalah: (a) user ga tau kenapa disabled, (b) kontras text disabled rendah = accessibility jelek, (c) keyboard user bisa skip-over, (d) stuck tanpa feedback. <b>Lebih bagus: enable tombolnya, terus validate pas klik.</b></div>
+
+      <div class="vblock">
+        <div class="vblock-title">Disabled vs Enabled Submit — Flow Comparison</div>
+        <div class="compare">
+          <div class="cmp bad">
+            <div class="cmp-lbl">❌ Disabled — user stuck</div>
+            <div style="padding:12px;background:#fff5f5;border-radius:6px;font-size:13px">
+              <div style="margin-bottom:8px;color:#6b7280">8 field form, 1 kosong (NPWP)</div>
+              <button style="background:#d1d5db;color:#9ca3af;border:none;border-radius:6px;padding:8px 16px;font-size:13px;cursor:not-allowed;width:100%">Simpan (disabled)</button>
+              <div style="margin-top:8px;color:#dc2626;font-size:11px">User: "Kenapa ga bisa di-klik?"<br>Kontras rendah = accessibility fail<br>Keyboard user: skip-over</div>
+            </div>
+          </div>
+          <div class="cmp good">
+            <div class="cmp-lbl">✅ Enabled + validate on submit</div>
+            <div style="padding:12px;background:#f0fdf4;border-radius:6px;font-size:13px">
+              <div style="margin-bottom:8px;color:#6b7280">8 field form, 1 kosong (NPWP)</div>
+              <button class="mock-primary" style="width:100%;padding:8px">Simpan</button>
+              <div style="margin-top:8px;background:#fee2e2;border:1px solid #fca5a5;border-radius:4px;padding:8px;font-size:12px;color:#dc2626">⚠️ NPWP wajib diisi (auto-scroll ke field)</div>
+              <div style="margin-top:6px;color:#16a34a;font-size:11px">User langsung tau field mana yang kurang.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="i-example"><strong>Contoh:</strong> Form KYC dengan 8 field. Pattern lama: Submit disabled. User ngisi 7 field, mikir "kenapa ga bisa klik?" — ga ada feedback. Pattern baru: klik → "Field NPWP wajib diisi" + auto-scroll. (Bab 7, hal 248)</div>
+    </div>
+  </div>
+
+  <!-- Insight 9 — color palette -->
+  <div class="insight">
+    <div class="i-num">9</div>
+    <div class="i-body">
+      <div class="i-title">Untuk warna brand: bikin monochromatic palette, hindari hitam pekat</div>
+      <div class="i-text">Daripada milih puluhan shade grey buat border, background, text — bikin <b>monochromatic palette</b> dari satu warna brand. Hasilnya lebih neat, lebih cohesive, keputusan lebih cepat. Hindari pure black (#000) — kontras 21:1 bikin mata cape baca lama. Pakai dark navy atau dark grey dengan "tinge" warna brand.</div>
+
+      <div class="vblock">
+        <div class="vblock-title">Monochromatic Palette Paper.id (brand blue)</div>
+        <div class="palette">
+          <div class="pal-sw" style="background:#0a2540">
+            <div class="pal-lbl">Darkest</div>
+            <div class="pal-use">text-primary</div>
+          </div>
+          <div class="pal-sw" style="background:#133f5d">
+            <div class="pal-lbl">Dark</div>
+            <div class="pal-use">navy</div>
+          </div>
+          <div class="pal-sw" style="background:#4199d5">
+            <div class="pal-lbl">Medium</div>
+            <div class="pal-use">brand action</div>
+          </div>
+          <div class="pal-sw" style="background:#a8d4f0">
+            <div class="pal-lbl" style="color:var(--navy)">Light</div>
+            <div class="pal-use" style="color:var(--navy)">hover bg</div>
+          </div>
+          <div class="pal-sw" style="background:#e8f4fd">
+            <div class="pal-lbl" style="color:var(--navy)">Lightest</div>
+            <div class="pal-use" style="color:var(--navy)">tint bg</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px">Aurora pakai <code>#133f5d</code> (dark navy) sebagai text-primary — bukan pure black. Lebih nyaman dibaca + brand feel nyambung.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insight 10 — typography -->
+  <div class="insight">
+    <div class="i-num">10</div>
+    <div class="i-body">
+      <div class="i-title">Tipografi: single sans-serif, regular + bold doang, line length 40-80 karakter</div>
+      <div class="i-text">Default aman untuk 95% interface: satu typeface sans-serif. Dua weight aja: <b>regular dan bold</b> — makin banyak weight makin clutter. Body text: line length <b>40-80 karakter per baris</b>. Terlalu panjang = mata lelah balik ke awal; terlalu pendek = zigzag terus.</div>
+
+      <div class="vblock">
+        <div class="vblock-title">Line Length Sweet Spot (body text)</div>
+        <div class="ll-demo">
+          <div class="ll-item bad">
+            <div class="ll-lbl">❌ Terlalu pendek (~30 char)</div>
+            <div class="ll-text" style="max-width:200px;font-size:14px">Setiap detail desain harus punya alasan yang bisa diucapkan.</div>
+          </div>
+          <div class="ll-item ok">
+            <div class="ll-lbl">✅ Ideal (60-70 char)</div>
+            <div class="ll-text" style="max-width:580px;font-size:14px">Setiap detail desain harus punya alasan yang bisa diucapkan — bukan sekadar "feel-nya enak". Rationale yang sah selalu nyangkut ke usability, effort, atau cognitive load.</div>
+          </div>
+          <div class="ll-item long">
+            <div class="ll-lbl">⚠️ Terlalu panjang (~110 char)</div>
+            <div class="ll-text" style="font-size:14px">Setiap detail desain harus punya alasan yang bisa diucapkan — bukan sekadar "feel-nya enak" atau "looks nice" — karena itu bukan rationale yang sah, itu opini subjektif yang tidak bisa diukur atau divalidasi dengan cara apapun.</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:10px">Body text 16px = ~600-700px max-width. Single sans-serif + Regular + Bold = default 95% interface.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ C — MONEY QUOTES ══ -->
+<section class="sec" id="quotes">
+  <div class="sec-head">
+    <div class="sec-badge" style="background:#7c3aed">C</div>
+    <div class="sec-ttl">
+      <h2>5 Money Quotes</h2>
+      <p>Quote signature yang paling sering dicutat dari buku ini</p>
+    </div>
+  </div>
+
+  <div class="q-poster">
+    <div class="q-num">Quote 01 · Bab 8, hal 259</div>
+    <div class="q-text">"If everything is important, nothing is important."</div>
+    <div class="q-src">— Adham Dannaway, Practical UI (Buttons)</div>
+    <div class="q-para"><strong>Paraphrase:</strong> Kalau semua hal lo tandai sebagai penting, justru jadi ga ada yang penting.<br><br>Quote ini ringkas banget tapi nyangkut ke seluruh konsep hierarchy — dari button system, color, typography, sampe placement. Tiap kali lo tergoda nambahin "satu lagi pill primary", inget kalimat ini.</div>
+  </div>
+
+  <div class="q-poster">
+    <div class="q-num">Quote 02 · Bab 1, hal 17</div>
+    <div class="q-text">"Designing interfaces using objective logic, rather than subjective opinion, makes it faster and easier to make design decisions."</div>
+    <div class="q-src">— Adham Dannaway, Practical UI (Fundamentals)</div>
+    <div class="q-para"><strong>Paraphrase:</strong> Desain pake logika objektif, bukan opini subjektif — keputusan jadi lebih cepat dan gampang.<br><br>Ini thesis statement Adham. Implikasinya: kalau review meeting macet karena debat selera, balik ke logika. "Argumen lo opini atau rationale? Kalau opini, mari kita test."</div>
+  </div>
+
+  <div class="q-poster">
+    <div class="q-num">Quote 03 · Bab 1, hal 19</div>
+    <div class="q-text">"The higher the interaction cost, the harder it is for someone to achieve their task."</div>
+    <div class="q-src">— Adham Dannaway, Practical UI (Fundamentals)</div>
+    <div class="q-para"><strong>Paraphrase:</strong> Semakin tinggi biaya interaksi, semakin susah user nyelesain tugasnya.<br><br>Reminder bahwa "satu klik lagi" itu beneran cost. Setiap extra step, scroll, search, modal — ngurangin completion rate, bukan cuma annoying.</div>
+  </div>
+
+  <div class="q-poster">
+    <div class="q-num">Quote 04 · Bab 2, hal 52</div>
+    <div class="q-text">"Minimal doesn't mean simple."</div>
+    <div class="q-src">— Adham Dannaway, Practical UI (Less is more)</div>
+    <div class="q-para"><strong>Paraphrase:</strong> Minimalis ga sama dengan sederhana.<br><br>Perlawanan ke trend "white space lots + tiny text + ghost buttons everywhere". Minimalis itu STYLE; sederhana itu OUTCOME. Bisa minimalis tapi confusing (hidden affordances). Aim for <em>simple</em>, not minimal-as-aesthetic.</div>
+  </div>
+
+  <div class="q-poster">
+    <div class="q-num">Quote 05 · Bab 8, hal 254</div>
+    <div class="q-text">"Buttons should have a clear visual hierarchy that isn't reliant on colour."</div>
+    <div class="q-src">— Adham Dannaway, Practical UI (Buttons)</div>
+    <div class="q-para"><strong>Paraphrase:</strong> Tombol harus punya hierarchy visual yang jelas, dan ga boleh cuma andalan warna.<br><br>~8% pria color-blind. Kalau primary cuma dibedain dari secondary lewat warna biru vs abu-abu, mereka ga bisa tau mana yang primary. Solusi: kombinasiin warna + weight (filled vs border) + ukuran. Hierarchy tetap readable kalau di-print hitam-putih.</div>
+  </div>
+</section>
+
+<!-- ══ D — PER CHAPTER ══ -->
+<section class="sec" id="chapters">
+  <div class="sec-head">
+    <div class="sec-badge" style="background:#0891b2">D</div>
+    <div class="sec-ttl">
+      <h2>Per Chapter Highlights</h2>
+      <p>8 bab — inti dan aplikasinya untuk Paper.id</p>
+    </div>
+  </div>
+
+  <div class="ch-card">
+    <div class="ch-head">
+      <div class="ch-num">01</div>
+      <div class="ch-info">
+        <div class="ch-info-title">Fundamentals</div>
+        <div class="ch-info-pages">hal 14–44 · Bab paling padat dan paling penting</div>
+      </div>
+    </div>
+    <div class="ch-body">Adham bilang <em>most design decisions are governed by a system of logical rules</em> — bukan bakat. Dia kenalin 3 pillar pengukur (usability risk, interaction cost, cognitive load) yang dipakai konsisten di seluruh buku. Konsep <b>"predefined sets"</b> juga dia perkenalkan di sini: daripada milih warna/spacing/font-size dari unlimited options tiap kali, bikin set terbatas dengan purpose jelas. Itu yang kemudian jadi design system. Insight yang sering ke-skip: dia bedain antara <em>patterns</em> (Jakob's Law — pakai convention yang user udah hafal) versus <em>novel solutions</em> (lebih berisiko, harus di-validate via testing). Untuk Paper.id, ini langsung mendukung kenapa Aurora Lookup Ritual wajib: convention &gt; kreativitas.</div>
+    <div class="ch-tldr"><strong>💡 Sekali baca:</strong> Setiap design decision butuh "why" yang objektif — 3 pillar (usability risk, interaction cost, cognitive load) adalah pengganti "selera". Bab ini wajib dibaca dua kali.</div>
+  </div>
+
+  <div class="ch-card">
+    <div class="ch-head">
+      <div class="ch-num">02</div>
+      <div class="ch-info">
+        <div class="ch-info-title">Less is more</div>
+        <div class="ch-info-pages">hal 45–59 · Bab paling pendek, quote paling berbahaya</div>
+      </div>
+    </div>
+    <div class="ch-body">Quote paling berbahaya: <em>"minimal doesn't mean simple"</em>. Banyak designer ngurangin visual jadi terlalu minim, sampai <b>affordance</b> hilang — tombol jadi ghost (border doang), input field tanpa border keliatan kayak text label, link tanpa underline keliatan kayak headline. Adham juga jelasin <b>progressive disclosure</b>: sembunyiin info yang ga critical dulu, expose pas user butuh. Misal: di Detail Invoice, section "Info Tambahan" bisa collapsed by default. Tapi warning: progressive disclosure ≠ hide critical action. Tombol "Hapus" di kebab menu OK karena destructive jarang dipake; "Simpan" disembunyiin di sub-menu = sin.</div>
+    <div class="ch-tldr"><strong>💡 Sekali baca:</strong> Minimalis itu style, bukan goal. Progressive disclosure boleh, tapi jangan hide critical actions.</div>
+  </div>
+
+  <div class="ch-card">
+    <div class="ch-head">
+      <div class="ch-num">03</div>
+      <div class="ch-info">
+        <div class="ch-info-title">Colour</div>
+        <div class="ch-info-pages">hal 60–103 · Bab paling teknis</div>
+      </div>
+    </div>
+    <div class="ch-body">Adham mulai dari <b>contrast ratio WCAG 2.1 AA</b>: 4.5:1 untuk text kecil (≤18px), 3:1 untuk text besar dan UI element (form field border, icon). Dia juga introduce APCA (WCAG 3 draft) yang lebih akurat untuk dark interface — tapi industry masih pakai WCAG 2 karena standar resmi. Yang practical: <b>hindari pure black (#000)</b> di atas pure white — kontras 21:1 bikin mata cape baca lama. Buat brand palette, dia recommend <b>monochromatic</b> dari satu warna utama: 5 shade (darkest → lightest) plus neutral greys terpisah. Tips yang sering ke-skip: warna brand jangan dipakai terlalu banyak — reserve buat <b>interactive element</b> (button, link, focus state), bukan dekorasi.</div>
+    <div class="ch-tldr"><strong>💡 Sekali baca:</strong> WCAG 2.1 AA minimum. Monochromatic palette dari brand. Brand color = exclusive untuk interactive — bukan dekorasi.</div>
+  </div>
+
+  <div class="ch-card">
+    <div class="ch-head">
+      <div class="ch-num">04</div>
+      <div class="ch-info">
+        <div class="ch-info-title">Layout &amp; Spacing</div>
+        <div class="ch-info-pages">hal 104–162 · Bab paling reusable</div>
+      </div>
+    </div>
+    <div class="ch-body">Adham kenalin <b>4 grouping methods</b>: container (border/background), proximity (jarak), similarity (visual treatment sama), continuity (alignment). Pake 2-3 method combined, bukan satu method paling kuat. Container dipakai hemat — itu tools paling crowded. Aturan emas spacing: <b>inner spacing always smaller than outer spacing</b>. Kalau dalam card padding 16px, antar card harus 24-32px. Dia jabarin <b>6 lever visual hierarchy</b>: ukuran, warna, kontras, jarak, posisi, kedalaman (shadow) — pakai by importance order, jangan apply semua lever ke semua element. Tambahan: keep related actions close. Tombol "Edit" untuk card harus dekat card-nya, bukan di toolbar global jauh di atas.</div>
+    <div class="ch-tldr"><strong>💡 Sekali baca:</strong> 4 grouping methods (combine 2-3). Inner &lt; outer spacing. 6 lever hierarchy — apply by importance order.</div>
+  </div>
+
+  <div class="ch-card">
+    <div class="ch-head">
+      <div class="ch-num">05</div>
+      <div class="ch-info">
+        <div class="ch-info-title">Typography</div>
+        <div class="ch-info-pages">hal 163–191 · Bab paling minimalis dalam saran</div>
+      </div>
+    </div>
+    <div class="ch-body">Default rekomendasinya: <b>single sans-serif, regular + bold only</b>. Jangan eksplor 5 weight (light/medium/semibold/black) — itu makin clutter. Untuk heading: pakai size scale (14/16/20/24/32/40), bukan weight scale. <b>Line length 40-80 karakter per baris</b> untuk body text. Body text minimum 16px (mobile 18px lebih baik). <b>Line height</b> 1.5× untuk body, 1.2× untuk heading besar. <b>Left align untuk body text panjang</b> — center align cuma untuk headline atau text ≤2 baris. Justified text dilarang untuk web/app: bikin "rivers of white space" yang distracting. Untuk Paper.id: Detail Invoice/Detail Mitra dengan notes full-width 1200px — cap ke ~600-700px.</div>
+    <div class="ch-tldr"><strong>💡 Sekali baca:</strong> 1 typeface + 2 weight + size scale. Line length 40-80 char. Left-align body, center max 2 baris. No justified.</div>
+  </div>
+
+  <div class="ch-card">
+    <div class="ch-head">
+      <div class="ch-num">06</div>
+      <div class="ch-info">
+        <div class="ch-info-title">Copywriting</div>
+        <div class="ch-info-pages">hal 192–211 · Sering ke-skip padahal critical</div>
+      </div>
+    </div>
+    <div class="ch-body">Adham nge-push: <b>UI copy itu UI element</b>. Aturan utama: <b>be concise, cut filler words</b>. "Please click here to download your invoice" → "Unduh invoice". <b>Use sentence case</b> ("Hapus invoice?") bukan Title Case — sentence case lebih natural buat baca cepat. <b>Front-load key info</b> — kata paling penting di awal kalimat/heading. Pakai <b>inverted pyramid</b> untuk content panjang: kesimpulan duluan, detail belakangan. Untuk error message: hindari "Error 4023: Invalid input" — ganti jadi spesifik + actionable ("NPWP harus 15 angka"). Tip yang sering ke-skip: <b>avoid jargon kecuali audience-nya expert</b>. "Akun receivable" → "Tagihan yang belum dibayar" untuk Paper.id, kecuali user-nya beneran accountant.</div>
+    <div class="ch-tldr"><strong>💡 Sekali baca:</strong> Be concise + sentence case + front-load + inverted pyramid. Error message = spesifik + actionable. Cut jargon kecuali untuk expert.</div>
+  </div>
+
+  <div class="ch-card">
+    <div class="ch-head">
+      <div class="ch-num">07</div>
+      <div class="ch-info">
+        <div class="ch-info-title">Forms</div>
+        <div class="ch-info-pages">hal 213–249 · Bab paling actionable untuk B2B SaaS</div>
+      </div>
+    </div>
+    <div class="ch-body">Aturan-aturan kunci: <b>single column</b> (vertical stack, downward momentum), <b>label di atas input</b> (bukan samping), <b>field width match expected input</b> (kode pos 5 char ≠ nama 40 char), <b>hint text di ATAS field</b> bukan di bawah (biar ga ke-cover autofill atau ke-truncate), stack checkbox/radio vertically, <b>mark both required and optional</b> (asterisk * + kata "opsional" di field optional). Break long forms into steps kalau &gt;10 field — dengan progress indicator. Insight controversial: <b>validate on submit, jangan inline real-time</b> — inline yang muncul tiap user ngetik ngerasa intrusive. Sebaiknya validate pas user blur field atau klik Submit. <b>Don't use placeholder as label</b> — begitu user mulai ngetik, label hilang, user lupa lagi field ini buat apa.</div>
+
+    <div class="vblock">
+      <div class="vblock-title">Anatomi Form Field Ideal</div>
+      <div class="anatomy">
+        <div class="an-label">Email Bisnis <span class="an-req">*</span><span class="an-tag">Required</span></div>
+        <div class="an-hint">Email aktif untuk login dan notifikasi</div>
+        <input class="an-input" type="email" placeholder="kontak@perusahaan.com">
+        <div class="an-annot">
+          <span>✅ Label di atas — ga ke-cover keyboard mobile</span>
+          <span>✅ Hint di atas field — ga ke-truncate autofill</span>
+          <span>✅ Asterisk * untuk required</span>
+          <span>✅ Width match expected input</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ch-tldr"><strong>💡 Sekali baca:</strong> Single column + label top + width match + hint ATAS + mark required/optional. Validate on submit. No placeholder-as-label. Break &gt;10 field jadi steps.</div>
+  </div>
+
+  <div class="ch-card">
+    <div class="ch-head">
+      <div class="ch-num">08</div>
+      <div class="ch-info">
+        <div class="ch-info-title">Buttons</div>
+        <div class="ch-info-pages">hal 250–279 · Bab paling padat keputusan</div>
+      </div>
+    </div>
+    <div class="ch-body"><b>3 weight system</b>: primary (filled, brand color, MAX 1 per page), secondary (border only, equal-weight actions), tertiary (text link, least important atau destructive). Hierarchy ga boleh cuma andalan warna — kombinasiin dengan weight/fill. <b>Button text harus deskriptif verb+noun</b>: "Simpan invoice" &gt; "OK", "Hapus pengeluaran" &gt; "Lanjut". Avoid generic "Submit", "Continue" — user harus konfirmasi mental lagi. <b>Target size minimum 44×44px</b> untuk touch. <b>Friction ladder for destructive</b>: no-friction → light confirm → medium (red + warning) → heavy (confirm checkbox). <b>Better alternative: allow undo</b> via toast — daripada modal konfirmasi tiap kali. <b>Try to avoid disabled buttons</b> — enable + validate on submit lebih baik dari sisi UX dan accessibility.</div>
+    <div class="ch-tldr"><strong>💡 Sekali baca:</strong> 1 primary MAX + 3-tier system + verb+noun text + 44px touch target. Undo &gt; friction modal. Avoid disabled.</div>
+  </div>
+</section>
+
+<!-- ══ E — ACTIONABLES ══ -->
+<section class="sec" id="actionables">
+  <div class="sec-head">
+    <div class="sec-badge green">E</div>
+    <div class="sec-ttl">
+      <h2>Kalau Cuma Baca 3 Hal, Baca Ini</div>
+      <p>3 perubahan dengan dampak paling besar untuk daily work</p>
+    </div>
+  </div>
+
+  <div class="action-banner">
+    <h2>3 hal yang bisa lo lakuin hari ini</h2>
+    <p>3 perubahan konkret dengan dampak paling besar untuk prototype dan design Paper.id</p>
+  </div>
+
+  <div class="action-cards">
+    <div class="ac">
+      <div class="ac-num">1</div>
+      <div class="ac-body">
+        <div class="ac-title">Pasang 1 Primary Button per page. Audit hari ini.</div>
+        <div class="ac-text">Buka 3 page Paper.id favorit lo — Dashboard, List Invoice, Detail Mitra. Hitung berapa pill primary biru di tiap page. Kalau ada &gt;1, lo udah ngacuin hierarchy. <b>Fix-nya gampang:</b> tentukan "1 most important action" per page. Sisanya turunin ke secondary (border only) atau tertiary (text link). Validate pake Squint Test (blur 8px di Figma) — kalau primary masih kelihatan dominant tunggal, lo menang.<br><br>Ini Insight #3 dan #4 dari buku — dampaknya langsung kelihatan di completion rate user buat action utama.</div>
+      </div>
+    </div>
+
+    <div class="ac">
+      <div class="ac-num">2</div>
+      <div class="ac-body">
+        <div class="ac-title">Ganti pattern "Submit disabled" jadi "Submit enabled + validate on submit"</div>
+        <div class="ac-text">Perubahan kecil tapi efeknya besar. Default Aurora form button "Simpan" kemungkinan disabled sampai form valid — Adham bilang itu bermasalah: (a) user ga tau kenapa disabled, (b) accessibility jelek karena kontras text disabled biasanya rendah, (c) keyboard user bisa ke-skip, (d) no feedback. <b>Pattern baru:</b> button selalu enabled; pas user klik, validate; kalau ada error, scroll ke field error pertama + tampilkan error message inline yang jelas.<br><br>Catatan: ini konflik dengan Aurora current — perlu konsultasi maintainer DS, tapi worth pushing.</div>
+      </div>
+    </div>
+
+    <div class="ac">
+      <div class="ac-num">3</div>
+      <div class="ac-body">
+        <div class="ac-title">Ganti modal konfirmasi destructive jadi toast undo (untuk action non-nuclear)</div>
+        <div class="ac-text">Mapping yang Adham rekomendasiin: hapus draft / hapus row table / hapus item belum tersimpan = <b>TOAST UNDO</b> (5-10 detik), bukan modal. Modal konfirmasi cuma untuk genuinely destructive irreversible: hapus akun, hapus organisasi, hapus invoice yang udah dikirim ke customer.<br><br>Reasoning: modal interupsi user yang yakin (95% yang klik Delete itu yakin), sedangkan toast kasih safety net tanpa block. Plus lebih cepat: 1 klik + auto-dismiss &gt; 1 klik + confirm + auto-dismiss.<br><br>Definisi destructive Paper.id udah lock di memory <code>[[paperverse-design-decisions]]</code> — sekarang tinggal pasangin mekanisme undo untuk non-nuclear. Apply pertama: list page delete row → snackbar "Item dihapus — Urungkan?" dengan timer 7 detik.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ F — CONFLICTS REVIEW ══ -->
+<section class="sec" id="conflicts">
+  <div class="sec-head">
+    <div class="sec-badge yellow">!</div>
+    <div class="sec-ttl">
+      <h2>Konflik Review — 5 Konflik Teridentifikasi</h2>
+      <p>Review satu per satu, konfirmasi atau reject keputusan Paper.id</p>
+    </div>
+  </div>
+
+  <div class="conflict-intro">
+    <h3>⚠️ Butuh keputusan lo sebagai quality gate</h3>
+    <p>5 konflik antara buku Practical UI vs aturan Paper.id / Aurora. Review tiap konflik dan klik Setuju atau Tolak. Setelah 5/5 di-review, tombol Lock aktif.</p>
+  </div>
+
+  <!-- Conflict 1 -->
+  <div class="cf" id="cf1">
+    <div class="cf-hd">
+      <span class="cf-badge">Konflik #1</span>
+      <span class="cf-status pending" id="cf1-status">Pending review</span>
+    </div>
+    <div class="cf-title">Posisi hint/helper text: Di ATAS field vs di BAWAH field</div>
+    <div class="cf-sides">
+      <div class="cf-side book">
+        <div class="cf-side-lbl">📖 Buku bilang</div>
+        <strong>WAJIB di ATAS field.</strong> Alasan: prevent error (user baca sebelum isi), maintain downward momentum, ga ke-cover autofill suggestions, ga ke-truncate di mobile.
+      </div>
+      <div class="cf-side paperid">
+        <div class="cf-side-lbl">🏢 Paper.id / Aurora</div>
+        <strong>TBD — perlu audit Aurora form-field.</strong> Aurora mungkin punya hint di bawah field (pattern umum). Critical hint kemungkinan lebih tepat di atas; decorative hint OK di bawah.
+      </div>
+    </div>
+    <div class="cf-rationale"><strong>Konteks:</strong> Konflik ini belum locked karena Aurora pattern-nya perlu di-audit dulu. Rekomendasi buku sangat kuat secara logical — "hint di atas" mencegah user baru isi field sebelum baca petunjuk. Log ke <code>IMPROVEMENT-OPPORTUNITIES.md</code>.</div>
+    <div class="cf-actions">
+      <button class="btn-ok" onclick="reviewConflict(1,'confirmed')">✓ Setuju (audit Aurora dulu)</button>
+      <button class="btn-reject" onclick="reviewConflict(1,'rejected')">✗ Tolak (keep Aurora as-is)</button>
+      <button class="btn-reset" onclick="reviewConflict(1,'pending')">Reset</button>
+    </div>
+  </div>
+
+  <!-- Conflict 2 -->
+  <div class="cf" id="cf2">
+    <div class="cf-hd">
+      <span class="cf-badge">Konflik #2</span>
+      <span class="cf-status pending" id="cf2-status">Pending review</span>
+    </div>
+    <div class="cf-title">Disabled submit button: Avoid vs Keep current Aurora pattern</div>
+    <div class="cf-sides">
+      <div class="cf-side book">
+        <div class="cf-side-lbl">📖 Buku bilang</div>
+        <strong>TRY TO AVOID disabled buttons.</strong> Enable + validate on submit. Disabled = user stuck, low contrast (accessibility fail), keyboard skip-over, no feedback tentang field mana yang kurang.
+      </div>
+      <div class="cf-side paperid">
+        <div class="cf-side-lbl">🏢 Paper.id / Aurora</div>
+        <strong>Banyak modal Aurora pakai disabled Save pattern</strong> (perlu konfirmasi). Trade-off: disable prevent invalid submission upfront, tapi sacrifice UX feedback clarity. Form kompleks dengan inter-field dependency mungkin perlu disable. Form simple mendingan enable+validate.
+      </div>
+    </div>
+    <div class="cf-rationale"><strong>Konteks:</strong> Ini konflik praktis yang paling impactful. Buku argumennya kuat dari sisi accessibility. Keputusan terbaik mungkin case-by-case: form simple = enable+validate; form kompleks dengan dependency = boleh disable + tooltip. Log ke <code>IMPROVEMENT-OPPORTUNITIES.md</code>.</div>
+    <div class="cf-actions">
+      <button class="btn-ok" onclick="reviewConflict(2,'confirmed')">✓ Setuju (case-by-case approach)</button>
+      <button class="btn-reject" onclick="reviewConflict(2,'rejected')">✗ Tolak (keep disabled pattern)</button>
+      <button class="btn-reset" onclick="reviewConflict(2,'pending')">Reset</button>
+    </div>
+  </div>
+
+  <!-- Conflict 3 -->
+  <div class="cf" id="cf3">
+    <div class="cf-hd">
+      <span class="cf-badge">Konflik #3 — LOCKED ✓</span>
+      <span class="cf-status pending" id="cf3-status">Pending review</span>
+    </div>
+    <div class="cf-title">Radio button threshold: Buku ≤10 vs Paper.id ≤4</div>
+    <div class="cf-sides">
+      <div class="cf-side book">
+        <div class="cf-side-lbl">📖 Buku bilang</div>
+        <strong>≤10 opsi = pakai radio button.</strong> Threshold yang lebih longgar — kalau kurang dari 10 opsi, tampilkan semua sebagai radio daripada dropdown (lebih visible, less cognitive load).
+      </div>
+      <div class="cf-side paperid">
+        <div class="cf-side-lbl">🏢 Paper.id / Aurora</div>
+        <strong>≤4 opsi = radio. ≥5 = dropdown.</strong> Lebih strict dari buku. Sudah dikunci via memory <code>[[paperverse-design-decisions]]</code> (Paperverse 1.0 audit). Paper.id MENANG — lebih strict lebih safe.
+      </div>
+    </div>
+    <div class="cf-rationale"><strong>Konteks:</strong> Konflik ini SUDAH ada keputusan sebelumnya via Paperverse 1.0 audit — Paper.id pakai ≤4. Buku threshold terlalu longgar (≤10 radio di form panjang = visual noisy). Paper.id rule lebih konservatif dan sudah locked. Ini tinggal dikonfirmasi.</div>
+    <div class="cf-actions">
+      <button class="btn-ok" onclick="reviewConflict(3,'confirmed')">✓ Setuju (Paper.id ≤4 tetap)</button>
+      <button class="btn-reject" onclick="reviewConflict(3,'rejected')">✗ Tolak (ikuti buku ≤10)</button>
+      <button class="btn-reset" onclick="reviewConflict(3,'pending')">Reset</button>
+    </div>
+  </div>
+
+  <!-- Conflict 4 -->
+  <div class="cf" id="cf4">
+    <div class="cf-hd">
+      <span class="cf-badge">Konflik #4</span>
+      <span class="cf-status pending" id="cf4-status">Pending review</span>
+    </div>
+    <div class="cf-title">Timing validasi: On-submit vs Inline real-time</div>
+    <div class="cf-sides">
+      <div class="cf-side book">
+        <div class="cf-side-lbl">📖 Buku bilang</div>
+        <strong>Validate on SUBMIT, bukan inline real-time.</strong> Inline yang muncul tiap user ngetik ngerasa intrusive ("ya, gue belum selesai ngetik, kalem!"). Validate pas user blur field atau klik Submit.
+      </div>
+      <div class="cf-side paperid">
+        <div class="cf-side-lbl">🏢 Paper.id / Aurora</div>
+        <strong>TBD — perlu audit current pattern Aurora.</strong> Paper.id banyak pakai inline real-time validation. Trade-off: inline catches error faster tapi feel intrusive. On-submit = user finalize input dulu, batch feedback.
+      </div>
+    </div>
+    <div class="cf-rationale"><strong>Konteks:</strong> Kedua approach ada trade-off. Compromise yang bagus: validate <em>on blur</em> (saat user pindah field) — tidak intrusive saat ngetik, tapi kasih feedback sebelum Submit. Log ke <code>IMPROVEMENT-OPPORTUNITIES.md</code> untuk diskusi maintainer DS.</div>
+    <div class="cf-actions">
+      <button class="btn-ok" onclick="reviewConflict(4,'confirmed')">✓ Setuju (audit + on-blur compromise)</button>
+      <button class="btn-reject" onclick="reviewConflict(4,'rejected')">✗ Tolak (keep inline real-time)</button>
+      <button class="btn-reset" onclick="reviewConflict(4,'pending')">Reset</button>
+    </div>
+  </div>
+
+  <!-- Conflict 5 -->
+  <div class="cf" id="cf5">
+    <div class="cf-hd">
+      <span class="cf-badge">Konflik #5</span>
+      <span class="cf-status pending" id="cf5-status">Pending review</span>
+    </div>
+    <div class="cf-title">Color contrast standard: WCAG 2 vs APCA (WCAG 3 draft)</div>
+    <div class="cf-sides">
+      <div class="cf-side book">
+        <div class="cf-side-lbl">📖 Buku bilang</div>
+        <strong>Pakai APCA (WCAG 3 draft).</strong> More accurate untuk dark interfaces, better for real-world readability daripada WCAG 2 ratio yang bisa misleading di beberapa color combinations.
+      </div>
+      <div class="cf-side paperid">
+        <div class="cf-side-lbl">🏢 Paper.id / Aurora</div>
+        <strong>Pakai WCAG 2 AA (current standard).</strong> Commercial product perlu compliance dengan existing standard. APCA masih draft — belum jadi standard resmi. Future evaluation kalau WCAG 3 finalized. Paper.id MENANG.
+      </div>
+    </div>
+    <div class="cf-rationale"><strong>Konteks:</strong> Ini bukan konflik praktis yang blocking — WCAG 2 AA adalah standar legal yang berlaku. APCA interesting tapi masih draft. Paper.id benar mempertahankan WCAG 2 untuk compliance. Log ke <code>IMPROVEMENT-OPPORTUNITIES.md</code> sebagai future evaluation item.</div>
+    <div class="cf-actions">
+      <button class="btn-ok" onclick="reviewConflict(5,'confirmed')">✓ Setuju (WCAG 2 tetap, APCA future eval)</button>
+      <button class="btn-reject" onclick="reviewConflict(5,'rejected')">✗ Tolak (migrate ke APCA sekarang)</button>
+      <button class="btn-reset" onclick="reviewConflict(5,'pending')">Reset</button>
+    </div>
+  </div>
+
+  <div class="conflict-locked-note" id="allDoneNote">
+    ✅ Semua 5 konflik sudah di-review! Tombol Lock di bawah sudah aktif. Klik untuk finalize Practical UI sebagai reviewed.
+  </div>
+</section>
+
+</main>
+
+<!-- ══ BOTTOM BAR ══ -->
+<div class="bottom-bar">
+  <div class="bb-left">
+    Review progress: <strong id="bbCount">0 / 5</strong> konflik
+  </div>
+  <button class="btn-lock" id="lockBtn" onclick="lockBook()">
+    🔒 Lock sebagai Reviewed
+  </button>
+</div>
+
+<script>
+const state = { 1: 'pending', 2: 'pending', 3: 'pending', 4: 'pending', 5: 'pending' };
+
+function reviewConflict(num, decision) {
+  state[num] = decision;
+  const card = document.getElementById('cf' + num);
+  const statusEl = document.getElementById('cf' + num + '-status');
+
+  card.className = 'cf ' + (decision !== 'pending' ? decision : '');
+
+  if (decision === 'confirmed') {
+    statusEl.className = 'cf-status confirmed';
+    statusEl.textContent = '✓ Setuju';
+  } else if (decision === 'rejected') {
+    statusEl.className = 'cf-status rejected';
+    statusEl.textContent = '✗ Ditolak';
+  } else {
+    statusEl.className = 'cf-status pending';
+    statusEl.textContent = 'Pending review';
+  }
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = Object.values(state).filter(s => s !== 'pending').length;
+  const pct = (done / 5) * 100;
+
+  document.getElementById('pbFill').style.width = pct + '%';
+  document.getElementById('pbCount').textContent = done + '/5';
+  document.getElementById('bbCount').textContent = done + ' / 5';
+
+  const lockBtn = document.getElementById('lockBtn');
+  const doneNote = document.getElementById('allDoneNote');
+
+  if (done === 5) {
+    lockBtn.className = 'btn-lock ready';
+    doneNote.style.display = 'block';
+  } else {
+    lockBtn.className = 'btn-lock';
+    doneNote.style.display = 'none';
+  }
+}
+
+function lockBook() {
+  const lockBtn = document.getElementById('lockBtn');
+  lockBtn.className = 'btn-lock locked';
+  lockBtn.textContent = '✅ Locked — Reviewed';
+
+  const confirmed = Object.values(state).filter(s => s === 'confirmed').length;
+  const rejected = Object.values(state).filter(s => s === 'rejected').length;
+
+  const msg = `Practical UI locked sebagai reviewed!\n\n` +
+    `Konflik: ${confirmed} setuju, ${rejected} ditolak.\n\n` +
+    `Update INDEX.md: status "reviewed", reviewer "user (` + new Date().toISOString().slice(0,10) + `)"`;
+
+  alert(msg);
+}
+</script>
+</body>
+</html>

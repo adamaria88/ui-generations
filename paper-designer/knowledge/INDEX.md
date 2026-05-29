@@ -47,12 +47,14 @@
   - `text-contrast-on-images` (`books/refactoring-ui/kartu/text-contrast-on-images.md`)
   - `supercharge-defaults` (`books/refactoring-ui/kartu/supercharge-defaults.md`)
 - **Konflik dengan Aurora/Paper.id:** ada — lihat ringkasan (selectable card belum di Aurora, ilustrasi empty state belum ada Aurora library)
-- **Status:** draft
+- **Status:** reviewed
+- **Reviewed by:** user (2026-05-25)
 - **Extracted:** 2026-05-22
 
 ## Practical UI — Adham Dannaway
 - **Slug:** `practical-ui`
 - **File ringkasan:** `books/practical-ui-ringkasan.md`
+- **File bacaan santai:** `books/practical-ui-bacaan.md` — naratif 2700 kata, ~18-20 menit, format buat baca tuntas (thesis + top 10 insight + 5 quote + per-chapter + 3 actionable)
 - **Thesis:** UI design itu sistem rules logical — setiap detail WAJIB ada *logical reason* yang memenuhi 3 prinsip: minimise usability risks, minimise interaction cost, minimise cognitive load.
 - **Best for:** Form UX (paling dalam coverage-nya), Button hierarchy, Destructive action friction, Visual hierarchy variables, Conventional patterns (Jakob's Law), UX copywriting Indonesia adapt
 - **Tags:** [forms, buttons, layout, visual-hierarchy, copywriting, typography, accessibility, design-system, destructive-actions, color]
@@ -113,6 +115,7 @@
     - `quote-minimal-doesnt-mean-simple` — Anti-minimalism trap quote
 - **Konflik dengan Aurora/Paper.id:** ada 5 — lihat ringkasan + `IMPROVEMENT-OPPORTUNITIES.md` (hint position, disabled buttons, radio threshold, inline validation, APCA migration)
 - **Status:** reviewed
+- **Reviewed by:** user (2026-05-25)
 - **Extracted:** 2026-05-22
 
 ### Format entry (untuk reference saat tambah buku)

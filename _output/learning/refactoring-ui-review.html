@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refactoring UI — Baca & Review</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --surface: #ffffff;
+    --surface-raised: #f0f2f5;
+    --border: #e4e8ed;
+    --text-primary: #1a2332;
+    --text-secondary: #4b5563;
+    --text-muted: #8b95a3;
+    --brand: #4199d5;
+    --brand-light: #e8f4fc;
+    --brand-mid: #c2dff5;
+    --green: #22c55e;
+    --green-light: #dcfce7;
+    --amber: #f59e0b;
+    --amber-light: #fef3c7;
+    --red: #ef4444;
+    --red-light: #fee2e2;
+    --purple: #8b5cf6;
+    --purple-light: #ede9fe;
+    --sidebar-w: 260px;
+    --content-max: 720px;
+    --radius: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ─── LAYOUT ─── */
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-book {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .sidebar-book-badge {
+    display: inline-block;
+    background: var(--brand-light);
+    color: var(--brand);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-book-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+
+  .sidebar-book-author {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .sidebar-progress {
+    padding: 0 20px 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+
+  .progress-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--surface-raised);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--brand);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  .nav-section {
+    padding: 8px 20px 4px;
+  }
+
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.15s;
+    margin-bottom: 1px;
+  }
+
+  .nav-item:hover { background: var(--bg); color: var(--text-primary); }
+  .nav-item.active { background: var(--brand-light); color: var(--brand); font-weight: 500; }
+
+  .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.4;
+    flex-shrink: 0;
+  }
+
+  .nav-item.active .nav-dot { opacity: 1; }
+
+  .nav-badge {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  .nb-pending { background: var(--amber-light); color: var(--amber); }
+  .nb-done { background: var(--green-light); color: var(--green); }
+
+  /* ─── MAIN ─── */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 40px 48px 80px;
+    max-width: calc(var(--sidebar-w) + var(--content-max) + 96px);
+  }
+
+  .section {
+    max-width: var(--content-max);
+    margin-bottom: 64px;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: linear-gradient(135deg, #1a2332 0%, #243447 60%, #2d4a6b 100%);
+    border-radius: 16px;
+    padding: 48px;
+    color: white;
+    margin-bottom: 64px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: rgba(65, 153, 213, 0.15);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: 80px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(65, 153, 213, 0.08);
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.9);
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .hero-author {
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .hero-thesis {
+    background: rgba(255,255,255,0.08);
+    border-left: 3px solid var(--brand);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.9);
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-thesis strong { color: white; }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .hero-meta-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .hero-meta-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .section-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-head h2 {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .section-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+
+  /* ─── FRAMEWORK CARD ─── */
+  .framework-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .framework-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    border-left: 4px solid var(--brand);
+    transition: box-shadow 0.15s;
+  }
+
+  .framework-card:hover {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  .fw-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .fw-num {
+    width: 28px; height: 28px;
+    background: var(--brand);
+    color: white;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .fw-title { font-size: 16px; font-weight: 700; line-height: 1.3; }
+  .fw-when { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .fw-thinking {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .fw-apply {
+    background: var(--brand-light);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--brand);
+  }
+
+  .fw-apply strong { color: #2d7bb8; }
+
+  .anti-pattern {
+    background: #fff5f5;
+    border-left: 3px solid var(--red);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    color: #b91c1c;
+    margin-top: 10px;
+  }
+
+  .anti-pattern::before {
+    content: '❌  ';
+    font-style: normal;
+  }
+
+  /* ─── KARTU ─── */
+  .kartu-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .kartu {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: box-shadow 0.15s;
+  }
+
+  .kartu:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+
+  .kartu-header {
+    padding: 16px 20px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-raised);
+  }
+
+  .kartu-emoji {
+    font-size: 20px;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 1px;
+  }
+
+  .kartu-title { font-size: 15px; font-weight: 700; line-height: 1.3; }
+  .kartu-source { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  .kartu-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--border);
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .tag-high { background: var(--brand-light); color: var(--brand); }
+
+  .kartu-body { padding: 16px 20px; }
+
+  .k-trigger {
+    background: var(--amber-light);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #92400e;
+    margin-bottom: 14px;
+  }
+
+  .k-trigger::before { content: '⚡  '; }
+
+  .k-thinking {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 14px;
+  }
+
+  .k-quote {
+    background: var(--bg);
+    border-left: 3px solid var(--brand);
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+
+  .k-example {
+    background: var(--surface-raised);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+  }
+
+  .k-example::before { content: '💡  '; font-style: normal; }
+
+  .k-apply {
+    background: var(--brand-light);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #2d5f8a;
+  }
+
+  .k-apply-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .k-antipattern {
+    background: #fff5f5;
+    border-left: 3px solid var(--red);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    color: #b91c1c;
+    margin-bottom: 14px;
+  }
+
+  .k-antipattern::before { content: '❌  '; }
+
+  .kartu-footer {
+    padding: 10px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .k-citation {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .k-status {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .ks-draft { background: var(--amber-light); color: var(--amber); }
+  .ks-reviewed { background: var(--green-light); color: var(--green); }
+
+  /* ─── CONFLICTS ─── */
+  .conflict-list { display: flex; flex-direction: column; gap: 20px; }
+
+  .conflict-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .conflict-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .conflict-letter {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--purple-light);
+    color: var(--purple);
+    font-size: 14px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .conflict-title { font-size: 15px; font-weight: 700; }
+  .conflict-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+  .conflict-body { padding: 16px 20px; }
+
+  .versus-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .versus-box {
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .v-book { background: #f8f0ff; border: 1px solid #e9d5ff; color: #5b21b6; }
+  .v-decision { background: var(--green-light); border: 1px solid #bbf7d0; color: #166534; }
+
+  .v-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .conflict-reason {
+    background: var(--surface-raised);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .conflict-reason::before { content: '💬  Alasan: '; font-weight: 600; color: var(--text-primary); }
+
+  .conflict-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .btn-confirm {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+
+  .btn-yes {
+    background: var(--green);
+    color: white;
+  }
+
+  .btn-yes:hover { background: #16a34a; }
+  .btn-yes.done { background: #dcfce7; color: #15803d; cursor: default; }
+
+  .btn-no {
+    background: var(--red-light);
+    color: var(--red);
+    border: 1px solid #fca5a5;
+  }
+
+  .btn-no:hover { background: #fecaca; }
+
+  .btn-note {
+    background: var(--surface-raised);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+
+  .btn-note:hover { background: var(--border); }
+
+  .confirm-status {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: var(--green-light);
+    color: #166534;
+    font-weight: 500;
+  }
+
+  .conflict-card.confirmed .confirm-status { display: flex; }
+  .conflict-card.confirmed .conflict-actions { display: none; }
+
+  .note-input {
+    display: none;
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    color: var(--text-primary);
+  }
+
+  .note-input:focus { outline: none; border-color: var(--brand); }
+
+  /* ─── MONEY QUOTES ─── */
+  .quotes-list { display: flex; flex-direction: column; gap: 16px; }
+
+  .quote-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    border-left: 4px solid var(--brand);
+  }
+
+  .quote-text {
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .quote-source {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ─── SUMMARY TABLE ─── */
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .summary-table th {
+    background: var(--surface-raised);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .summary-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table tr:hover td { background: var(--bg); }
+
+  .apply-high { color: var(--green); font-weight: 600; font-size: 11px; }
+  .apply-med { color: var(--amber); font-weight: 600; font-size: 11px; }
+
+  /* ─── REVIEW STATUS BAR ─── */
+  .review-bar {
+    position: fixed;
+    bottom: 0;
+    left: var(--sidebar-w);
+    right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 14px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    z-index: 100;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+  }
+
+  .review-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .review-count {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 15px;
+  }
+
+  #btn-lock {
+    background: var(--brand);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  #btn-lock.ready {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #btn-lock.ready:hover { background: #2d7bb8; }
+
+  #btn-lock.locked {
+    background: var(--green);
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 0 32px;
+  }
+
+  .category-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .category-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── SCROLLBAR ─── */
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 24px 20px 80px; }
+    .review-bar { left: 0; padding: 14px 20px; }
+    .versus-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ─── SIDEBAR ─── -->
+  <aside class="sidebar">
+    <div class="sidebar-book">
+      <div class="sidebar-book-badge">📚 Baca & Review</div>
+      <div class="sidebar-book-title">Refactoring UI</div>
+      <div class="sidebar-book-author">Adam Wathan & Steve Schoger · 2018</div>
+    </div>
+
+    <div class="sidebar-progress">
+      <div class="progress-label">
+        <span>Konflik di-review</span>
+        <span id="progress-text">0 / 5</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Navigasi</div>
+      <a class="nav-item active" href="#overview" onclick="setNav(this)">
+        <div class="nav-dot"></div> Overview
+      </a>
+      <a class="nav-item" href="#frameworks" onclick="setNav(this)">
+        <div class="nav-dot"></div> 5 Framework Utama
+      </a>
+      <a class="nav-item" href="#kartu" onclick="setNav(this)">
+        <div class="nav-dot"></div> 14 Kartu Detail
+        <span class="nav-badge nb-pending">14</span>
+      </a>
+      <a class="nav-item" href="#quotes" onclick="setNav(this)">
+        <div class="nav-dot"></div> Money Quotes
+      </a>
+      <a class="nav-item" href="#conflicts" onclick="setNav(this)">
+        <div class="nav-dot"></div> Konflik — Perlu Review
+        <span class="nav-badge nb-pending" id="badge-pending">5</span>
+      </a>
+    </div>
+
+    <div class="nav-section" style="margin-top: 8px;">
+      <div class="nav-section-label">14 Kartu</div>
+      <a class="nav-item" href="#k-hierarchy" onclick="setNav(this)"><div class="nav-dot"></div> Hierarchy via Weight</a>
+      <a class="nav-item" href="#k-labels" onclick="setNav(this)"><div class="nav-dot"></div> Labels Secondary</a>
+      <a class="nav-item" href="#k-spacing" onclick="setNav(this)"><div class="nav-dot"></div> Spacing System</a>
+      <a class="nav-item" href="#k-action" onclick="setNav(this)"><div class="nav-dot"></div> Action Hierarchy</a>
+      <a class="nav-item" href="#k-color" onclick="setNav(this)"><div class="nav-dot"></div> Color HSL</a>
+      <a class="nav-item" href="#k-lineh" onclick="setNav(this)"><div class="nav-dot"></div> Line Height</a>
+      <a class="nav-item" href="#k-shadow" onclick="setNav(this)"><div class="nav-dot"></div> Shadow 2-Layer</a>
+      <a class="nav-item" href="#k-empty" onclick="setNav(this)"><div class="nav-dot"></div> Empty State</a>
+      <a class="nav-item" href="#k-borders" onclick="setNav(this)"><div class="nav-dot"></div> Fewer Borders</a>
+      <a class="nav-item" href="#k-accent" onclick="setNav(this)"><div class="nav-dot"></div> Accent Border</a>
+      <a class="nav-item" href="#k-cards" onclick="setNav(this)"><div class="nav-dot"></div> Selectable Cards</a>
+      <a class="nav-item" href="#k-outside" onclick="setNav(this)"><div class="nav-dot"></div> Think Outside Box</a>
+      <a class="nav-item" href="#k-contrast" onclick="setNav(this)"><div class="nav-dot"></div> Text Contrast</a>
+      <a class="nav-item" href="#k-supercharge" onclick="setNav(this)"><div class="nav-dot"></div> Supercharge Defaults</a>
+    </div>
+  </aside>
+
+  <!-- ─── MAIN CONTENT ─── -->
+  <main class="main">
+
+    <!-- HERO -->
+    <div class="hero" id="overview">
+      <div class="hero-badge">📖 Knowledge Review · Refactoring UI</div>
+      <h1>Refactoring UI</h1>
+      <div class="hero-author">Adam Wathan & Steve Schoger · 2018 · Extracted 2026-05-22</div>
+      <div class="hero-thesis">
+        <strong>Thesis:</strong> Good-looking UI bukan soal bakat — itu hasil dari teknik spesifik yang bisa dipelajari: visual hierarchy lewat weight & color, spacing sistematis, color palette intentional, shadow berlapis, dan detail polish yang deliberate.
+      </div>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <div class="hero-meta-num">5</div>
+          <div class="hero-meta-label">Framework</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="hero-meta-num">14</div>
+          <div class="hero-meta-label">Kartu Detail</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="hero-meta-num">5</div>
+          <div class="hero-meta-label">Konflik Resolved</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="hero-meta-num">2018</div>
+          <div class="hero-meta-label">Published</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FRAMEWORKS -->
+    <section class="section" id="frameworks">
+      <div class="section-head">
+        <div class="section-icon" style="background:#e8f4fc">🧠</div>
+        <div>
+          <h2>5 Framework Utama</h2>
+          <div class="section-sub">Mental model reusable — invoke kapan pun relevan</div>
+        </div>
+      </div>
+
+      <div class="framework-grid">
+
+        <div class="framework-card">
+          <div class="fw-header">
+            <div class="fw-num">1</div>
+            <div>
+              <div class="fw-title">Visual Hierarchy — De-emphasize, Don't Always Emphasize</div>
+              <div class="fw-when">Invoke: Page terasa "ramai" atau primary element tidak dominant</div>
+            </div>
+          </div>
+          <div class="fw-thinking">
+            Hierarchy punya tiga lever: <strong>size, weight, dan color</strong>. Instinct awal selalu "bikin yang penting lebih besar" — tapi lebih efektif jika secondary element di-de-emphasize. Label bisa jadi abu-abu, teks pendukung lighter weight, meta-info ukuran lebih kecil. Primary element "menang" bukan karena lebih loud, tapi karena kompetitornya lebih quiet.
+          </div>
+          <div class="fw-apply">
+            <strong>→ Paper.id:</strong> List Pengeluaran — Total (bold, dark) + Nomor Ref (regular, grey) + Tanggal (small, muted). Di Detail card: amount besar bold, catatan/label muted.
+          </div>
+          <div class="anti-pattern">Semua text pakai warna yang sama dan ukuran mirip-mirip. User butuh effort ekstra untuk orientasi.</div>
+        </div>
+
+        <div class="framework-card">
+          <div class="fw-header">
+            <div class="fw-num">2</div>
+            <div>
+              <div class="fw-title">Spacing System — Start Big, Then Tighten</div>
+              <div class="fw-when">Invoke: Layout terasa cramped, atau spacing terasa arbitrary</div>
+            </div>
+          </div>
+          <div class="fw-thinking">
+            Default ke lebih banyak whitespace dari yang kamu pikir perlu — lebih mudah dikurangi daripada ditambah setelah struktur terbentuk. Pakai spacing scale berbasis <strong>kelipatan 4: 4, 8, 12, 16, 24, 32, 48, 64, 96, 128px</strong>. Proximity = relasi: elemen yang berhubungan harus lebih dekat satu sama lain.
+          </div>
+          <div class="fw-apply">
+            <strong>→ Paper.id:</strong> Label→input gap = 4px (intimately related), field→field = 16px (distinct), section→section = 32px (clearly separate). Sudah di lock ke rules.
+          </div>
+          <div class="anti-pattern">Spacing 15px di satu tempat, 13px di tempat lain — arbitrary values tanpa sistem.</div>
+        </div>
+
+        <div class="framework-card">
+          <div class="fw-header">
+            <div class="fw-num">3</div>
+            <div>
+              <div class="fw-title">Color Palette — HSL + Intentional Shades</div>
+              <div class="fw-when">Invoke: Setup color system, atau warna terasa inkonsisten / random</div>
+            </div>
+          </div>
+          <div class="fw-thinking">
+            Gunakan <strong>HSL</strong> (bukan hex/RGB) — intuitive untuk adjustment. Setiap hue butuh 8-10 shade (100 lightest → 900 darkest). Pure grey tanpa hue hint terlihat lifeless di layar — tambahkan subtle hue tint. <strong>Jangan pakai warna sebagai satu-satunya sinyal</strong> — selalu pasangkan dengan icon atau text (accessibility).
+          </div>
+          <div class="fw-apply">
+            <strong>→ Paper.id:</strong> Aurora palette sudah HSL-based. Saat extend untuk custom state: gunakan hue yang sama dengan brand blue, adjust lightness saja.
+          </div>
+          <div class="anti-pattern">Random hex values yang tidak relate satu sama lain. Warna biru untuk "approved" tanpa icon — color blind user tidak bisa bedakan.</div>
+        </div>
+
+        <div class="framework-card">
+          <div class="fw-header">
+            <div class="fw-num">4</div>
+            <div>
+              <div class="fw-title">Finishing Touches Checklist</div>
+              <div class="fw-when">Invoke: UI "functional tapi plain" — siap untuk polish pass</div>
+            </div>
+          </div>
+          <div class="fw-thinking">
+            Small targeted additions dramatically raise perceived quality: replace bullets dengan context-specific icons, tambah thin colored accent border di card/nav/alert, custom checkbox/radio dengan brand colors, ilustrasi + strong CTA di empty states. Juga: reduce border clutter dengan mengganti divider ke box-shadow atau background color difference.
+          </div>
+          <div class="fw-apply">
+            <strong>→ Paper.id:</strong> Custom checkbox sudah implement (.chk class). Icon di action menu sudah implement. Empty state + CTA = next priority.
+          </div>
+          <div class="anti-pattern">Shipping dengan browser default form elements. Empty state hanya "Belum ada data" tanpa CTA.</div>
+        </div>
+
+        <div class="framework-card">
+          <div class="fw-header">
+            <div class="fw-num">5</div>
+            <div>
+              <div class="fw-title">Think Outside the Box — Question Component Defaults</div>
+              <div class="fw-when">Invoke: Komponen terasa boring / generic seperti template</div>
+            </div>
+          </div>
+          <div class="fw-thinking">
+            Setiap komponen punya mental default yang sudah terkondisikan. Default itu <strong>starting point, bukan constraint</strong>. Tanya: "Apa yang komponen ini sebenarnya ingin capai untuk user?" Dropdown navigasi 6 fitur bisa jadi mega-menu 2-kolom. Kolom Name + Role yang tidak perlu sortir sendiri bisa di-stack. Radio plan selection yang penting bisa upgrade ke selectable cards.
+          </div>
+          <div class="fw-apply">
+            <strong>→ Paper.id:</strong> Table kolom related bisa di-stack (Nama Mitra + Email = 1 kolom). Dropdown action sudah upgraded dengan icons.
+          </div>
+          <div class="anti-pattern">Desain setiap komponen persis seperti browser default — tanpa tanya apakah itu cara terbaik untuk use case ini.</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- KARTU DETAIL -->
+    <section class="section" id="kartu">
+      <div class="section-head">
+        <div class="section-icon" style="background:#fef3c7">🃏</div>
+        <div>
+          <h2>14 Kartu Detail</h2>
+          <div class="section-sub">Insight atomic — masing-masing dengan trigger, thinking, contoh, dan aplikasi Paper.id</div>
+        </div>
+      </div>
+
+      <!-- SUMMARY TABLE -->
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 32px;">
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th>Kartu</th>
+              <th>Kategori</th>
+              <th>Nilai</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><a href="#k-hierarchy" style="color:var(--brand)">Hierarchy via Weight + Color</a></td><td>#hierarchy</td><td><span class="apply-high">HIGH</span></td><td><span class="k-status ks-reviewed">reviewed</span></td></tr>
+            <tr><td><a href="#k-labels" style="color:var(--brand)">Labels Secondary, Values Primary</a></td><td>#hierarchy</td><td><span class="apply-high">HIGH</span></td><td><span class="k-status ks-reviewed">reviewed</span></td></tr>
+            <tr><td><a href="#k-spacing" style="color:var(--brand)">Spacing System — Start Big</a></td><td>#spacing</td><td><span class="apply-high">HIGH</span></td><td><span class="k-status ks-reviewed">reviewed</span></td></tr>
+            <tr><td><a href="#k-action" style="color:var(--brand)">Action Visual Weight = Importance</a></td><td>#hierarchy</td><td><span class="apply-high">HIGH</span></td><td><span class="k-status ks-reviewed">reviewed</span></td></tr>
+            <tr><td><a href="#k-color" style="color:var(--brand)">Color Palette via HSL</a></td><td>#color</td><td><span class="apply-high">HIGH</span></td><td><span class="k-status ks-reviewed">reviewed</span></td></tr>
+            <tr><td><a href="#k-lineh" style="color:var(--brand)">Line Height by Context</a></td><td>#typography</td><td><span class="apply-high">HIGH</span></td><td><span class="k-status ks-reviewed">reviewed</span></td></tr>
+            <tr><td><a href="#k-shadow" style="color:var(--brand)">Two-Layer Box Shadow</a></td><td>#depth</td><td><span class="apply-med">MED</span></td><td><span class="k-status ks-reviewed">reviewed</span></td></tr>
+            <tr><td><a href="#k-empty" style="color:var(--brand)">Empty State as First Impression</a></td><td>#empty-state</td><td><span class="apply-high">HIGH</span></td><td><span class="k-status ks-draft">draft</span></td></tr>
+            <tr><td><a href="#k-borders" style="color:var(--brand)">Fewer Borders — 3 Alternatif</a></td><td>#visual-polish</td><td><span class="apply-high">HIGH</span></td><td><span class="k-status ks-draft">draft</span></td></tr>
+            <tr><td><a href="#k-accent" style="color:var(--brand)">Accent Border as Polish</a></td><td>#visual-polish</td><td><span class="apply-high">HIGH</span></td><td><span class="k-status ks-draft">draft</span></td></tr>
+            <tr><td><a href="#k-cards" style="color:var(--brand)">Selectable Cards vs Radio</a></td><td>#form</td><td><span class="apply-high">HIGH</span></td><td><span class="k-status ks-draft">draft</span></td></tr>
+            <tr><td><a href="#k-outside" style="color:var(--brand)">Think Outside Box</a></td><td>#component</td><td><span class="apply-med">MED</span></td><td><span class="k-status ks-draft">draft</span></td></tr>
+            <tr><td><a href="#k-contrast" style="color:var(--brand)">Text Contrast on Images</a></td><td>#imagery</td><td><span class="apply-med">MED</span></td><td><span class="k-status ks-reviewed">reviewed</span></td></tr>
+            <tr><td><a href="#k-supercharge" style="color:var(--brand)">Supercharge Defaults</a></td><td>#visual-polish</td><td><span class="apply-med">MED</span></td><td><span class="k-status ks-draft">draft</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="kartu-grid">
+
+        <!-- KARTU 1 -->
+        <div class="kartu" id="k-hierarchy">
+          <div class="kartu-header">
+            <div class="kartu-emoji">⚖️</div>
+            <div>
+              <div class="kartu-title">Hierarchy via Weight + Color (De-emphasize Pattern)</div>
+              <div class="kartu-source">Ch2 · Hierarchy is Everything · p.38</div>
+              <div class="kartu-tags">
+                <span class="tag tag-high">#hierarchy</span>
+                <span class="tag">#typography</span>
+                <span class="tag">#color</span>
+                <span class="tag tag-high">HIGH VALUE</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">Page terasa "ramai" atau primary element tidak terasa dominant meski sudah diperbesar.</div>
+            <div class="k-thinking">Hierarchy punya tiga lever: size, weight (bold/regular), dan color (primary vs muted). Instinct awal selalu "bikin yang penting lebih besar" — tapi lebih efektif jika secondary element di-de-emphasize. Label bisa jadi abu-abu, teks pendukung lighter weight, meta-info ukuran lebih kecil. Primary element "menang" bukan karena dia lebih loud, tapi karena kompetitornya lebih quiet. Visual hierarchy juga terpisah dari semantic hierarchy (h1-h6).</div>
+            <div class="k-quote">"Instead of leaving all of the heavy lifting to font size alone, try using font weight or color to do the same job."</div>
+            <div class="k-example">Invoice list di Stripe: amount (bold, large, dark) + invoice number (regular, muted) + date (small, grey). Amount dominan bukan karena ada border — tapi karena semua elemen lain di-mute-kan.</div>
+            <div class="k-antipattern">Semua text pakai warna yang sama (#333) dan ukuran mirip-mirip. Primary action sama berat visualnya dengan secondary action.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              List Pengeluaran: Total (bold, dark blue primary) vs Nomor Ref (regular, grey-muted) vs Tanggal (small, muted). Di card Detail Invoice: amount besar bold di atas, catatan/label bisa muted.
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch2 · p.38 · Extracted 2026-05-22</span>
+            <span class="k-status ks-reviewed">✓ reviewed</span>
+          </div>
+        </div>
+
+        <!-- KARTU 2 -->
+        <div class="kartu" id="k-labels">
+          <div class="kartu-header">
+            <div class="kartu-emoji">🏷️</div>
+            <div>
+              <div class="kartu-title">Labels Secondary, Values Primary</div>
+              <div class="kartu-source">Ch2 · Hierarchy is Everything · p.48</div>
+              <div class="kartu-tags">
+                <span class="tag tag-high">#hierarchy</span>
+                <span class="tag">#detail-page</span>
+                <span class="tag tag-high">HIGH VALUE</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">Detail card atau info section terasa "flat" — semua teks berat sama, label dan value bersaing visual.</div>
+            <div class="k-thinking">Di pasangan label-value ("Tanggal: 12 Mei 2026"), yang penting bagi user adalah VALUE-nya. Label hanya konteks. Oleh karena itu: value = bold / dark / larger, label = muted / grey / smaller. Label bahkan bisa dihilangkan kalau value sudah self-explanatory.</div>
+            <div class="k-quote">"The data itself is what matters, the label is just there for clarity."</div>
+            <div class="k-example">Invoice detail di Linear: "Due date" (label, 11px grey) di atas "March 15, 2026" (value, 14px dark bold). User langsung scan ke value; label hanya membantu kalau ada ambiguitas.</div>
+            <div class="k-antipattern">Detail section dengan 8 baris Label:Value semuanya 14px #333 regular. Atau label di-bold padahal nilai yang dicari user ada di value-nya.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              View Invoice / View Pengeluaran: semua field di detail card (Tanggal, Jatuh Tempo, Nomor, Mitra) — label = muted small, value = dark regular. Untuk data moneter: value bold + larger.
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch2 · p.48 · Extracted 2026-05-22</span>
+            <span class="k-status ks-reviewed">✓ reviewed</span>
+          </div>
+        </div>
+
+        <!-- KARTU 3 -->
+        <div class="kartu" id="k-spacing">
+          <div class="kartu-header">
+            <div class="kartu-emoji">📐</div>
+            <div>
+              <div class="kartu-title">Spacing System — Start Big, Then Tighten</div>
+              <div class="kartu-source">Ch3 · Layout and Spacing · p.66</div>
+              <div class="kartu-tags">
+                <span class="tag tag-high">#spacing</span>
+                <span class="tag">#layout</span>
+                <span class="tag tag-high">HIGH VALUE</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">Layout terasa cramped, atau spacing antar elemen inkonsisten / arbitrary.</div>
+            <div class="k-thinking">Default ke lebih banyak whitespace dari yang kamu kira perlu. Gunakan spacing scale berbasis kelipatan 4: <strong>4, 8, 12, 16, 24, 32, 48, 64, 96, 128px</strong>. Proximity = relasi: elemen yang berhubungan harus lebih dekat satu sama lain. Group-group konten harus punya gap lebih besar antar-group dibanding internal-group.</div>
+            <div class="k-quote">"A better approach is to start by giving something way too much space, then remove it until you're happy with the result."</div>
+            <div class="k-example">Form: label→input = 4px (sangat dekat, clearly related), antar field = 16px (related tapi distinct), antar section = 32px (clearly separate groups). Hierarchy spacing yang jelas tanpa border divider.</div>
+            <div class="k-antipattern">Spacing 15px di sini, 13px di sana — arbitrary values tanpa sistem. Atau semua gap sama 8px sehingga group boundaries tidak terasa.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              In-card toolbar: gap antar action = 8px, gap toolbar ke table = 16px, gap antar section form = 24-32px. Scale 4/8/16/24/32 sudah di-lock ke rules.
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch3 · p.66 · Extracted 2026-05-22</span>
+            <span class="k-status ks-reviewed">✓ reviewed</span>
+          </div>
+        </div>
+
+        <!-- KARTU 4 -->
+        <div class="kartu" id="k-action">
+          <div class="kartu-header">
+            <div class="kartu-emoji">🎯</div>
+            <div>
+              <div class="kartu-title">Action Visual Weight = Semantic Importance</div>
+              <div class="kartu-source">Ch2 · Hierarchy is Everything · p.60</div>
+              <div class="kartu-tags">
+                <span class="tag tag-high">#hierarchy</span>
+                <span class="tag">#button</span>
+                <span class="tag">#destructive</span>
+                <span class="tag tag-high">HIGH VALUE</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">Page terasa "ramai aksi" — beberapa tombol terlihat sama pentingnya, atau destructive action secara visual sama dengan primary action.</div>
+            <div class="k-thinking">Visual weight sebuah action harus match kepentingannya: primary = filled/solid pill (satu per page), secondary = outline/ghost, tertiary = text-link only, destructive = visual berbahaya (merah) tapi weight sesuai frekuensi (jarang = text-link merah, bukan filled merah). Kalau jarang tapi berbahaya = sembunyikan di sub-menu.</div>
+            <div class="k-quote">"Every action on a page sits somewhere in a pyramid of importance. Most pages only have one true primary action."</div>
+            <div class="k-example">GitHub: "Merge PR" = filled green, "Close PR" = outline grey, "Delete branch" = text-link merah kecil. Hierarchy jelas meski tiga action di area yang sama.</div>
+            <div class="k-antipattern">Form dengan tiga tombol semua filled (Simpan/Batalkan/Hapus) — semua besar, semua sama weight. Atau destructive di-highlight merah solid besar — justru menarik perhatian ke aksi berbahaya.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              "Tindakan Lainnya" (text-link kiri) + "Catat Pengeluaran" (pill primary kanan). Di Detail: "Ubah" standalone button, "Hapus" masuk sub-menu Tindakan ▾.
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch2 · p.60 · Extracted 2026-05-22</span>
+            <span class="k-status ks-reviewed">✓ reviewed</span>
+          </div>
+        </div>
+
+        <!-- KARTU 5 -->
+        <div class="kartu" id="k-color">
+          <div class="kartu-header">
+            <div class="kartu-emoji">🎨</div>
+            <div>
+              <div class="kartu-title">Color Palette via HSL — 8-10 Shades per Hue</div>
+              <div class="kartu-source">Ch5 · Working with Color · p.138</div>
+              <div class="kartu-tags">
+                <span class="tag tag-high">#color</span>
+                <span class="tag">#accessibility</span>
+                <span class="tag">#design-system</span>
+                <span class="tag tag-high">HIGH VALUE</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">Warna di desain terasa inkonsisten, palette terasa random, atau warna grey terlihat "lifeless".</div>
+            <div class="k-thinking">Gunakan HSL (Hue/Saturation/Lightness) — intuitive untuk adjustment. Setiap hue butuh 8-10 shade (100 = sangat muda → 900 = sangat gelap). Pure grey tanpa hue hint terlihat lifeless di layar. Jangan pakai warna sebagai satu-satunya sinyal untuk state — selalu pasangkan dengan icon, weight, atau teks.</div>
+            <div class="k-quote">"HSB is more common in design software, but browsers only understand HSL — so if you're designing for the web, HSL should be your weapon of choice."</div>
+            <div class="k-example">Aurora DS palette: --color-light-brand-* series (100-900) dengan hue consistent. Grey Aurora pakai subtle blue hint — itulah kenapa terasa "bersih" bukan "flat".</div>
+            <div class="k-antipattern">Arbitrary hex (#f5f5f5, #e0e0e0) yang tidak punya relasi. Warna biru untuk "approved" tanpa icon centang — color blind user tidak bisa bedakan.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              Saat extend Aurora palette: ambil hue yang sama dengan brand blue, adjust lightness saja. Badge status: icon + color (bukan color only).
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch5 · p.138 · Extracted 2026-05-22</span>
+            <span class="k-status ks-reviewed">✓ reviewed</span>
+          </div>
+        </div>
+
+        <!-- KARTU 6 -->
+        <div class="kartu" id="k-lineh">
+          <div class="kartu-header">
+            <div class="kartu-emoji">↕️</div>
+            <div>
+              <div class="kartu-title">Line Height by Context</div>
+              <div class="kartu-source">Ch4 · Designing Text · p.122</div>
+              <div class="kartu-tags">
+                <span class="tag tag-high">#typography</span>
+                <span class="tag">#readability</span>
+                <span class="tag tag-high">HIGH VALUE</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">Headline terasa terlalu loose, atau body paragraph terasa cramped.</div>
+            <div class="k-thinking">Line height bukan satu nilai untuk semua — semakin panjang baris dan semakin kecil font, semakin besar line-height yang dibutuhkan. Headline (large, sedikit kata): <strong>1.0–1.2</strong> (tight). Body text: <strong>1.5–1.8</strong> (loose untuk readability). Small UI labels: <strong>1.2–1.4</strong>. Nilai 1.5 sebagai universal default tidak tepat.</div>
+            <div class="k-example">H1 "Buat Invoice": font-size: 24px; line-height: 1.2 — tight, authority. Paragraph deskripsi: font-size: 14px; line-height: 1.6 — loose, readable. Table cell: line-height: 1.4.</div>
+            <div class="k-antipattern">Semua text di page pakai line-height: 1.5 tanpa pertimbangan — heading jadi aneh spaced.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              Page title: 1.2–1.3 · Table cell: 1.4 · Form helper text: 1.6 · Toast message: 1.4. Aurora sudah set ini di component — ikuti kecuali ada override eksplisit.
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch4 · p.122 · Extracted 2026-05-22</span>
+            <span class="k-status ks-reviewed">✓ reviewed</span>
+          </div>
+        </div>
+
+        <!-- KARTU 7 -->
+        <div class="kartu" id="k-shadow">
+          <div class="kartu-header">
+            <div class="kartu-emoji">🌑</div>
+            <div>
+              <div class="kartu-title">Two-Layer Box Shadow for Realistic Depth</div>
+              <div class="kartu-source">Ch6 · Depth · p.186</div>
+              <div class="kartu-tags">
+                <span class="tag">#depth</span>
+                <span class="tag">#shadow</span>
+                <span class="tag">#visual-polish</span>
+                <span class="tag apply-med">MED VALUE</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">Card atau floating element terasa "flat" atau shadow terlihat artificial.</div>
+            <div class="k-thinking">Shadow di dunia nyata terdiri dari dua komponen: (1) <strong>direct shadow</strong> — kecil, sharp, dekat sumber cahaya, dan (2) <strong>ambient shadow</strong> — besar, soft, menyebar. Kombinasi keduanya = shadow natural. Single shadow saja terasa artificial.</div>
+            <div class="k-example">Card: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24). Dropdown: 0 4px 6px rgba(0,0,0,0.07), 0 10px 15px rgba(0,0,0,0.1).</div>
+            <div class="k-antipattern">box-shadow: 0px 4px 4px rgba(0,0,0,0.25) — single symmetric shadow yang terlihat flat. Shadow dengan opacity >0.5 yang terlihat harsh.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              Card summary: 0 2px 8px hsla(0,0%,0%,.08). Dropdown (portal): 0 4px 6px + 0 10px 20px. Modal: cek Aurora au-dialog.component.scss dulu.
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch6 · p.186 · Extracted 2026-05-22</span>
+            <span class="k-status ks-reviewed">✓ reviewed</span>
+          </div>
+        </div>
+
+        <!-- KARTU 8 -->
+        <div class="kartu" id="k-empty">
+          <div class="kartu-header">
+            <div class="kartu-emoji">📭</div>
+            <div>
+              <div class="kartu-title">Empty State as First Impression</div>
+              <div class="kartu-source">Ch8 · Finishing Touches · p.234</div>
+              <div class="kartu-tags">
+                <span class="tag tag-high">#empty-state</span>
+                <span class="tag">#onboarding</span>
+                <span class="tag">#visual-polish</span>
+                <span class="tag tag-high">HIGH VALUE</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">User buka fitur baru pertama kali dan lihat "Belum ada data" atau table kosong tanpa arahan.</div>
+            <div class="k-thinking">Empty state adalah <strong>PERTAMA yang user lihat</strong> saat coba fitur baru — bukan afterthought, tapi priority design. Harus punya: (1) ilustrasi / visual yang menarik, (2) CTA button yang jelas, (3) HIDE UI controls yang irrelevant saat kosong (tab, filter, kolom sort — kalau data kosong, kontrol ini misleading).</div>
+            <div class="k-quote">"Use them as an opportunity to be interesting and exciting — don't settle for plain and boring."</div>
+            <div class="k-example">Notion empty database: ilustrasi kecil + "Add a row to get started" + tombol "+ New" primary besar. Tab dan filter disembunyikan. User langsung tau action pertama mereka.</div>
+            <div class="k-antipattern">Table kosong dengan header kolom lengkap, tab filter aktif, pagination "0 dari 0 entri" — semua kontrol irrelevant tetap terlihat. User bingung, tidak ada direction.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              Semua List Page (Pengeluaran, Invoice, Customer): saat zero data, hide in-card toolbar + filter row, tampilkan ilustrasi + teks motivasi + tombol "Catat Pengeluaran Pertama".
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch8 · p.234-237 · Extracted 2026-05-22</span>
+            <span class="k-status ks-draft">⚠ draft</span>
+          </div>
+        </div>
+
+        <!-- KARTU 9 -->
+        <div class="kartu" id="k-borders">
+          <div class="kartu-header">
+            <div class="kartu-emoji">🔲</div>
+            <div>
+              <div class="kartu-title">Fewer Borders — 3 Alternatives</div>
+              <div class="kartu-source">Ch8 · Finishing Touches · p.238</div>
+              <div class="kartu-tags">
+                <span class="tag tag-high">#visual-polish</span>
+                <span class="tag">#spacing</span>
+                <span class="tag">#depth</span>
+                <span class="tag tag-high">HIGH VALUE</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">Layout terasa "busy" atau "cluttered" karena terlalu banyak garis border sebagai separator.</div>
+            <div class="k-thinking">Border adalah cara paling obvious untuk memisahkan dua elemen — tapi bukan satu-satunya, dan terlalu banyak bikin design ramai. Tiga alternatif: (1) <strong>Box shadow</strong> — lebih subtle, tidak "cutting". (2) <strong>Two different background colors</strong> — adjacent element pakai bg sedikit berbeda. (3) <strong>Extra spacing</strong> — spacing sendiri cukup untuk menciptakan separasi.</div>
+            <div class="k-quote">"Borders are a great way to distinguish two elements, but they aren't the only way, and using too many can make your design feel busy and cluttered."</div>
+            <div class="k-example">Contacts list: search field dipisahkan dari list bukan dengan border — pakai background: hsl(200,10%,94%) di search area vs white di list. Separasi jelas tanpa satu garis border pun.</div>
+            <div class="k-antipattern">Setiap row table punya border-bottom, tiap section punya border atas dan bawah, card punya border semua sisi + ada divider internal. Design terlihat seperti spreadsheet.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              Row separator: pakai spacing atau subtle bg alternating, bukan border-bottom tebal. Detail card: gunakan bg color difference untuk separasi antar block. Form section divider: extra spacing 32px cukup tanpa garis &lt;hr&gt;.
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch8 · p.238-241 · Extracted 2026-05-22</span>
+            <span class="k-status ks-draft">⚠ draft</span>
+          </div>
+        </div>
+
+        <!-- KARTU 10 -->
+        <div class="kartu" id="k-accent">
+          <div class="kartu-header">
+            <div class="kartu-emoji">🎀</div>
+            <div>
+              <div class="kartu-title">Accent Border as Quick Visual Polish</div>
+              <div class="kartu-source">Ch8 · Finishing Touches · p.224</div>
+              <div class="kartu-tags">
+                <span class="tag tag-high">#visual-polish</span>
+                <span class="tag">#color</span>
+                <span class="tag tag-high">HIGH VALUE</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">Card, alert, atau nav item terasa plain dan "belum selesai" meski kontennya sudah lengkap.</div>
+            <div class="k-thinking">Thin colorful border strip (2-4px) di posisi strategis adalah cara termudah menambah visual interest tanpa graphic design skill tinggi. Posisi efektif: (1) <strong>top border di card</strong> — border-top: 4px solid brand-color, (2) <strong>bottom border di active nav</strong>, (3) <strong>left border di alert/banner</strong>. Satu accent cukup — jangan di setiap elemen.</div>
+            <div class="k-example">Stripe Dashboard card: thin teal top-border di revenue summary card. Langsung terasa "premium" tanpa ilustrasi. Nav item aktif: brand blue bottom-border 2px — lebih elegan dari full background highlight.</div>
+            <div class="k-antipattern">Accent border di setiap card, setiap alert, setiap section — jadi noise, bukan highlight. Pakai warna yang tidak ada di palette.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              Dashboard card summary: border-top 3px solid brand. Alert/banner: border-left 4px solid status-color. Active nav: accent line bawah. Cek Aurora alert/banner component dulu — mungkin sudah punya built-in.
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch8 · p.224-227 · Extracted 2026-05-22</span>
+            <span class="k-status ks-draft">⚠ draft</span>
+          </div>
+        </div>
+
+        <!-- KARTU 11 -->
+        <div class="kartu" id="k-cards">
+          <div class="kartu-header">
+            <div class="kartu-emoji">🗃️</div>
+            <div>
+              <div class="kartu-title">Selectable Cards vs Radio — Upgrade for Important Choices</div>
+              <div class="kartu-source">Ch8 · Finishing Touches · p.245</div>
+              <div class="kartu-tags">
+                <span class="tag tag-high">#form</span>
+                <span class="tag">#component</span>
+                <span class="tag">#visual-polish</span>
+                <span class="tag tag-high">HIGH VALUE</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">Form punya pilihan penting (paket harga, tipe dokumen, mode bayar) yang tampil sebagai radio button plain.</div>
+            <div class="k-thinking">Radio button default cocok untuk pilihan teknis sederhana. Tapi untuk pilihan yang PENTING bagi user, radio circle terasa tidak match dengan bobot keputusannya. Upgrade ke selectable card: card dengan border, konten lebih kaya (nama + harga + deskripsi), dan highlight border/bg saat selected.</div>
+            <div class="k-quote">"If a set of radio buttons are an important part of the UI you're designing, try something like selectable cards instead."</div>
+            <div class="k-example">Change Plan UI upgrade: 4 kartu horizontal masing-masing dengan tier name, GB, price/mo, border-teal saat selected + checkmark icon. User bisa compare semua opsi dengan mudah.</div>
+            <div class="k-antipattern">Memilih paket harga Rp 500rb/bulan via radio circle 16px kecil di sebelah teks plain "Business Plan". Decision besar dengan affordance kecil = disconnect.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id ⚠️</span>
+              Aurora belum punya au-selectable-card. Kalau implement, wajib custom + catat di AURORA-OVERRIDES.md. Hanya untuk pilihan truly significant. Pilihan sederhana ≤4 opsi = tetap Aurora radio.
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch8 · p.245-246 · Extracted 2026-05-22</span>
+            <span class="k-status ks-draft">⚠ draft</span>
+          </div>
+        </div>
+
+        <!-- KARTU 12 -->
+        <div class="kartu" id="k-outside">
+          <div class="kartu-header">
+            <div class="kartu-emoji">🧩</div>
+            <div>
+              <div class="kartu-title">Think Outside the Box — Question Component Defaults</div>
+              <div class="kartu-source">Ch8 · Finishing Touches · p.242</div>
+              <div class="kartu-tags">
+                <span class="tag">#component</span>
+                <span class="tag">#table</span>
+                <span class="tag">#navigation</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">Komponen terasa generic / boring — terlihat seperti template tanpa karakter.</div>
+            <div class="k-thinking">Setiap komponen punya mental default. Default itu starting point, bukan constraint. Tanya: "Apa yang komponen ini sebenarnya ingin capai?" Dropdown 6 fitur bisa jadi mega-menu 2-kolom. Kolom Name + Role yang tidak perlu sortir sendiri bisa di-stack. Radio important = selectable cards.</div>
+            <div class="k-quote">"Don't let your existing beliefs hold back your designs — constraints are powerful but sometimes a bit of freedom is just what you need."</div>
+            <div class="k-example">Table sebelum: 6 kolom terpisah. Setelah: Name + Role di-stack jadi 1 kolom (Name bold, Role muted di bawah), Policy + Type di-stack jadi 1. Lebih readable, lebih compact.</div>
+            <div class="k-antipattern">Desain setiap komponen persis seperti browser default atau Bootstrap default — tanpa tanya apakah itu cara terbaik untuk use case ini.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              Table: kolom related yang tidak perlu sortir sendiri bisa di-stack. Dropdown Tindakan: sudah upgraded dengan icons. Navigation: kalau sub-features banyak, pertimbangkan grouped menu.
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch8 · p.242-246 · Extracted 2026-05-22</span>
+            <span class="k-status ks-draft">⚠ draft</span>
+          </div>
+        </div>
+
+        <!-- KARTU 13 -->
+        <div class="kartu" id="k-contrast">
+          <div class="kartu-header">
+            <div class="kartu-emoji">🖼️</div>
+            <div>
+              <div class="kartu-title">Text Contrast Over Images</div>
+              <div class="kartu-source">Ch7 · Working with Images · p.202</div>
+              <div class="kartu-tags">
+                <span class="tag">#imagery</span>
+                <span class="tag">#accessibility</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">Teks di atas foto atau background image sulit dibaca — terutama kalau foto punya area terang tak terduga.</div>
+            <div class="k-thinking">4 teknik guarantee teks terbaca di atas image: (1) <strong>Semi-transparent overlay</strong> dark rgba(0,0,0,0.4), (2) <strong>Low-brightness image</strong>, (3) <strong>Color tint overlay</strong> (brand semi-transparent), (4) <strong>Text shadow</strong> tipis. Jangan rely pada "gambarnya kebetulan dark" — selalu gunakan salah satu teknik untuk kontrol predictable.</div>
+            <div class="k-example">Hero banner: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.5)) dari atas ke bawah — area bawah (tempat teks) jadi gelap predictable. Teks putih di atas gradien hitam = selalu readable.</div>
+            <div class="k-antipattern">Teks putih langsung di atas foto tanpa overlay, berharap foto cukup gelap — kadang readable, kadang tidak.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              Relevan untuk avatar/banner upload di profile bisnis. Untuk user-generated image: selalu object-fit: cover + background-color fallback + teks di area aman.
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch7 · p.202 · Extracted 2026-05-22</span>
+            <span class="k-status ks-reviewed">✓ reviewed</span>
+          </div>
+        </div>
+
+        <!-- KARTU 14 -->
+        <div class="kartu" id="k-supercharge">
+          <div class="kartu-header">
+            <div class="kartu-emoji">⚡</div>
+            <div>
+              <div class="kartu-title">Supercharge Default UI Elements</div>
+              <div class="kartu-source">Ch8 · Finishing Touches · p.220</div>
+              <div class="kartu-tags">
+                <span class="tag">#visual-polish</span>
+                <span class="tag">#form</span>
+                <span class="tag">#icon</span>
+              </div>
+            </div>
+          </div>
+          <div class="kartu-body">
+            <div class="k-trigger">UI terasa "plain dan belum selesai" meski semua elemen sudah ada — bullet list biasa, checkbox browser default.</div>
+            <div class="k-thinking">Elemen default browser berfungsi tapi tidak berkarakter. Upgrade mudah dengan dampak besar: (1) Bullet list → icons yang relevan konteks, (2) Blockquote → tambah oversized colored quotation mark, (3) Custom checkbox/radio dengan appearance:none + brand color saat checked, (4) Link styling yang intentional.</div>
+            <div class="k-example">Feature comparison list: ganti bullet dengan Aurora checkmark icon 18px warna brand green. Langsung terasa premium. Security list: gunakan padlock icon. Satu perubahan, dampak visual besar.</div>
+            <div class="k-antipattern">Native browser checkbox yang beda-beda tampilannya di Chrome/Firefox/Safari. Atau bullet untuk semua konteks meski tidak meaningful.</div>
+            <div class="k-apply">
+              <span class="k-apply-label">→ Paper.id</span>
+              Checkbox di table: sudah implement custom .chk class — pertahankan di semua table baru. Feature list di onboarding/empty state: pakai Aurora icon checkmark bukan bullet. Pakai Aurora SVG icon, jangan ngarang inline.
+            </div>
+          </div>
+          <div class="kartu-footer">
+            <span class="k-citation">Refactoring UI · Ch8 · p.220-223 · Extracted 2026-05-22</span>
+            <span class="k-status ks-draft">⚠ draft</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MONEY QUOTES -->
+    <section class="section" id="quotes">
+      <div class="section-head">
+        <div class="section-icon" style="background:#fce7f3">💬</div>
+        <div>
+          <h2>Money Quotes</h2>
+          <div class="section-sub">3 quote yang paling berkesan dari buku ini</div>
+        </div>
+      </div>
+
+      <div class="quotes-list">
+        <div class="quote-card">
+          <div class="quote-text">"Don't let your existing beliefs hold back your designs — constraints are powerful but sometimes a bit of freedom is just what you need to take an interface to the next level."</div>
+          <div class="quote-source">— Ch8 · Think outside the box · p.246</div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-text">"Did the designer do anything here that I never would have thought to do?"</div>
+          <div class="quote-source">— Ch9 · Leveling Up · p.251 · (pertanyaan yang harus ditanya saat studi design bagus)</div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-text">"By continually studying the work that inspires you with a careful eye, you'll be picking up design tricks for years to come."</div>
+          <div class="quote-source">— Ch9 · Leveling Up · p.252</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONFLICTS -->
+    <section class="section" id="conflicts">
+      <div class="section-head">
+        <div class="section-icon" style="background:#ede9fe">⚡</div>
+        <div>
+          <h2>Konflik — Perlu Review Lo</h2>
+          <div class="section-sub">5 keputusan yang gue buat sendiri. Konfirmasi atau koreksi masing-masing.</div>
+        </div>
+      </div>
+
+      <div style="background: var(--amber-light); border: 1px solid #fcd34d; border-radius: var(--radius); padding: 14px 18px; font-size: 13px; color: #92400e; margin-bottom: 24px;">
+        ⚠️ <strong>Semua ini gue putuskan tanpa lo.</strong> Kalau ada yang salah, klik "Koreksi" dan ketik keputusan yang benar. Setelah lo approve semua 5, status buku berubah dari <strong>draft → reviewed</strong>.
+      </div>
+
+      <div class="conflict-list">
+
+        <!-- KONFLIK A -->
+        <div class="conflict-card" id="conf-a">
+          <div class="conflict-header">
+            <div class="conflict-letter">A</div>
+            <div>
+              <div class="conflict-title">Selectable Cards vs Radio</div>
+              <div class="conflict-subtitle">Kapan upgrade radio → selectable card?</div>
+            </div>
+          </div>
+          <div class="conflict-body">
+            <div class="versus-row">
+              <div class="versus-box v-book">
+                <span class="v-label">📚 Buku bilang</span>
+                Kalau radio buttons adalah bagian UI yang PENTING, upgrade ke selectable cards — card dengan border highlight, konten lebih kaya.
+              </div>
+              <div class="versus-box v-decision">
+                <span class="v-label">✅ Keputusan gue</span>
+                Tetap Aurora au-radio untuk ≤4 opsi. Selectable card boleh, tapi harus custom + catat di AURORA-OVERRIDES.md. Hanya untuk pilihan truly significant.
+              </div>
+            </div>
+            <div class="conflict-reason">Aurora belum punya au-selectable-card component. Custom diam-diam tanpa dokumentasi = pelanggaran aurora-lookup-ritual. Kalau mau, harus eksplisit.</div>
+            <div class="conflict-actions">
+              <button class="btn-confirm btn-yes" onclick="confirmConflict('conf-a', this)">✓ Setuju</button>
+              <button class="btn-confirm btn-no" onclick="showNote('conf-a')">✗ Koreksi</button>
+            </div>
+            <textarea class="note-input" id="note-conf-a" placeholder="Tulis koreksi atau catatan lo di sini..."></textarea>
+            <div class="confirm-status">✓ Dikonfirmasi</div>
+          </div>
+        </div>
+
+        <!-- KONFLIK B -->
+        <div class="conflict-card" id="conf-b">
+          <div class="conflict-header">
+            <div class="conflict-letter">B</div>
+            <div>
+              <div class="conflict-title">Convention vs Exploration</div>
+              <div class="conflict-subtitle">Seberapa jauh boleh eksplor dari default component?</div>
+            </div>
+          </div>
+          <div class="conflict-body">
+            <div class="versus-row">
+              <div class="versus-box v-book">
+                <span class="v-label">📚 Buku bilang</span>
+                Default design bisa dieksplorasi jauh — jangan biarkan "existing beliefs" menahan design. Exploration seringkali membawa ke level lebih tinggi.
+              </div>
+              <div class="versus-box v-decision">
+                <span class="v-label">✅ Keputusan gue</span>
+                Exploration OK untuk form ≤5 field, atau context marketing/onboarding. Form operasional >5 field → tetap convention. B2B finance user butuh familiar patterns.
+              </div>
+            </div>
+            <div class="conflict-reason">Practical UI (buku ke-2) push Jakob's Law — stick convention kecuali ada compelling reason. Hybrid: default convention untuk operasional, exploration untuk context yang butuh visual appeal.</div>
+            <div class="conflict-actions">
+              <button class="btn-confirm btn-yes" onclick="confirmConflict('conf-b', this)">✓ Setuju</button>
+              <button class="btn-confirm btn-no" onclick="showNote('conf-b')">✗ Koreksi</button>
+            </div>
+            <textarea class="note-input" id="note-conf-b" placeholder="Tulis koreksi atau catatan lo di sini..."></textarea>
+            <div class="confirm-status">✓ Dikonfirmasi</div>
+          </div>
+        </div>
+
+        <!-- KONFLIK C -->
+        <div class="conflict-card" id="conf-c">
+          <div class="conflict-header">
+            <div class="conflict-letter">C</div>
+            <div>
+              <div class="conflict-title">Borders — Skeptis vs Pragmatis</div>
+              <div class="conflict-subtitle">Kapan border OK, kapan harus cari alternatif?</div>
+            </div>
+          </div>
+          <div class="conflict-body">
+            <div class="versus-row">
+              <div class="versus-box v-book">
+                <span class="v-label">📚 Buku bilang</span>
+                Skeptis dengan border. Coba spacing/proximity/bg color dulu. Border = last resort — terlalu banyak border bikin design busy dan cluttered.
+              </div>
+              <div class="versus-box v-decision">
+                <span class="v-label">✅ Keputusan gue</span>
+                Detail page = skeptis (no border, pakai spacing/bg). Modal/dialog = pragmatis (border boundary harus jelas). Card di list page = pragmatis (container bantu separation).
+              </div>
+            </div>
+            <div class="conflict-reason">Detail page density tinggi, border bikin clutter. Modal boundary harus jelas dari background. Context-dependent hybrid lebih practical dari all-or-nothing.</div>
+            <div class="conflict-actions">
+              <button class="btn-confirm btn-yes" onclick="confirmConflict('conf-c', this)">✓ Setuju</button>
+              <button class="btn-confirm btn-no" onclick="showNote('conf-c')">✗ Koreksi</button>
+            </div>
+            <textarea class="note-input" id="note-conf-c" placeholder="Tulis koreksi atau catatan lo di sini..."></textarea>
+            <div class="confirm-status">✓ Dikonfirmasi</div>
+          </div>
+        </div>
+
+        <!-- KONFLIK D -->
+        <div class="conflict-card" id="conf-d">
+          <div class="conflict-header">
+            <div class="conflict-letter">D</div>
+            <div>
+              <div class="conflict-title">Shadow — 2-Layer vs 3-Level Discrete</div>
+              <div class="conflict-subtitle">Pendekatan shadow: aesthetic vs systematic?</div>
+            </div>
+          </div>
+          <div class="conflict-body">
+            <div class="versus-row">
+              <div class="versus-box v-book">
+                <span class="v-label">📚 Buku bilang</span>
+                2-layer composition (direct shadow + ambient shadow) untuk depth yang terasa natural seperti dunia nyata. Setiap card/floating element pakai 2 layer.
+              </div>
+              <div class="versus-box v-decision">
+                <span class="v-label">✅ Keputusan gue</span>
+                Best of both: 3 token discrete (shadow-sm/md/lg) untuk DS-friendly, tapi tiap token internally pakai 2-layer composition. Token sistematis + depth aesthetic.
+              </div>
+            </div>
+            <div class="conflict-reason">Practical UI push 3-level sistematis untuk DS. Refactoring UI push 2-layer composition untuk aesthetic. Dua hal ini tidak conflicting — bisa disatukan.</div>
+            <div class="conflict-actions">
+              <button class="btn-confirm btn-yes" onclick="confirmConflict('conf-d', this)">✓ Setuju</button>
+              <button class="btn-confirm btn-no" onclick="showNote('conf-d')">✗ Koreksi</button>
+            </div>
+            <textarea class="note-input" id="note-conf-d" placeholder="Tulis koreksi atau catatan lo di sini..."></textarea>
+            <div class="confirm-status">✓ Dikonfirmasi</div>
+          </div>
+        </div>
+
+        <!-- KONFLIK E -->
+        <div class="conflict-card" id="conf-e">
+          <div class="conflict-header">
+            <div class="conflict-letter">E</div>
+            <div>
+              <div class="conflict-title">Ilustrasi di Empty State</div>
+              <div class="conflict-subtitle">Full illustration vs Aurora pattern saja?</div>
+            </div>
+          </div>
+          <div class="conflict-body">
+            <div class="versus-row">
+              <div class="versus-box v-book">
+                <span class="v-label">📚 Buku bilang</span>
+                Empty state adalah kesempatan untuk jadi menarik dan exciting — tambah ilustrasi yang engaging + CTA yang kuat. Jangan settle for plain and boring.
+              </div>
+              <div class="versus-box v-decision">
+                <span class="v-label">✅ Keputusan gue</span>
+                Pakai Aurora empty state component dulu (icon + text + button). Full ilustrasi custom menunggu Aurora illustration library ada. Lapor ke DS maintainer kalau perlu.
+              </div>
+            </div>
+            <div class="conflict-reason">Aurora belum punya illustration library. Custom ilustrasi tanpa sistem akan inkonsisten antar modul. Pragmatis: pakai Aurora pattern dulu, escalate ke DS jika ada priority project.</div>
+            <div class="conflict-actions">
+              <button class="btn-confirm btn-yes" onclick="confirmConflict('conf-e', this)">✓ Setuju</button>
+              <button class="btn-confirm btn-no" onclick="showNote('conf-e')">✗ Koreksi</button>
+            </div>
+            <textarea class="note-input" id="note-conf-e" placeholder="Tulis koreksi atau catatan lo di sini..."></textarea>
+            <div class="confirm-status">✓ Dikonfirmasi</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div style="height: 60px;"></div>
+
+  </main>
+</div>
+
+<!-- ─── REVIEW BAR ─── -->
+<div class="review-bar">
+  <div class="review-status">
+    <div>
+      <div class="review-count" id="count-display">0 / 5 konflik dikonfirmasi</div>
+      <div style="font-size:12px; color: var(--text-muted);">Konfirmasi semua untuk lock status buku → reviewed</div>
+    </div>
+  </div>
+  <button id="btn-lock" onclick="lockBook()">🔒 Lock sebagai Reviewed</button>
+</div>
+
+<script>
+  let confirmed = new Set();
+  const total = 5;
+
+  function confirmConflict(id, btn) {
+    confirmed.add(id);
+    document.getElementById(id).classList.add('confirmed');
+    updateProgress();
+  }
+
+  function showNote(id) {
+    const ta = document.getElementById('note-' + id);
+    ta.style.display = 'block';
+    ta.focus();
+    // Add save button dynamically
+    const card = document.getElementById(id);
+    const actions = card.querySelector('.conflict-actions');
+    if (!actions.querySelector('.btn-save')) {
+      const saveBtn = document.createElement('button');
+      saveBtn.className = 'btn-confirm btn-note btn-save';
+      saveBtn.textContent = '→ Simpan catatan';
+      saveBtn.onclick = () => {
+        confirmed.add(id);
+        card.classList.add('confirmed');
+        card.querySelector('.confirm-status').textContent = '📝 Dicatat: "' + ta.value.substring(0, 60) + (ta.value.length > 60 ? '...' : '') + '"';
+        updateProgress();
+      };
+      actions.appendChild(saveBtn);
+    }
+  }
+
+  function updateProgress() {
+    const count = confirmed.size;
+    const pct = (count / total) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = count + ' / ' + total;
+    document.getElementById('count-display').textContent = count + ' / ' + total + ' konflik dikonfirmasi';
+    document.getElementById('badge-pending').textContent = (total - count);
+    document.getElementById('badge-pending').className = count === total ? 'nav-badge nb-done' : 'nav-badge nb-pending';
+    if (count === total) {
+      document.getElementById('badge-pending').textContent = '✓';
+      document.getElementById('btn-lock').classList.add('ready');
+    }
+  }
+
+  function lockBook() {
+    if (confirmed.size < total) return;
+    const btn = document.getElementById('btn-lock');
+    btn.textContent = '✅ Status: reviewed';
+    btn.classList.remove('ready');
+    btn.classList.add('locked');
+
+    // Show success banner
+    const banner = document.createElement('div');
+    banner.style.cssText = `
+      position: fixed; top: 20px; right: 20px; z-index: 999;
+      background: #166534; color: white; padding: 16px 20px; border-radius: 10px;
+      font-size: 14px; font-weight: 500; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      max-width: 320px; line-height: 1.5;
+    `;
+    banner.innerHTML = '✅ <strong>Refactoring UI — Reviewed!</strong><br>Kasih tau Claude untuk update INDEX.md status jadi <code style="background:rgba(255,255,255,0.2);padding:1px 6px;border-radius:3px">reviewed</code>';
+    document.body.appendChild(banner);
+    setTimeout(() => banner.remove(), 8000);
+  }
+
+  function setNav(el) {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Intersection observer for auto-highlight nav
+  const sections = document.querySelectorAll('[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

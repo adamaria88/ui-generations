@@ -12,7 +12,7 @@ Selalu **Bahasa Indonesia santai/awam**, kalimat pendek, hindari jargon. Opsi be
 - **Figma multi-screen flow** — kalau screen 2 off-viewport, `extractTree` mungkin return null → flow tidak ter-generate. Terkait bug screenReveal.
 - **Comment context tidak ter-track** — pin overlay flat per file, TIDAK capture `[data-screen]`/`[data-state]` aktif saat dibuat. Submit komen di prototype multi-screen jadi ambiguous (designer DS nggak tau komen di screen/state mana). Workaround sementara: kasih konteks manual di teks komen ("[Daftar] tombol terlalu kecil"). Fix engine pending.
 
-## EAGER — Auto-load (5 file core)
+## EAGER — Auto-load (6 file core)
 
 Wajib ada di session start, kalau telat = output langsung salah:
 
@@ -21,6 +21,7 @@ Wajib ada di session start, kalau telat = output langsung salah:
 @paper-designer/memory/shared/prototyping-gap-lessons.md
 @paper-designer/memory/shared/layout-rules-summary.md
 @paper-designer/memory/shared/user-prefers-plain-indonesian.md
+@paper-designer/knowledge/paper-designer-thinking.md
 
 ## LAZY — Reference (load on-demand kalau relevan)
 
