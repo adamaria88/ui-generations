@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 2: Less is more"
+  chapter: "Chapter 2: Less is more"
   page: 52
   quote_verbatim: "Minimal doesn't mean simple."
 slug: "minimalism-not-simplicity"
@@ -17,47 +17,47 @@ problem_domain: "mindset"
 # Don't confuse minimalism with simplicity
 
 ## Problem Trigger
-> Lo tergoda design "minimal modern" — strip semua label, hide affordance, semua icon-only. Looks clean tapi user bingung.
+> You're tempted by a "minimal modern" design — strip all labels, hide affordances, everything is icon-only. Looks clean but users are confused.
 
 ## The Thinking
 Minimal ≠ Simple.
 
-- **Minimal** = less elements & styles.
+- **Minimal** = fewer elements & styles.
 - **Simple** = easy to understand & use.
 
-Minimal interface bisa **harm usability** kalau ngilangin:
+A minimal interface can **harm usability** by removing:
 - Critical labels (icon-only = guessing game)
-- Selected state (user ga tau mana yang aktif)
-- Contrast (icon low-contrast = miss)
-- Affordance (button looks ga interactive)
+- Selected state (user doesn't know what's active)
+- Contrast (low-contrast icon = missed)
+- Affordance (button doesn't look interactive)
 
-Trend minimal/glassmorphic/neumorphic = aesthetic, tapi prone usability + accessibility issue. Don't sacrifice clarity untuk "clean look".
+Minimal/glassmorphic/neumorphic trends = aesthetic, but prone to usability + accessibility issues. Don't sacrifice clarity for a "clean look".
 
-## Contoh Konkret
-Bottom nav 4 icon tanpa label "modern":
-- ❌ User tebak ini apa, ini apa.
-- ✅ Icon + label "Beranda / Cari / Notif / Profil" — extra visual element, tapi crystal-clear navigation.
+## Concrete Example
+Bottom nav with 4 icons and no labels "modern":
+- ❌ User guesses what each one is.
+- ✅ Icon + label "Home / Search / Notifications / Profile" — extra visual elements, but crystal-clear navigation.
 
-## Anti-pattern (yang BUKAN ini)
-Camera app dengan icon-only filter buttons tanpa label + active state subtle 1px line → user ga yakin pilih filter mana. Looks great in Dribbble shot, fails in usability test.
+## Anti-pattern (what this is NOT)
+Camera app with icon-only filter buttons without labels + subtle 1px line active state → users aren't sure which filter they've selected. Looks great in a Dribbble shot, fails in a usability test.
 
-## Aplikasi untuk Paper.id
-- Aurora `au-icon-button` ALWAYS pair with tooltip atau adjacent label.
-- Action menu items (3-dot) selalu icon + text (SUDAH lock [[prototyping-gap-lessons]] 0f).
-- Active state sidemenu high-contrast (SUDAH lock [[sidemenu-active-color-rule]]).
-- Empty state heading + 1-line subtext + CTA primary (jangan "minimal" tanpa explanation).
+## Application for Paper.id
+- Aurora `au-icon-button` ALWAYS paired with tooltip or adjacent label.
+- Action menu items (3-dot) always icon + text (already locked [[prototyping-gap-lessons]] 0f).
+- Active state of sidemenu high-contrast (already locked [[sidemenu-active-color-rule]]).
+- Empty state heading + 1-line subtext + primary CTA (don't go "minimal" without explanation).
 
-**Saat ada PM/stakeholder push "make it cleaner"**, PUSHBACK dengan quote + rationale "minimal ≠ simple". Show alt yang simple AND visually clean.
+**When PM/stakeholder pushes "make it cleaner"**, PUSHBACK with the quote + rationale "minimal ≠ simple". Show an alternative that is simple AND visually clean.
 
 ## Cross-refs
 - Memory rule: `[[prototyping-gap-lessons]]` 0f Action menu items, `[[sidemenu-active-color-rule]]`
-- Kartu lain: `[[quote-minimal-doesnt-mean-simple]]`, `[[3-pillar-minimization]]`
+- Other cards: `[[quote-minimal-doesnt-mean-simple]]`, `[[3-pillar-minimization]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 2 — Less is more
-- Halaman: 52-53
+- Book: Practical UI by Adham Dannaway
+- Chapter: 2 — Less is more
+- Page: 52-53
 - Quote verbatim:
   > "Minimal doesn't mean simple."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

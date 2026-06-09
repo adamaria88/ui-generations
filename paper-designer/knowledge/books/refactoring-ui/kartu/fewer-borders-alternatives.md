@@ -17,43 +17,43 @@ problem_domain: "visual-polish"
 # Fewer Borders — 3 Alternatives
 
 ## Problem Trigger
-> Layout terasa "busy" atau "cluttered" karena terlalu banyak garis border sebagai separator, atau design terlihat terlalu kotak-kotak.
+> Layout feels "busy" or "cluttered" because there are too many border lines as separators, or the design looks overly boxy.
 
 ---
 
 ## The Thinking
-> Border adalah cara paling obvious untuk memisahkan dua elemen — tapi bukan satu-satunya, dan terlalu banyak border bikin design terasa ramai. Tiga alternatif yang lebih subtle: (1) **Box shadow** — outline element seperti border tapi lebih halus dan tidak "cutting", works best kalau element warnanya beda dari background. (2) **Two different background colors** — adjacent element pakai bg yang sedikit berbeda (misal `hsl(200, 10%, 94%)` vs white) — cukup untuk menciptakan batas tanpa garis fisik. (3) **Extra spacing** — tambah margin/padding lebih besar antara group — spacing sendiri cukup untuk menciptakan separasi tanpa UI tambahan.
+> Borders are the most obvious way to separate two elements — but not the only way, and too many borders make a design feel noisy. Three subtler alternatives: (1) **Box shadow** — outlines an element like a border but softer and less "cutting"; works best when the element color differs from the background. (2) **Two different background colors** — adjacent elements use slightly different backgrounds (e.g., `hsl(200, 10%, 94%)` vs white) — enough to create a boundary without a physical line. (3) **Extra spacing** — add more margin/padding between groups — spacing alone is enough to create separation without additional UI.
 
 ---
 
-## Contoh Konkret (1 contoh nyata)
-> Contacts list dialog: search field dipisahkan dari list bukan dengan border — pakai `background: hsl(200,10%,94%)` di search area vs white di list. Atau pakai `box-shadow: 0 5px 15px 0 hsla(0,0%,0%,.15)` di card vs flat page background. Keduanya menciptakan separasi yang jelas tanpa satu garis border pun.
+## Concrete Example (1 real example)
+> Contacts list dialog: the search field is separated from the list not with a border — but using `background: hsl(200,10%,94%)` in the search area vs white in the list. Or using `box-shadow: 0 5px 15px 0 hsla(0,0%,0%,.15)` on a card vs a flat page background. Both create clear separation without a single border line.
 
 ---
 
-## Anti-pattern (yang BUKAN ini)
-> Setiap row table punya border-bottom, tiap section punya border atas dan bawah, card punya border semua sisi + ada divider internal juga. Design terlihat seperti spreadsheet.
+## Anti-pattern (what this is NOT)
+> Every table row has a border-bottom, every section has borders top and bottom, cards have borders on all sides + internal dividers too. The design looks like a spreadsheet.
 
 ---
 
-## Aplikasi untuk Paper.id
-> Untuk table list: row separator bisa pakai spacing (lebih airy) atau subtle bg alternating, bukan border-bottom tebal. Untuk card section di Detail page: gunakan bg color difference (`--color-surface-light-raised` vs white) untuk separasi antar block info — kurangi border. Untuk form section divider: extra spacing 32px antara section group sudah cukup tanpa garis `<hr>`.
+## Application for Paper.id
+> For table lists: row separators can use spacing (more airy) or subtle alternating backgrounds, not thick border-bottoms. For card sections on Detail pages: use background color difference (`--color-surface-light-raised` vs white) to separate info blocks — reduce borders. For form section dividers: 32px extra spacing between section groups is enough without a `<hr>` line.
 
 ---
 
 ## Cross-refs
-- Kartu lain: `[[spacing-system-scale]]` — spacing sebagai tools separasi
-- Kartu lain: `[[shadow-two-layers]]` — box shadow implementation
+- Other card: `[[spacing-system-scale]]` — spacing as a separation tool
+- Other card: `[[shadow-two-layers]]` — box shadow implementation
 - DS / rules: `paper-designer/rules/design-rules.md`
 
 ---
 
 ## Source Verification
 
-- Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
-- Bab: Ch8 — Finishing Touches, "Use fewer borders"
-- Halaman: 238-241
+- Book: Refactoring UI by Adam Wathan & Steve Schoger
+- Chapter: Ch8 — Finishing Touches, "Use fewer borders"
+- Page: 238-241
 - Quote verbatim:
   > "Borders are a great way to distinguish two elements, but they aren't the only way, and using too many can make your design feel busy and cluttered."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: no

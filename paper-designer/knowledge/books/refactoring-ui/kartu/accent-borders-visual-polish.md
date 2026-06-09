@@ -17,42 +17,42 @@ problem_domain: "visual-polish"
 # Accent Border as Quick Visual Polish
 
 ## Problem Trigger
-> Card, alert, atau nav item terasa plain dan "belum selesai" meski kontennya sudah lengkap.
+> A card, alert, or nav item feels plain and "unfinished" even though the content is complete.
 
 ---
 
 ## The Thinking
-> Thin colorful border strip (2-4px) di posisi strategis adalah cara termudah menambah visual interest tanpa graphic design skill tinggi — "it's just a colored rectangle." Posisi yang efektif: (1) top border di card (border-top: 4px solid brand-color), (2) bottom border di active nav item (border-bottom: 2px solid brand-color), (3) left border di alert/banner (border-left: 4px solid status-color), (4) short decorative line under headline. Satu accent cukup — jangan di setiap elemen.
+> A thin colorful border strip (2-4px) in a strategic position is the easiest way to add visual interest without high-level graphic design skill — "it's just a colored rectangle." Effective positions: (1) top border on a card (border-top: 4px solid brand-color), (2) bottom border on an active nav item (border-bottom: 2px solid brand-color), (3) left border on an alert/banner (border-left: 4px solid status-color), (4) short decorative line under a headline. One accent is enough — don't put it on every element.
 
 ---
 
-## Contoh Konkret (1 contoh nyata)
-> Stripe Dashboard card: thin teal top-border di revenue summary card. Langsung memberi kesan "premium" tanpa ilustrasi. Nav item aktif di sidebar: brand blue bottom-border 2px — lebih elegan dari full background highlight.
+## Concrete Example (1 real example)
+> Stripe Dashboard card: thin teal top-border on a revenue summary card. Immediately gives a "premium" feel without an illustration. Active nav item in sidebar: brand blue bottom-border 2px — more elegant than a full background highlight.
 
 ---
 
-## Anti-pattern (yang BUKAN ini)
-> Accent border di setiap card, setiap alert, setiap section — jadi noise, bukan highlight. Atau pakai warna yang tidak ada di palette (random decorative color yang tidak connect ke brand).
+## Anti-pattern (what this is NOT)
+> Accent borders on every card, every alert, every section — becomes noise, not a highlight. Or using a color that's not in the palette (a random decorative color that doesn't connect to the brand).
 
 ---
 
-## Aplikasi untuk Paper.id
-> Untuk card summary/widget di dashboard: `border-top: 3px solid var(--color-brand-primary)` atau per-kategori (revenue = teal, expense = orange). Untuk alert/banner: `border-left: 4px solid var(--status-color)` (warning = amber, info = blue, success = green). Untuk active state di page navigation (breadcrumb/stepper): accent line bawah. Cek Aurora alert/banner component dulu — mungkin sudah punya left border built-in.
+## Application for Paper.id
+> For summary/widget cards on dashboards: `border-top: 3px solid var(--color-brand-primary)` or per-category (revenue = teal, expense = orange). For alerts/banners: `border-left: 4px solid var(--status-color)` (warning = amber, info = blue, success = green). For active state in page navigation (breadcrumb/stepper): accent line below. Check Aurora alert/banner component first — it may already have a built-in left border.
 
 ---
 
 ## Cross-refs
-- Memory rule: `[[aurora-lookup-ritual]]` — cek Aurora banner/alert component dulu
-- Kartu lain: `[[color-palette-hsl-shades]]` — pilih warna accent dari HSL palette
-- Kartu lain: `[[fewer-borders-alternatives]]` — kapan border membantu vs mengganggu
+- Memory rule: `[[aurora-lookup-ritual]]` — check Aurora banner/alert component first
+- Other card: `[[color-palette-hsl-shades]]` — choose accent color from HSL palette
+- Other card: `[[fewer-borders-alternatives]]` — when borders help vs hurt
 
 ---
 
 ## Source Verification
 
-- Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
-- Bab: Ch8 — Finishing Touches, "Add color with accent borders"
-- Halaman: 224-227
+- Book: Refactoring UI by Adam Wathan & Steve Schoger
+- Chapter: Ch8 — Finishing Touches, "Add color with accent borders"
+- Page: 224-227
 - Quote verbatim: —
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: no

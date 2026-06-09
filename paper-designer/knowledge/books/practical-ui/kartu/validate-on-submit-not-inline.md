@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 8: Buttons + Bab 7: Forms"
+  chapter: "Chapter 8: Buttons + Chapter 7: Forms"
   page: 263
   quote_verbatim: "Instead of disabling the submit button, enable it and display error messages on submit."
 slug: "validate-on-submit-not-inline"
@@ -14,38 +14,38 @@ apply_value: "high"
 problem_domain: "form"
 ---
 
-# Validate on submit, not inline (⚠️ konflik potensial)
+# Validate on submit, not inline (⚠️ potential conflict)
 
 ## Problem Trigger
-> Submit button di form ke-disabled sampe semua field bener — user nyentuh submit, ga merespond, stuck tanpa feedback.
+> The Submit button on a form is disabled until all fields are correct — the user taps submit, gets no response, stuck with no feedback.
 
 ## The Thinking
-Disable submit-until-valid = user stuck tanpa feedback "kenapa ga bisa". Solusi lebih baik: **enable submit selalu**, on click validate, kalau error → highlight field + error message. User langsung tau "oh, field X belum bener". Plus disabled button = low contrast, keyboard inaccessible.
+Disabling submit-until-valid = the user is stuck with no feedback on "why can't I". A better solution: **always enable submit**, validate on click, and if there's an error → highlight the field + error message. The user immediately knows "oh, field X isn't right yet". Plus a disabled button = low contrast, keyboard inaccessible.
 
-## Contoh Konkret
-Payment form — user lupa isi "Name on card", semua field lain bener. Pencet "Pay $99.00" → instead of disabled diam, button enable + show "Enter name on card" error message di field kosong. User langsung tau.
+## Concrete Example
+A payment form — the user forgets to fill "Name on card", all other fields are correct. They press "Pay $99.00" → instead of a silent disabled button, it's enabled and shows an "Enter name on card" error message on the empty field. The user immediately knows.
 
-## Anti-pattern (yang BUKAN ini)
-Disabled "Pay" button → user pencet 3x, ga ada feedback, frustration spike → abandon form. Atau worst: user assume "tombol ke-disable mean already submitted, success?" — confusion.
+## Anti-pattern (what this is NOT)
+A disabled "Pay" button → the user presses it 3x, no feedback, frustration spikes → abandons the form. Or worse: the user assumes "the disabled button means it was already submitted, success?" — confusion.
 
-## Aplikasi untuk Paper.id
-⚠️ **Konflik dengan current Aurora pattern** (banyak modal Paper.id disable Save sampe form valid). 
+## Application for Paper.id
+⚠️ **Conflict with the current Aurora pattern** (many Paper.id modals disable Save until the form is valid).
 
-Catat ke `IMPROVEMENT-OPPORTUNITIES.md`. Pertimbangan:
-- Form simple (2-5 field) → enable + validate-on-submit (preferred per buku).
-- Form kompleks dengan inter-field dependency → mungkin disable safer (current Paper.id pattern).
+Log it in `IMPROVEMENT-OPPORTUNITIES.md`. Considerations:
+- Simple forms (2-5 fields) → enable + validate-on-submit (preferred per the book).
+- Complex forms with inter-field dependencies → disabling might be safer (the current Paper.id pattern).
 
-Discussion needed dengan DS maintainer.
+Discussion needed with the DS maintainer.
 
 ## Cross-refs
-- Memory rule: `[[knowledge-vs-ds-priority-flow]]` — handle konflik DS
-- Kartu lain: `[[try-to-avoid-disabled-buttons]]` (paired insight)
+- Memory rule: `[[knowledge-vs-ds-priority-flow]]` — handling DS conflicts
+- Other cards: `[[try-to-avoid-disabled-buttons]]` (paired insight)
 - File: `paper-designer/knowledge/IMPROVEMENT-OPPORTUNITIES.md` entry "Disabled submit button pattern"
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 8 — Buttons (hal 263) + Bab 7 — Forms (hal 248)
+- Book: Practical UI by Adham Dannaway
+- Chapter: 8 — Buttons (p. 263) + Chapter 7 — Forms (p. 248)
 - Quote verbatim:
   > "Instead of disabling the submit button, enable it and display error messages on submit."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

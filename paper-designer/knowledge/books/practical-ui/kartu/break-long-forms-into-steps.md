@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 7: Forms"
+  chapter: "Chapter 7: Forms"
   page: 243
 slug: "break-long-forms-into-steps"
 buku_slug: "practical-ui"
@@ -16,42 +16,42 @@ problem_domain: "form"
 # Break up long forms into multiple steps
 
 ## Problem Trigger
-> Form Setup Bisnis Paper.id butuh 30 field info (legal, bank, kontak, dll) — 1 page panjang scroll vertikal overwhelming.
+> Paper.id's Business Setup form needs 30 fields of info (legal, bank, contact, etc.) — a single long scrolling page is overwhelming.
 
 ## The Thinking
-Long form (>10 field) = overwhelming, drop completion rate. Solusi: pecah jadi multi-step. Decrease cognitive load, reduce mistakes, improve completion. Goal-Gradient Effect — user lebih motivated saat lihat progress bar mendekati 100%.
+Long forms (>10 fields) = overwhelming, drops completion rates. Solution: break into multi-step. Decreases cognitive load, reduces mistakes, improves completion. Goal-Gradient Effect — users are more motivated when they see a progress bar approaching 100%.
 
 **Best practices:**
-- Beri tahu total step di awal ("3 steps") + waktu estimate
+- Tell the user the total steps upfront ("3 steps") + time estimate
 - Order easiest-to-hardest (early wins, build momentum)
-- Progress indicator visible
-- Allow review-before-confirm di step terakhir
+- Visible progress indicator
+- Allow review-before-confirm at the last step
 - Confirmation screen + clear "what's next"
 
-## Contoh Konkret
-Registrasi:
-1. **Step 1/3**: Personal details (3 field) — easiest
-2. **Step 2/3**: Contact details (2 field) — medium
-3. **Step 3/3**: Confirmation review — user check semua sebelum submit
+## Concrete Example
+Registration:
+1. **Step 1/3**: Personal details (3 fields) — easiest
+2. **Step 2/3**: Contact details (2 fields) — medium
+3. **Step 3/3**: Confirmation review — user checks everything before submitting
 4. **Success screen**: "Thanks for registering. You'll receive an email shortly with next steps."
 
-## Anti-pattern (yang BUKAN ini)
-30-field form 1 page → user scroll 5 minutes, panicked, abandon di field 15. Atau worse: user submit half-filled, kena error semua field, frustration.
+## Anti-pattern (what this is NOT)
+30-field form on 1 page → user scrolls for 5 minutes, panics, abandons at field 15. Or worse: user submits half-filled, gets errors on all fields, frustration.
 
-## Aplikasi untuk Paper.id
-- **Setup Awal Bisnis**: multi-step (Identitas → Legal → Bank → Verifikasi).
-- **KYC**: multi-step (Data → Dokumen → Konfirmasi).
-- **Pengajuan Pinjaman**: multi-step (Eligibility → Detail → Lampiran → Submit).
+## Application for Paper.id
+- **Initial Business Setup**: multi-step (Identity → Legal → Bank → Verification).
+- **KYC**: multi-step (Data → Documents → Confirmation).
+- **Loan Application**: multi-step (Eligibility → Details → Attachments → Submit).
 
-**Side Sheet form**: ≤6 field OK 1 page; ≥7 field pertimbangkan multi-step atau Form Page proper.
+**Side Sheet form**: ≤6 fields OK on 1 page; ≥7 fields consider multi-step or a proper Form Page.
 
 ## Cross-refs
-- Kartu lain: `[[group-form-fields-under-headings]]` (alternatif kalau ga bisa multi-step)
+- Other card: `[[group-form-fields-under-headings]]` (alternative if multi-step isn't possible)
 - Memory rule: `[[page-templates-summary]]` — Form Page vs Side Sheet decision
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 7 — Forms
-- Halaman: 243
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 7 — Forms
+- Page: 243
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

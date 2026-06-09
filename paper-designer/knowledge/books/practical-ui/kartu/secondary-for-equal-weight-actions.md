@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 8: Buttons"
+  chapter: "Chapter 8: Buttons"
   page: 260
   quote_verbatim: "Don't make one button more prominent than the other as it creates bias."
 slug: "secondary-for-equal-weight-actions"
@@ -17,32 +17,32 @@ problem_domain: "button"
 # Use secondary buttons for equal-weight actions
 
 ## Problem Trigger
-> Dialog confirm "Report email as junk?" — Report vs Don't Report sama-sama valid choice. Mana yang primary?
+> A confirm dialog "Report email as junk?" — Report vs Don't Report are equally valid choices. Which one is primary?
 
 ## The Thinking
-Kalau 2 (atau lebih) action punya equal importance dan user-decision (bukan "recommended path"), JANGAN bias 1 jadi primary. **Both secondary** = neutral presentation. Mendukung user autonomy, ga manipulatif.
+If 2 (or more) actions have equal importance and are user-decisions (not a "recommended path"), DON'T bias one as primary. **Both secondary** = neutral presentation. Supports user autonomy, not manipulative.
 
-## Contoh Konkret
-"Report this email as junk?" → [Report] + [Don't report], both secondary. User benar-benar bebas pilih sesuai context.
+## Concrete Example
+"Report this email as junk?" → [Report] + [Don't report], both secondary. The user is genuinely free to choose based on context.
 
-## Anti-pattern (yang BUKAN ini)
-"Save changes? [Save] + [Discard]" — kalau save dipasang primary biru, discard tertiary, user terdorong save padahal kadang lebih bener discard. UX manipulatif.
+## Anti-pattern (what this is NOT)
+"Save changes? [Save] + [Discard]" — if Save is set as a blue primary and Discard is tertiary, the user is nudged to save even when discarding is sometimes more correct. Manipulative UX.
 
-## Aplikasi untuk Paper.id
-- Dialog "Buang perubahan?" → [Buang perubahan] + [Lanjut edit] both secondary. User decide bebas.
-- Dialog "Kirim ke approval atau Simpan draft?" → both secondary.
+## Application for Paper.id
+- Dialog "Discard changes?" → [Discard changes] + [Keep editing] both secondary. The user decides freely.
+- Dialog "Send for approval or Save draft?" → both secondary.
 
-**Pengecualian** — destructive ada "recommend safer path":
-- "Hapus invoice?" → [Hapus invoice] medium friction (red) + [Batal] secondary. Kasus ini ada bias toward safer path (cancel), intentional protect user dari accidental.
+**Exception** — destructive cases with a "recommend the safer path":
+- "Delete invoice?" → [Delete invoice] medium friction (red) + [Cancel] secondary. Here there's an intentional bias toward the safer path (cancel) to protect the user from accidents.
 
 ## Cross-refs
-- Kartu lain: `[[3-button-weight-system]]`, `[[friction-ladder-for-destructive]]`
+- Other cards: `[[3-button-weight-system]]`, `[[friction-ladder-for-destructive]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 8 — Buttons
-- Halaman: 260
+- Book: Practical UI by Adham Dannaway
+- Chapter: 8 — Buttons
+- Page: 260
 - Quote verbatim:
   > "Don't make one button more prominent than the other as it creates bias."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

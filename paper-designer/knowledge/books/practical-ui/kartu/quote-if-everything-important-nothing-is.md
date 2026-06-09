@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 8: Buttons"
+  chapter: "Chapter 8: Buttons"
   page: 259
   quote_verbatim: "If everything is important, nothing is important."
 slug: "quote-if-everything-important-nothing-is"
@@ -17,42 +17,42 @@ problem_domain: "mindset"
 # Quote: "If everything is important, nothing is important."
 
 ## Problem Trigger
-> PM minta "buat tombol Pay JUGA primary, kan penting" — page udah ada 2 primary lain.
+> PM asks "make the Pay button ALSO primary, it's important" — the page already has 2 other primaries.
 
 ## The Thinking
-**"If everything is important, nothing is important."** — Adham Dannaway, Bab 8 hal 259.
+**"If everything is important, nothing is important."** — Adham Dannaway, Chapter 8 p. 259.
 
-Pernyataan ini = core principle visual hierarchy. Primary button kerja karena LANGKA (1 per screen). Multi-primary → user paralysis "mana yang paling penting?". Hierarchy depends on **RELATIVE PROMINENCE** — bukan kuantitas.
+This statement = the core principle of visual hierarchy. A primary button works because it's RARE (1 per screen). Multi-primary → user paralysis "which one is most important?". Hierarchy depends on **RELATIVE PROMINENCE** — not quantity.
 
-## Apply ke
+## Apply to
 - **Buttons**: 1 primary per screen.
 - **Headings**: 1 H1 per page.
-- **Colors**: brand color untuk action LANGKA (kalau semua merah, merah lose impact untuk error/destructive).
-- **Animations**: 1-2 focal animation, sisanya subtle (kalau semua bouncing, ga ada yang attract).
-- **Badges/labels**: sparingly (kalau tiap card ada 5 badge, badge ga ada artinya).
+- **Colors**: brand color for action used SPARINGLY (if everything is red, red loses impact for errors/destructive).
+- **Animations**: 1-2 focal animations, the rest subtle (if everything bounces, nothing attracts).
+- **Badges/labels**: sparingly (if every card has 5 badges, badges mean nothing).
 
-## Contoh Konkret
-List people to follow — kalau tiap row "Follow" button primary, total 5 primary biru clutter. Refactor ke 5 secondary "Follow" + 1 primary "Follow all" → hierarchy restored.
+## Concrete Example
+List of people to follow — if each row has a primary "Follow" button, total 5 primary blues clutters everything. Refactor to 5 secondary "Follow" + 1 primary "Follow all" → hierarchy restored.
 
-## Anti-pattern (yang BUKAN ini)
-Toolbar List Pengeluaran lama dengan [Filter] [Unduh] [Catat Pengeluaran] semua primary biru — diaudit user, fixed ke 1 primary "Catat Pengeluaran" + 2 text-link.
+## Anti-pattern (what this is NOT)
+Old Expense List toolbar with [Filter] [Download] [Record Expense] all primary blue — audited by user, fixed to 1 primary "Record Expense" + 2 text-links.
 
-## Aplikasi untuk Paper.id
-- Lock di [[prototyping-gap-lessons]] 0h Action Hierarchy.
-- Saat ada PM/stakeholder push "ini juga penting, bikin primary dong", PUSHBACK dengan quote ini + rationale.
-- Squint test = validate quote-in-action ([[squint-test-validation]]).
+## Application for Paper.id
+- Locked in [[prototyping-gap-lessons]] 0h Action Hierarchy.
+- When PM/stakeholder pushes "this is also important, make it primary", PUSHBACK with this quote + rationale.
+- Squint test = validate the quote in action ([[squint-test-validation]]).
 
-**Saat negotiate dengan stakeholder**: pakai quote ini sebagai elegant pushback. Single sentence yang langsung ke-grok.
+**When negotiating with stakeholders**: use this quote as an elegant pushback. One sentence that immediately clicks.
 
 ## Cross-refs
 - Memory rule: `[[prototyping-gap-lessons]]` 0h Action Hierarchy
-- Kartu lain: `[[one-primary-button-per-screen]]`, `[[visual-hierarchy-variables]]`, `[[squint-test-validation]]`
+- Other cards: `[[one-primary-button-per-screen]]`, `[[visual-hierarchy-variables]]`, `[[squint-test-validation]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 8 — Buttons
-- Halaman: 259
+- Book: Practical UI by Adham Dannaway
+- Chapter: 8 — Buttons
+- Page: 259
 - Quote verbatim:
   > "If everything is important, nothing is important."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

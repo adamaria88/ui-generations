@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 8: Buttons"
+  chapter: "Chapter 8: Buttons"
   page: 279
 slug: "allow-undo-better-than-friction"
 buku_slug: "practical-ui"
@@ -16,34 +16,34 @@ problem_domain: "destructive-action"
 # Allow undo — better alternative than friction
 
 ## Problem Trigger
-> Lo kasih friction berat untuk Hapus, user tetep accidental klik kadang. Solusi gimana?
+> You added heavy friction for Delete, but users still accidentally click it sometimes. What's the solution?
 
 ## The Thinking
-Friction PREVENT error, tapi tidak FIX error. Better alternative untuk MOST destructive: **allow undo**. User accidental delete? Snackbar "Message deleted [Restore]". Recovery > Prevention. Hemat user time + reduce anxiety. Boleh kombinasi (light friction + undo) untuk extra-safe.
+Friction PREVENTS errors, but doesn't FIX them. A better alternative for MOST destructive actions: **allow undo**. User accidentally deletes? Snackbar "Message deleted [Restore]". Recovery > Prevention. Saves user time + reduces anxiety. Combining both (light friction + undo) is fine for extra safety.
 
-## Contoh Konkret
-- Gmail delete email → toast "Message moved to Trash [Undo]" 10 detik.
-- iOS Notes delete → "Recently Deleted" folder 30 hari.
+## Concrete Example
+- Gmail delete email → toast "Message moved to Trash [Undo]" for 10 seconds.
+- iOS Notes delete → "Recently Deleted" folder for 30 days.
 - Linear archive task → toast "Task archived [Undo]".
 
-## Anti-pattern (yang BUKAN ini)
-Hapus → instant gone, no undo, no trash → user accidental misklik = data loss permanen. Bahkan heavy friction modal ga 100% prevent accidental click.
+## Anti-pattern (what this is NOT)
+Delete → instantly gone, no undo, no trash → user accidentally misclicks = permanent data loss. Even a heavy friction modal doesn't 100% prevent accidental clicks.
 
-## Aplikasi untuk Paper.id
+## Application for Paper.id
 Audit current destructive actions:
-- **Hapus invoice/expense draft** → wajib ada Undo toast 10 detik.
-- **Hapus invoice tersimpan/published** → friction medium + undo recovery 24h (kalau possible secara backend).
-- **Hapus akun** → friction heavy + email confirmation (24h cooling period).
+- **Delete invoice/expense draft** → must have Undo toast for 10 seconds.
+- **Delete saved/published invoice** → medium friction + undo recovery 24h (if possible on the backend).
+- **Delete account** → heavy friction + email confirmation (24h cooling period).
 
-Toast Aurora 380x8 udah ada — pakai untuk implement undo pattern. Lihat [[smooth-transitions-rule]].
+Aurora Toast 380x8 already exists — use it to implement the undo pattern. See [[smooth-transitions-rule]].
 
 ## Cross-refs
 - Memory rule: `[[smooth-transitions-rule]]` (toast pattern), `[[paperverse-design-decisions]]`
-- Kartu lain: `[[friction-ladder-for-destructive]]` (alternative + complement)
+- Other card: `[[friction-ladder-for-destructive]]` (alternative + complement)
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 8 — Buttons
-- Halaman: 279
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 8 — Buttons
+- Page: 279
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

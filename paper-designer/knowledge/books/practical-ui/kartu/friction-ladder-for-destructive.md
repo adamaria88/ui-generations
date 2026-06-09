@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 8: Buttons"
+  chapter: "Chapter 8: Buttons"
   page: 277
 slug: "friction-ladder-for-destructive"
 buku_slug: "practical-ui"
@@ -16,16 +16,16 @@ problem_domain: "destructive-action"
 # Friction ladder for destructive actions
 
 ## Problem Trigger
-> User mau Hapus invoice — apakah cukup tombol Hapus langsung? Atau wajib confirm modal? Atau lebih?
+> User wants to Delete an invoice — is a plain Delete button enough? Or is a confirmation modal required? Or more?
 
 ## The Thinking
-**4-tier friction ladder** sesuai severity data loss:
+**4-tier friction ladder** based on data loss severity:
 
 ### Tier 1 — Initial Friction (pre-action)
-- Action button less prominent (tertiary, bukan filled).
-- Position less central / di sub-menu (3-dot ⋮).
-- Progressive disclose (tucked behind menu).
-- JANGAN colour red — red bikin lebih prominent, ironic.
+- Action button less prominent (tertiary, not filled).
+- Less central position / in sub-menu (3-dot ⋮).
+- Progressive disclosure (tucked behind menu).
+- DON'T color it red — red makes it more prominent, which is ironic.
 
 ### Tier 2 — Light Friction (small data loss)
 - Confirm dialog: "Delete message? [Delete] [Cancel]".
@@ -36,36 +36,36 @@ problem_domain: "destructive-action"
 - Message: "You won't be able to recover it."
 
 ### Tier 4 — Heavy Friction (catastrophic loss)
-- Confirm dialog + RED button + checkbox required ("I confirm I want to delete my account").
-- User physically click extra checkbox sebelum bisa execute.
+- Confirm dialog + RED button + required checkbox ("I confirm I want to delete my account").
+- User physically clicks an extra checkbox before they can execute.
 
-## Contoh Konkret
-- Hapus draft message = Light. "Delete message? [Delete] [Cancel]".
-- Hapus invoice tersimpan = Medium. Red button + "Kamu tidak bisa memulihkan ini lagi".
-- Hapus account permanen = Heavy. Red + checkbox "Saya konfirmasi mau hapus akun".
+## Concrete Example
+- Delete draft message = Light. "Delete message? [Delete] [Cancel]".
+- Delete saved invoice = Medium. Red button + "You won't be able to recover this".
+- Delete account permanently = Heavy. Red + checkbox "I confirm I want to delete my account".
 
-## Anti-pattern (yang BUKAN ini)
-- Hapus invoice langsung tanpa confirm → user accidental klik, data hilang.
-- Hapus draft form yang belum keisi → Heavy modal dengan checkbox → annoying, harm UX.
+## Anti-pattern (what this is NOT)
+- Delete invoice immediately without confirmation → user accidentally clicks, data is gone.
+- Delete an unfilled draft form → Heavy modal with checkbox → annoying, harms UX.
 
-## Aplikasi untuk Paper.id
-Match dengan definisi [[paperverse-design-decisions]] — destructive = permanen & susah dibatalkan.
+## Application for Paper.id
+Match with [[paperverse-design-decisions]] definition — destructive = permanent & hard to undo.
 
-Match tier sesuai severity:
-- Hapus draft (belum tersimpan) = no friction / toast saja.
-- Hapus baris di form belum-submit = Initial (less prominent).
-- Hapus invoice/mitra tersimpan = Medium (red + warning).
-- Hapus account / bisnis = Heavy (checkbox required).
+Match tier to severity:
+- Delete unsaved draft = no friction / toast only.
+- Delete a row in an unsubmitted form = Initial (less prominent).
+- Delete saved invoice/partner = Medium (red + warning).
+- Delete account / business = Heavy (checkbox required).
 
-**Combine dengan [[allow-undo-better-than-friction]]** — undo via toast lebih bagus dari add friction.
+**Combine with [[allow-undo-better-than-friction]]** — undo via toast is better than adding friction.
 
 ## Cross-refs
 - Memory rule: `[[paperverse-design-decisions]]` (destructive definition), `[[aurora-sectioned-modal-rule]]`
-- Kartu lain: `[[allow-undo-better-than-friction]]` (preferred alternative), `[[tertiary-for-multiple-or-destructive]]`
+- Other cards: `[[allow-undo-better-than-friction]]` (preferred alternative), `[[tertiary-for-multiple-or-destructive]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 8 — Buttons
-- Halaman: 277-279
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 8 — Buttons
+- Page: 277-279
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

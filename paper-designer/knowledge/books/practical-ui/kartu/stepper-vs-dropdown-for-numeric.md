@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 7: Forms"
+  chapter: "Chapter 7: Forms"
   page: 238
 slug: "stepper-vs-dropdown-for-numeric"
 buku_slug: "practical-ui"
@@ -16,39 +16,39 @@ problem_domain: "form"
 # Use steppers for numeric small changes
 
 ## Problem Trigger
-> Field "Jumlah guests" di booking page — pakai dropdown 1-10 atau stepper +/-?
+> A "Number of guests" field on a booking page — use a dropdown 1-10 or a +/- stepper?
 
 ## The Thinking
-Small numeric changes (1-10) → **stepper +/-**. Lebih cepat dari dropdown.
+Small numeric changes (1-10) → **+/- stepper**. Faster than a dropdown.
 
-**Interaction cost compare**: select 2 adults + 1 child + 1 infant
-- Dropdown: 6 click + 3 scroll = 9 interactions.
-- Stepper: 4 click = 4 interactions.
+**Interaction cost comparison**: select 2 adults + 1 child + 1 infant
+- Dropdown: 6 clicks + 3 scrolls = 9 interactions.
+- Stepper: 4 clicks = 4 interactions.
 
-**Tips stepper:**
+**Stepper tips:**
 - Target size min 48pt × 48pt.
-- Horizontal layout (-/+) NOT vertical (up/down) — vertical bisa salah tap.
+- Horizontal layout (-/+) NOT vertical (up/down) — vertical is easy to mis-tap.
 - "+/-" symbols, NOT chevron arrows (chevron = dropdown indicator, confusing).
-- NOT untuk large numeric range (1-1000+) — pakai input field instead.
+- NOT for large numeric ranges (1-1000+) — use an input field instead.
 
-## Contoh Konkret
+## Concrete Example
 Booking guests — [- 2 +] adults / [- 1 +] children. Direct +/-, faster.
 
-## Anti-pattern (yang BUKAN ini)
-Stepper untuk Qty 1-9999 di line items invoice → user mau qty 500, klik + 500 kali. Pakai input field instead.
+## Anti-pattern (what this is NOT)
+A stepper for Qty 1-9999 on invoice line items → the user wants qty 500, clicks + 500 times. Use an input field instead.
 
-Vertical stepper (up arrow + down arrow stacked) — small target, prone salah tap.
+A vertical stepper (up arrow + down arrow stacked) — small target, prone to mis-taps.
 
-## Aplikasi untuk Paper.id
-- **Stepper**: Qty di kasir (1-20 range), guest count di booking, line item qty (kalau range kecil).
-- **Input**: Qty besar, jumlah uang, custom range.
+## Application for Paper.id
+- **Stepper**: Qty at the register (1-20 range), guest count in booking, line item qty (if the range is small).
+- **Input**: Large qty, monetary amounts, custom ranges.
 
 ## Cross-refs
-- Kartu lain: `[[number-input-separator-rule]]` (memory rule untuk large numeric input)
+- Other cards: `[[number-input-separator-rule]]` (memory rule for large numeric input)
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 7 — Forms
-- Halaman: 238-239
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 7 — Forms
+- Page: 238-239
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

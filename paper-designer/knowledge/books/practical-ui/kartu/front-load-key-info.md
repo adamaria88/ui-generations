@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 6: Copywriting"
+  chapter: "Chapter 6: Copywriting"
   page: 197
 slug: "front-load-key-info"
 buku_slug: "practical-ui"
@@ -16,12 +16,12 @@ problem_domain: "copywriting"
 # Front-load key information
 
 ## Problem Trigger
-> Heading section ditulis "You should read these 5 UI design eBooks" — info penting "5 eBooks" di akhir.
+> Section heading written "You should read these 5 UI design eBooks" — important info "5 eBooks" is at the end.
 
 ## The Thinking
-User scan left-to-right F-pattern. Important info di AWAL heading/text. User yang skim cuma 2-3 kata awal — kasih main message di front. Heading + button text + link text — all front-load.
+Users scan left-to-right in an F-pattern. Important info goes at the START of headings/text. Users who skim only read the first 2-3 words — put the main message up front. Heading + button text + link text — all front-load.
 
-## Contoh Konkret
+## Concrete Example
 - ❌ "You should read these 5 UI design eBooks"
 - ✅ "5 UI design eBooks you should read"
 
@@ -31,28 +31,28 @@ User scan left-to-right F-pattern. Important info di AWAL heading/text. User yan
 - ❌ "Sign up today for 30% off"
 - ✅ "30% off if you sign up today"
 
-## Anti-pattern (yang BUKAN ini)
-Generic preamble heading "We're excited to announce that..." — bury main news. User yang skim 3 kata awal ga dapet info utama.
+## Anti-pattern (what this is NOT)
+Generic preamble heading "We're excited to announce that..." — buries the main news. Users who skim the first 3 words never get the main information.
 
-## Aplikasi untuk Paper.id
-- ❌ "Kamu bisa mengelola invoice di sini"
-- ✅ "Kelola invoice di sini"
+## Application for Paper.id
+- ❌ "You can manage invoices here"
+- ✅ "Manage invoices here"
 
-- ❌ "Klik 'Buat invoice' untuk memulai"
-- ✅ "Buat invoice di tombol kanan atas" / "Mulai dengan klik 'Buat invoice'"
+- ❌ "Click 'Create invoice' to get started"
+- ✅ "Create invoice with the button in the top right" / "Start by clicking 'Create invoice'"
 
-Apply ke:
-- Empty state heading
-- Banner promo
-- Link text ("Pelajari cara setup" bukan "Klik di sini untuk pelajari cara setup")
-- Notification subject
+Apply to:
+- Empty state headings
+- Promo banners
+- Link text ("Learn how to set up" not "Click here to learn how to set up")
+- Notification subjects
 
 ## Cross-refs
-- Kartu lain: `[[inverted-pyramid-content-structure]]` (parent concept), `[[be-concise-cut-filler-words]]`
+- Other cards: `[[inverted-pyramid-content-structure]]` (parent concept), `[[be-concise-cut-filler-words]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 6 — Copywriting
-- Halaman: 197
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 6 — Copywriting
+- Page: 197
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

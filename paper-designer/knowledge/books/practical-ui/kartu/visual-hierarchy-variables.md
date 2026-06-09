@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 4: Layout and spacing"
+  chapter: "Chapter 4: Layout and spacing"
   page: 120
 slug: "visual-hierarchy-variables"
 buku_slug: "practical-ui"
@@ -16,44 +16,44 @@ problem_domain: "layout"
 # Visual hierarchy — 6 variables (size, colour, contrast, spacing, position, depth)
 
 ## Problem Trigger
-> Page punya 10 element, lo pengen user notice element X pertama. Gimana caranya?
+> A page has 10 elements, and you want the user to notice element X first. How?
 
 ## The Thinking
-6 lever untuk visual hierarchy:
+6 levers for visual hierarchy:
 
 1. **Size** — Bigger = more important.
-2. **Colour** — Saturated / warm / brighter = stand out.
+2. **Colour** — Saturated / warm / brighter = stands out.
 3. **Contrast** — Higher contrast vs background = prominent.
-4. **Spacing** — More white space around element = breathing room = important.
-5. **Position** — Top first (F-pattern), atau first in row (Serial Position Effect).
+4. **Spacing** — More white space around an element = breathing room = important.
+5. **Position** — Top first (F-pattern), or first in a row (Serial Position Effect).
 6. **Depth** — Higher elevation (shadow) = closer/important.
 
-Apply by importance order. Important element dapat lever yang banyak (size besar + warna saturated + position top + elevated). Less important dapat 1-2 lever ringan.
+Apply by order of importance. Important elements get many levers (large size + saturated color + top position + elevated). Less important ones get 1-2 light levers.
 
-## Contoh Konkret
+## Concrete Example
 Property card:
 - "Beach Getaway" (name) heading bold large + dark color.
 - "Blissful Beach, NSW" (subheading) smaller regular medium color.
-- "$299/night" pakai size + position kanan + bold = mata jatuh ke harga.
-- "Book now" pakai primary color + bottom-stick + elevated shadow = always visible + clear CTA.
+- "$299/night" uses size + right position + bold = the eye drops to the price.
+- "Book now" uses primary color + bottom-stick + elevated shadow = always visible + clear CTA.
 
-## Anti-pattern (yang BUKAN ini)
-Property card tabel format flat — Name, Type, Price semua ukuran sama, font sama, warna sama → user scan susah, ga ada anchor.
+## Anti-pattern (what this is NOT)
+A property card in flat table format — Name, Type, Price all the same size, same font, same color → hard to scan, no anchor.
 
-## Aplikasi untuk Paper.id
-- **Detail Invoice page** — Total Amount = biggest + bold + top-position.
-- **Tanggal Jatuh Tempo** = secondary text color + smaller.
-- **Action "Kirim"** = primary button + bottom-right.
+## Application for Paper.id
+- **Invoice Detail page** — Total Amount = biggest + bold + top-position.
+- **Due Date** = secondary text color + smaller.
+- **Action "Send"** = primary button + bottom-right.
 
-Combine 6 lever sesuai importance. Validate dengan [[squint-test-validation]].
+Combine the 6 levers by importance. Validate with [[squint-test-validation]].
 
 ## Cross-refs
-- Kartu lain: `[[squint-test-validation]]`, `[[one-primary-button-per-screen]]`
+- Other cards: `[[squint-test-validation]]`, `[[one-primary-button-per-screen]]`
 - Memory rule: `[[prototyping-gap-lessons]]` 0h Action Hierarchy
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 4 — Layout and spacing
-- Halaman: 120-127
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 4 — Layout and spacing
+- Page: 120-127
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

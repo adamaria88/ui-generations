@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 4: Layout and spacing"
+  chapter: "Chapter 4: Layout and spacing"
   page: 137
 slug: "inner-spacing-smaller-than-outer"
 buku_slug: "practical-ui"
@@ -16,36 +16,36 @@ problem_domain: "spacing"
 # Inner spacing smaller than outer
 
 ## Problem Trigger
-> Spacing label-to-input lo 24px, spacing antar field 16px — kebalik, malah ngelumin grouping.
+> Your label-to-input spacing is 24px, and spacing between fields is 16px — backwards, which actually breaks the grouping.
 
 ## The Thinking
-Spacing dalam group HARUS smaller dari spacing antar group. Bikin proximity grouping clear. Kalau kebalik, eye ga bisa parse "ini 1 group" vs "beda group".
+Spacing within a group MUST be smaller than spacing between groups. Makes proximity grouping clear. If reversed, the eye can't parse "this is 1 group" vs "different group".
 
 **Visual rule**: Inner < Outer.
 - Spacing label-input (inner) = 8pt.
-- Spacing antar field group (outer) = 24pt.
-- Eye otomatis "label + input = 1 unit", "field 1 vs field 2 = beda unit".
+- Spacing between field groups (outer) = 24pt.
+- Eye automatically reads "label + input = 1 unit", "field 1 vs field 2 = different units".
 
-## Contoh Konkret
+## Concrete Example
 Card list:
-- Spacing dalam card (heading + description + meta) = 8pt each (inner tight)
-- Spacing antar card = 24pt (outer breathing)
-- Eye scan: card-as-unit jelas.
+- Spacing within card (heading + description + meta) = 8pt each (inner tight)
+- Spacing between cards = 24pt (outer breathing)
+- Eye scan: card-as-unit is clear.
 
-## Anti-pattern (yang BUKAN ini)
-Spacing dalam card 24pt + antar card 24pt → semua spasi sama, card identity lost, user ga bisa parse "ini card terpisah" vs "ini 1 card panjang".
+## Anti-pattern (what this is NOT)
+Spacing within card 24pt + spacing between cards 24pt → all spacing the same, card identity lost, user can't parse "this is a separate card" vs "this is one long card".
 
-## Aplikasi untuk Paper.id
-Audit form, list, detail page apakah inner < outer.
+## Application for Paper.id
+Audit forms, lists, detail pages to check whether inner < outer.
 
-**Common bug**: spacing antar field-row terlalu kecil sama dengan spacing label-input → grouping hancur. Fix: pastikan inner (label-input) ≤ outer (field-field).
+**Common bug**: spacing between field-rows is too small and equals label-input spacing → grouping breaks. Fix: ensure inner (label-input) ≤ outer (field-field).
 
 ## Cross-refs
-- Kartu lain: `[[4-grouping-methods]]` (proximity principle), `[[predefined-spacing-scale]]`
+- Other cards: `[[4-grouping-methods]]` (proximity principle), `[[predefined-spacing-scale]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 4 — Layout and spacing
-- Halaman: 137
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 4 — Layout and spacing
+- Page: 137
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

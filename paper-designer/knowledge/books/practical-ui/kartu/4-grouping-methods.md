@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 4: Layout and spacing"
+  chapter: "Chapter 4: Layout and spacing"
   page: 105
 slug: "4-grouping-methods"
 buku_slug: "practical-ui"
@@ -16,36 +16,36 @@ problem_domain: "layout"
 # 4 grouping methods (container + proximity + similarity + continuity)
 
 ## Problem Trigger
-> Punya 6 card produk di page — gimana cara grup biar jelas mana yang related, ga tampak random?
+> You have 6 product cards on a page — how do you group them so it's clear which ones are related, not random?
 
 ## The Thinking
-4 metode grouping (Gestalt principles):
+4 grouping methods (Gestalt principles):
 
-1. **Container** — Place dalam border/shadow/bg color. STRONGEST visual cue. Tapi paling clutter. Use untuk main structure.
-2. **Proximity** — Spasi dalam group < spasi antar group. Cleaner dari container. Often sufficient.
-3. **Similarity** — Visual treatment serupa (size, shape, color, icon style). Group via uniform appearance.
-4. **Continuity** — Aligned in continuous line. Eye natural follow line. Common in list.
+1. **Container** — Place inside a border/shadow/background color. STRONGEST visual cue. But most cluttered. Use for main structure.
+2. **Proximity** — Spacing within a group < spacing between groups. Cleaner than a container. Often sufficient.
+3. **Similarity** — Similar visual treatment (size, shape, color, icon style). Groups via uniform appearance.
+4. **Continuity** — Aligned in a continuous line. Eye naturally follows the line. Common in lists.
 
-**Kombinasi**: Combine 2-3 untuk strong grouping TANPA container clutter. Mis: similarity (uniform card style) + proximity (16pt antar card, 32pt antar section) + continuity (aligned grid) = clear grouping tanpa border.
+**Combination**: Combine 2-3 methods for strong grouping WITHOUT container clutter. E.g.: similarity (uniform card style) + proximity (16pt between cards, 32pt between sections) + continuity (aligned grid) = clear grouping without borders.
 
-## Contoh Konkret
-Music player playlist — songs grouped via container (table border) + similarity (uniform row style) + proximity (close-packed) + continuity (column alignment). REMOVE container — masih kelihatan grouped via 3 metode lain. Cleaner.
+## Concrete Example
+Music player playlist — songs grouped via container (table border) + similarity (uniform row style) + proximity (close-packed) + continuity (column alignment). REMOVE the container — still looks grouped via the other 3 methods. Cleaner.
 
-## Anti-pattern (yang BUKAN ini)
-Bungkus segala 6 card pake border padahal proximity + similarity udah cukup → clutter, visual noise. Atau mixed methods inconsistent (sebagian card border, sebagian ngga).
+## Anti-pattern (what this is NOT)
+Wrapping all 6 cards in a border when proximity + similarity is already enough → clutter, visual noise. Or mixing methods inconsistently (some cards with borders, some without).
 
-## Aplikasi untuk Paper.id
+## Application for Paper.id
 Audit current cards/sections:
-- Kalau ada container yang ga "earn" purpose (decorative aja), pertimbangkan remove.
-- Filter inline di table = bisa pakai background tint (container ringan) + proximity ke header — clear grouping tanpa border noise.
-- Detail page section: combine proximity (16pt inner / 32pt outer) + similarity (uniform card style) → grouping clear tanpa border individu.
+- If there's a container that doesn't "earn" its purpose (just decorative), consider removing it.
+- Inline filter in table = can use background tint (light container) + proximity to header — clear grouping without border noise.
+- Detail page section: combine proximity (16pt inner / 32pt outer) + similarity (uniform card style) → clear grouping without individual borders.
 
 ## Cross-refs
-- Kartu lain: `[[inner-spacing-smaller-than-outer]]` (proximity rule detail), `[[visual-hierarchy-variables]]`
+- Other cards: `[[inner-spacing-smaller-than-outer]]` (proximity rule detail), `[[visual-hierarchy-variables]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 4 — Layout and spacing
-- Halaman: 105-119
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 4 — Layout and spacing
+- Page: 105-119
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

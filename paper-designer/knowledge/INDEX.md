@@ -1,6 +1,6 @@
 # Knowledge Library — Master Index
 
-> **Cara baca file ini:** ini index 1-baris per buku + list topik kartu. Claude scan dulu file ini saat butuh insight di Mode 2 (Konsultan), baru load file ringkasan/kartu yang relevant.
+> **How to read this file:** one-line index per book + list of card topics. Claude scans this file first when needing insights in Mode 2 (Consultant), then loads the relevant summary/card files.
 
 ## Setup Checkpoint (lock 2026-05-22)
 
@@ -8,30 +8,30 @@
 ✅ Templates ready (`_template-ringkasan.md`, `_template-kartu.md`)
 ✅ CLAUDE.md Knowledge Library section + Mode 1/2 trigger documented
 ✅ Memory rules: `knowledge-mode-trigger-rule`, `knowledge-extraction-workflow`
-✅ Pipeline.md Langkah 0a Mode Classification
+✅ Pipeline.md Step 0a Mode Classification
 
-**Decision lockedown:**
-- Granularity: **B1 — Ringkasan pyramid + Kartu atomic per topik**
-- Sub-agent untuk PDF reading: **NO** (inline cukup, ga over-engineer)
-- Synthesis layer (`thinking-modes.md`): **TUNDA** sampai 5+ buku
-- Trigger Mode 2: opt-in eksplisit (kata "ide lain", "revamp", "improvement", "bisa lebih baik", tag `@book` / `@article`)
-- Review: wajib user review 2 buku pertama
-- Citation: frontmatter `source.*` wajib, no halusinasi page/quote
+**Decisions locked:**
+- Granularity: **B1 — Pyramid summary + atomic cards per topic**
+- Sub-agent for PDF reading: **NO** (inline is sufficient, no over-engineering)
+- Synthesis layer (`thinking-modes.md`): **DEFERRED** until 5+ books
+- Mode 2 trigger: explicit opt-in (words "other ideas", "revamp", "improvement", "can we do better", tag `@book` / `@article`)
+- Review: user review required for first 2 books
+- Citation: frontmatter `source.*` required, no hallucinated page/quote
 
-**Status:** siap terima buku pertama (PDF) atau artikel pertama (URL Medium / NN/g / blog).
+**Status:** ready to receive first book (PDF) or first article (Medium URL / NN/g / blog).
 
 ---
 
-## Daftar Buku Terdaftar
+## Registered Books
 
 ## Refactoring UI — Adam Wathan & Steve Schoger
 - **Slug:** `refactoring-ui`
-- **File ringkasan:** `books/refactoring-ui-ringkasan.md`
-- **Thinking framework:** `books/refactoring-ui/thinking.md` ← pakai ini saat evaluate / desain, kartu untuk deep-dive
+- **Summary file:** `books/refactoring-ui-ringkasan.md`
+- **Thinking framework:** `books/refactoring-ui/thinking-archived-2026-05-22.md` ← archived, use `paper-designer-thinking.md` instead
 - **Thesis:** Good-looking UI is the result of applying specific learnable techniques — hierarchy, spacing, color, depth, and polish — not artistic talent.
 - **Best for:** Visual polish pass, hierarchy problems, component upgrade, empty state, color system, form UX
 - **Tags:** [hierarchy, spacing, color, typography, depth, visual-polish, empty-state, form, component]
-- **Topik kartu tersedia:**
+- **Available card topics:**
   - `hierarchy-weight-color` (`books/refactoring-ui/kartu/hierarchy-weight-color.md`)
   - `labels-secondary-value-primary` (`books/refactoring-ui/kartu/labels-secondary-value-primary.md`)
   - `spacing-system-scale` (`books/refactoring-ui/kartu/spacing-system-scale.md`)
@@ -46,101 +46,101 @@
   - `think-outside-box-component` (`books/refactoring-ui/kartu/think-outside-box-component.md`)
   - `text-contrast-on-images` (`books/refactoring-ui/kartu/text-contrast-on-images.md`)
   - `supercharge-defaults` (`books/refactoring-ui/kartu/supercharge-defaults.md`)
-- **Konflik dengan Aurora/Paper.id:** ada — lihat ringkasan (selectable card belum di Aurora, ilustrasi empty state belum ada Aurora library)
+- **Conflicts with Aurora/Paper.id:** yes — see summary (selectable card not in Aurora, empty state illustration not in Aurora library)
 - **Status:** reviewed
 - **Reviewed by:** user (2026-05-25)
 - **Extracted:** 2026-05-22
 
 ## Practical UI — Adham Dannaway
 - **Slug:** `practical-ui`
-- **File ringkasan:** `books/practical-ui-ringkasan.md`
-- **File bacaan santai:** `books/practical-ui-bacaan.md` — naratif 2700 kata, ~18-20 menit, format buat baca tuntas (thesis + top 10 insight + 5 quote + per-chapter + 3 actionable)
-- **Thesis:** UI design itu sistem rules logical — setiap detail WAJIB ada *logical reason* yang memenuhi 3 prinsip: minimise usability risks, minimise interaction cost, minimise cognitive load.
-- **Best for:** Form UX (paling dalam coverage-nya), Button hierarchy, Destructive action friction, Visual hierarchy variables, Conventional patterns (Jakob's Law), UX copywriting Indonesia adapt
+- **Summary file:** `books/practical-ui-ringkasan.md`
+- **Casual reading file:** `books/practical-ui-bacaan.md` — 2700-word narrative, ~18–20 min read, format for complete reading (thesis + top 10 insights + 5 quotes + per-chapter + 3 actionables)
+- **Thesis:** UI design is a system of logical rules — every detail MUST have a *logical reason* that satisfies 3 principles: minimise usability risks, minimise interaction cost, minimise cognitive load.
+- **Best for:** Form UX (deepest coverage), Button hierarchy, Destructive action friction, Visual hierarchy variables, Conventional patterns (Jakob's Law), UX copywriting
 - **Tags:** [forms, buttons, layout, visual-hierarchy, copywriting, typography, accessibility, design-system, destructive-actions, color]
-- **Topik kartu tersedia (45 kartu):**
-  - **Forms (12 kartu):**
-    - `single-column-form-layout` — Form pakai 1 kolom default
-    - `label-on-top-of-input` — Label stack vertikal, BUKAN di kiri
-    - `field-width-matches-input` — Width match expected input length
-    - `hint-text-above-field` — ⚠️ Hint di ATAS field (konflik Aurora)
-    - `dont-use-placeholder-as-label` — Placeholder hilang saat ngetik
-    - `stack-checkbox-radio-vertically` — Bukan inline
+- **Available card topics (45 cards):**
+  - **Forms (12 cards):**
+    - `single-column-form-layout` — Forms use 1 column by default
+    - `label-on-top-of-input` — Label stacks vertically, NOT on the left
+    - `field-width-matches-input` — Width matches expected input length
+    - `hint-text-above-field` — ⚠️ Hint ABOVE the field (conflicts with Aurora)
+    - `dont-use-placeholder-as-label` — Placeholder disappears while typing
+    - `stack-checkbox-radio-vertically` — Not inline
     - `mark-both-required-and-optional` — Asterisk `*` + word "(optional)"
-    - `conventional-form-field-styles` — Stick conventional, jangan eksperimen
-    - `validate-on-submit-not-inline` — ⚠️ Enable + validate on submit (konflik)
-    - `stacked-related-fields-side-by-side` — Pengecualian single-column
-    - `break-long-forms-into-steps` — Multi-step >10 field
-    - `group-form-fields-under-headings` — Section heading kalau ga bisa multi-step
-  - **Buttons (8 kartu):**
+    - `conventional-form-field-styles` — Stick to conventional, don't experiment
+    - `validate-on-submit-not-inline` — ⚠️ Enable + validate on submit (conflict)
+    - `stacked-related-fields-side-by-side` — Exception to single-column
+    - `break-long-forms-into-steps` — Multi-step for >10 fields
+    - `group-form-fields-under-headings` — Section heading when multi-step isn't possible
+  - **Buttons (8 cards):**
     - `3-button-weight-system` — Primary + Secondary + Tertiary
     - `one-primary-button-per-screen` — MAX 1 primary
-    - `secondary-for-equal-weight-actions` — Neutral choice tanpa bias
+    - `secondary-for-equal-weight-actions` — Neutral choice without bias
     - `tertiary-for-multiple-or-destructive` — Low-prominence
-    - `try-to-avoid-disabled-buttons` — ⚠️ Enable + validate (konflik)
-    - `button-text-descriptive-verb-noun` — "Save post" bukan "OK"
+    - `try-to-avoid-disabled-buttons` — ⚠️ Enable + validate (conflict)
+    - `button-text-descriptive-verb-noun` — "Save post" not "OK"
     - `friction-ladder-for-destructive` — 4-tier friction
     - `allow-undo-better-than-friction` — Undo > friction
-  - **Layout & Spacing (6 kartu):**
+  - **Layout & Spacing (6 cards):**
     - `4-grouping-methods` — Container + proximity + similarity + continuity
-    - `visual-hierarchy-variables` — 6 lever (size/colour/contrast/spacing/position/depth)
+    - `visual-hierarchy-variables` — 6 levers (size/colour/contrast/spacing/position/depth)
     - `squint-test-validation` — Validate hierarchy
     - `predefined-spacing-scale` — XS/S/M/L/XL/XXL = 8/16/24/32/48/80pt
     - `inner-spacing-smaller-than-outer` — Proximity rule
     - `keep-related-actions-close` — Fitts's Law
-  - **Less is more (4 kartu):**
+  - **Less is more (4 cards):**
     - `remove-unnecessary-information` — Cut redundant
     - `progressive-disclosure` — Reveal gradually
     - `minimalism-not-simplicity` — Don't confuse
-    - `break-choices-hicks-law` — 4 taktik speed up decisions
-  - **Input decisions (3 kartu):**
-    - `radio-vs-dropdown-threshold` — ⚠️ Buku ≤10 vs Paper.id ≤4 (konflik)
-    - `autocomplete-for-long-lists` — Predictive search untuk >10 opsi
-    - `stepper-vs-dropdown-for-numeric` — Stepper untuk small range
-  - **Copywriting (4 kartu):**
+    - `break-choices-hicks-law` — 4 tactics to speed up decisions
+  - **Input decisions (3 cards):**
+    - `radio-vs-dropdown-threshold` — ⚠️ Book ≤10 vs Paper.id ≤4 (conflict)
+    - `autocomplete-for-long-lists` — Predictive search for >10 options
+    - `stepper-vs-dropdown-for-numeric` — Stepper for small ranges
+  - **Copywriting (4 cards):**
     - `be-concise-cut-filler-words` — Cut filler words
-    - `use-sentence-case` — "Save post" bukan "Save Post"
-    - `front-load-key-info` — Important info di awal
-    - `inverted-pyramid-content-structure` — Most important top
-  - **Typography (2 kartu):**
-    - `regular-bold-only-no-weight-explosion` — 2 weight cukup
+    - `use-sentence-case` — "Save post" not "Save Post"
+    - `front-load-key-info` — Important info first
+    - `inverted-pyramid-content-structure` — Most important at top
+  - **Typography (2 cards):**
+    - `regular-bold-only-no-weight-explosion` — 2 weights is enough
     - `line-length-40-80-chars` — Optimal line length
-  - **Framework foundational (4 kartu):**
+  - **Framework foundational (4 cards):**
     - `logical-reason-rationale` — Why every design detail
     - `3-pillar-minimization` — Usability risk + interaction cost + cognitive load
-    - `conventional-patterns-jakob-law` — Stick conventional
+    - `conventional-patterns-jakob-law` — Stick to conventional
     - `modular-design-build-from-small` — Build from smallest components
-  - **Money Quotes (2 kartu):**
+  - **Money Quotes (2 cards):**
     - `quote-if-everything-important-nothing-is` — Hierarchy quote
     - `quote-minimal-doesnt-mean-simple` — Anti-minimalism trap quote
-- **Konflik dengan Aurora/Paper.id:** ada 5 — lihat ringkasan + `IMPROVEMENT-OPPORTUNITIES.md` (hint position, disabled buttons, radio threshold, inline validation, APCA migration)
+- **Conflicts with Aurora/Paper.id:** 5 conflicts — see summary + `IMPROVEMENT-OPPORTUNITIES.md` (hint position, disabled buttons, radio threshold, inline validation, APCA migration)
 - **Status:** reviewed
 - **Reviewed by:** user (2026-05-25)
 - **Extracted:** 2026-05-22
 
-### Format entry (untuk reference saat tambah buku)
+### Entry format (reference when adding a new book)
 
 ```markdown
-## <Judul Buku> — <Author>
-- **Slug:** `<buku-slug>`
-- **File ringkasan:** `books/<buku-slug>-ringkasan.md`
-- **Thesis:** <1 kalimat inti buku>
-- **Best for:** <kategori problem yang relevan>
+## <Book Title> — <Author>
+- **Slug:** `<book-slug>`
+- **Summary file:** `books/<book-slug>-ringkasan.md`
+- **Thesis:** <1 core sentence of the book>
+- **Best for:** <relevant problem categories>
 - **Tags:** [navigation, error-state, form, ...]
-- **Topik kartu tersedia:**
-  - `<topik-1>` (`books/<buku-slug>/kartu/<topik-1>.md`)
-  - `<topik-2>`
+- **Available card topics:**
+  - `<topic-1>` (`books/<book-slug>/kartu/<topic-1>.md`)
+  - `<topic-2>`
   - ...
-- **Konflik dengan Aurora/Paper.id:** [tidak ada / ada — lihat ringkasan]
+- **Conflicts with Aurora/Paper.id:** [none / yes — see summary]
 - **Status:** [draft / reviewed by user / locked]
 - **Extracted:** <YYYY-MM-DD>
 ```
 
 ---
 
-## Topic Tag Index (cross-buku)
+## Topic Tag Index (cross-book)
 
-> Auto-populate berdasarkan tag di kartu. Update saat tambah buku baru.
+> Auto-populated based on card tags. Update when adding a new book.
 
 ### #hierarchy / #visual-hierarchy
 - `refactoring-ui`: `hierarchy-weight-color`, `labels-secondary-value-primary`, `action-hierarchy-semantics`
@@ -186,16 +186,16 @@
 - `refactoring-ui`: `think-outside-box-component`, `supercharge-defaults`
 - `practical-ui`: `logical-reason-rationale`, `3-pillar-minimization`, `conventional-patterns-jakob-law`, `modular-design-build-from-small`
 
-### #conflict-aurora (kartu yang konflik vs Aurora rules)
-- `practical-ui`: `hint-text-above-field`, `validate-on-submit-not-inline`, `try-to-avoid-disabled-buttons`, `radio-vs-dropdown-threshold` → semua logged di `IMPROVEMENT-OPPORTUNITIES.md`
+### #conflict-aurora (cards that conflict with Aurora rules)
+- `practical-ui`: `hint-text-above-field`, `validate-on-submit-not-inline`, `try-to-avoid-disabled-buttons`, `radio-vs-dropdown-threshold` → all logged in `IMPROVEMENT-OPPORTUNITIES.md`
 
-### #quote (money quotes signature)
+### #quote (signature money quotes)
 - `practical-ui`: `quote-if-everything-important-nothing-is`, `quote-minimal-doesnt-mean-simple`
 
 ---
 
-## Status synthesis layer
+## Synthesis layer status
 
-`thinking-modes.md` belum dibuat — **menunggu 5+ buku** sebelum cross-pattern reliable terdeteksi. Lihat README.md.
+`thinking-modes.md` not yet created — **waiting for 5+ books** before cross-patterns are reliably detectable. See README.md.
 
-**Status saat ini:** 2 buku terdaftar (Refactoring UI + Practical UI). Cross-pattern muncul: hierarchy + spacing + action hierarchy + form UX. Belum cukup untuk synthesis layer.
+**Current status:** 2 books registered (Refactoring UI + Practical UI). Cross-patterns emerging: hierarchy + spacing + action hierarchy + form UX. Not yet enough for a synthesis layer.

@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 1: Fundamentals"
+  chapter: "Chapter 1: Fundamentals"
   page: 29
 slug: "modular-design-build-from-small"
 buku_slug: "practical-ui"
@@ -16,41 +16,41 @@ problem_domain: "design-system"
 # Modular design — build from smallest reusable components
 
 ## Problem Trigger
-> Lo design Page Profile Perusahaan dari awal — gambar dari scratch.
+> You're designing a Company Profile Page from scratch — drawing from a blank canvas.
 
 ## The Thinking
-**Modular design** — build from SMALLEST reusable components → combine to larger → arrange ke template. 3 tier:
+**Modular design** — build from the SMALLEST reusable components → combine into larger ones → arrange into templates. 3 tiers:
 
 1. **Smallest components** (foundation): button, avatar, form-field, badge, icon, checkbox, radio.
 2. **Larger components**: card (combines avatar + heading + text + button), modal (combines header + form + button-row), table-row.
 3. **Templates** (assembled): page layout (combines cards in grid, sidebar, nav).
 
-**Manfaat:**
+**Benefits:**
 - Faster design (re-use existing pieces).
-- Consistency (same button across pages).
+- Consistency (same button across all pages).
 - Easier maintenance (update button once → propagates everywhere).
-- Better handoff dev (engineer pakai existing component).
+- Better dev handoff (engineers use existing components).
 
-## Contoh Konkret
-Avatar component → pair with text → card with avatar+text → list of cards = landing page. Same avatar component reused di profile, comment, notification, user list.
+## Concrete Example
+Avatar component → pair with text → card with avatar+text → list of cards = landing page. Same avatar component reused in profile, comment, notification, user list.
 
-## Anti-pattern (yang BUKAN ini)
-Designer A bikin button "Save" di page Edit Profile dari scratch. Designer B bikin button "Save" di page Edit Invoice from scratch. Slightly different style → DS broken.
+## Anti-pattern (what this is NOT)
+Designer A creates a "Save" button on the Edit Profile page from scratch. Designer B creates a "Save" button on the Edit Invoice page from scratch. Slightly different style → DS broken.
 
-## Aplikasi untuk Paper.id
+## Application for Paper.id
 - **Aurora `projects/ui/`** = component library.
-- WAJIB pakai existing components (per [[aurora-lookup-ritual]] M1).
-- Saat butuh composite (mis. "metadata + inline actions"), KOMPOSE Aurora pieces — JANGAN bikin baru (per [[composition-thinking-rule]]).
+- MUST use existing components (per [[aurora-lookup-ritual]] M1).
+- When a composite is needed (e.g., "metadata + inline actions"), COMPOSE Aurora pieces — DON'T create new ones (per [[composition-thinking-rule]]).
 
-Saat ada feature baru, FIRST check Aurora library. If missing, lapor maintainer (per Aurora Lookup Ritual).
+When there's a new feature, FIRST check the Aurora library. If missing, report to the maintainer (per Aurora Lookup Ritual).
 
 ## Cross-refs
 - Memory rule: `[[aurora-lookup-ritual]]`, `[[composition-thinking-rule]]`
-- Kartu lain: `[[conventional-form-field-styles]]`, `[[predefined-spacing-scale]]`
+- Other cards: `[[conventional-form-field-styles]]`, `[[predefined-spacing-scale]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 1 — Fundamentals
-- Halaman: 29-31
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 1 — Fundamentals
+- Page: 29-31
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

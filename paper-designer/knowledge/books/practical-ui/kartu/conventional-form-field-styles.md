@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 7: Forms"
+  chapter: "Chapter 7: Forms"
   page: 229
 slug: "conventional-form-field-styles"
 buku_slug: "practical-ui"
@@ -16,29 +16,29 @@ problem_domain: "form"
 # Stick with conventional form field styles
 
 ## Problem Trigger
-> Tergoda eksperimen styling form unik — radio bulet diganti kotak, input borderless, custom emoji untuk multi-choice.
+> Tempted to experiment with unique form styling — replacing round radio buttons with squares, borderless inputs, custom emoji for multi-choice.
 
 ## The Thinking
-Jakob's Law — user mental model dibentuk dari produk lain yang sering mereka pakai. Stick dengan: input = kotak border, radio = bulet + selected fill, checkbox = kotak + checkmark, dropdown = field + chevron down. Inovasi styling form = high risk usability — gain aesthetic, lose comprehension.
+Jakob's Law — users' mental models are formed from other products they frequently use. Stick with: input = bordered box, radio = circle + selected fill, checkbox = box + checkmark, dropdown = field + chevron down. Innovative form styling = high usability risk — gain aesthetics, lose comprehension.
 
-## Contoh Konkret
-Custom radio button rectangular dengan emoji "😊 Happy / ☹️ Sad" → user bingung "ini button? checkbox? bisa pilih multiple?". Pakai radio standar dengan bulet di kiri label → langsung clear "pilih 1 dari 2".
+## Concrete Example
+Custom rectangular radio button with emoji "😊 Happy / ☹️ Sad" → user confused "is this a button? checkbox? can I select multiple?". Use standard radio with circle on the left of label → immediately clear "select 1 of 2".
 
-## Anti-pattern (yang BUKAN ini)
-- Radio button tanpa lingkaran khas — usability risk tinggi.
-- Input field tanpa border ("clean look") — user ga tau bisa di-klik atau cuma teks.
-- Custom dropdown tanpa chevron — ambigu.
+## Anti-pattern (what this is NOT)
+- Radio button without the characteristic circle — high usability risk.
+- Input field without border ("clean look") — user doesn't know it can be clicked or is just text.
+- Custom dropdown without chevron — ambiguous.
 
-## Aplikasi untuk Paper.id
-STOP eksperimen styling form. Pakai Aurora `au-form-field`, `au-radio`, `au-checkbox`, `au-dropdown` apa adanya. Custom styling hanya untuk decorative wrapper, BUKAN core component shape.
+## Application for Paper.id
+STOP experimenting with form styling. Use Aurora `au-form-field`, `au-radio`, `au-checkbox`, `au-dropdown` as-is. Custom styling only for decorative wrappers, NOT core component shapes.
 
 ## Cross-refs
-- Memory rule: `[[aurora-lookup-ritual]]` — strict use Aurora components
-- Kartu lain: `[[conventional-patterns-jakob-law]]` (parent principle)
+- Memory rule: `[[aurora-lookup-ritual]]` — strict use of Aurora components
+- Other card: `[[conventional-patterns-jakob-law]]` (parent principle)
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 7 — Forms
-- Halaman: 229-230
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 7 — Forms
+- Page: 229-230
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

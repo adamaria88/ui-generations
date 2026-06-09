@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 7: Forms"
+  chapter: "Chapter 7: Forms"
   page: 244
 slug: "group-form-fields-under-headings"
 buku_slug: "practical-ui"
@@ -16,38 +16,38 @@ problem_domain: "form"
 # Group related fields under headings
 
 ## Problem Trigger
-> Form panjang ga bisa multi-step (constraint product), tapi 20 field 1 page bikin overwhelming.
+> A long form can't be multi-step (product constraint), but 20 fields on 1 page is overwhelming.
 
 ## The Thinking
-Kalau ga bisa multi-step, **group related fields under section headings**. User mental break ke chunk yang manageable. "Personal info / Contact info / Payment info" — 3 chunk × 7 field lebih digestible dari 21 field flat list.
+If multi-step isn't possible, **group related fields under section headings**. Users get a mental break into manageable chunks. "Personal info / Contact info / Payment info" — 3 chunks × 7 fields is more digestible than a flat list of 21 fields.
 
-## Contoh Konkret
-Form Profile Perusahaan:
-- **Section "Data Legal"** (heading H3 + spacing-L atas): NPWP, akta, SIUP, dll
-- **Section "Data Kontak"**: alamat, telepon, email
-- **Section "Data Bank"**: rekening, nama bank, swift code
+## Concrete Example
+Company Profile Form:
+- **Section "Legal Data"** (H3 heading + spacing-L above): NPWP, deed, SIUP, etc.
+- **Section "Contact Data"**: address, phone, email
+- **Section "Bank Data"**: account number, bank name, swift code
 
-Heading style: H3 atau H4 + spacing M (24pt) di atas + border bottom optional.
+Heading style: H3 or H4 + spacing M (24pt) above + optional bottom border.
 
-## Anti-pattern (yang BUKAN ini)
-20 field flat list tanpa heading → user lost, ga tau progress, ga tau "udah seberapa jauh, masih berapa lagi", abandon mid-form.
+## Anti-pattern (what this is NOT)
+20-field flat list with no headings → users get lost, don't know their progress, don't know "how far have I gone, how much is left", abandon mid-form.
 
-## Aplikasi untuk Paper.id
-Form panjang yang harus 1 page (constraint product / SEO) → wajib pakai section heading.
+## Application for Paper.id
+Long forms that must be 1 page (product constraint / SEO) → must use section headings.
 
 Heading style:
-- Aurora heading-3 (28px bold) atau heading-4 (22px bold)
-- Spacing M (24pt) di atas heading
+- Aurora heading-3 (28px bold) or heading-4 (22px bold)
+- Spacing M (24pt) above the heading
 - Spacing S (16pt) heading → first field
-- Border bottom optional untuk visual divider
+- Optional bottom border for visual divider
 
 ## Cross-refs
-- Kartu lain: `[[break-long-forms-into-steps]]` (alternatif preferred kalau bisa)
-- Kartu lain: `[[4-grouping-methods]]` (grouping principles)
+- Other card: `[[break-long-forms-into-steps]]` (preferred alternative if possible)
+- Other card: `[[4-grouping-methods]]` (grouping principles)
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 7 — Forms
-- Halaman: 244
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 7 — Forms
+- Page: 244
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

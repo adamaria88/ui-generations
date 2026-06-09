@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 2: Less is more"
+  chapter: "Chapter 2: Less is more"
   page: 55
 slug: "break-choices-hicks-law"
 buku_slug: "practical-ui"
@@ -16,34 +16,34 @@ problem_domain: "content"
 # Break up choices to speed up decision making (Hick's Law)
 
 ## Problem Trigger
-> Lo punya 20 menu items di sidebar — user butuh waktu lama pilih.
+> You have 20 menu items in a sidebar — users take a long time to choose.
 
 ## The Thinking
-Hick's Law — decision time meningkat dengan jumlah & complexity pilihan. 4 taktik buat speed up:
+Hick's Law — decision time increases with the number and complexity of choices. 4 tactics to speed things up:
 
-1. **Remove** — Kalau opsi ga essential, cut.
-2. **Group/Categorise** — Bundle opsi related (mis. "Sales" group → Invoice/Receipt/Customer).
-3. **Multi-step** — Pecah jadi sequential choice (jenis dokumen dulu → setelah pilih invoice, baru muncul opsi terkait).
-4. **Recommend** — Highlight 1 sebagai "Most popular" / "Recommended" → user fast-track pilih itu.
+1. **Remove** — If an option isn't essential, cut it.
+2. **Group/Categorise** — Bundle related options (e.g., "Sales" group → Invoice/Receipt/Customer).
+3. **Multi-step** — Break into sequential choices (document type first → after selecting invoice, related options appear).
+4. **Recommend** — Highlight 1 as "Most popular" / "Recommended" → users fast-track to that option.
 
-## Contoh Konkret
-Form subscribe newsletter dengan 3 field (First name + Company + Email) → cut First name + Company (not essential) → tinggal Email. Submission rate naik.
+## Concrete Example
+Newsletter subscribe form with 3 fields (First name + Company + Email) → cut First name + Company (not essential) → just Email. Submission rate increases.
 
-## Anti-pattern (yang BUKAN ini)
-Menu 20 item flat tanpa grouping → user scan 20 item tiap kali butuh action. Pricing comparison 5 plan tanpa "Most popular" badge → user paralysis.
+## Anti-pattern (what this is NOT)
+20-item flat menu without grouping → users scan all 20 items every time they need an action. Pricing comparison with 5 plans and no "Most popular" badge → user paralysis.
 
-## Aplikasi untuk Paper.id
-- Sidemenu udah grouped (Sales / Purchase / Inventory / Settings).
-- Form Buat Invoice — kalau ada banyak custom field optional, group dengan "Tambah detail" accordion.
-- Pricing comparison — kasih badge "Most popular" di middle plan untuk fast-track decision.
-- Onboarding step — recommend "Setup Bisnis dulu" sebagai first step.
+## Application for Paper.id
+- Sidemenu is already grouped (Sales / Purchase / Inventory / Settings).
+- Create Invoice Form — if there are many optional custom fields, group them in an "Add details" accordion.
+- Pricing comparison — add a "Most popular" badge to the middle plan for fast-track decision.
+- Onboarding steps — recommend "Set up Business first" as the first step.
 
 ## Cross-refs
-- Kartu lain: `[[remove-unnecessary-information]]`, `[[progressive-disclosure]]`, `[[break-long-forms-into-steps]]`
+- Other cards: `[[remove-unnecessary-information]]`, `[[progressive-disclosure]]`, `[[break-long-forms-into-steps]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 2 — Less is more
-- Halaman: 55-58
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 2 — Less is more
+- Page: 55-58
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

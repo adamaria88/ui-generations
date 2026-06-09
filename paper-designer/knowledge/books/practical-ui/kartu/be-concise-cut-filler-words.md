@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 6: Copywriting"
+  chapter: "Chapter 6: Copywriting"
   page: 193
   quote_verbatim: "If a word can be removed without losing information or negatively affecting usability, remove it."
 slug: "be-concise-cut-filler-words"
@@ -17,32 +17,30 @@ problem_domain: "copywriting"
 # Be concise — cut filler words
 
 ## Problem Trigger
-> Modal Paper.id berisi "Apakah Anda ingin menyimpan invoice ini sebagai draft? Jangan khawatir, Anda masih bisa mengedit nanti dari halaman draft." — over.
+> Paper.id modal contains "Would you like to save this invoice as a draft? Don't worry, you can still edit it later from the drafts page." — over.
 
 ## The Thinking
-Attention span pendek. Setiap kata earn place. Cut:
-- **Filler**: "actually", "basically", "really", "quite", "truthfully"
-- **Joining**: "a", "an", "the" kalau bisa
-- **Introductory**: "would you like to", "in order to", "are you sure", "there are", "it is"
-- **Replace long word with shorter equivalent**: utilise → use
+Attention spans are short. Every word must earn its place. Cut:
+- **Fillers**: "actually", "basically", "really", "quite", "truthfully"
+- **Joining words**: "a", "an", "the" when possible
+- **Introductory phrases**: "would you like to", "in order to", "are you sure", "there are", "it is"
+- **Replace long words with shorter equivalents**: utilise → use
 - **Keep sentences <20 words**
 
-## Contoh Konkret
+## Concrete Example
 - ❌ "Would you like to save the article? Don't worry, you'll still be able to publish it at a later date. You can always find saved articles in your library."
 - ✅ "Save article? Save the article to your library to publish later."
 
 Cut: "Would you like to" + "Don't worry" + "always" + redundant explanation.
 
-## Anti-pattern (yang BUKAN ini)
-Verbose corporate "Apakah Anda yakin ingin melanjutkan tindakan ini? Mohon konfirmasi terlebih dahulu sebelum melanjutkan." — formal, robotic, lebih lambat di-baca.
+## Anti-pattern (what this is NOT)
+Verbose corporate "Are you sure you want to proceed with this action? Please confirm before continuing." — formal, robotic, slower to read.
 
-## Aplikasi untuk Paper.id
-- ❌ "Apakah Anda yakin ingin menghapus invoice ini? Tindakan ini tidak dapat dikembalikan." (16 kata)
-- ✅ "Hapus invoice? Kamu nggak bisa balikin ini." (7 kata, lebih punchy)
+## Application for Paper.id
+- ❌ "Are you sure you want to delete this invoice? This action cannot be undone." (16 words)
+- ✅ "Delete invoice? You won't be able to undo this." (9 words, punchier)
 
-Pakai bahasa Indonesia santai per [[user-prefers-plain-indonesian]] — coincide dengan rule "be concise".
-
-Apply ke:
+Apply to:
 - Modal title + description
 - Toast notification
 - Empty state heading + subtext
@@ -51,13 +49,13 @@ Apply ke:
 
 ## Cross-refs
 - Memory rule: `[[user-prefers-plain-indonesian]]`
-- Kartu lain: `[[use-sentence-case]]`, `[[front-load-key-info]]`, `[[inverted-pyramid-content-structure]]`
+- Other cards: `[[use-sentence-case]]`, `[[front-load-key-info]]`, `[[inverted-pyramid-content-structure]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 6 — Copywriting
-- Halaman: 193-194
+- Book: Practical UI by Adham Dannaway
+- Chapter: 6 — Copywriting
+- Page: 193-194
 - Quote verbatim:
   > "If a word can be removed without losing information or negatively affecting usability, remove it."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

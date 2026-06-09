@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 1: Fundamentals"
+  chapter: "Chapter 1: Fundamentals"
   page: 15
   quote_verbatim: "The higher the interaction cost, the harder it is for someone to achieve their task."
 slug: "3-pillar-minimization"
@@ -17,45 +17,45 @@ problem_domain: "mindset"
 # 3-pillar minimization (usability risk + interaction cost + cognitive load)
 
 ## Problem Trigger
-> Lo audit page, tau "ada yang aneh" tapi ga tau gimana cara assess systematically.
+> You're auditing a page, you know "something is off" but don't know how to assess it systematically.
 
 ## The Thinking
-**3-pillar audit framework** untuk semua design decision:
+**3-pillar audit framework** for all design decisions:
 
 ### 1. Minimise usability risks
-Apakah ini bisa bikin user struggle? Anything vague/confusing/unclear = risk. Cater to: low vision, low computer literacy, motor impairment, cognitive impairment. Aim WCAG 2.1 AA.
+Could this cause users to struggle? Anything vague/confusing/unclear = risk. Cater to: low vision, low computer literacy, motor impairment, cognitive impairment. Aim for WCAG 2.1 AA.
 
 ### 2. Minimise interaction cost
-Apakah ini bikin user kerja extra? Sum of: looking, scrolling, searching, reading, clicking, waiting, typing, thinking, remembering. Reduce setiap step yang bisa.
+Does this make users work extra? Sum of: looking, scrolling, searching, reading, clicking, waiting, typing, thinking, remembering. Reduce every step that can be reduced.
 
 ### 3. Minimise cognitive load
-Apakah ini bikin user mikir keras? Reduce: simultaneous choices, novel patterns, memorization burden. Conventional patterns + predefined options + clear labels.
+Does this make users think hard? Reduce: simultaneous choices, novel patterns, memorization burden. Conventional patterns + predefined options + clear labels.
 
-Setiap design choice WAJIB cek vs 3 pillar. Trade-off OK kalau ada compelling reason — tapi WAJIB sadar trade-off-nya.
+Every design choice MUST be checked against the 3 pillars. Trade-offs are OK if there is a compelling reason — but you MUST be aware of the trade-off.
 
-## Contoh Konkret
-- **Light grey text "biar sleek"** → fail usability risk (vision-impaired).
-- **Multi-column form** → fail interaction cost (zig-zag) + cognitive load (which field next).
-- **Custom radio button styling** → fail cognitive load (deviate from mental model).
-- **Hide CTA "Continue" sampai user scroll** → fail interaction cost.
+## Concrete Example
+- **Light grey text "for a sleek look"** → fails usability risk (vision-impaired).
+- **Multi-column form** → fails interaction cost (zig-zag) + cognitive load (which field is next).
+- **Custom radio button styling** → fails cognitive load (deviates from mental model).
+- **Hide CTA "Continue" until user scrolls** → fails interaction cost.
 
-## Anti-pattern (yang BUKAN ini)
-Audit prototype dengan "feel" — "kayanya ok lah". Tanpa framework, miss subtle issue.
+## Anti-pattern (what this is NOT)
+Auditing a prototype by "feel" — "seems okay". Without a framework, you miss subtle issues.
 
-## Aplikasi untuk Paper.id
-- **Pre-Generation Checklist** di `design-rules.md` — ALWAYS run 3-pillar audit sebelum setor.
-- **Critique session** — review pakai 3 pillar sebagai lens.
-- Saat ada alternatif design, evaluate kedua against 3 pillar — pilih yang minimize total cost across 3.
+## Application for Paper.id
+- **Pre-Generation Checklist** in `design-rules.md` — ALWAYS run 3-pillar audit before delivering.
+- **Critique session** — review using the 3 pillars as a lens.
+- When there are design alternatives, evaluate both against the 3 pillars — pick the one that minimizes total cost across all 3.
 
 ## Cross-refs
 - Memory rule: `[[aurora-lookup-ritual]]` (audit M3), `[[prototyping-gap-lessons]]`
-- Kartu lain: `[[logical-reason-rationale]]` (paired mindset)
+- Other card: `[[logical-reason-rationale]]` (paired mindset)
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 1 — Fundamentals
-- Halaman: 15-23
+- Book: Practical UI by Adham Dannaway
+- Chapter: 1 — Fundamentals
+- Page: 15-23
 - Quote verbatim:
   > "The higher the interaction cost, the harder it is for someone to achieve their task."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

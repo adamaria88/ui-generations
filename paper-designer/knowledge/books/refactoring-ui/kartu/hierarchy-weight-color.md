@@ -17,42 +17,42 @@ problem_domain: "hierarchy"
 # Hierarchy via Weight + Color (De-emphasize Pattern)
 
 ## Problem Trigger
-> Page terasa "ramai" atau primary element tidak terasa dominant meski sudah diperbesar.
+> Page feels "busy" or the primary element doesn't feel dominant even after making it larger.
 
 ---
 
 ## The Thinking
-> Hierarchy punya tiga lever: size, weight (bold/regular), dan color (primary vs muted). Instinct awal selalu "bikin yang penting lebih besar" — tapi lebih efektif jika secondary element di-de-emphasize. Label bisa jadi abu-abu, teks pendukung bisa lighter weight, meta-info bisa ukuran lebih kecil. Primary element "menang" bukan karena dia lebih loud, tapi karena kompetitornya lebih quiet. Visual hierarchy juga terpisah dari semantic hierarchy (h1/h2 bisa dipakai karena tampilannya pas, bukan karena struktural HTML).
+> Hierarchy has three levers: size, weight (bold/regular), and color (primary vs muted). The instinct is always to "make the important thing bigger" — but it's more effective to de-emphasize secondary elements. Labels can be grey, supporting text can be lighter weight, meta-info can be smaller. The primary element "wins" not because it's louder, but because its competitors are quieter. Visual hierarchy is also separate from semantic hierarchy (h1/h2 can be used because the style fits, not because of HTML structure).
 
 ---
 
-## Contoh Konkret (1 contoh nyata)
-> Invoice list di Stripe: amount (bold, large, dark) + invoice number (regular, muted) + date (small, grey). Amount dominan bukan karena ada border atau warna — tapi karena semua elemen lain di-mute-kan.
+## Concrete Example (1 real example)
+> Invoice list in Stripe: amount (bold, large, dark) + invoice number (regular, muted) + date (small, grey). The amount is dominant not because of a border or color — but because all other elements are muted.
 
 ---
 
-## Anti-pattern (yang BUKAN ini)
-> Semua text di page pakai warna yang sama (`color: #333`) dan ukuran mirip-mirip. Primary action sama berat visualnya dengan secondary action. User butuh effort ekstra untuk tau mana yang penting.
+## Anti-pattern (what this is NOT)
+> All text on the page uses the same color (`color: #333`) and similar sizes. The primary action has the same visual weight as the secondary action. Users need extra effort to figure out what's important.
 
 ---
 
-## Aplikasi untuk Paper.id
-> Di List Pengeluaran: `Total` (bold, dark blue primary) vs `Nomor Ref` (regular, grey-muted) vs `Tanggal` (small, muted). Di card Detail Invoice: amount besar bold di atas, catatan/label bisa muted. Berlaku ke semua list page dan detail card. Lihat `[[labels-secondary-value-primary]]` untuk spesifik label pattern.
+## Application for Paper.id
+> In the Expense List: `Total` (bold, dark blue primary) vs `Ref Number` (regular, grey-muted) vs `Date` (small, muted). In the Invoice Detail card: large bold amount at the top, notes/labels can be muted. Applies to all list pages and detail cards. See `[[labels-secondary-value-primary]]` for the specific label pattern.
 
 ---
 
 ## Cross-refs
-- Kartu lain: `[[labels-secondary-value-primary]]` (aplikasi spesifik ke label/value pair)
-- Memory rule: `[[label-disambiguation-rule]]` — labels harus secondary kecuali ambiguous
+- Other card: `[[labels-secondary-value-primary]]` (specific application to label/value pairs)
+- Memory rule: `[[label-disambiguation-rule]]` — labels should be secondary unless ambiguous
 - DS / rules: `paper-designer/rules/design-rules.md` — Action Hierarchy section
 
 ---
 
 ## Source Verification
 
-- Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
-- Bab: Ch2 — Hierarchy is Everything
-- Halaman: 38
+- Book: Refactoring UI by Adam Wathan & Steve Schoger
+- Chapter: Ch2 — Hierarchy is Everything
+- Page: 38
 - Quote verbatim: "Instead of leaving all of the heavy lifting to font size alone, try using font weight or color to do the same job."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: no (Claude-verified via PDF read)

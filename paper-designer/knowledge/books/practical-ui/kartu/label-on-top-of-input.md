@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 7: Forms"
+  chapter: "Chapter 7: Forms"
   page: 215
   quote_verbatim: "Your eyes can see both the label and input in a single focus."
 slug: "label-on-top-of-input"
@@ -17,29 +17,29 @@ problem_domain: "form"
 # Label on top of input
 
 ## Problem Trigger
-> Mau pasang label form — di atas atau di kiri input?
+> Where to place a form label — above or to the left of the input?
 
 ## The Thinking
-Label di atas = eye focus 1x (label + input dalam 1 vertical glance). Label di kiri = zig-zag eye, jarak label-input variabel (label panjang break layout), right-align label bikin jagged-left edge sulit di-scan. Label kiri juga break di mobile (sempit).
+Label above = eye focuses once (label + input in 1 vertical glance). Label on the left = zig-zag eye movement, variable label-to-input distance (long labels break layout), right-aligned label creates a jagged-left edge that's hard to scan. Label on the left also breaks on mobile (narrow).
 
-## Contoh Konkret
-Label "Street address *" di atas input field, user langsung baca + isi tanpa eye-jump. Vs label "Suburb, town or city" di kiri field — text panjang break layout, atau right-aligned tapi jagged.
+## Concrete Example
+Label "Street address *" above the input field, user reads and fills immediately without eye-jumping. Vs label "Suburb, town or city" on the left — long text breaks layout, or right-aligned but ironically creates a jagged-left edge.
 
-## Anti-pattern (yang BUKAN ini)
-Label di kiri input "biar compact horizontal" — gap label-input variabel sesuai panjang label, eye susah focus, mobile break ke wrap. Right-align label "perbaiki jagged edge" tapi ironis bikin jagged-left.
+## Anti-pattern (what this is NOT)
+Label on the left of input "for horizontal compactness" — variable label-input gap based on label length, eye can't focus, breaks on mobile. Right-aligned label "to fix jagged edge" but ironically creates a jagged-left.
 
-## Aplikasi untuk Paper.id
-Semua form Paper.id pakai label-top (Aurora form-field default udah benar). Lock — jangan eksperimen label-left "biar compact" walaupun form panjang.
+## Application for Paper.id
+All Paper.id forms use label-top (Aurora form-field default is already correct). Locked — don't experiment with label-left "for compactness" even for long forms.
 
 ## Cross-refs
 - Memory rule: `[[prototyping-gap-lessons]]` — form patterns
-- Kartu lain: `[[single-column-form-layout]]` (paired rule), `[[dont-use-placeholder-as-label]]`
+- Other cards: `[[single-column-form-layout]]` (paired rule), `[[dont-use-placeholder-as-label]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 7 — Forms
-- Halaman: 215-216
+- Book: Practical UI by Adham Dannaway
+- Chapter: 7 — Forms
+- Page: 215-216
 - Quote verbatim:
   > "Your eyes can see both the label and input in a single focus."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

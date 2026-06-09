@@ -17,45 +17,45 @@ problem_domain: "typography"
 # Line Height by Context
 
 ## Problem Trigger
-> Headline terasa terlalu spaced-out / loose, atau body paragraph terasa cramped / hard to read.
+> Headlines feel too spaced-out / loose, or body paragraphs feel cramped / hard to read.
 
 ---
 
 ## The Thinking
-> Line height bukan satu nilai untuk semua — harus disesuaikan konteks. Rumusnya: semakin panjang baris teks dan semakin kecil font, semakin besar line-height yang dibutuhkan. Headline (large, sedikit kata): 1.0-1.2 (tight). Body text (medium size, banyak kata): 1.5-1.8 (loose untuk readability). Small UI labels (≤12px): 1.2-1.4. Nilai 1.5 sebagai universal default tidak tepat — headline dengan `line-height: 1.5` terlihat "airy" dan aneh.
+> Line height is not a one-size-fits-all value — it must be adjusted by context. The formula: the longer the line of text and the smaller the font, the larger the line-height needed. Headline (large, few words): 1.0-1.2 (tight). Body text (medium size, many words): 1.5-1.8 (loose for readability). Small UI labels (≤12px): 1.2-1.4. A universal default of 1.5 is not appropriate — a headline with `line-height: 1.5` looks "airy" and strange.
 
 ---
 
-## Contoh Konkret (1 contoh nyata)
-> H1 "Buat Invoice" di page header: `font-size: 24px; line-height: 1.2` — tight, authority. Paragraph deskripsi di bawahnya: `font-size: 14px; line-height: 1.6` — loose, readable. Table cell text: `font-size: 14px; line-height: 1.4` — cukup, konteks UI bukan reading.
+## Concrete Example (1 real example)
+> H1 "Create Invoice" in the page header: `font-size: 24px; line-height: 1.2` — tight, authoritative. Descriptive paragraph below it: `font-size: 14px; line-height: 1.6` — loose, readable. Table cell text: `font-size: 14px; line-height: 1.4` — adequate, UI reading context not long-form.
 
 ---
 
-## Anti-pattern (yang BUKAN ini)
-> Semua text di page pakai `line-height: 1.5` tanpa pertimbangan — heading jadi aneh spaced, atau label compact field jadi terlalu tinggi.
+## Anti-pattern (what this is NOT)
+> All text on the page uses `line-height: 1.5` without consideration — headings feel oddly spaced, or compact field labels become too tall.
 
 ---
 
-## Aplikasi untuk Paper.id
+## Application for Paper.id
 > - Page title / section heading: `line-height: 1.2-1.3`
 > - Table cell content: `line-height: 1.4`
 > - Form helper text / description: `line-height: 1.6`
 > - Toast message: `line-height: 1.4` (2-line max)
-> Aurora biasanya sudah set nilai ini di component — ikuti Aurora default kecuali ada override eksplisit di AURORA-OVERRIDES.md.
+> Aurora usually already sets these values in components — follow Aurora defaults unless there is an explicit override in AURORA-OVERRIDES.md.
 
 ---
 
 ## Cross-refs
 - DS / rules: `paper-designer/rules/design-rules.md` — section Typography
-- Kartu lain: `[[hierarchy-weight-color]]` — line-height sebagai bagian dari hierarchy system
+- Other card: `[[hierarchy-weight-color]]` — line-height as part of the hierarchy system
 
 ---
 
 ## Source Verification
 
-- Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
-- Bab: Ch4 — Designing Text
-- Halaman: 122 (section "Line-height is proportional", dari TOC)
+- Book: Refactoring UI by Adam Wathan & Steve Schoger
+- Chapter: Ch4 — Designing Text
+- Page: 122 (section "Line-height is proportional", from TOC)
 - Quote verbatim: —
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: no (Claude-verified TOC p.3-4)

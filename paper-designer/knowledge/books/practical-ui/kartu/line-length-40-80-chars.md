@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 5: Typography"
+  chapter: "Chapter 5: Typography"
   page: 182
 slug: "line-length-40-80-chars"
 buku_slug: "practical-ui"
@@ -16,38 +16,38 @@ problem_domain: "typography"
 # Line length 40-80 characters per line
 
 ## Problem Trigger
-> Long body text di landing page lebar 100% browser → 120+ char per baris.
+> Long body text on a landing page at 100% browser width → 120+ characters per line.
 
 ## The Thinking
-Ideal line length untuk readability = **40-80 char per line** (termasuk spaces).
+Ideal line length for readability = **40-80 characters per line** (including spaces).
 
 - **Too long (>80)**: hard to track end-of-line → start-of-next-line. Eye fatigue.
-- **Too short (<40)**: eye travel too often, stressed.
+- **Too short (<40)**: eye travels too often, feels strained.
 
-Sweet spot: 60-75 char (academic research consensus). Constraint pakai max-width container atau column layout.
+Sweet spot: 60-75 characters (academic research consensus). Constrain using max-width container or column layout.
 
-## Contoh Konkret
-Article body width 720px (≈ 75 char dengan font 18px) — comfortable read.
+## Concrete Example
+Article body width 720px (≈ 75 chars with 18px font) — comfortable to read.
 
-Vs full-width 1440px (≈ 150 char) — eye lost di line tengah, butuh re-read.
+Vs full-width 1440px (≈ 150 chars) — eye gets lost mid-line, needs to re-read.
 
-## Anti-pattern (yang BUKAN ini)
-Landing page hero text full-width "supaya impactful" → ironic, lebih sulit di-baca dari constrained-width.
+## Anti-pattern (what this is NOT)
+Landing page hero text at full-width "for impact" → ironically harder to read than constrained-width.
 
-## Aplikasi untuk Paper.id
-- **Description di card detail** → constraint `max-width: 65ch` (CSS unit native).
+## Application for Paper.id
+- **Description in detail card** → constrain with `max-width: 65ch` (native CSS unit).
 - **Modal body text** → max-width 480px.
-- **Empty state subtext** → max-width compact.
+- **Empty state subtext** → compact max-width.
 - **Long-form help/docs** → 720px column.
 
-CSS `ch` unit native untuk constraint berdasarkan character count.
+CSS `ch` unit is native for constraining based on character count.
 
 ## Cross-refs
-- Kartu lain: `[[regular-bold-only-no-weight-explosion]]`, cross-ref `[[refactoring-ui:line-height-by-context]]`
+- Other cards: `[[regular-bold-only-no-weight-explosion]]`, cross-ref `[[refactoring-ui:line-height-by-context]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 5 — Typography
-- Halaman: 182-183
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 5 — Typography
+- Page: 182-183
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

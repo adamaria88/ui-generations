@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 6: Copywriting"
+  chapter: "Chapter 6: Copywriting"
   page: 195
 slug: "use-sentence-case"
 buku_slug: "practical-ui"
@@ -16,42 +16,42 @@ problem_domain: "copywriting"
 # Use sentence case (not Title Case)
 
 ## Problem Trigger
-> Mau capitalize button "Save Post" atau "Save post"?
+> Capitalize a button as "Save Post" or "Save post"?
 
 ## The Thinking
 Sentence case ("Save post") > Title Case ("Save Post"). Why:
-- Easier to scan — capital letters tiap kata interrupt eye flow.
-- Grammatically correct (proper sentence).
-- Title case rules ambiguous (kapan capitalize "of", "the"?) — easy to be inconsistent.
-- Title case = traditional book/article title context, NOT interface action.
+- Easier to scan — capital letters on every word interrupt eye flow.
+- Grammatically correct (a proper sentence).
+- Title case rules are ambiguous (when do you capitalize "of", "the"?) — easy to be inconsistent.
+- Title case = traditional book/article title context, NOT an interface action.
 
-## Contoh Konkret
+## Concrete Example
 - ❌ "Save Post for Later?"
 - ✅ "Save post for later?"
 - ❌ "Discard Post" / "Save Post"
 - ✅ "Discard post" / "Save post"
 
-## Anti-pattern (yang BUKAN ini)
-All-caps button text "SAVE POST" (uppercase) — even worse, screams + harder to read.
+## Anti-pattern (what this is NOT)
+All-caps button text "SAVE POST" (uppercase) — even worse, it screams + is harder to read.
 
-Title Case Untuk Setiap Tombol Karena Looks Premium — inconsistent capitalization "of"/"the", harder scan.
+Title Case On Every Button Because It Looks Premium — inconsistent capitalization of "of"/"the", harder to scan.
 
-## Aplikasi untuk Paper.id
-- **Button text** sentence case: "Simpan invoice" (bukan "Simpan Invoice").
-- **Modal heading** sentence case: "Hapus invoice?" (bukan "Hapus Invoice?").
-- **Section heading** bisa sentence case juga.
+## Application for Paper.id
+- **Button text** sentence case: "Save invoice" (not "Save Invoice").
+- **Modal heading** sentence case: "Delete invoice?" (not "Delete Invoice?").
+- **Section heading** can be sentence case too.
 
-**Pengecualian**: Proper noun WAJIB capitalize.
-- "Tambah Mitra" — kalau "Mitra" generic noun, bisa lowercase → "Tambah mitra".
-- "Setup Paper.id" — Paper.id is proper noun, capitalize.
+**Exception**: Proper nouns MUST be capitalized.
+- "Add Partner" — if "Partner" is a generic noun, it can be lowercase → "Add partner".
+- "Setup Paper.id" — Paper.id is a proper noun, capitalize.
 
 ## Cross-refs
 - Memory rule: `[[user-prefers-plain-indonesian]]`
-- Kartu lain: `[[be-concise-cut-filler-words]]`, `[[button-text-descriptive-verb-noun]]`
+- Other cards: `[[be-concise-cut-filler-words]]`, `[[button-text-descriptive-verb-noun]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 6 — Copywriting
-- Halaman: 195
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 6 — Copywriting
+- Page: 195
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

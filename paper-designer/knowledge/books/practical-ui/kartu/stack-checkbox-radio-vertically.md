@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 7: Forms"
+  chapter: "Chapter 7: Forms"
   page: 217
 slug: "stack-checkbox-radio-vertically"
 buku_slug: "practical-ui"
@@ -16,29 +16,29 @@ problem_domain: "form"
 # Stack checkboxes and radio buttons vertically
 
 ## Problem Trigger
-> Punya 3 opsi notifikasi (Email/SMS/Post) — mau pasang horizontal inline atau stack vertikal?
+> You have 3 notification options (Email/SMS/Post) — lay them out horizontally inline or stack them vertically?
 
 ## The Thinking
-Vertical stack = clear separation antar opsi, ga ada risiko user salah klik opsi sebelah. Inline horizontal = harder to scan + screen-magnifier might miss opsi paling kanan. Consistent dengan rule single-column form.
+Vertical stacking = clear separation between options, no risk of the user clicking the wrong neighboring option. Horizontal inline = harder to scan + screen-magnifier might miss the rightmost option. Consistent with the single-column form rule.
 
-## Contoh Konkret
+## Concrete Example
 "How would you like to be notified?":
-- ✅ Vertikal: Email \n SMS \n Post
+- ✅ Vertical: Email \n SMS \n Post
 - ❌ Inline: [Email] [SMS] [Post]
 
-## Anti-pattern (yang BUKAN ini)
-Radio button horizontal "biar compact" — opsi tertimpa di mobile, accidental tap opsi sebelah, hard scan saat opsi banyak.
+## Anti-pattern (what this is NOT)
+Horizontal radio buttons "to be compact" — options overlap on mobile, accidental taps on the neighboring option, hard to scan when there are many options.
 
-## Aplikasi untuk Paper.id
-- Form metode pembayaran, jenis dokumen, status filter — semua radio/checkbox vertikal.
-- Aurora `au-radio` + `au-checkbox` kemungkinan udah default vertikal.
+## Application for Paper.id
+- Payment method, document type, status filter forms — all radio/checkbox vertical.
+- Aurora `au-radio` + `au-checkbox` are likely vertical by default already.
 
 ## Cross-refs
-- Kartu lain: `[[single-column-form-layout]]` (consistent principle)
+- Other cards: `[[single-column-form-layout]]` (consistent principle)
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 7 — Forms
-- Halaman: 217
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 7 — Forms
+- Page: 217
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

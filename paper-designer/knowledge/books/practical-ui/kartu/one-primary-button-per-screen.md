@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 8: Buttons"
+  chapter: "Chapter 8: Buttons"
   page: 258
   quote_verbatim: "If everything is important, nothing is important."
 slug: "one-primary-button-per-screen"
@@ -17,39 +17,39 @@ problem_domain: "button"
 # Use a single primary button for the most important action
 
 ## Problem Trigger
-> Page punya banyak action penting — semua di-pasang pill primary biru?
+> A page has many important actions — should they all use primary pill blue?
 
 ## The Thinking
-Primary button kerja karena LANGKA. Begitu ada 2-3 primary di page yang sama, dominance hilang, user bingung "mana yang paling penting?". MAX 1 primary per visible screen (atau per content-region). Action lain → secondary/tertiary.
+A primary button works because it's RARE. Once there are 2-3 primaries on the same page, dominance is gone and users are confused "which one is most important?". MAX 1 primary per visible screen (or per content-region). Other actions → secondary/tertiary.
 
 > "If everything is important, nothing is important."
 
-## Contoh Konkret
-List people to follow dengan 5 row × tombol "Follow" — kalau 5 primary biru semua, hierarchy hancur. Ganti ke 5 secondary "Follow" + 1 primary "Follow All" di top.
+## Concrete Example
+A list of people to follow with 5 rows × "Follow" button — if all 5 are primary blue, hierarchy is broken. Refactor to 5 secondary "Follow" + 1 primary "Follow All" at the top.
 
-## Anti-pattern (yang BUKAN ini)
-List Pengeluaran toolbar punya 3 primary: [Filter] [Unduh] [Catat Pengeluaran] — user lost mana paling penting. Fix: cuma "Catat Pengeluaran" primary, sisanya text-link.
+## Anti-pattern (what this is NOT)
+Expense List toolbar with 3 primaries: [Filter] [Download] [Record Expense] — users are lost on which is most important. Fix: only "Record Expense" is primary, the rest are text-links.
 
-## Aplikasi untuk Paper.id
-SUDAH lock di [[prototyping-gap-lessons]] 0h Action Hierarchy. Buku konfirmasi.
+## Application for Paper.id
+Already locked in [[prototyping-gap-lessons]] 0h Action Hierarchy. Book confirms.
 
-Apply ke:
-- Action bar (luar card): 1 primary max kanan.
-- In-card toolbar: 1 primary max (kalau ada).
-- Detail page: 1 primary action ("Kirim Invoice" / "Bayar Sekarang") + rest secondary/tertiary.
+Apply to:
+- Action bar (outside card): 1 primary max on the right.
+- In-card toolbar: 1 primary max (if any).
+- Detail page: 1 primary action ("Send Invoice" / "Pay Now") + rest secondary/tertiary.
 - Modal: 1 primary + rest secondary/tertiary.
 
-Squint test validate (lihat [[squint-test-validation]]).
+Squint test to validate (see [[squint-test-validation]]).
 
 ## Cross-refs
 - Memory rule: `[[prototyping-gap-lessons]]` 0h Action Hierarchy
-- Kartu lain: `[[3-button-weight-system]]`, `[[squint-test-validation]]`, `[[quote-if-everything-important-nothing-is]]`
+- Other cards: `[[3-button-weight-system]]`, `[[squint-test-validation]]`, `[[quote-if-everything-important-nothing-is]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 8 — Buttons
-- Halaman: 258-259
+- Book: Practical UI by Adham Dannaway
+- Chapter: 8 — Buttons
+- Page: 258-259
 - Quote verbatim:
   > "If everything is important, nothing is important."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

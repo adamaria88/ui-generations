@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 7: Forms"
+  chapter: "Chapter 7: Forms"
   page: 217
 slug: "stacked-related-fields-side-by-side"
 buku_slug: "practical-ui"
@@ -13,36 +13,36 @@ apply_value: "high"
 problem_domain: "form"
 ---
 
-# Stack related fields side by side (pengecualian single column)
+# Stack related fields side by side (single-column exception)
 
 ## Problem Trigger
-> Single column rule, tapi 2 field super related (Expiry date + CVC) — apa harus full-width stack juga?
+> Single-column rule, but 2 super-related fields (Expiry date + CVC) — should they be full-width stacked too?
 
 ## The Thinking
-Single column = aturan default, tapi short related fields boleh side-by-side ASAL:
-- (a) related (date + time, expiry + CVC, kota + kode pos)
-- (b) short (≤6 karakter expected each)
-- (c) contained dalam bounds parent column (tidak break ke side panel kosong)
+Single column = the default rule, but short related fields can go side-by-side AS LONG AS:
+- (a) related (date + time, expiry + CVC, city + postal code)
+- (b) short (≤6 characters expected each)
+- (c) contained within the parent column bounds (doesn't break out into an empty side panel)
 
-Reduce form height tanpa korbankan scanability.
+Reduces form height without sacrificing scannability.
 
-## Contoh Konkret
-Payment form — "Expiry date" (MM/YY) + "CVC" (3 digit) side-by-side dalam 1 row. Vs full-column stack yang bikin form tambah panjang.
+## Concrete Example
+A payment form — "Expiry date" (MM/YY) + "CVC" (3 digits) side-by-side in 1 row. Vs full-column stacking that makes the form longer.
 
-## Anti-pattern (yang BUKAN ini)
-Side-by-side untuk unrelated long fields (Street + Email) → user bingung urutan, accidental skip. Side-by-side untuk field full-width yang panjang → bikin form lebar over halaman.
+## Anti-pattern (what this is NOT)
+Side-by-side for unrelated long fields (Street + Email) → the user is confused about the order, accidental skips. Side-by-side for long full-width fields → makes the form wider than the page.
 
-## Aplikasi untuk Paper.id
-- Form Buat Invoice — "Tanggal Invoice" + "Tanggal Jatuh Tempo" side-by-side OK (related dates).
-- "Nomor PO" + "Nomor Referensi" side-by-side OK (short related).
-- Tapi "Nama Customer" + "Alamat" → tetep stack (long unrelated).
+## Application for Paper.id
+- Create Invoice form — "Invoice Date" + "Due Date" side-by-side OK (related dates).
+- "PO Number" + "Reference Number" side-by-side OK (short related).
+- But "Customer Name" + "Address" → still stack (long unrelated).
 
 ## Cross-refs
-- Kartu lain: `[[single-column-form-layout]]` (parent rule), `[[field-width-matches-input]]`
+- Other cards: `[[single-column-form-layout]]` (parent rule), `[[field-width-matches-input]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 7 — Forms
-- Halaman: 217-218
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 7 — Forms
+- Page: 217-218
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

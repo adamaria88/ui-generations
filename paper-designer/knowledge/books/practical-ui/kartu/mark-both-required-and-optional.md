@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 7: Forms"
+  chapter: "Chapter 7: Forms"
   page: 222
 slug: "mark-both-required-and-optional"
 buku_slug: "practical-ui"
@@ -16,40 +16,40 @@ problem_domain: "form"
 # Mark both required and optional fields
 
 ## Problem Trigger
-> Bingung gimana cara mark required vs optional di form panjang — pakai asterisk aja? atau text "optional"? atau "all required unless marked"?
+> Unsure how to mark required vs optional in a long form — use asterisk only? or text "optional"? or "all required unless marked"?
 
 ## The Thinking
-2 anti-pattern populer:
-- (a) "All required unless marked optional" instruction di top — sering ke-skip user saat scan.
-- (b) Cuma asterisk merah `*` — beberapa user ga tau artinya.
+2 popular anti-patterns:
+- (a) "All required unless marked optional" instruction at the top — often skipped by users when scanning.
+- (b) Only a red asterisk `*` — some users don't know what it means.
 
-**Safe**: Mark BOTH — `*` (atau "(required)") untuk required + "(optional)" untuk optional. Cleanest UX, ga ambigu, accessible untuk screen reader user.
+**Safe**: Mark BOTH — `*` (or "(required)") for required + "(optional)" for optional. Cleanest UX, no ambiguity, accessible for screen reader users.
 
-## Contoh Konkret
+## Concrete Example
 ```
 First name *
 Email *
 Mobile number (optional) — To receive updates via text message
 ```
 
-User scan langsung tau mana wajib, mana boleh skip.
+Users scanning immediately know what's required and what they can skip.
 
-## Anti-pattern (yang BUKAN ini)
-"All fields are required unless marked optional" di top form → user scan langsung ke field, miss instruksi, bingung apa wajib semua atau ga.
+## Anti-pattern (what this is NOT)
+"All fields are required unless marked optional" at the top of the form → users scan directly to the fields, miss the instruction, confused about what's required.
 
-Cuma asterisk merah `*` tanpa "(optional)" marker — ambigu untuk optional fields.
+Only a red asterisk `*` without an "(optional)" marker — ambiguous for optional fields.
 
-## Aplikasi untuk Paper.id
-- Form Buat Invoice, Form Tambah Mitra, Form Catat Pengeluaran: required `*`, optional eksplisit "(opsional)".
-- Pengecualian (ga perlu marking): form pendek 1-2 field — Search, Login, Newsletter subscribe.
-- Form panjang kompleks: ALL marked.
+## Application for Paper.id
+- Create Invoice Form, Add Partner Form, Record Expense Form: required `*`, explicit optional "(optional)".
+- Exception (no marking needed): short 1-2 field forms — Search, Login, Newsletter subscribe.
+- Long complex forms: ALL marked.
 
 ## Cross-refs
-- Kartu lain: `[[label-on-top-of-input]]`
+- Other card: `[[label-on-top-of-input]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 7 — Forms
-- Halaman: 222-225
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 7 — Forms
+- Page: 222-225
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

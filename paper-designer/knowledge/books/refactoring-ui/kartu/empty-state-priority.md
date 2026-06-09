@@ -17,42 +17,42 @@ problem_domain: "empty-state"
 # Empty State as First Impression
 
 ## Problem Trigger
-> User buka fitur baru untuk pertama kali dan langsung lihat "Belum ada data" atau table kosong tanpa arahan selanjutnya.
+> A user opens a new feature for the first time and immediately sees "No data yet" or an empty table with no next steps.
 
 ---
 
 ## The Thinking
-> Empty state adalah PERTAMA yang user lihat saat coba fitur baru — bukan afterthought, tapi priority design. Empty state harus: (1) punya ilustrasi / visual yang menarik (bukan hanya icon), (2) punya CTA button yang jelas (action pertama yang harus user lakukan), (3) HIDE UI controls yang tidak ada fungsinya saat kosong (tab, filter, kolom sort — kalau data kosong, kontrol ini misleading dan meaningless). Empty state yang baik = excited user untuk mulai. Empty state yang buruk = confused user yang tidak tau apa yang harus dilakukan.
+> The empty state is the FIRST thing users see when trying a new feature — it's not an afterthought, it's a design priority. An empty state should: (1) have an illustration / compelling visual (not just an icon), (2) have a clear CTA button (the first action the user should take), (3) HIDE UI controls that serve no purpose when empty (tabs, filters, sort columns — with no data, these controls are misleading and meaningless). A good empty state = excites users to start. A bad empty state = confused users who don't know what to do.
 
 ---
 
-## Contoh Konkret (1 contoh nyata)
-> Notion empty database page: ilustrasi kecil + "Add a row to get started" + tombol "+ New" primary yang besar. Tab dan filter disembunyikan. User langsung tau action pertama mereka.
+## Concrete Example (1 real example)
+> Notion empty database page: small illustration + "Add a row to get started" + large primary "+ New" button. Tabs and filters are hidden. Users immediately know their first action.
 
 ---
 
-## Anti-pattern (yang BUKAN ini)
-> Table kosong dengan header kolom lengkap, tab filter aktif, pagination "Menampilkan 0 dari 0 entri" — semua kontrol yang irrelevant tetap terlihat. User bingung, tidak ada direction.
+## Anti-pattern (what this is NOT)
+> Empty table with all column headers, active filter tabs, pagination showing "Displaying 0 of 0 entries" — all irrelevant controls still visible. Users are confused, no direction.
 
 ---
 
-## Aplikasi untuk Paper.id
-> Untuk semua List Page (Pengeluaran, Invoice, Customer, dll): saat zero data, hide in-card toolbar + filter row, tampilkan ilustrasi + teks motivasi + tombol "Catat Pengeluaran Pertama" / "Buat Invoice". Empty state pakai Aurora empty state component jika tersedia, atau custom dengan approval AURORA-OVERRIDES.md. Prioritas implementasi: fitur baru yang user belum pernah pakai > fitur existing yang sudah ada data.
+## Application for Paper.id
+> For all List Pages (Expenses, Invoices, Customers, etc.): when there is zero data, hide the in-card toolbar + filter row, display an illustration + motivational text + "Record First Expense" / "Create Invoice" button. Empty state uses Aurora's empty state component if available, or custom with AURORA-OVERRIDES.md approval. Implementation priority: new features the user has never used > existing features that already have data.
 
 ---
 
 ## Cross-refs
-- Memory rule: `[[aurora-lookup-ritual]]` — cek Aurora empty state component dulu sebelum custom
-- Kartu lain: `[[supercharge-defaults]]` — visual enhancement lain untuk polish
+- Memory rule: `[[aurora-lookup-ritual]]` — check Aurora empty state component first before going custom
+- Other card: `[[supercharge-defaults]]` — other visual enhancements for polish
 
 ---
 
 ## Source Verification
 
-- Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
-- Bab: Ch8 — Finishing Touches
-- Halaman: 234-237
+- Book: Refactoring UI by Adam Wathan & Steve Schoger
+- Chapter: Ch8 — Finishing Touches
+- Page: 234-237
 - Quote verbatim:
   > "Use them as an opportunity to be interesting and exciting — don't settle for plain and boring."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: no

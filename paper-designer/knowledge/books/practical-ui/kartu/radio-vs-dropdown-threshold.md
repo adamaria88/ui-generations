@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 7: Forms"
+  chapter: "Chapter 7: Forms"
   page: 235
 slug: "radio-vs-dropdown-threshold"
 buku_slug: "practical-ui"
@@ -13,46 +13,46 @@ apply_value: "medium"
 problem_domain: "form"
 ---
 
-# Radio vs dropdown — threshold opsi (⚠️ konflik vs Paper.id)
+# Radio vs dropdown — option threshold (⚠️ conflicts vs Paper.id)
 
 ## Problem Trigger
-> Field "Jenis pembayaran" ada 6 opsi — pakai radio button atau dropdown?
+> A "Payment type" field has 6 options — use radio buttons or a dropdown?
 
 ## The Thinking
-Buku rekomen **≤10 opsi = radio**, more = dropdown.
+The book recommends **≤10 options = radio**, more = dropdown.
 
 **Radio advantages:**
 - 1-click select (vs 2-click dropdown: open + select)
-- Always visible — easy compare
-- Lower interaction cost untuk motor-impaired user
-- Less prone "ke-mistaken filled & skipped"
+- Always visible — easy to compare
+- Lower interaction cost for motor-impaired users
+- Less prone to being "mistakenly filled & skipped"
 
 **Dropdown advantages:**
-- Compact (save vertical space)
-- Better untuk long list
+- Compact (saves vertical space)
+- Better for long lists
 
-## Konflik vs Paper.id Rule
-**Paper.id lock**: ≤4 = radio, ≥5 = dropdown (lebih konservatif dari buku — per [[paperverse-design-decisions]]). 
+## Conflict vs Paper.id Rule
+**Paper.id lock**: ≤4 = radio, ≥5 = dropdown (more conservative than the book — per [[paperverse-design-decisions]]).
 
-Buku jadi rationale supporting tapi **NOT override** Paper.id rule.
+The book serves as supporting rationale but does **NOT override** the Paper.id rule.
 
-## Contoh Konkret
-- Phone capacity 64/128/256GB → 3 opsi → radio (Paper.id rule + buku rule).
-- Status invoice (Draft/Sent/Paid/Overdue/Cancelled) → 5 opsi → dropdown (Paper.id rule). Buku akan recommend radio karena 5 ≤ 10.
+## Concrete Example
+- Phone capacity 64/128/256GB → 3 options → radio (Paper.id rule + book rule).
+- Invoice status (Draft/Sent/Paid/Overdue/Cancelled) → 5 options → dropdown (Paper.id rule). The book would recommend radio since 5 ≤ 10.
 
-## Anti-pattern (yang BUKAN ini)
-Capacity 2 opsi pakai dropdown → 2-click vs 1-click radio = friction extra ga perlu.
+## Anti-pattern (what this is NOT)
+Capacity with 2 options using a dropdown → 2-click vs 1-click radio = unnecessary extra friction.
 
-## Aplikasi untuk Paper.id
-**Stick dengan Paper.id rule ≤4**. Catat buku threshold ≤10 di `IMPROVEMENT-OPPORTUNITIES.md` sebagai data point — kalau next iteration mau evaluate looser threshold (5-8), ada source.
+## Application for Paper.id
+**Stick with the Paper.id rule of ≤4**. Log the book's ≤10 threshold in `IMPROVEMENT-OPPORTUNITIES.md` as a data point — if a future iteration wants to evaluate a looser threshold (5-8), the source is on record.
 
 ## Cross-refs
 - Memory rule: `[[paperverse-design-decisions]]` (radio threshold), `[[knowledge-vs-ds-priority-flow]]`
 - File: `paper-designer/knowledge/IMPROVEMENT-OPPORTUNITIES.md` entry "Radio threshold evaluation"
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 7 — Forms
-- Halaman: 235
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 7 — Forms
+- Page: 235
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

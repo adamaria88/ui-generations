@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 5: Typography"
+  chapter: "Chapter 5: Typography"
   page: 173
 slug: "regular-bold-only-no-weight-explosion"
 buku_slug: "practical-ui"
@@ -16,30 +16,30 @@ problem_domain: "typography"
 # Use regular and bold font weights only
 
 ## Problem Trigger
-> Lo download font Inter dengan 9 weight (thin, light, regular, medium, semibold, bold, black) — pakai semua biar variation.
+> You download the Inter font with 9 weights (thin, light, regular, medium, semibold, bold, black) — use them all for variation.
 
 ## The Thinking
-Multiple font weight = clutter + harder consistency + slower decision. **2 weight cukup**: regular + bold. Bold for emphasis (heading + label), regular for body. Beberapa typeface boleh semibold sebagai "bold" (kalau bold terlalu tebal).
+Multiple font weights = clutter + harder consistency + slower decisions. **2 weights are enough**: regular + bold. Bold for emphasis (heading + label), regular for body. Some typefaces can use semibold as the "bold" (if true bold is too heavy).
 
-Hindari thin & light weight di body text — hard to read for vision-impaired, fail WCAG.
+Avoid thin & light weights in body text — hard to read for vision-impaired users, fails WCAG.
 
-## Contoh Konkret
-Ecommerce product card pakai thin + light + regular + medium + bold + extra-bold (6 weight). Refactor → cuma regular + bold. Cleaner, faster decisions, more consistent.
+## Concrete Example
+An ecommerce product card uses thin + light + regular + medium + bold + extra-bold (6 weights). Refactor → just regular + bold. Cleaner, faster decisions, more consistent.
 
-## Anti-pattern (yang BUKAN ini)
-6 weight = setiap designer pick "feel right" → page A pakai medium, page B pakai semibold → inconsistent.
+## Anti-pattern (what this is NOT)
+6 weights = every designer picks what "feels right" → page A uses medium, page B uses semibold → inconsistent.
 
-Light/thin di body text 14px → fail WCAG, hard for vision-impaired.
+Light/thin in 14px body text → fails WCAG, hard for vision-impaired users.
 
-## Aplikasi untuk Paper.id
-Aurora type scale pakai cuma 2 weight (regular + bold). Stick to ini. Audit prototype apakah ada element pakai light/thin/medium/semibold di luar token — refactor ke regular/bold.
+## Application for Paper.id
+The Aurora type scale uses only 2 weights (regular + bold). Stick to this. Audit prototypes for any element using light/thin/medium/semibold outside the token — refactor to regular/bold.
 
 ## Cross-refs
-- Kartu lain: `[[predefined-spacing-scale]]` (same principle: limited tokens)
+- Other cards: `[[predefined-spacing-scale]]` (same principle: limited tokens)
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 5 — Typography
-- Halaman: 173-174
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 5 — Typography
+- Page: 173-174
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

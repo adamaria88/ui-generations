@@ -17,42 +17,42 @@ problem_domain: "color"
 # Color Palette via HSL — 8-10 Shades per Hue
 
 ## Problem Trigger
-> Warna di desain terasa inkonsisten, palette terasa random, atau warna grey terlihat "lifeless" dan tidak menyatu.
+> Colors in the design feel inconsistent, the palette feels random, or greys look "lifeless" and disconnected.
 
 ---
 
 ## The Thinking
-> Gunakan model HSL (Hue/Saturation/Lightness) bukan hex atau RGB — karena intuitive untuk adjustment: naik lightness = lebih muda, turun saturation = lebih muted. Setiap hue yang dipakai butuh 8-10 shade (misal 100 = sangat muda / 900 = sangat gelap). Pure grey tanpa hue hint (`#777`, `#ccc`) terlihat lifeless di layar — tambahkan sedikit hue tint (blue-grey, warm grey). Jangan pakai warna sebagai satu-satunya sinyal untuk state — selalu pasangkan dengan icon, weight, atau teks (accessibility + color blindness).
+> Use the HSL (Hue/Saturation/Lightness) model instead of hex or RGB — because it's intuitive to adjust: increase lightness = lighter shade, decrease saturation = more muted. Every hue used needs 8-10 shades (e.g., 100 = very light / 900 = very dark). Pure grey with no hue hint (`#777`, `#ccc`) looks lifeless on screen — add a little hue tint (blue-grey, warm grey). Never use color as the only signal for a state — always pair it with an icon, weight, or text (accessibility + color blindness).
 
 ---
 
-## Contoh Konkret (1 contoh nyata)
-> Aurora DS palette: `--color-light-brand-*` series (100-900) dengan hue consistent. Grey di Aurora (`--color-text-muted`, `--color-surface-light-raised`) punya subtle blue hint — tidak pure `#aaa`. Itulah kenapa Aurora grey terasa "bersih" bukan "flat".
+## Concrete Example (1 real example)
+> Aurora DS palette: `--color-light-brand-*` series (100-900) with a consistent hue. Grey in Aurora (`--color-text-muted`, `--color-surface-light-raised`) has a subtle blue hint — not pure `#aaa`. That's why Aurora grey feels "clean" rather than "flat".
 
 ---
 
-## Anti-pattern (yang BUKAN ini)
-> Menggunakan arbitrary hex (`#f5f5f5`, `#e0e0e0`, `#bdbdbd`) yang tidak punya relasi satu sama lain. Atau menggunakan warna biru untuk "approved" tanpa icon centang — color blind user tidak bisa bedakan.
+## Anti-pattern (what this is NOT)
+> Using arbitrary hex values (`#f5f5f5`, `#e0e0e0`, `#bdbdbd`) that have no relationship to each other. Or using blue for "approved" without a checkmark icon — color blind users can't tell the difference.
 
 ---
 
-## Aplikasi untuk Paper.id
-> Saat extend Aurora palette untuk kebutuhan custom (misal state warna baru yang belum ada di Aurora): gunakan HSL-based approach — ambil hue yang sama dengan Aurora brand blue, adjust lightness. Jangan ngarang hex baru yang tidak connect ke sistem. Untuk status badge: icon + color (bukan color only). Sudah implemented di expense-management (badge status pakai icon + warna).
+## Application for Paper.id
+> When extending the Aurora palette for custom needs (e.g., a new state color not yet in Aurora): use an HSL-based approach — take the same hue as the Aurora brand blue, adjust lightness. Don't invent new hex values that don't connect to the system. For status badges: icon + color (not color only). Already implemented in expense-management (status badge uses icon + color).
 
 ---
 
 ## Cross-refs
-- Memory rule: `[[aurora-lookup-ritual]]` — cek Aurora color token dulu sebelum custom
+- Memory rule: `[[aurora-lookup-ritual]]` — check Aurora color tokens first before going custom
 - DS / rules: `paper-designer/ds/ds-core.md` — color token list
-- Kartu lain: `[[accent-borders-visual-polish]]` — menggunakan warna sebagai accent
+- Other card: `[[accent-borders-visual-polish]]` — using color as an accent
 
 ---
 
 ## Source Verification
 
-- Buku: Refactoring UI oleh Adam Wathan & Steve Schoger
-- Bab: Ch5 — Working with Color
-- Halaman: 138 (section "Ditch hex for HSL"), quote dari p.141
+- Book: Refactoring UI by Adam Wathan & Steve Schoger
+- Chapter: Ch5 — Working with Color
+- Page: 138 (section "Ditch hex for HSL"), quote from p.141
 - Quote verbatim: "HSB is more common than HSL in design software, but browsers only understand HSL, so if you're designing for the web, HSL should be your weapon of choice."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: no (Claude-verified via PDF read)

@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 1: Fundamentals + Bab 4: Layout"
+  chapter: "Chapter 1: Fundamentals + Chapter 4: Layout"
   page: 27
 slug: "predefined-spacing-scale"
 buku_slug: "practical-ui"
@@ -16,10 +16,10 @@ problem_domain: "design-system"
 # Predefined spacing scale (XS/S/M/L/XL/XXL)
 
 ## Problem Trigger
-> Tiap component lo pasang spacing custom — 12px sini, 14px sana, 18px disitu. Inconsistent.
+> Every component you place has custom spacing — 12px here, 14px there, 18px somewhere else. Inconsistent.
 
 ## The Thinking
-Limited set of predefined spacing options. Buku rekomen 6-tier: **XS/S/M/L/XL/XXL = 8/16/24/32/48/80pt**. Limit pilihan = faster decisions + improve consistency + neater interface + easier handoff dev.
+A limited set of predefined spacing options. The book recommends a 6-tier system: **XS/S/M/L/XL/XXL = 8/16/24/32/48/80pt**. Limiting choices = faster decisions + improved consistency + neater interface + easier dev handoff.
 
 **Rule of thumb:**
 - **XS (8pt)** = intra-element (badge inside card, label-input gap)
@@ -29,27 +29,27 @@ Limited set of predefined spacing options. Buku rekomen 6-tier: **XS/S/M/L/XL/XX
 - **XL (48pt)** = page section divider
 - **XXL (80pt)** = major hero break
 
-## Contoh Konkret
+## Concrete Example
 Form field:
 - Spacing label-to-input = XS (8pt)
 - Spacing field-to-next-field = M (24pt)
 - Spacing section heading = L (32pt)
 - Spacing form-to-button = XL (48pt)
 
-## Anti-pattern (yang BUKAN ini)
-Push pixel sambil "feel right" — 13px, 17px, 23px random. Hardcoded magic numbers. Tiap designer pilih beda → DS inconsistent.
+## Anti-pattern (what this is NOT)
+Push pixels "until it feels right" — 13px, 17px, 23px random. Hardcoded magic numbers. Every designer picks differently → DS inconsistent.
 
-## Aplikasi untuk Paper.id
-Aurora kemungkinan udah punya spacing scale (cek `aurora/projects/ui/` untuk token). Audit prototype apakah pakai consistent scale atau magic numbers. Standardize ke Aurora tokens.
+## Application for Paper.id
+Aurora likely already has a spacing scale (check `aurora/projects/ui/` for tokens). Audit prototypes to see if they use a consistent scale or magic numbers. Standardize to Aurora tokens.
 
-**Note**: Cross-ref [[refactoring-ui]] (`spacing-system-scale`) — both books align on principle. Practical UI spacing scale 8/16/24/32/48/80, Refactoring UI t-shirt scale. Konvergen.
+**Note**: Cross-ref [[refactoring-ui]] (`spacing-system-scale`) — both books align on the principle. Practical UI spacing scale 8/16/24/32/48/80, Refactoring UI t-shirt scale. Convergent.
 
 ## Cross-refs
-- Kartu lain: `[[inner-spacing-smaller-than-outer]]`, cross-ref `[[refactoring-ui:spacing-system-scale]]`
-- File: `paper-designer/knowledge/IMPROVEMENT-OPPORTUNITIES.md` — entry spacing tokens Aurora
+- Other cards: `[[inner-spacing-smaller-than-outer]]`, cross-ref `[[refactoring-ui:spacing-system-scale]]`
+- File: `paper-designer/knowledge/IMPROVEMENT-OPPORTUNITIES.md` — entry for Aurora spacing tokens
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 1 — Fundamentals (hal 27) + Bab 4 — Layout (spacing section)
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 1 — Fundamentals (p. 27) + Chapter 4 — Layout (spacing section)
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 7: Forms"
+  chapter: "Chapter 7: Forms"
   page: 231
   quote_verbatim: "If a password needs to be at least 6 characters long, tell people before they fill out the password field, not after."
 slug: "hint-text-above-field"
@@ -14,38 +14,38 @@ apply_value: "high"
 problem_domain: "form"
 ---
 
-# Hint text above field (⚠️ konflik potensial)
+# Hint text above field (⚠️ potential conflict)
 
 ## Problem Trigger
-> Mau pasang helper text "Password min 8 karakter" — di atas atau di bawah field?
+> Want to add helper text "Password min 8 characters" — above or below the field?
 
 ## The Thinking
-Hint di ATAS field = (1) user baca dulu sebelum isi, prevent error; (2) maintain downward momentum saat scrolling form; (3) hint di bawah bisa ke-cover autofill dropdown / mobile keyboard. Tell people upfront, bukan setelah dia salah isi.
+Hint ABOVE the field = (1) user reads it before filling in, preventing errors; (2) maintains downward momentum while scrolling through the form; (3) hint below can be covered by the autofill dropdown / mobile keyboard. Tell people upfront, not after they've made a mistake.
 
-## Contoh Konkret
-"Gas meter reading" label → hint "Enter all numbers left to right including leading zeros" di ATAS input field. User baca hint dulu → isi benar. Vs hint di bawah → Chrome autofill menu cover hint → user submit error.
+## Concrete Example
+"Gas meter reading" label → hint "Enter all numbers left to right including leading zeros" ABOVE the input field. User reads the hint first → fills in correctly. Vs hint below → Chrome autofill menu covers the hint → user submits with an error.
 
-## Anti-pattern (yang BUKAN ini)
-Hint di bawah field — ke-cover autofill menu / mobile keyboard / browser suggestion. User submit error baru tau aturan field.
+## Anti-pattern (what this is NOT)
+Hint below the field — covered by the autofill menu / mobile keyboard / browser suggestion. User submits with an error before seeing the field rules.
 
-## Aplikasi untuk Paper.id
-⚠️ **Konflik vs current Aurora pattern** (kalau Aurora form-field punya `aurora-form-hint` di bawah default). 
+## Application for Paper.id
+⚠️ **Conflict vs current Aurora pattern** (if Aurora form-field has `aurora-form-hint` below by default).
 
-**Kompromi:**
-- Critical hint (mengubah cara user isi field) → pindah ke atas.
-- Decorative hint (deskripsi tambahan optional) → OK di bawah.
+**Compromise:**
+- Critical hint (changes how the user fills in the field) → move to above.
+- Decorative hint (optional additional description) → OK below.
 
-Catat ke `IMPROVEMENT-OPPORTUNITIES.md` untuk maintainer Aurora review.
+Log to `IMPROVEMENT-OPPORTUNITIES.md` for Aurora maintainer review.
 
 ## Cross-refs
-- Memory rule: `[[knowledge-vs-ds-priority-flow]]` — flow handle konflik DS
+- Memory rule: `[[knowledge-vs-ds-priority-flow]]` — flow for handling DS conflicts
 - File: `paper-designer/knowledge/IMPROVEMENT-OPPORTUNITIES.md` entry "Hint text position"
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 7 — Forms
-- Halaman: 231-232
+- Book: Practical UI by Adham Dannaway
+- Chapter: 7 — Forms
+- Page: 231-232
 - Quote verbatim:
   > "If a password needs to be at least 6 characters long, tell people before they fill out the password field, not after."
-- Tanggal ekstrak: 2026-05-22
+- Extraction date: 2026-05-22
 - Reviewed by user: yes

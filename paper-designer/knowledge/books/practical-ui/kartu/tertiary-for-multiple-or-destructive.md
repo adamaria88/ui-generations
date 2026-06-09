@@ -2,7 +2,7 @@
 source:
   book: "Practical UI"
   author: "Adham Dannaway"
-  chapter: "Bab 8: Buttons"
+  chapter: "Chapter 8: Buttons"
   page: 261
 slug: "tertiary-for-multiple-or-destructive"
 buku_slug: "practical-ui"
@@ -16,36 +16,36 @@ problem_domain: "button"
 # Use tertiary buttons for multiple or destructive actions
 
 ## Problem Trigger
-> List sharing — 5 user dengan tombol "Remove" each. Bikin 5 secondary buttons "Remove"? Atau gimana?
+> A sharing list — 5 users each with a "Remove" button. Make 5 secondary "Remove" buttons? Or what?
 
 ## The Thinking
-Multiple action equal-weight di list → tertiary buttons. Kenapa:
-- (a) Multiple secondary = compete dengan primary "Send invite" di bawah.
-- (b) Visual hierarchy hancur.
+Multiple equal-weight actions in a list → tertiary buttons. Why:
+- (a) Multiple secondary buttons = compete with the primary "Send invite" below.
+- (b) The visual hierarchy is broken.
 
-**Tertiary** (text-link underlined) low-prominence — preserve hierarchy primary action tetep dominant.
+**Tertiary** (underlined text-link) is low-prominence — preserves the primary action's hierarchy so it stays dominant.
 
-Plus: **Destructive action** (Remove, Delete, Hapus) → tertiary by default. Bukan red filled button "biar warning". Destructive yang too prominent = bahaya user accidental klik.
+Plus: **Destructive actions** (Remove, Delete) → tertiary by default. Not a red filled button "as a warning". A destructive action that's too prominent = dangerous, the user clicks it accidentally.
 
-## Contoh Konkret
-Share with people — 3 editor list, tombol [Remove] tertiary text-link kanan tiap row. Primary "Send invite" di top kanan masih jelas dominant.
+## Concrete Example
+Share with people — a 3-editor list, a [Remove] tertiary text-link on the right of each row. The primary "Send invite" at top right is still clearly dominant.
 
-## Anti-pattern (yang BUKAN ini)
-- 3 secondary "Remove" buttons di rows → 3 bordered buttons yang clutter, primary jadi compete.
-- Red filled "Delete" button super prominent untuk row destructive → user lebih sering accidental click.
+## Anti-pattern (what this is NOT)
+- 3 secondary "Remove" buttons on the rows → 3 bordered buttons that clutter, the primary now competes.
+- A super-prominent red filled "Delete" button for a destructive row → the user clicks it accidentally more often.
 
-## Aplikasi untuk Paper.id
-- Table actions (column ⋮ menu items "Hapus") = tertiary by default.
-- List user/mitra action button = tertiary.
-- Combine dengan [[friction-ladder-for-destructive]] — destructive tertiary untuk initial friction.
+## Application for Paper.id
+- Table actions (column ⋮ menu items "Delete") = tertiary by default.
+- User/partner list action buttons = tertiary.
+- Combine with [[friction-ladder-for-destructive]] — destructive tertiary for the initial friction.
 
 ## Cross-refs
 - Memory rule: `[[prototyping-gap-lessons]]` 0f Action menu items
-- Kartu lain: `[[3-button-weight-system]]`, `[[friction-ladder-for-destructive]]`
+- Other cards: `[[3-button-weight-system]]`, `[[friction-ladder-for-destructive]]`
 
 ## Source Verification
-- Buku: Practical UI oleh Adham Dannaway
-- Bab: 8 — Buttons
-- Halaman: 261
-- Tanggal ekstrak: 2026-05-22
+- Book: Practical UI by Adham Dannaway
+- Chapter: 8 — Buttons
+- Page: 261
+- Extraction date: 2026-05-22
 - Reviewed by user: yes
