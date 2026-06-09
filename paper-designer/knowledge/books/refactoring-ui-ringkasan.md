@@ -13,13 +13,13 @@ tags: [hierarchy, spacing, color, typography, depth, visual-polish, empty-state,
 
 # Refactoring UI — Adam Wathan & Steve Schoger
 
-## Thesis (1 kalimat inti)
+## Thesis (1-sentence core)
 
 Good-looking UI is not a talent — it's the result of applying specific learnable techniques: visual hierarchy through weight and color, systematic spacing, intentional color palettes, depth through layered shadows, and deliberate polish details.
 
 ---
 
-## 3-5 Framework Utama (mental model reusable)
+## 3-5 Core Frameworks (reusable mental models)
 
 ### Framework 1: Visual Hierarchy — De-emphasize, Don't Always Emphasize
 - **When to invoke:** Anytime a page feels "noisy" or you want to highlight a primary element but everything looks the same weight
@@ -53,7 +53,7 @@ Good-looking UI is not a talent — it's the result of applying specific learnab
 
 ---
 
-## Reading Map (peta topik kartu)
+## Reading Map (card topic map)
 
 | Topik | File | Tag | Apply-value |
 |-------|------|-----|-------------|
@@ -74,7 +74,7 @@ Good-looking UI is not a talent — it's the result of applying specific learnab
 
 ---
 
-## Money Quotes (1-3 quote berkesan)
+## Money Quotes (1-3 memorable quotes)
 
 1. > "Don't let your existing beliefs hold back your designs — constraints are powerful but sometimes a bit of freedom is just what you need to take an interface to the next level."
    — Ch8 — Think outside the box, p.246
@@ -87,49 +87,49 @@ Good-looking UI is not a talent — it's the result of applying specific learnab
 
 ---
 
-## Aplikasi untuk Paper.id
+## Application for Paper.id
 
-- **Untuk List Page (Invoice, Pengeluaran, Customer):** Framework 1 (hierarchy) langsung apply — badge status pakai chip warna + de-emphasize secondary text. Value amounts = besar/bold, currency label = muted. Lihat `_output/expense-management/02-ui-aurora.html` untuk reference.
-- **Untuk Empty States semua modul:** Ch8 rule: tambahkan ilustrasi + tombol CTA primary yang jelas. Jangan biarkan "Belum ada data" plain tanpa action. Hide tab/filter yang irrelevant saat kosong.
-- **Untuk Form page:** Selectable cards bisa apply ke pilihan paket/tipe yang penting (≥2 perbedaan signifikan). Aurora radio tetap jadi default untuk pilihan sederhana.
-- **Untuk card/table design:** Accent border (thin colored top strip) bisa jadi pembeda section tanpa menambah border yang noisy. Fewer borders rule: gunakan bg color difference atau spacing dulu sebelum pasang `border`.
-- **Untuk Color System:** HSL mental model sangat relevan saat extend Aurora palette — misal state warna custom untuk status tertentu.
+- **For List Pages (Invoice, Pengeluaran, Customer):** Framework 1 (hierarchy) applies directly — status badges use colored chips + de-emphasize secondary text. Value amounts = large/bold, currency label = muted. See `_output/expense-management/02-ui-aurora.html` for reference.
+- **For Empty States across all modules:** Ch8 rule: add an illustration + a clear primary CTA button. Don't leave a plain "Belum ada data" without an action. Hide tabs/filters that are irrelevant when empty.
+- **For Form pages:** Selectable cards can apply to important plan/type choices (≥2 significant differences). Aurora radio remains the default for simple choices.
+- **For card/table design:** An accent border (thin colored top strip) can differentiate a section without adding noisy borders. Fewer borders rule: use a bg color difference or spacing first before adding a `border`.
+- **For the Color System:** The HSL mental model is highly relevant when extending the Aurora palette — e.g. custom state colors for a particular status.
 
 ---
 
-## Konflik dengan Aurora / Paper.id Rules
+## Conflict with Aurora / Paper.id Rules
 
-- **Topik:** Selectable card untuk radio buttons
-  - **Buku bilang:** Kalau radio button adalah bagian UI yang penting, upgrade ke selectable cards (card dengan border highlight saat selected)
-  - **Paper.id pilih:** Radio button standar untuk ≤4 opsi (Aurora component au-radio). Selectable card BELUM ada di Aurora DS.
-  - **Alasan:** Aurora belum punya au-selectable-card. Kalau butuh, harus custom + catat di AURORA-OVERRIDES.md. Ref: [[paperverse-design-decisions]] threshold radio ≤4.
+- **Topic:** Selectable cards for radio buttons
+  - **The book says:** If a radio button is an important part of the UI, upgrade it to selectable cards (cards with a highlighted border when selected)
+  - **Paper.id chooses:** Standard radio buttons for ≤4 options (Aurora component au-radio). Selectable cards do NOT yet exist in the Aurora DS.
+  - **Reason:** Aurora doesn't have au-selectable-card yet. If needed, it must be custom + recorded in AURORA-OVERRIDES.md. Ref: [[paperverse-design-decisions]] radio threshold ≤4.
 
-- **Topik:** Link styling (fancy underlines)
-  - **Buku bilang:** Custom link underlines (gradient clip, partial overlap) untuk emphasis
-  - **Paper.id pilih:** Aurora au-link styling (biru standard). Override hanya kalau ada kebutuhan spesifik.
-  - **Alasan:** Konsistensi Aurora DS lebih penting dari variasi dekoratif untuk B2B.
+- **Topic:** Link styling (fancy underlines)
+  - **The book says:** Custom link underlines (gradient clip, partial overlap) for emphasis
+  - **Paper.id chooses:** Aurora au-link styling (standard blue). Override only if there's a specific need.
+  - **Reason:** Aurora DS consistency matters more than decorative variation for B2B.
 
-- **Topik:** Ilustrasi di empty state
-  - **Buku bilang:** Empty state = kesempatan jadi menarik, tambah ilustrasi
-  - **Paper.id:** Aurora punya empty state pattern yang lebih restraint (icon + text + button). Full ilustrasi custom belum diputuskan.
-  - **Alasan:** Belum ada Aurora illustration library. Gunakan Aurora empty state component dulu, lapor ke DS maintainer jika perlu ilustrasi custom.
+- **Topic:** Illustrations in empty states
+  - **The book says:** Empty state = an opportunity to be appealing, add an illustration
+  - **Paper.id:** Aurora has a more restrained empty state pattern (icon + text + button). Full custom illustrations not yet decided.
+  - **Reason:** There's no Aurora illustration library yet. Use the Aurora empty state component for now, and report to the DS maintainer if custom illustrations are needed.
 
-_(konflik minor — keputusan Aurora menang kecuali ada keputusan user eksplisit)_
+_(minor conflicts — the Aurora decision wins unless there's an explicit user decision)_
 
 ---
 
 ## Adaptation Note
 
-Buku published 2018 — 8 tahun yang lalu. Mayoritas teknik masih 100% current untuk web SaaS. Yang perlu diperhatikan:
-- Beberapa screenshot contoh adalah marketing/landing page (bukan pure app UI). Mental model tetap berlaku, tapi adaptasi ke in-app context mungkin perlu.
-- Contoh library CSS tidak disebut (buku tool-agnostic). Apply ke Aurora DS fine.
-- Typography advice: sistem font yang disebut sudah sebagian digantikan Inter, DM Sans, dll — tapi heuristik line-height/line-length tetap valid.
+The book was published in 2018 — 8 years ago. The majority of the techniques are still 100% current for web SaaS. Things to keep in mind:
+- Some example screenshots are marketing/landing pages (not pure app UI). The mental model still holds, but adapting to an in-app context may be needed.
+- No specific CSS library is mentioned (the book is tool-agnostic). Applying it to the Aurora DS is fine.
+- Typography advice: the fonts mentioned have partly been superseded by Inter, DM Sans, etc. — but the line-height/line-length heuristics remain valid.
 
 ---
 
-## Cross-refs (ke buku lain / rule lain)
+## Cross-refs (to other books / rules)
 
-- Memperkuat rule `[[aurora-lookup-ritual]]` — buku menekankan "build from real components, tidak ngarang"
-- Memperkuat rule `[[prototyping-gap-lessons]]` poin 0h — Action Hierarchy by Page Purpose
-- Memperkuat rule `[[paperverse-design-decisions]]` — threshold radio/dropdown, definisi destructive
-- Memperkuat rule `[[label-disambiguation-rule]]` — labels secondary, values primary (Framework 1)
+- Reinforces the rule `[[aurora-lookup-ritual]]` — the book emphasizes "build from real components, don't make things up"
+- Reinforces the rule `[[prototyping-gap-lessons]]` point 0h — Action Hierarchy by Page Purpose
+- Reinforces the rule `[[paperverse-design-decisions]]` — radio/dropdown thresholds, definition of destructive
+- Reinforces the rule `[[label-disambiguation-rule]]` — labels secondary, values primary (Framework 1)

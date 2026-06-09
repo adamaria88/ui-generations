@@ -10,315 +10,315 @@ extracted_by: "claude-opus-4-7"
 review_status: "reviewed"
 reviewer: "design.paper.id"
 companion_to: "practical-ui-ringkasan.md"
-target_audience: "Senior designer Paper.id, B2B finance SaaS, belum baca buku ini"
-reading_time: "~18-20 menit"
+target_audience: "Paper.id senior designer, B2B finance SaaS, hasn't read this book yet"
+reading_time: "~18-20 minutes"
 word_count: "~2700"
 ---
 
-# Practical UI — Bacaan Santai
+# Practical UI — Casual Read
 
 > **[VISUAL: Hero / Cover Section]**
-> Banner full-width di paling atas dokumen, height ~400-500px:
-> - Background: gradient subtle (light cream → light blue) atau solid light tint
-> - Kiri (60% width): heading utama "Practical UI" ukuran sangat besar (60-72px bold), sub-heading "Bacaan Santai 18 Menit" (24px medium), nama author "by Adham Dannaway · 2022 · 282 hal" (16px muted). Di bawah, 3 chip kecil: "📖 ~2700 kata", "⏱️ 18-20 menit", "🎯 B2B finance designer"
-> - Kanan (40% width): ilustrasi/cover mock — bisa 3 UI component sederhana (form field, primary button, color swatch) di-arrange overlap dengan shadow halus, atau cover buku Practical UI kalau ada gambar-nya
-> - Di bawah banner, callout horizontal "Outline bacaan" — 5 chips berderet dengan icon: (A) Thesis · (B) Top 10 Insight · (C) 5 Quote · (D) Per Chapter · (E) 3 Actionable
+> Full-width banner at the very top of the document, height ~400-500px:
+> - Background: subtle gradient (light cream → light blue) or solid light tint
+> - Left (60% width): main heading "Practical UI" at a very large size (60-72px bold), sub-heading "18-Minute Casual Read" (24px medium), author name "by Adham Dannaway · 2022 · 282 p." (16px muted). Below it, 3 small chips: "📖 ~2700 words", "⏱️ 18-20 minutes", "🎯 B2B finance designer"
+> - Right (40% width): illustration/cover mock — could be 3 simple UI components (form field, primary button, color swatch) arranged with slight overlap and a soft shadow, or the Practical UI book cover if an image is available
+> - Below the banner, a horizontal callout "Reading outline" — 5 chips in a row with icons: (A) Thesis · (B) Top 10 Insights · (C) 5 Quotes · (D) Per Chapter · (E) 3 Actionable
 
-Bacaan naratif ringkasan buku **Practical UI** (Adham Dannaway, 2022, 282 hal). Format ini buat lo baca santai 15-20 menit; kalau mau reference cards detail untuk Mode 2 retrieval, lihat `practical-ui-ringkasan.md` + 45 kartu di folder ini.
-
----
-
-## A. THESIS BUKU
-
-Adham Dannaway pengen ngebongkar mitos bahwa UI design itu soal "bakat" atau "selera estetik magis". Menurut dia, hampir semua keputusan desain interface yang bagus itu sebenernya hasil dari sekumpulan aturan logika sederhana yang bisa dipelajari. Setiap detail — ukuran tombol, warna, jarak antar elemen, urutan field di form — harus punya alasan rasional yang bisa diucapkan, bukan sekadar "feel-nya enak". Dia ngerangkum 2 dekade pengalamannya jadi tiga prinsip pengukur: kurangin risiko bingung (**usability risk**), kurangin effort fisik+mental pengguna (**interaction cost**), dan kurangin beban otak buat ngerti (**cognitive load**). Kalau lo bisa jawab "kenapa begini" pake tiga ukuran itu — bukan "karena keren" — desain lo udah ngalahin 80% UI di luar sana.
-
-> **[VISUAL: Diagram 3-Pillar Framework]**
-> Bikin 3 lingkaran besar berderet horizontal (atau Venn-style sedikit overlap). Masing-masing label besar di tengah:
-> - **Pillar 1: Usability Risk** — icon ⚠️/mata. Sub-text: "Ada yang bingung/ga jelas/ambigu?"
-> - **Pillar 2: Interaction Cost** — icon klik/cursor. Sub-text: "Berapa klik, scroll, search, baca yang user harus lakuin?"
-> - **Pillar 3: Cognitive Load** — icon otak. Sub-text: "Berapa banyak user harus mikir/inget/decide simultan?"
-> Di atas tiga lingkaran: heading "Tiga pengukur pengganti 'selera'". Di bawah: kalimat kecil "Audit desain pake 3 tuas ini, bukan opini."
-> Warna brand monochromatic (biru navy + variasi shade), bukan rainbow.
-
-Kenapa thesis ini powerful: dia ngubah review meeting dari debat selera ("gue ngerasa tombolnya kurang gede") jadi debat objektif ("tombol Save itu primary action — di-squint masih dominant ga? kalau nggak, gedein"). Dan dia konsisten apply ke seluruh 282 halaman buku — dari color sampe copywriting, semua di-justify pake logika yang sama.
-
-Catatan penting: buku ini **bukan textbook teoritik**. Adham cuma kasih panduan praktis yang "work well in most cases" — dia bilang sendiri di intro, design rarely black and white. Jadi treat semua rules sebagai default, bukan dogma.
+A narrative reading summary of the book **Practical UI** (Adham Dannaway, 2022, 282 p.). This format is for a relaxed 15-20 minute read; if you want detailed reference cards for Mode 2 retrieval, see `practical-ui-ringkasan.md` + the 45 cards in this folder.
 
 ---
 
-## B. TOP 10 INSIGHT (urut by impact)
+## A. BOOK THESIS
 
-### 1. Setiap detail desain harus punya "logical reason" yang bisa diucapkan
-Ini fondasi semua bab. Sebelum lo gedein tombol atau ganti warna border, tanyain ke diri sendiri: "kenapa". Kalau jawabannya "karena lebih cakep" atau "biar konsisten" tanpa lanjutan, itu bukan rationale — itu opini. Rationale yang sah selalu nyangkut ke salah satu dari: bantu user lihat (usability), kurangin effort (interaction cost), atau kurangin beban otak (cognitive load).
-**Contoh konkret di buku:** Adham nolak feedback "I just feel like the button should be bigger" sebagai non-rationale, dan minta penanya jawab "lebih gede untuk apa — biar lebih ke-klik di mobile? biar lebih dominant dibanding secondary?". Begitu specific, baru bisa di-decide. (Bab 1, hal 17-18)
+Adham Dannaway wants to bust the myth that UI design is about "talent" or some magical aesthetic taste. According to him, almost every good interface decision is actually the result of a set of simple logical rules you can learn. Every detail — button size, color, spacing between elements, the order of fields in a form — should have a rational reason you can articulate, not just "it feels right". He distills two decades of experience into three measuring sticks: reduce the risk of confusion (**usability risk**), reduce the user's physical + mental effort (**interaction cost**), and reduce the brain's effort to understand (**cognitive load**). If you can answer "why this way" using those three measures — not "because it looks cool" — your design already beats 80% of the UI out there.
 
-### 2. Tiga ukuran pengganti "selera": usability risk, interaction cost, cognitive load
-Ini framework audit yang lo bisa pake ke semua: form, table, modal, sampe copy. **Usability risk** = ada yang bingung/ga jelas/ambigu ga? **Interaction cost** = jumlah klik, scroll, search, baca yang user harus lakuin. **Cognitive load** = berapa banyak user harus mikir, inget, atau decide simultan. Kalau salah satu naik tanpa ada gain di yang lain, desainnya rugi.
-**Contoh konkret:** Text abu-abu muda "biar sleek" — kelihatannya minimalis tapi usability risk-nya tinggi banget (orang lansia atau silau di outdoor ga bisa baca). Form 2 kolom "save space" — bikin mata user zig-zag (interaction cost naik) dan harus inget posisi field mana yang udah diisi (cognitive load naik). (Bab 1, hal 15-23)
+> **[VISUAL: 3-Pillar Framework Diagram]**
+> Draw 3 large circles in a horizontal row (or Venn-style with slight overlap). Each one has a large label in the center:
+> - **Pillar 1: Usability Risk** — icon ⚠️/eye. Sub-text: "Is anything confusing/unclear/ambiguous?"
+> - **Pillar 2: Interaction Cost** — icon click/cursor. Sub-text: "How many clicks, scrolls, searches, reads does the user have to do?"
+> - **Pillar 3: Cognitive Load** — icon brain. Sub-text: "How much does the user have to think/remember/decide at once?"
+> Above the three circles: heading "Three measures that replace 'taste'". Below: a small line "Audit your design with these 3 levers, not opinion."
+> Monochromatic brand colors (navy blue + shade variations), not rainbow.
+
+Why this thesis is powerful: it turns the review meeting from a taste debate ("I feel like the button isn't big enough") into an objective one ("the Save button is the primary action — does it still dominate when you squint? if not, make it bigger"). And he applies it consistently across all 282 pages of the book — from color to copywriting, everything is justified with the same logic.
+
+Important note: this book is **not a theoretical textbook**. Adham just gives practical guidance that "works well in most cases" — he says so himself in the intro, design is rarely black and white. So treat all the rules as defaults, not dogma.
+
+---
+
+## B. TOP 10 INSIGHTS (ordered by impact)
+
+### 1. Every design detail must have an articulable "logical reason"
+This is the foundation of every chapter. Before you enlarge a button or change a border color, ask yourself: "why". If the answer is "because it looks nicer" or "for consistency" with nothing more, that's not a rationale — that's an opinion. A valid rationale always ties back to one of these: helping the user see (usability), reducing effort (interaction cost), or reducing brain load (cognitive load).
+**Concrete example in the book:** Adham rejects the feedback "I just feel like the button should be bigger" as a non-rationale, and asks the person to answer "bigger for what — so it's easier to tap on mobile? so it's more dominant than the secondary?". Once it's specific, you can decide. (Chapter 1, p. 17-18)
+
+### 2. Three measures that replace "taste": usability risk, interaction cost, cognitive load
+This is an audit framework you can apply to everything: forms, tables, modals, even copy. **Usability risk** = is anything confusing/unclear/ambiguous? **Interaction cost** = the number of clicks, scrolls, searches, and reads the user has to do. **Cognitive load** = how much the user has to think, remember, or decide at once. If one of them goes up with no gain in the others, the design loses.
+**Concrete example:** Light grey text "to look sleek" — it looks minimalist but its usability risk is sky-high (elderly people, or anyone in glare outdoors, can't read it). A 2-column form "to save space" — it makes the user's eyes zig-zag (interaction cost goes up) and forces them to remember which fields they've already filled (cognitive load goes up). (Chapter 1, p. 15-23)
 
 ### 3. "If everything is important, nothing is important"
-Visual hierarchy itu literally cara user tau mana yang harus dilihat duluan. Lo punya 6 tuas: ukuran, warna, kontras, jarak, posisi, kedalaman (shadow). Apply by urutan kepentingan, bukan rata. Untuk validasi, pake **Squint Test**: tutup mata sampe 50% atau blur Figma — kalau lo masih bisa nunjuk satu titik fokus utama, hierarchy lo bener. Kalau semua kelihatan sama berat, lo gagal.
-**Contoh konkret:** Page punya 4 tombol pill biru sama berat ("Filter", "Sort", "Export", "Buat Invoice") — squint test kasih 4 titik dominant, user bingung mau klik yang mana duluan. Fix: cuma "Buat Invoice" yang primary pill, sisanya text link. (Bab 4 + Bab 8, hal 120 & 259)
+Visual hierarchy is literally how the user knows what to look at first. You have 6 levers: size, color, contrast, spacing, position, depth (shadow). Apply them in order of importance, not evenly. To validate, use the **Squint Test**: close your eyes halfway or blur the Figma — if you can still point to one main focal point, your hierarchy is right. If everything looks equally heavy, you've failed.
+**Concrete example:** A page has 4 equally heavy blue pill buttons ("Filter", "Sort", "Export", "Buat Invoice") — the squint test gives you 4 dominant points, the user is confused about which to click first. Fix: only "Buat Invoice" is the primary pill, the rest are text links. (Chapter 4 + Chapter 8, p. 120 & 259)
 
 > **[VISUAL: Squint Test Before/After]**
-> Layout 2 kolom side-by-side, masing-masing nge-mock toolbar page List Invoice:
-> - **Kolom kiri (label "Salah — semua sama berat"):** 4 pill primary biru penuh berderet: [Filter] [Sort] [Export] [Buat Invoice]. Di bawah-nya versi blur 8px — keliatan 4 blob biru sama gede, ga ada focal point.
-> - **Kolom kanan (label "Bener — 1 anchor"):** 1 pill primary biru penuh [Buat Invoice] di paling kanan, plus 3 text link biru (Filter · Sort · Export) di kiri. Di bawah-nya versi blur 8px — keliatan cuma 1 blob biru dominant di kanan, sisanya samar.
-> Caption di bawah: "Tutup mata 50% atau blur Figma — kalau focal point masih kelihatan tunggal, hierarchy lo menang."
+> 2-column side-by-side layout, each mocking up the toolbar of a List Invoice page:
+> - **Left column (label "Wrong — everything equally heavy"):** 4 solid blue primary pills in a row: [Filter] [Sort] [Export] [Buat Invoice]. Below it, an 8px-blur version — you see 4 equally large blue blobs, no focal point.
+> - **Right column (label "Right — 1 anchor"):** 1 solid blue primary pill [Buat Invoice] on the far right, plus 3 blue text links (Filter · Sort · Export) on the left. Below it, an 8px-blur version — you see only 1 dominant blue blob on the right, the rest faint.
+> Caption below: "Close your eyes halfway or blur the Figma — if the focal point still reads as a single point, your hierarchy wins."
 
-### 4. Satu primary button per halaman. Maksimal.
-Ini implementasi paling konkret dari insight #3. Primary button (filled, warna brand) itu **anchor visual** — dia jadi titik fokus karena LANGKA. Begitu lo pasang 2-3 primary di satu page, dominance-nya hilang, dan user balik bingung. Untuk action lain di page yang sama: secondary (border only) untuk equal-weight, tertiary (text link) untuk yang paling rendah atau destructive.
-**Contoh konkret:** Form Tambah Mitra punya tombol "Simpan" + "Batal" + "Simpan & Tambah Lagi" — kalau ketiganya pill primary semua, user yang baru daftar pasti nge-klik "Simpan & Tambah Lagi" tanpa sadar. Fix: "Simpan" primary, "Simpan & Tambah Lagi" secondary (border), "Batal" tertiary (text link). (Bab 8, hal 258)
+### 4. One primary button per page. Maximum.
+This is the most concrete implementation of insight #3. The primary button (filled, brand color) is the **visual anchor** — it becomes the focal point because it's RARE. The moment you place 2-3 primaries on one page, its dominance is gone, and the user is confused again. For other actions on the same page: secondary (border only) for equal-weight, tertiary (text link) for the lowest or destructive ones.
+**Concrete example:** An Add Partner form has "Simpan" + "Batal" + "Simpan & Tambah Lagi" buttons — if all three are primary pills, a first-time user will surely click "Simpan & Tambah Lagi" without realizing. Fix: "Simpan" primary, "Simpan & Tambah Lagi" secondary (border), "Batal" tertiary (text link). (Chapter 8, p. 258)
 
 > **[VISUAL: 3-Tier Button System]**
-> Tampilan baris horizontal 3 button side-by-side, dengan label tier di atasnya:
-> - **Primary:** Pill biru penuh, text putih "Simpan invoice", 1 panah/icon dominan di atas (label "1 per page MAX")
-> - **Secondary:** Pill background putih + border biru tipis 1px, text biru "Simpan & buat baru" (label "Untuk equal-weight actions")
-> - **Tertiary:** Text only "Batal" warna biru dengan underline tipis (label "Untuk least important")
-> Di bawah: visual penjelasan kenapa hierarchy ga boleh cuma andalan warna — tampilkan 3 button itu dalam mode grayscale, masih harus keliatan beda tier-nya (filled vs border vs text).
-> Caption: "Beda tier = beda fill style, bukan cuma beda warna. Color-blind user tetep bisa baca hierarchy."
+> A horizontal row of 3 buttons side-by-side, with tier labels above them:
+> - **Primary:** Solid blue pill, white text "Simpan invoice", 1 dominant arrow/icon above (label "1 per page MAX")
+> - **Secondary:** Pill with white background + thin 1px blue border, blue text "Simpan & buat baru" (label "For equal-weight actions")
+> - **Tertiary:** Text only "Batal" in blue with a thin underline (label "For least important")
+> Below: a visual explanation of why hierarchy can't rely on color alone — show those 3 buttons in grayscale mode, and you must still be able to tell the tiers apart (filled vs border vs text).
+> Caption: "Different tier = different fill style, not just different color. Color-blind users can still read the hierarchy."
 
-### 5. Form WAJIB single column, label di atas input
-Mata orang baca ke bawah, bukan zigzag. Single column = momentum jelas dari atas ke bawah, user ga harus "nyari field selanjutnya di mana". Label di atas input juga critical — karena begitu user fokus ngetik, label di samping ke-cover keyboard mobile atau hilang dari peripheral vision. Field width juga **match expected input** (kode pos ga perlu selebar nama panjang) — itu kasih hint silent ke user soal panjang input yang diharapkan.
-**Contoh konkret di Paper.id:** Form Catat Pengeluaran dengan field "Tanggal" + "Jumlah" + "Vendor" — jangan paksa 2 kolom. Stack vertical, label di atas, dan field Tanggal selebar 12 karakter (dd/mm/yyyy), Jumlah selebar 15 karakter, Vendor full-row. (Bab 7, hal 214-225)
+### 5. Forms MUST be single column, label above the input
+People read downward, not zigzag. Single column = a clear top-to-bottom momentum, the user doesn't have to "hunt for where the next field is". Label above the input is also critical — because once the user is focused on typing, a label beside the field gets covered by the mobile keyboard or drops out of peripheral vision. Field width should also **match the expected input** (a zip code doesn't need to be as wide as a long name) — that gives the user a silent hint about the expected input length.
+**Concrete example in Paper.id:** A Catat Pengeluaran form with "Tanggal" + "Jumlah" + "Vendor" fields — don't force 2 columns. Stack them vertically, label above, and make the Tanggal field 12 characters wide (dd/mm/yyyy), Jumlah 15 characters wide, Vendor full-row. (Chapter 7, p. 214-225)
 
 > **[VISUAL: Form Layout Comparison — Single vs Multi Column + Field Width]**
-> 2 panel side-by-side, mock-up Form Catat Pengeluaran:
-> - **Panel kiri (label "❌ Multi-column + full-width semua"):** Layout 2 kolom — Tanggal sebelahan sama Jumlah, semua field bentuk dan width sama (full width container). Tambahkan red arrow zigzag dari Tanggal ke Jumlah ke Vendor menggambarkan path mata user.
-> - **Panel kanan (label "✅ Single column + field width match input"):** Layout 1 kolom vertikal — Tanggal di atas (width pendek ~140px, looks like dd/mm/yyyy), Jumlah di bawah (width sedang ~200px), Vendor di bawah (full row). Tambahkan green arrow lurus ke bawah menggambarkan downward momentum.
-> Caption: "Width field = hint silent buat user soal panjang input yang diharapkan. Mata baca ke bawah, bukan zigzag."
+> 2 side-by-side panels, a Catat Pengeluaran form mock-up:
+> - **Left panel (label "❌ Multi-column + everything full-width"):** 2-column layout — Tanggal next to Jumlah, all fields the same shape and width (full container width). Add a red zigzag arrow from Tanggal to Jumlah to Vendor illustrating the user's eye path.
+> - **Right panel (label "✅ Single column + field width matches input"):** Single vertical column — Tanggal at the top (short width ~140px, looks like dd/mm/yyyy), Jumlah below (medium width ~200px), Vendor below (full row). Add a straight green arrow going down illustrating the downward momentum.
+> Caption: "Field width = a silent hint to the user about the expected input length. Eyes read downward, not zigzag."
 
-### 6. Untuk destructive action: kasih UNDO, jangan modal konfirmasi
-Counter-intuitive tapi research-backed. Friction ladder (no-friction → light confirm → medium red-button → heavy checkbox) memang ada tempatnya — tapi untuk 80% kasus destructive sehari-hari, **allow undo via toast/snackbar lebih bagus daripada modal konfirmasi**. Alasannya: modal interupsi flow, user yang yakin jadi annoyed; sedangkan toast "Item dihapus — Urungkan?" yang muncul 5-10 detik kasih safety net tanpa block. Heavy friction (modal + ketik nama untuk confirm) cuma sah untuk benar-benar irreversible nuclear option: hapus akun, hapus organisasi.
-**Contoh konkret:** Gmail nge-archive email langsung dengan toast "Pesan dihapus — Urungkan" — bandingin sama app yang munculin modal "Yakin hapus pesan ini?" tiap kali. (Bab 8, hal 277-279)
+### 6. For destructive actions: give UNDO, not a confirmation modal
+Counter-intuitive but research-backed. The friction ladder (no-friction → light confirm → medium red-button → heavy checkbox) does have its place — but for 80% of everyday destructive cases, **allowing undo via toast/snackbar is better than a confirmation modal**. The reason: a modal interrupts the flow, and a user who's sure gets annoyed; whereas a "Item deleted — Undo?" toast that shows for 5-10 seconds gives a safety net without blocking. Heavy friction (modal + type the name to confirm) is only valid for genuinely irreversible nuclear options: delete account, delete organization.
+**Concrete example:** Gmail archives an email instantly with a "Message deleted — Undo" toast — compare that to an app that pops up a "Are you sure you want to delete this message?" modal every single time. (Chapter 8, p. 277-279)
 
 > **[VISUAL: Friction Ladder + Toast Undo Alternative]**
-> Tampilan vertikal 4 baris (friction ladder) + 1 alternative di paling bawah:
-> - **Level 1 (no friction):** Icon tempat sampah kecil. Caption "Action tersembunyi/jarang dipake."
-> - **Level 2 (light confirm):** Modal simple "Hapus item?" + button [Batal] [Hapus]. Caption "Confirm tanpa visual heavy."
-> - **Level 3 (medium):** Modal dengan icon ⚠️ + button [Batal] (secondary) + [Hapus] (filled merah). Caption "Visual emphasis ke konsekuensi."
-> - **Level 4 (heavy):** Modal dengan checkbox "Saya paham aksi ini tidak bisa dibatalkan" + input "Ketik nama untuk konfirmasi" + button [Hapus selamanya] (disabled sampe checkbox + ketik). Caption "Nuclear option: hapus akun/organisasi."
-> Garis pembatas horizontal.
-> - **Better alternative:** Toast snackbar di bawah viewport "Pengeluaran dihapus" + button text putih "Urungkan" + timer bar tipis countdown 7 detik. Caption "Untuk 80% destructive sehari-hari — 1 klik selesai, safety net tetep ada."
-> Caption keseluruhan: "Ladder ada tempatnya. Tapi untuk hapus row table / draft / item belum tersimpan — toast undo jauh lebih cepat dan ga ngegangu user yang yakin."
+> A vertical display of 4 rows (the friction ladder) + 1 alternative at the very bottom:
+> - **Level 1 (no friction):** A small trash icon. Caption "Hidden/rarely-used action."
+> - **Level 2 (light confirm):** A simple modal "Delete item?" + buttons [Batal] [Hapus]. Caption "Confirm without heavy visuals."
+> - **Level 3 (medium):** A modal with a ⚠️ icon + buttons [Batal] (secondary) + [Hapus] (filled red). Caption "Visual emphasis on the consequence."
+> - **Level 4 (heavy):** A modal with a checkbox "I understand this action cannot be undone" + an input "Type the name to confirm" + button [Hapus selamanya] (disabled until the checkbox + typing are done). Caption "Nuclear option: delete account/organization."
+> A horizontal divider line.
+> - **Better alternative:** A snackbar toast at the bottom of the viewport "Pengeluaran dihapus" + a white text button "Urungkan" + a thin timer bar counting down 7 seconds. Caption "For 80% of everyday destructive actions — 1 click, done, the safety net is still there."
+> Overall caption: "The ladder has its place. But for deleting a table row / draft / unsaved item — toast undo is far faster and doesn't bother a user who's sure."
 
-### 7. 4 cara grouping: container, proximity, similarity, continuity — combine 2-3
-Lo punya sekelompok info terkait yang harus terlihat sebagai satu grup. Container (kotak/border) itu paling kuat tapi paling crowded — kalau dipakai berlebihan, design jadi "ramai border". **Proximity** (kasih jarak lebih dekat antar elemen related, jarak lebih jauh ke yang ga related) sering udah cukup. **Similarity** (warna/font/ukuran sama) bisa nambahin. **Continuity** (rata-line) juga bisa. Yang Adham tekankan: 2-3 method combined > 1 method kuat. Inner spacing dalam grup harus selalu < outer spacing antar grup.
-**Contoh konkret:** Card "Total Pengeluaran" di dashboard — daripada bungkus pake border tebal, cukup pake background tint ringan + proximity rapat antar value & label. Lebih bersih. (Bab 4, hal 105-119)
+### 7. 4 ways to group: container, proximity, similarity, continuity — combine 2-3
+You've got a set of related info that should read as one group. A container (box/border) is the strongest but the most crowded — used too much, the design becomes "border soup". **Proximity** (place related elements closer together, with more distance to unrelated ones) is often already enough. **Similarity** (same color/font/size) can add to it. **Continuity** (line alignment) works too. What Adham stresses: 2-3 methods combined > 1 strong method. Inner spacing within a group should always be < the outer spacing between groups.
+**Concrete example:** A "Total Pengeluaran" card on the dashboard — instead of wrapping it in a thick border, just use a light background tint + tight proximity between the value & label. Cleaner. (Chapter 4, p. 105-119)
 
 > **[VISUAL: 4 Grouping Methods Side-by-Side]**
-> Grid 2x2, masing-masing kotak demonstrasiin 1 grouping method ke data yang sama (mis. 3 baris "Label: Value" — Tanggal: 22 Mei 2026 / Jumlah: Rp 1.500.000 / Vendor: PT Kopi Nusantara):
-> - **Top-left: Container** — 3 baris dibungkus border 1px abu-abu + padding. Caption "Paling kuat, tapi paling crowded."
-> - **Top-right: Proximity** — 3 baris tanpa border, dengan jarak antar baris rapat (4px), tapi jarak ke konten lain di luar grup jauh (32px+). Caption "Cukup untuk grouping ringan."
-> - **Bottom-left: Similarity** — 3 baris dengan visual treatment sama (warna label sama, weight sama, alignment sama). Caption "Visual treatment seragam = signal grouping."
-> - **Bottom-right: Continuity** — 3 baris rata-line kiri pake invisible grid. Caption "Mata mengikuti garis lurus = signal grup."
-> Di bawah grid, panel kelima dengan label "💡 Recommended: Combine 2-3" — tampilkan card dengan background tint ringan (mild container) + proximity rapat (4px gap) + similarity (label semua bold-small, value reguler-medium). Caption "2-3 method combined > 1 method paling kuat. Inner spacing < outer spacing."
+> A 2x2 grid, each box demonstrating 1 grouping method on the same data (e.g. 3 rows of "Label: Value" — Tanggal: 22 Mei 2026 / Jumlah: Rp 1.500.000 / Vendor: PT Kopi Nusantara):
+> - **Top-left: Container** — the 3 rows wrapped in a 1px grey border + padding. Caption "Strongest, but the most crowded."
+> - **Top-right: Proximity** — the 3 rows without a border, with tight spacing between rows (4px), but a large distance to other content outside the group (32px+). Caption "Enough for light grouping."
+> - **Bottom-left: Similarity** — the 3 rows with the same visual treatment (same label color, same weight, same alignment). Caption "Uniform visual treatment = a grouping signal."
+> - **Bottom-right: Continuity** — the 3 rows left-aligned on an invisible grid. Caption "The eye follows a straight line = a group signal."
+> Below the grid, a fifth panel with the label "💡 Recommended: Combine 2-3" — show a card with a light background tint (mild container) + tight proximity (4px gap) + similarity (all labels bold-small, values regular-medium). Caption "2-3 methods combined > 1 strongest method. Inner spacing < outer spacing."
 
-### 8. Hindari disabled submit button (default-nya), enable + validate on submit
-Salah satu insight paling counter-current di buku. Pattern populer "Submit disabled sampai form valid" itu ternyata punya beberapa masalah: (a) user ga tau kenapa disabled, (b) kontras text disabled biasanya rendah jadi accessibility jelek, (c) keyboard user bisa skip-over tombol disabled, (d) flow jadi stuck tanpa feedback. Lebih bagus: enable tombolnya, terus validate pas klik. Kalau ada error, scroll ke field error pertama + kasih error message inline yang jelas.
-**Contoh konkret:** Form KYC dengan 8 field. Pattern lama: Submit disabled. User ngisi 7 field, mikir "kenapa ga bisa klik?" — ga ada feedback field mana yang missing. Pattern baru: Submit enabled. User klik, langsung tau "Field NPWP wajib diisi" + auto-scroll ke field itu. (Bab 7, hal 248)
+### 8. Avoid disabled submit buttons (by default), enable + validate on submit
+One of the most counter-current insights in the book. The popular "Submit disabled until the form is valid" pattern turns out to have several problems: (a) the user doesn't know why it's disabled, (b) disabled text usually has low contrast so accessibility is poor, (c) keyboard users can skip over a disabled button, (d) the flow gets stuck with no feedback. Better: enable the button, then validate on click. If there's an error, scroll to the first error field + show a clear inline error message.
+**Concrete example:** A KYC form with 8 fields. Old pattern: Submit disabled. The user fills 7 fields, thinks "why can't I click?" — there's no feedback about which field is missing. New pattern: Submit enabled. The user clicks, and immediately learns "NPWP wajib diisi" + auto-scrolls to that field. (Chapter 7, p. 248)
 
 > **[VISUAL: Disabled vs Enabled Submit — Flow Comparison]**
-> 2 panel side-by-side, mock-up form KYC dengan 8 field (sebagian terisi, 1 field NPWP kosong):
-> - **Panel kiri (label "❌ Disabled — user stuck"):** Tombol Submit di-mute (abu-abu muda, text abu-abu, no cursor). Tampilkan thought bubble di user icon: "Kenapa ga bisa di-klik? Field mana yang kurang?" Tambahkan annotation: "Kontras rendah = accessibility issue. Keyboard skip-over. No feedback."
-> - **Panel kanan (label "✅ Enabled + validate on submit"):** Tombol Submit aktif penuh (biru, text putih). Setelah di-klik, error inline merah muncul di field NPWP: "NPWP wajib diisi" + auto-scroll ke field itu + outline merah. Tambahkan annotation: "User langsung tau field mana yang kurang. Clear feedback."
-> Caption: "Counter-intuitive: enable lebih baik dari disable. User dapet clarity, accessibility menang."
+> 2 side-by-side panels, a KYC form mock-up with 8 fields (some filled, 1 empty NPWP field):
+> - **Left panel (label "❌ Disabled — user stuck"):** The Submit button is muted (light grey, grey text, no cursor). Show a thought bubble at the user icon: "Why can't I click it? Which field is missing?" Add the annotation: "Low contrast = accessibility issue. Keyboard skip-over. No feedback."
+> - **Right panel (label "✅ Enabled + validate on submit"):** The Submit button is fully active (blue, white text). After clicking, a red inline error appears at the NPWP field: "NPWP wajib diisi" + auto-scroll to that field + red outline. Add the annotation: "The user immediately knows which field is missing. Clear feedback."
+> Caption: "Counter-intuitive: enabling is better than disabling. The user gets clarity, accessibility wins."
 
-### 9. Untuk warna brand: bikin monochromatic palette, hindari hitam pekat
-Daripada milih puluhan shade grey buat border, background, text — bikin **monochromatic palette** dari satu warna brand. Variasi-nya cuma di brightness/saturation. Hasilnya lebih neat, lebih cohesive, dan keputusan lebih cepat (lo ga akan dilemma "pake grey #888 atau #999"). Plus: hindari pure black (#000) di atas pure white — kontras 21:1 bikin mata cape baca lama. Pakai dark navy atau dark grey, atau kasih "tinge" warna brand ke hitam.
-**Contoh konkret:** Aurora pakai `#133f5d` (dark navy) sebagai text-primary, bukan pure black. Otomatis lebih nyaman dibaca lama, dan punya "brand feel" karena warnanya nyambung ke brand blue. (Bab 3, hal 79 & 158)
+### 9. For brand color: build a monochromatic palette, avoid pure black
+Instead of picking dozens of grey shades for border, background, text — build a **monochromatic palette** from a single brand color. The variations differ only in brightness/saturation. The result is neater, more cohesive, and decisions are faster (you won't agonize over "grey #888 or #999"). Plus: avoid pure black (#000) on pure white — a 21:1 contrast tires the eyes during long reads. Use dark navy or dark grey, or give black a "tinge" of the brand color.
+**Concrete example:** Aurora uses `#133f5d` (dark navy) as text-primary, not pure black. It's automatically more comfortable for long reads, and has a "brand feel" because the color connects to the brand blue. (Chapter 3, p. 79 & 158)
 
 > **[VISUAL: Monochromatic Palette + Pure Black vs Tinged Black]**
-> Bagian 1 — Palette swatch: tampilkan 1 baris horizontal 5 kotak besar (~120×120px), monochromatic dari brand blue Paper.id:
-> - Darkest (paling gelap, untuk text) → Dark → Medium → Light → Lightest (untuk background/tint)
-> Di bawah masing-masing swatch: HSL value contoh + use case ("text-primary", "primary action", "hover bg", "selected row", "page background").
-> Bagian 2 — Side-by-side text contrast comparison, 2 kotak putih:
-> - **Kiri:** Heading + body paragraph 4 baris pake pure black #000. Tag "❌ Pure black — kontras 21:1, mata cape baca lama."
-> - **Kanan:** Heading + body paragraph 4 baris pake dark navy tinged #133f5d. Tag "✅ Tinged dark — lebih lembut, masih kontras tinggi, brand feel nyambung."
-> Caption: "Predefined palette > pilih warna random tiap kali. Konsistensi otomatis, decision faster."
+> Part 1 — Palette swatches: show a single horizontal row of 5 large boxes (~120×120px), monochromatic from Paper.id's brand blue:
+> - Darkest (the darkest, for text) → Dark → Medium → Light → Lightest (for background/tint)
+> Below each swatch: an example HSL value + use case ("text-primary", "primary action", "hover bg", "selected row", "page background").
+> Part 2 — Side-by-side text contrast comparison, 2 white boxes:
+> - **Left:** Heading + 4-line body paragraph in pure black #000. Tag "❌ Pure black — 21:1 contrast, tires the eyes on long reads."
+> - **Right:** Heading + 4-line body paragraph in dark navy tinged #133f5d. Tag "✅ Tinged dark — softer, still high contrast, brand feel connects."
+> Caption: "A predefined palette > picking a random color every time. Automatic consistency, faster decisions."
 
-### 10. Tipografi: single sans-serif, regular + bold doang, line length 40-80 karakter
-Default yang aman buat 95% interface: satu typeface sans-serif. Konsistensi tanpa effort. Dua weight aja: **regular dan bold** — jangan eksplor light/medium/black, makin banyak weight makin clutter. Untuk body text panjang, jaga line length antara 40-80 karakter per baris (termasuk spasi). Terlalu panjang = mata lelah balik ke awal baris; terlalu pendek = zigzag terus.
-**Contoh konkret:** Halaman Detail Invoice di Paper.id, kolom keterangan/notes. Kalau lo biarin full-width 1200px, user susah baca paragraf panjang. Limit max-width ke ~600-700px (= ~70 karakter di 16px font). (Bab 5, hal 167 & 182)
+### 10. Typography: single sans-serif, regular + bold only, line length 40-80 characters
+A safe default for 95% of interfaces: a single sans-serif typeface. Effortless consistency. Just two weights: **regular and bold** — don't explore light/medium/black, the more weights the more clutter. For long body text, keep the line length between 40-80 characters per line (including spaces). Too long = the eyes tire returning to the start of the line; too short = constant zigzagging.
+**Concrete example:** The Invoice Detail page in Paper.id, the description/notes column. If you leave it at full-width 1200px, the user struggles to read long paragraphs. Limit the max-width to ~600-700px (= ~70 characters at 16px font). (Chapter 5, p. 167 & 182)
 
 > **[VISUAL: Line Length Comparison 40-80 Sweet Spot]**
-> 3 paragraf body text yang sama (dummy text ~3 baris) ditampilkan stacked vertical:
-> - **Paragraf 1 (label "Terlalu pendek — ~30 char"):** Width sempit (mis. 200px), tampilkan ruler di atas dengan tanda 30 char. Tambahkan arrow zigzag di samping menggambarkan mata yang harus balik terlalu sering.
-> - **Paragraf 2 (label "✅ Ideal — 60-70 char"):** Width sedang (mis. 600px), tampilkan ruler di atas dengan tanda 60-70 char (highlighted hijau sweet spot 40-80). Arrow lurus pelan di samping.
-> - **Paragraf 3 (label "Terlalu panjang — ~110 char"):** Width lebar (mis. 1100px), tampilkan ruler dengan tanda 110 char. Arrow panjang di samping menggambarkan mata yang lelah balik ke awal baris.
-> Di bawah: callout text "Sweet spot: 40-80 karakter per baris. Body text 16px = ~600-700px max-width."
-> Tambah mini-tip box: "Single sans-serif + Regular + Bold = default 95% interface. Jangan eksplor 5 weight."
+> 3 identical body text paragraphs (dummy text ~3 lines) shown stacked vertically:
+> - **Paragraph 1 (label "Too short — ~30 chars"):** Narrow width (e.g. 200px), show a ruler above marked at 30 chars. Add a zigzag arrow on the side illustrating eyes that have to return too often.
+> - **Paragraph 2 (label "✅ Ideal — 60-70 chars"):** Medium width (e.g. 600px), show a ruler above marked at 60-70 chars (the 40-80 sweet spot highlighted green). A slow straight arrow on the side.
+> - **Paragraph 3 (label "Too long — ~110 chars"):** Wide width (e.g. 1100px), show a ruler marked at 110 chars. A long arrow on the side illustrating eyes that tire returning to the start of the line.
+> Below: a callout text "Sweet spot: 40-80 characters per line. 16px body text = ~600-700px max-width."
+> Add a mini-tip box: "Single sans-serif + Regular + Bold = the default for 95% of interfaces. Don't explore 5 weights."
 
 ---
 
-## C. MONEY QUOTES — 5 quote signature
+## C. MONEY QUOTES — 5 signature quotes
 
-> **[VISUAL: Quote Treatment Style — Global untuk semua 5 quote]**
-> Tiap quote di section ini di-render kayak "poster card" — bukan cuma blockquote biasa:
-> - Background card: light tinted (mis. light blue-50 atau cream), padding besar (40-60px)
-> - Quote text: serif atau sans-serif weight bold, ukuran besar (24-32px), warna dark navy
-> - Tanda kutip besar di pojok kiri atas card (typographic mark `"` ukuran 80px+ low opacity 20%)
-> - Author/source di bawah, weight regular, ukuran kecil (14px), warna muted
-> - Antar quote: jarak vertical lega (~64px)
-> - Paraphrase Indonesia + 1-2 kalimat penjelasan di bawah card, plain text reguler
-> Tujuan: quote-quote ini kelihatan "stand out" — kalau orang scan-cepat halaman, mata harus naik nangkep quote-nya duluan.
+> **[VISUAL: Quote Treatment Style — Global for all 5 quotes]**
+> Each quote in this section is rendered like a "poster card" — not just a plain blockquote:
+> - Card background: light tinted (e.g. light blue-50 or cream), large padding (40-60px)
+> - Quote text: serif or sans-serif bold weight, large size (24-32px), dark navy color
+> - A large quotation mark in the top-left corner of the card (typographic mark `"` at 80px+, low opacity 20%)
+> - Author/source below, regular weight, small size (14px), muted color
+> - Between quotes: generous vertical spacing (~64px)
+> - The English paraphrase + 1-2 sentences of explanation below the card, plain regular text
+> Goal: these quotes should stand out — if someone scans the page quickly, their eyes should catch the quote first.
 
 ### 1.
 > *"If everything is important, nothing is important."*
-> — Bab 8 (Buttons), hal 259
+> — Chapter 8 (Buttons), p. 259
 
-**Paraphrase:** Kalau semua hal lo tandai sebagai penting, justru jadi ga ada yang penting.
+**Paraphrase:** If you mark everything as important, nothing ends up being important.
 
-Quote ini ringkas banget tapi nyangkut ke seluruh konsep hierarchy — dari button system, color, typography, sampe placement. Tiap kali lo tergoda nambahin "satu lagi pill primary", inget kalimat ini.
+This quote is super concise but ties into the entire hierarchy concept — from the button system, color, typography, to placement. Every time you're tempted to add "just one more primary pill", remember this line.
 
 ### 2.
 > *"Designing interfaces using objective logic, rather than subjective opinion, makes it faster and easier to make design decisions."*
-> — Bab 1 (Fundamentals), hal 17
+> — Chapter 1 (Fundamentals), p. 17
 
-**Paraphrase:** Desain pake logika objektif, bukan opini subjektif — keputusan jadi lebih cepat dan gampang.
+**Paraphrase:** Design with objective logic, not subjective opinion — decisions become faster and easier.
 
-Ini thesis statement Adham. Implikasinya buat lo: kalau review meeting macet karena debat selera, balik ke logika. "Argumen lo opini atau rationale? Kalau opini, mari kita test."
+This is Adham's thesis statement. The implication for you: when a review meeting stalls over a taste debate, go back to logic. "Is your argument an opinion or a rationale? If it's an opinion, let's test it."
 
 ### 3.
 > *"The higher the interaction cost, the harder it is for someone to achieve their task."*
-> — Bab 1 (Fundamentals), hal 19
+> — Chapter 1 (Fundamentals), p. 19
 
-**Paraphrase:** Semakin tinggi biaya interaksi, semakin susah user nyelesain tugasnya.
+**Paraphrase:** The higher the interaction cost, the harder it is for the user to complete their task.
 
-Reminder bahwa "satu klik lagi" itu beneran cost. Setiap extra step, scroll, search, modal — beneran ngurangin completion rate, bukan cuma annoying.
+A reminder that "just one more click" really is a cost. Every extra step, scroll, search, modal — it genuinely lowers the completion rate, not just annoying.
 
 ### 4.
 > *"Minimal doesn't mean simple."*
-> — Bab 2 (Less is more), hal 52
+> — Chapter 2 (Less is more), p. 52
 
-**Paraphrase:** Minimalis ga sama dengan sederhana.
+**Paraphrase:** Minimal is not the same as simple.
 
-Quote ini perlawanan ke trend "white space lots + tiny text + ghost buttons everywhere". Adham bilang: minimalis itu STYLE; sederhana itu OUTCOME. Bisa minimalis tapi confusing (hidden affordances). Bisa kaya visual tapi simple buat dipake (Microsoft Word lama). Aim for simple, not minimal-as-aesthetic.
+This quote pushes back on the "lots of white space + tiny text + ghost buttons everywhere" trend. Adham says: minimal is a STYLE; simple is an OUTCOME. You can be minimal but confusing (hidden affordances). You can be visually rich but simple to use (old Microsoft Word). Aim for simple, not minimal-as-aesthetic.
 
 ### 5.
 > *"Buttons should have a clear visual hierarchy that isn't reliant on colour."*
-> — Bab 8 (Buttons), hal 254
+> — Chapter 8 (Buttons), p. 254
 
-**Paraphrase:** Tombol harus punya hierarchy visual yang jelas, dan ga boleh cuma andalan warna.
+**Paraphrase:** Buttons should have a clear visual hierarchy, and it must not rely on color alone.
 
-Penting banget buat accessibility. Sekitar 8% pria color-blind. Kalau primary cuma dibedain dari secondary lewat warna biru vs abu-abu, color-blind user ga bisa tau mana yang primary. Solusi: kombinasiin warna + weight (filled vs border) + ukuran. Hierarchy jadi readable bahkan kalau lo print hitam-putih.
+Hugely important for accessibility. About 8% of men are color-blind. If the only thing distinguishing primary from secondary is blue vs grey, a color-blind user can't tell which is the primary. The fix: combine color + weight (filled vs border) + size. The hierarchy stays readable even if you print it in black-and-white.
 
 ---
 
 ## D. PER CHAPTER HIGHLIGHTS
 
-> **[VISUAL: Per-Chapter Treatment — Global pattern untuk 8 bab]**
-> Tiap bab di section ini di-render sebagai "chapter card" dengan struktur konsisten:
-> - **Chapter header bar:** Nomor bab besar (mis. "01" sirkular, 64×64px badge biru penuh, text putih bold ukuran 32px) sejajar horizontal dengan judul bab (24px bold) dan range halaman muted di kanan ("hal 14-44").
-> - **Body:** Paragraf naratif normal text 16-18px, line-length max 700px.
-> - **Side accent:** Bar vertikal tipis 4px warna brand di kiri body, sebagai signal "chapter content".
-> - **Quick takeaway pill:** Di bawah paragraf, 1 baris highlight kuning soft "💡 Sekali baca: <1 kalimat ringkas inti bab>" — bikin masing-masing bab punya TL;DR visible.
+> **[VISUAL: Per-Chapter Treatment — Global pattern for the 8 chapters]**
+> Each chapter in this section is rendered as a "chapter card" with a consistent structure:
+> - **Chapter header bar:** A large chapter number (e.g. "01" circular, 64×64px solid blue badge, white bold text at 32px) aligned horizontally with the chapter title (24px bold) and the muted page range on the right ("p. 14-44").
+> - **Body:** Normal narrative paragraph text 16-18px, line-length max 700px.
+> - **Side accent:** A thin 4px vertical bar in the brand color to the left of the body, as a "chapter content" signal.
+> - **Quick takeaway pill:** Below the paragraph, a single soft-yellow highlight line "💡 In one read: <1 short sentence with the chapter's core>" — giving each chapter a visible TL;DR.
 >
-> Khusus bab dengan konsep visual berat — Bab 3 (Colour), Bab 4 (Layout), Bab 5 (Typography), Bab 7 (Forms), Bab 8 (Buttons) — kasih 1 inline mini-visual (mis. swatch row untuk Colour, 6-lever icon row untuk Layout hierarchy, type-scale sample untuk Typography). Detail per bab di bawah.
+> For the chapters with heavy visual concepts — Chapter 3 (Colour), Chapter 4 (Layout), Chapter 5 (Typography), Chapter 7 (Forms), Chapter 8 (Buttons) — add 1 inline mini-visual (e.g. a swatch row for Colour, a 6-lever icon row for Layout hierarchy, a type-scale sample for Typography). Per-chapter details below.
 
-### Bab 1 — Fundamentals (hal 14-44)
-Bab paling padat dan paling penting. Adham bilang **most design decisions are governed by a system of logical rules** — bukan bakat. Dia kenalin 3 pillar pengukur (usability risk, interaction cost, cognitive load) yang dipake konsisten di seluruh buku. Konsep "**predefined sets**" juga dia perkenalin di sini: daripada milih warna/spacing/font-size dari unlimited options tiap kali, bikin set terbatas dengan purpose jelas. Itu yang kemudian jadi design system. Insight tambahan yang sering ke-skip: dia bedain antara *patterns* (Jakob's Law — pake convention yang user udah hafal) versus *novel solutions* (lebih beresiko, harus di-validate via testing). Untuk Paper.id, ini langsung mendukung kenapa Aurora Lookup Ritual mati-matian: convention > kreativitas. Bab ini wajib dibaca dua kali.
+### Chapter 1 — Fundamentals (p. 14-44)
+The densest and most important chapter. Adham says **most design decisions are governed by a system of logical rules** — not talent. He introduces the 3 measuring pillars (usability risk, interaction cost, cognitive load) used consistently throughout the book. The concept of "**predefined sets**" is also introduced here: instead of picking colors/spacing/font-sizes from unlimited options each time, build a limited set with a clear purpose. That's what later becomes a design system. An extra insight that often gets skipped: he distinguishes between *patterns* (Jakob's Law — use a convention users already know by heart) versus *novel solutions* (riskier, must be validated via testing). For Paper.id, this directly supports why the Aurora Lookup Ritual is enforced so hard: convention > creativity. This chapter is worth reading twice.
 
-### Bab 2 — Less is more (hal 45-59)
-Bab paling pendek tapi punya quote paling berbahaya: "**minimal doesn't mean simple**". Adham nuduh trend minimalisme jadi misleading — banyak desainer ngurangin visual jadi terlalu minim, sampe **affordance** (petunjuk visual "ini bisa di-klik") hilang. Tombol jadi ghost (border doang tanpa fill), input field tanpa border keliatan kayak text label biasa, link tanpa underline keliatan kayak headline. Dia juga jelasin **progressive disclosure**: sembunyiin info yang ga critical dulu, expose pas user butuh. Misal: di Detail Invoice, jangan tampilin 30 field sekaligus — section "Info Tambahan" bisa collapsed by default. Tapi Adham warning: progressive disclosure ≠ hide critical action. Tombol "Hapus" yang ke-hide di kebab menu (⋮) OK karena destructive jarang dipake; tapi tombol "Simpan" disembunyiin di sub-menu = sin.
+### Chapter 2 — Less is more (p. 45-59)
+The shortest chapter but it holds the most dangerous quote: "**minimal doesn't mean simple**". Adham accuses the minimalism trend of being misleading — many designers reduce the visuals to too little, until the **affordance** (the visual cue "this is clickable") disappears. Buttons become ghosts (border only, no fill), an input field without a border looks like a plain text label, a link without an underline looks like a headline. He also explains **progressive disclosure**: hide non-critical info first, expose it when the user needs it. For example: on Invoice Detail, don't show 30 fields all at once — an "Info Tambahan" section can be collapsed by default. But Adham warns: progressive disclosure ≠ hide a critical action. A "Hapus" button hidden in a kebab menu (⋮) is OK because destructive actions are rarely used; but hiding a "Simpan" button in a sub-menu = a sin.
 
-### Bab 3 — Colour (hal 60-103)
-Bab paling teknis di buku. Adham mulai dari **contrast ratio WCAG 2.1 AA**: 4.5:1 untuk text kecil (≤18px), 3:1 untuk text besar dan UI element (form field border, icon). Dia juga introduce APCA (WCAG 3 draft) yang menurutnya lebih akurat untuk dark interface — tapi industry masih pake WCAG 2 karena standar resmi. Yang practical buat lo: **hindari pure black (#000)** di atas pure white — kontras 21:1 bikin mata cape baca lama (gunakan dark grey atau dark navy dengan "tinge" warna brand). Buat brand palette, dia recommend **monochromatic** dari satu warna utama: 5 shade (darkest, dark, medium, light, lightest) plus neutral greys terpisah. Itu kasih design system warna yang gampang di-maintain. Tips lain yang sering ke-skip: warna brand jangan dipake terlalu banyak — reserve buat **interactive element** (button, link, focus state), bukan dekorasi.
+### Chapter 3 — Colour (p. 60-103)
+The most technical chapter in the book. Adham starts with **WCAG 2.1 AA contrast ratios**: 4.5:1 for small text (≤18px), 3:1 for large text and UI elements (form field border, icon). He also introduces APCA (the WCAG 3 draft) which he considers more accurate for dark interfaces — but the industry still uses WCAG 2 because it's the official standard. What's practical for you: **avoid pure black (#000)** on pure white — a 21:1 contrast tires the eyes on long reads (use dark grey or dark navy with a "tinge" of the brand color). For the brand palette, he recommends **monochromatic** from one main color: 5 shades (darkest, dark, medium, light, lightest) plus separate neutral greys. That gives a color design system that's easy to maintain. Another often-skipped tip: don't use the brand color too much — reserve it for **interactive elements** (button, link, focus state), not decoration.
 
-> **[VISUAL Bab 3 — Contrast Ratio Cheat Sheet]**
-> Inline mini-visual di bawah paragraf Bab 3:
-> Tampilkan 2 baris contoh kontras side-by-side, masing-masing dengan label rasio:
-> - Baris 1 "Untuk text kecil ≤18px → minimum 4.5:1": kotak putih dengan text "Lorem ipsum dolor sit amet" warna gelap (✅ 7:1 pass) di kiri, vs sama-sama tapi pake light grey #999 (❌ 2.8:1 fail) di kanan.
-> - Baris 2 "Untuk text besar / UI element → minimum 3:1": kotak putih dengan heading "Heading 24px" + form field border solid di kiri (✅ 4:1 pass), vs versi dengan border pucat (❌ 2:1 fail) di kanan.
-> Caption: "Hindari pure black (21:1) — terlalu kontras = mata cape. Sweet spot dark navy/dark grey."
+> **[VISUAL Chapter 3 — Contrast Ratio Cheat Sheet]**
+> An inline mini-visual below the Chapter 3 paragraph:
+> Show 2 rows of contrast examples side-by-side, each with a ratio label:
+> - Row 1 "For small text ≤18px → minimum 4.5:1": a white box with text "Lorem ipsum dolor sit amet" in a dark color (✅ 7:1 pass) on the left, vs the same but in light grey #999 (❌ 2.8:1 fail) on the right.
+> - Row 2 "For large text / UI element → minimum 3:1": a white box with a "Heading 24px" heading + a solid form field border on the left (✅ 4:1 pass), vs a version with a pale border (❌ 2:1 fail) on the right.
+> Caption: "Avoid pure black (21:1) — too much contrast = tired eyes. Sweet spot is dark navy/dark grey."
 
-### Bab 4 — Layout & spacing (hal 104-162)
-Bab paling reusable. Adham kenalin **4 grouping methods**: container (border/background), proximity (jarak), similarity (visual treatment sama), continuity (alignment). Tipsnya: pake 2-3 method combined, bukan satu method paling kuat. Container dipake hemat — itu tools paling crowded. Aturan emas spacing: **inner spacing always smaller than outer spacing**. Kalau dalam card padding 16px, antar card harus 24-32px — biar mata user otomatis nangkep mana group, mana pemisah. Dia juga jabarin **6 lever visual hierarchy**: ukuran, warna, kontras, jarak, posisi, kedalaman (shadow). Pake by importance order — jangan apply semua lever ke semua element. Untuk validasi: **Squint Test** (tutup mata 50% atau blur 8px) — kalau focal point masih kelihatan = bener. Tambahan yang useful: keep related actions close. Tombol "Edit" untuk card harus deket card-nya, bukan di toolbar global jauh di atas.
+### Chapter 4 — Layout & spacing (p. 104-162)
+The most reusable chapter. Adham introduces the **4 grouping methods**: container (border/background), proximity (spacing), similarity (same visual treatment), continuity (alignment). The tip: use 2-3 methods combined, not the single strongest method. Use containers sparingly — they're the most crowded tool. The golden rule of spacing: **inner spacing is always smaller than outer spacing**. If the card padding is 16px, the gap between cards should be 24-32px — so the user's eyes automatically catch what's a group and what's a divider. He also breaks down the **6 levers of visual hierarchy**: size, color, contrast, spacing, position, depth (shadow). Use them in order of importance — don't apply every lever to every element. To validate: the **Squint Test** (close your eyes halfway or blur 8px) — if the focal point is still visible = correct. A useful addition: keep related actions close. An "Edit" button for a card should be near that card, not in a global toolbar far above.
 
-> **[VISUAL Bab 4 — 6 Lever Visual Hierarchy Row]**
-> Baris horizontal 6 icon ber-label, masing-masing demonstrasiin 1 lever:
-> 1. **Size** — text "Hello" kecil vs "Hello" besar
-> 2. **Colour** — text abu-abu muted vs text brand blue
-> 3. **Contrast** — text low-contrast vs high-contrast
-> 4. **Spacing** — 2 element rapat vs 2 element jauh
-> 5. **Position** — element di pinggir vs di tengah/top
-> 6. **Depth** — element flat vs element dengan shadow halus
-> Caption: "6 tuas yang bisa lo putar untuk bikin hierarchy. Pake by importance order — JANGAN apply semua lever ke semua element."
+> **[VISUAL Chapter 4 — 6 Lever Visual Hierarchy Row]**
+> A horizontal row of 6 labeled icons, each demonstrating 1 lever:
+> 1. **Size** — small "Hello" text vs large "Hello"
+> 2. **Colour** — muted grey text vs brand blue text
+> 3. **Contrast** — low-contrast text vs high-contrast
+> 4. **Spacing** — 2 elements close together vs 2 elements far apart
+> 5. **Position** — an element at the edge vs in the center/top
+> 6. **Depth** — a flat element vs an element with a soft shadow
+> Caption: "6 levers you can turn to build hierarchy. Use them in order of importance — DON'T apply every lever to every element."
 >
-> **[VISUAL Bab 4 — Inner vs Outer Spacing]**
-> 2 card horizontal di-tampilkan sama gede:
-> - Versi A (label "✅ Inner < Outer"): padding dalam card 16px, jarak antar card 32px. Annotation arrows menunjukkan kedua jarak.
-> - Versi B (label "❌ Inner = Outer"): padding dalam card 24px, jarak antar card 24px. Tampak nempel/ambigu.
-> Caption: "Inner spacing harus selalu lebih kecil dari outer — itu cara mata nangkep mana grup mana pemisah."
+> **[VISUAL Chapter 4 — Inner vs Outer Spacing]**
+> 2 horizontal cards shown the same size:
+> - Version A (label "✅ Inner < Outer"): card inner padding 16px, gap between cards 32px. Annotation arrows show both distances.
+> - Version B (label "❌ Inner = Outer"): card inner padding 24px, gap between cards 24px. Looks stuck together/ambiguous.
+> Caption: "Inner spacing must always be smaller than outer — that's how the eye catches what's a group and what's a divider."
 
-### Bab 5 — Typography (hal 163-191)
-Bab paling minimalis dalam saran. Default rekomendasinya: **single sans-serif, regular + bold only**. Jangan ekplor 5 weight (light, regular, medium, semibold, bold) — itu makin clutter. Untuk hierarchy heading: pake size scale (mis. 14/16/20/24/32/40), bukan weight scale. **Line length 40-80 karakter per baris** untuk body text — di atas 80 mata lelah balik ke awal, di bawah 40 zigzag terus. Body text minimum 16px (di mobile 18px lebih baik). **Line height** 1.5× untuk body, lebih rapat untuk heading besar (1.2×). **Left align untuk body text panjang** — center align cuma boleh untuk headline atau text pendek (≤2 baris). Justified text dilarang untuk web/app: bikin "rivers of white space" yang distracting + bikin dyslexic reader lebih susah. Buat Paper.id: cek halaman Detail Invoice / Detail Mitra — kalau notes/keterangan-nya full-width 1200px, mata user lelah. Cap max-width body ke ~600-700px.
+### Chapter 5 — Typography (p. 163-191)
+The most minimal chapter in its advice. The default recommendation: **single sans-serif, regular + bold only**. Don't explore 5 weights (light, regular, medium, semibold, bold) — that just adds clutter. For heading hierarchy: use a size scale (e.g. 14/16/20/24/32/40), not a weight scale. **Line length 40-80 characters per line** for body text — above 80 the eyes tire returning to the start, below 40 it's constant zigzagging. Body text minimum 16px (18px is better on mobile). **Line height** 1.5× for body, tighter for large headings (1.2×). **Left align for long body text** — center align is only allowed for headlines or short text (≤2 lines). Justified text is forbidden for web/app: it creates distracting "rivers of white space" + makes it harder for dyslexic readers. For Paper.id: check the Invoice Detail / Partner Detail pages — if the notes/description is full-width 1200px, the user's eyes tire. Cap the body max-width to ~600-700px.
 
-> **[VISUAL Bab 5 — Type Scale Sample]**
-> Stack vertical 6 baris text, masing-masing demonstrasiin level di type scale (semua pake 1 sans-serif Inter/SF):
+> **[VISUAL Chapter 5 — Type Scale Sample]**
+> A vertical stack of 6 text rows, each demonstrating a level in the type scale (all using 1 sans-serif Inter/SF):
 > - "Heading 1 — 40px Bold" (Bold weight)
 > - "Heading 2 — 32px Bold" (Bold weight)
 > - "Heading 3 — 24px Bold" (Bold weight)
 > - "Heading 4 — 20px Bold" (Bold weight)
 > - "Body — 16px Regular" (Regular weight)
 > - "Small — 14px Regular" (Regular weight)
-> Annotation di kanan: "✅ Cuma 2 weight: Regular + Bold. Size scale yang ngebawa hierarchy, bukan weight."
-> Tambahan kecil di bawah: contoh ❌ scale buruk → 7 weight (Thin/Light/Regular/Medium/Semibold/Bold/Black) ditampilkan semua, looks chaotic.
+> Annotation on the right: "✅ Only 2 weights: Regular + Bold. The size scale carries the hierarchy, not the weight."
+> A small addition below: an example of a ❌ bad scale → all 7 weights (Thin/Light/Regular/Medium/Semibold/Bold/Black) shown together, looking chaotic.
 
-### Bab 6 — Copywriting (hal 192-211)
-Bab pendek tapi sering ke-skip designer karena dianggap "kerjaan copywriter". Adham nge-push: **UI copy itu UI element**. Aturan utamanya: **be concise, cut filler words**. "Please click here to download your invoice" → "Unduh invoice". **Use sentence case** ("Hapus invoice?") bukan Title Case ("Hapus Invoice?") — sentence case lebih natural buat baca cepat. **Front-load key info** — kata paling penting di awal kalimat/heading, jangan tengah atau akhir (orang scan, bukan baca lengkap). Pake **inverted pyramid** untuk content panjang: kesimpulan/headline duluan, detail belakangan — jadi kalo user berhenti baca di tengah, dia tetep dapet inti. Untuk error message: hindari "Error 4023: Invalid input" — ganti jadi spesifik + actionable ("NPWP harus 15 angka"). Tip yang sering ke-skip: **avoid jargon kecuali audience-nya expert**. Untuk Paper.id, "akun receivable" mending ditulis "tagihan yang belum dibayar" — kecuali user-nya beneran accountant.
+### Chapter 6 — Copywriting (p. 192-211)
+A short chapter but one designers often skip because it's seen as "the copywriter's job". Adham pushes back: **UI copy is a UI element**. The main rule: **be concise, cut filler words**. "Please click here to download your invoice" → "Unduh invoice". **Use sentence case** ("Hapus invoice?") not Title Case ("Hapus Invoice?") — sentence case reads faster and more naturally. **Front-load key info** — put the most important word at the start of a sentence/heading, not the middle or end (people scan, they don't read in full). Use the **inverted pyramid** for long content: conclusion/headline first, details later — so if the user stops reading midway, they still get the gist. For error messages: avoid "Error 4023: Invalid input" — replace it with something specific + actionable ("NPWP must be 15 digits"). An often-skipped tip: **avoid jargon unless your audience is expert**. For Paper.id, "accounts receivable" is better written as "tagihan yang belum dibayar" — unless the user is genuinely an accountant.
 
-### Bab 7 — Forms (hal 213-249)
-Bab paling actionable buat designer B2B SaaS — Paper.id punya banyak form (Tambah Mitra, Buat Invoice, Catat Pengeluaran, KYC). Aturan-aturan kunci: **single column** (vertical stack, downward momentum), **label di atas input** (bukan samping), **field width match expected input** (kode pos 5 char ≠ nama 40 char), **hint text di atas field** bukan di bawah (biar ga ke-cover autofill atau ke-truncate), **stack checkbox/radio vertically** untuk easy scanning, **mark both required and optional** (asterisk \* + kata "opsional" di field optional — biar ga ambigu). **Break long forms into steps** kalau >10 field — dengan progress indicator. Insight controversial: **validate on submit, jangan inline real-time** — inline yang muncul tiap user ngetik ngerasa intrusive ("ya, gue belum selesai ngetik, kalem!"). Sebaiknya validate pas user blur field atau klik Submit. Konflik dengan Aurora — Paper.id banyak pake inline real-time validation, perlu didiskusikan. **Don't use placeholder as label** — begitu user mulai ngetik, label hilang, user lupa lagi field ini buat apa.
+### Chapter 7 — Forms (p. 213-249)
+The most actionable chapter for a B2B SaaS designer — Paper.id has lots of forms (Add Partner, Create Invoice, Catat Pengeluaran, KYC). The key rules: **single column** (vertical stack, downward momentum), **label above the input** (not beside), **field width matches expected input** (a 5-char zip code ≠ a 40-char name), **hint text above the field** not below (so it doesn't get covered by autofill or truncated), **stack checkboxes/radios vertically** for easy scanning, **mark both required and optional** (asterisk \* + the word "opsional" on optional fields — so there's no ambiguity). **Break long forms into steps** if >10 fields — with a progress indicator. A controversial insight: **validate on submit, not inline real-time** — inline validation that fires every time the user types feels intrusive ("yeah, I'm not done typing yet, chill!"). Better to validate when the user blurs the field or clicks Submit. This conflicts with Aurora — Paper.id uses a lot of inline real-time validation, which needs discussion. **Don't use placeholder as label** — the moment the user starts typing, the label disappears and they forget what the field is for.
 
-> **[VISUAL Bab 7 — Anatomi Form Field Ideal]**
-> Tampilkan 1 form field besar (di-zoom) dengan annotation panah ke setiap part:
+> **[VISUAL Chapter 7 — Anatomy of an Ideal Form Field]**
+> Show 1 large form field (zoomed in) with annotation arrows pointing to each part:
 > ```
-> Email Bisnis *                ← Label di ATAS (bold-small, asterisk untuk required)
-> Email aktif untuk login       ← Hint text di ATAS field (muted-small)
+> Email Bisnis *                ← Label ABOVE (bold-small, asterisk for required)
+> Email aktif untuk login       ← Hint text ABOVE the field (muted-small)
 > ┌──────────────────────────┐
-> │ kontak@perusahaan.com    │ ← Input field, width match expected
+> │ kontak@perusahaan.com    │ ← Input field, width matches expected
 > └──────────────────────────┘
 > ```
-> Annotation di kanan dengan arrows:
-> - "✅ Label di atas — ga ke-cover keyboard mobile"
-> - "✅ Hint di atas — ga ke-truncate autofill"
-> - "✅ Width match input — silent hint ke user"
-> - "✅ Asterisk * untuk required; field optional kasih kata 'opsional'"
-> Di bawah: row 3 mini-example field — Kode Pos (5 char width), Email (panjang sedang), Catatan (full width textarea). Caption: "Width = ekspektasi panjang input."
+> Annotation on the right with arrows:
+> - "✅ Label above — not covered by the mobile keyboard"
+> - "✅ Hint above — not truncated by autofill"
+> - "✅ Width matches input — a silent hint to the user"
+> - "✅ Asterisk * for required; optional fields get the word 'opsional'"
+> Below: a row of 3 mini-example fields — Kode Pos (5-char width), Email (medium length), Catatan (full-width textarea). Caption: "Width = the expected input length."
 
-### Bab 8 — Buttons (hal 250-279)
-Bab paling padat keputusan. **3 weight system**: primary (filled, brand color, untuk most important action — MAX 1 per page), secondary (border only, untuk less important atau multiple equal-weight actions), tertiary (text link, untuk least important atau destructive). Hierarchy ga boleh cuma andalan warna — kombinasiin dengan weight/fill. **Button text harus deskriptif verb+noun**: "Simpan invoice" > "OK", "Hapus pengeluaran" > "Lanjut". Avoid generic "Submit", "Continue" — user harus konfirmasi mental lagi ("ini submit apa ya?"). **Target size minimum 44×44px** untuk touch (mobile). **Friction ladder for destructive**: no-friction (less prominent UI) → light (simple confirm) → medium (red button + warning icon) → heavy (confirm checkbox). Tapi **better alternative: allow undo**. Toast "Pesan dihapus — Urungkan" 5-10 detik > modal "Yakin hapus?" tiap kali. **Try to avoid disabled buttons** — enable + validate on submit lebih baik. Disabled bikin user stuck tanpa tau kenapa, plus accessibility issue (contrast rendah, keyboard skipped).
+### Chapter 8 — Buttons (p. 250-279)
+The most decision-dense chapter. **3 weight system**: primary (filled, brand color, for the most important action — MAX 1 per page), secondary (border only, for less important or multiple equal-weight actions), tertiary (text link, for the least important or destructive). The hierarchy must not rely on color alone — combine it with weight/fill. **Button text should be descriptive verb+noun**: "Simpan invoice" > "OK", "Hapus pengeluaran" > "Lanjut". Avoid generic "Submit", "Continue" — the user has to mentally re-confirm ("submit what again?"). **Target size minimum 44×44px** for touch (mobile). **Friction ladder for destructive**: no-friction (less prominent UI) → light (simple confirm) → medium (red button + warning icon) → heavy (confirm checkbox). But **a better alternative: allow undo**. A "Message deleted — Undo" toast for 5-10 seconds > a "Are you sure?" modal every time. **Try to avoid disabled buttons** — enable + validate on submit is better. Disabled leaves the user stuck without knowing why, plus accessibility issues (low contrast, keyboard skipped).
 
 ---
 
-## E. KALAU CUMA BACA 3 HAL, BACA INI
+## E. IF YOU ONLY READ 3 THINGS, READ THESE
 
 > **[VISUAL: Section opener — Action Checklist Banner]**
-> Section ini jadi callout besar visual. Bikin banner header:
-> - Background: bold color (mis. solid brand blue atau gold accent), full-width
-> - Heading: "Kalau lo cuma punya 1 jam, lakuin 3 hal ini" — text putih, ukuran besar (32-40px)
-> - Sub-text: "3 perubahan dengan dampak paling besar untuk daily work designer B2B finance" — text putih semi-transparent
-> - Icon decorative di pojok kanan: checklist ✅ atau bullseye 🎯 (sebagai SVG, bukan emoji)
-> Setelah banner, tiga action di-tampilkan sebagai 3 cards vertikal dengan nomor besar 1, 2, 3 di kiri (sirkular badge biru 60×60px dengan angka putih bold).
+> This section becomes a large visual callout. Build a banner header:
+> - Background: bold color (e.g. solid brand blue or gold accent), full-width
+> - Heading: "If you only have 1 hour, do these 3 things" — white text, large size (32-40px)
+> - Sub-text: "The 3 highest-impact changes for the daily work of a B2B finance designer" — white semi-transparent text
+> - Decorative icon in the top-right corner: a checklist ✅ or bullseye 🎯 (as an SVG, not an emoji)
+> After the banner, the three actions are shown as 3 vertical cards with large numbers 1, 2, 3 on the left (a circular 60×60px blue badge with a white bold number).
 
-### 1. Pasang 1 Primary Button per page. Audit hari ini.
-Buka 3 page Paper.id favorit lo — Dashboard, List Invoice, Detail Mitra. Hitung berapa pill primary biru di tiap page. Kalau ada >1, lo udah ngacuin hierarchy. **Fix-nya gampang:** tentukan "1 most important action" per page. Sisanya turunin ke secondary (border only) atau tertiary (text link). Validate pake Squint Test (blur 8px di Figma) — kalau primary masih kelihatan dominant tunggal, lo menang. Ini insight #3 dan #4 dari buku, dampaknya langsung kelihatan di completion rate user buat action utama.
+### 1. Place 1 Primary Button per page. Audit it today.
+Open your 3 favorite Paper.id pages — Dashboard, List Invoice, Partner Detail. Count how many blue primary pills are on each. If there's >1, you've already wrecked the hierarchy. **The fix is easy:** determine the "1 most important action" per page. Demote the rest to secondary (border only) or tertiary (text link). Validate with the Squint Test (blur 8px in Figma) — if the primary still reads as a single dominant point, you win. This is insight #3 and #4 from the book, and the impact shows up immediately in the user's completion rate for the main action.
 
-### 2. Ganti pattern "Submit disabled" jadi "Submit enabled + validate on submit"
-Ini perubahan kecil tapi efek-nya besar. Default Aurora form button "Simpan" kemungkinan disabled sampe form valid — Adham bilang itu bermasalah: (a) user ga tau kenapa disabled, (b) accessibility jelek karena kontras text disabled biasanya rendah, (c) keyboard user bisa ke-skip, (d) no feedback. **Pattern baru:** button selalu enabled; pas user klik, validate; kalau ada error, scroll ke field error pertama + tampilin error message inline yang jelas. Lo dapet UX yang lebih clear + accessibility lebih baik. Catatan: ini konflik dengan Aurora current — perlu konsultasi maintainer DS, tapi worth pushing.
+### 2. Replace the "Submit disabled" pattern with "Submit enabled + validate on submit"
+This is a small change with a big effect. The default Aurora form button "Simpan" is probably disabled until the form is valid — Adham says that's problematic: (a) the user doesn't know why it's disabled, (b) accessibility is poor because disabled text usually has low contrast, (c) keyboard users can skip it, (d) no feedback. **New pattern:** the button is always enabled; when the user clicks, validate; if there's an error, scroll to the first error field + show a clear inline error message. You get a clearer UX + better accessibility. Note: this conflicts with current Aurora — it needs a consult with the DS maintainer, but it's worth pushing.
 
-### 3. Ganti modal konfirmasi destructive jadi toast undo (untuk action non-nuclear)
-Mapping yang Adham rekomendasiin: hapus draft / hapus row table / hapus item belum tersimpan = **TOAST UNDO** (5-10 detik), bukan modal. Modal konfirmasi cuma untuk genuinely destructive irreversible: hapus akun, hapus organisasi, hapus invoice yang udah dikirim ke customer. Reasoning-nya: modal interupsi user yang yakin (dan 95% user yang nge-klik Delete itu yakin), sedangkan toast kasih safety net tanpa block. Plus lebih cepat: 1 klik delete + auto-dismiss > 1 klik delete + 1 klik confirm + auto-dismiss. Definisi destructive Paper.id udah lock (lihat memory [[paperverse-design-decisions]]) — sekarang tinggal pasangin **mekanisme undo** untuk non-nuclear destructive. Apply pertama: list page delete row → snackbar "Item dihapus — Urungkan?" dengan timer 7 detik.
+### 3. Replace destructive confirmation modals with toast undo (for non-nuclear actions)
+The mapping Adham recommends: delete a draft / delete a table row / delete an unsaved item = **TOAST UNDO** (5-10 seconds), not a modal. A confirmation modal is only for genuinely destructive, irreversible things: delete account, delete organization, delete an invoice already sent to a customer. The reasoning: a modal interrupts a user who's sure (and 95% of users who click Delete are sure), whereas a toast gives a safety net without blocking. Plus it's faster: 1 click to delete + auto-dismiss > 1 click to delete + 1 click to confirm + auto-dismiss. Paper.id's destructive definition is already locked (see memory [[paperverse-design-decisions]]) — now it's just a matter of attaching an **undo mechanism** for non-nuclear destructive actions. First application: list page delete row → snackbar "Item dihapus — Urungkan?" with a 7-second timer.
 
 ---
 
 ## Cross-refs
 
-- **Reference cards detail (45 kartu)** → `practical-ui-ringkasan.md` + `practical-ui/kartu/`
-- **Konflik dengan Paper.id rules** → `IMPROVEMENT-OPPORTUNITIES.md` (5 konflik teridentifikasi)
+- **Detailed reference cards (45 cards)** → `practical-ui-ringkasan.md` + `practical-ui/kartu/`
+- **Conflicts with Paper.id rules** → `IMPROVEMENT-OPPORTUNITIES.md` (5 conflicts identified)
 - **Companion book** → `refactoring-ui-ringkasan.md` (Wathan & Schoger, similar philosophy)
 
 ---
 
-*Total: ~2700 kata. Estimated reading time: 18-20 menit.*
+*Total: ~2700 words. Estimated reading time: 18-20 minutes.*

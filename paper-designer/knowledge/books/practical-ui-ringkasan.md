@@ -13,76 +13,76 @@ tags: [forms, buttons, layout, visual-hierarchy, copywriting, typography, access
 
 # Practical UI — Adham Dannaway
 
-## Thesis (1 kalimat inti)
+## Thesis (1-sentence core)
 
-> **"UI design itu bukan intuisi magis, tapi sistem rules logical — setiap detail WAJIB ada *logical reason* di belakangnya yang memenuhi 3 prinsip: minimise usability risks, minimise interaction cost, minimise cognitive load."**
+> **"UI design isn't magical intuition, it's a system of logical rules — every detail MUST have a *logical reason* behind it that satisfies 3 principles: minimise usability risks, minimise interaction cost, minimise cognitive load."**
 
-Quote verbatim author:
-> "Most of my UI design decisions are governed by a system of logical rules. Not artistic flair or magical intuition, just simple rules." — hal 11
+Verbatim author quote:
+> "Most of my UI design decisions are governed by a system of logical rules. Not artistic flair or magical intuition, just simple rules." — p. 11
 
 ---
 
-## 8 Framework Utama (mental model reusable)
+## 8 Core Frameworks (reusable mental models)
 
 ### Framework 1: Logical reason rationale
-- **When to invoke:** Setiap kali mau bikin/tambah/ubah element UI — sebelum approve design decision.
-- **The thinking:** Tiap detail design (size, color, position, spacing, shape) harus bisa dijawab "kenapa begitu". Bukan "looks nice" atau "I don't like" — itu subjective opinion, BUKAN rationale. Rationale = objective + articulable + tied to usability/accessibility/conventions.
-- **Anti-pattern:** Pasang badge biru karena "biru lagi ngetren" tanpa tau itu bisa di-mistaken sebagai link. Review feedback "I just feel like the button should be bigger" tanpa rationale.
-- **Source:** Bab 1, hal 17-18
+- **When to invoke:** Every time you want to create/add/change a UI element — before approving a design decision.
+- **The thinking:** Every design detail (size, color, position, spacing, shape) must be answerable with "why this way". Not "looks nice" or "I don't like it" — those are subjective opinions, NOT rationale. Rationale = objective + articulable + tied to usability/accessibility/conventions.
+- **Anti-pattern:** Adding a blue badge because "blue is trending" without realizing it can be mistaken for a link. Review feedback "I just feel like the button should be bigger" without rationale.
+- **Source:** Chapter 1, p. 17-18
 
 ### Framework 2: 3-Pillar Minimization (usability risk + interaction cost + cognitive load)
-- **When to invoke:** Saat audit decision design apapun. Audit framework universal.
-- **The thinking:** 3 pillar:
-  - **Usability risk** = anything vague/confusing/unclear → simplify dulu sebelum testing
+- **When to invoke:** When auditing any design decision. Universal audit framework.
+- **The thinking:** 3 pillars:
+  - **Usability risk** = anything vague/confusing/unclear → simplify first before testing
   - **Interaction cost** = sum of physical & mental effort (looking, scrolling, searching, clicking, thinking, remembering)
-  - **Cognitive load** = mental effort untuk understand. Reduce simultaneous choices, novel patterns, memorization burden.
-- **Anti-pattern:** Light grey text "biar sleek" — high usability risk. Multi-column form "save space" — increase interaction cost + cognitive load.
-- **Source:** Bab 1, hal 15-23
+  - **Cognitive load** = mental effort to understand. Reduce simultaneous choices, novel patterns, memorization burden.
+- **Anti-pattern:** Light grey text "to keep it sleek" — high usability risk. Multi-column form "to save space" — increases interaction cost + cognitive load.
+- **Source:** Chapter 1, p. 15-23
 
 ### Framework 3: Predefined sets (design system foundation)
-- **When to invoke:** Saat establish atau audit design system.
-- **The thinking:** Limited set untuk color/typography/spacing/shadow/border-radius. Speed up decisions + improve consistency + result in neater interface. Setiap option harus punya purpose jelas.
-- **Anti-pattern:** Push pixel back-and-forth nyari spacing perfect tiap kali. Cari shade grey baru untuk tiap input border.
-- **Source:** Bab 1, hal 25-28
+- **When to invoke:** When establishing or auditing a design system.
+- **The thinking:** A limited set for color/typography/spacing/shadow/border-radius. Speeds up decisions + improves consistency + results in a neater interface. Each option must have a clear purpose.
+- **Anti-pattern:** Pushing pixels back-and-forth looking for the perfect spacing every time. Hunting for a new grey shade for each input border.
+- **Source:** Chapter 1, p. 25-28
 
 ### Framework 4: 4 Grouping Methods (container, proximity, similarity, continuity)
-- **When to invoke:** Saat punya group of related elements untuk di-display.
-- **The thinking:** Container = strongest tapi paling clutter. Proximity = decent + cleaner. Similarity = visual treatment serupa. Continuity = aligned in line. Combine 2-3 untuk strong grouping tanpa container clutter.
-- **Anti-pattern:** Bungkus segala card pake border padahal proximity udah cukup. Mixed methods inconsistent.
-- **Source:** Bab 4, hal 105-119
+- **When to invoke:** When you have a group of related elements to display.
+- **The thinking:** Container = strongest but most cluttered. Proximity = decent + cleaner. Similarity = matching visual treatment. Continuity = aligned in a line. Combine 2-3 for strong grouping without container clutter.
+- **Anti-pattern:** Wrapping every card in a border when proximity is already enough. Mixed, inconsistent methods.
+- **Source:** Chapter 4, p. 105-119
 
 ### Framework 5: Visual Hierarchy (size + colour + contrast + spacing + position + depth)
-- **When to invoke:** Saat multiple info di 1 page, perlu prioritize what user looks first.
-- **The thinking:** 6 lever variabel — size, colour, contrast, spacing, position, depth. Apply by importance order. Validate dengan **Squint Test** (tutup mata 50% / blur design).
-- **Anti-pattern:** Semua action pakai pill primary biru semua — hierarchy hancur. "If everything is important, nothing is important."
-- **Source:** Bab 4, hal 120-128
+- **When to invoke:** When there's multiple info on one page, and you need to prioritize what the user looks at first.
+- **The thinking:** 6 variable levers — size, colour, contrast, spacing, position, depth. Apply in order of importance. Validate with the **Squint Test** (close your eyes 50% / blur the design).
+- **Anti-pattern:** Every action using a blue primary pill — hierarchy destroyed. "If everything is important, nothing is important."
+- **Source:** Chapter 4, p. 120-128
 
-### Framework 6: 3-Tier Button System (primary single + secondary + tertiary)
-- **When to invoke:** Pasang button pertama-tama, hierarchy action di page.
-- **The thinking:** 1 primary per page MAX (filled action color). Secondary untuk less important atau multiple equal-weight (border only). Tertiary untuk least important / destructive (text-link underlined). Visual hierarchy can't depend on colour ALONE.
-- **Anti-pattern:** 2 primary di 1 page. Pakai grey secondary (di-mistaken disabled). Tertiary cuma text biru tanpa underline.
-- **Source:** Bab 8, hal 251-261
+### Framework 6: 3-Tier Button System (single primary + secondary + tertiary)
+- **When to invoke:** When placing buttons first, action hierarchy on a page.
+- **The thinking:** 1 primary per page MAX (filled action color). Secondary for less important or multiple equal-weight (border only). Tertiary for least important / destructive (underlined text-link). Visual hierarchy can't depend on colour ALONE.
+- **Anti-pattern:** 2 primaries on one page. Using a grey secondary (mistaken for disabled). Tertiary that's just blue text without underline.
+- **Source:** Chapter 8, p. 251-261
 
 ### Framework 7: Friction Ladder for Destructive Actions
-- **When to invoke:** User mau hapus/delete/destructive irreversible action.
+- **When to invoke:** User wants to delete/perform a destructive irreversible action.
 - **The thinking:** 4-tier:
   - Initial (less prominent UI)
   - Light (confirm dialog)
   - Medium (confirm + red button + warning icon)
   - Heavy (confirm + checkbox required)
   - **Better alternative**: Allow UNDO via snackbar/toast.
-- **Anti-pattern:** All delete = "Delete account" instant tanpa confirm. Atau all delete = heavy modal (annoying untuk small actions).
-- **Source:** Bab 8, hal 277-279
+- **Anti-pattern:** All deletes = "Delete account" instantly without confirm. Or all deletes = heavy modal (annoying for small actions).
+- **Source:** Chapter 8, p. 277-279
 
 ### Framework 8: Form Layout Stack (single column + label-top + match-width)
-- **When to invoke:** Design form apapun.
-- **The thinking:** Single column = downward momentum. Label di atas input. Field width = match expected input length. Hint ABOVE input. Stick conventional styles. Stack checkbox/radio vertically. Side-by-side OK kalau related & short.
-- **Anti-pattern:** 2-column form "save space". Label di samping field. Field semua full-width. Placeholder as label.
-- **Source:** Bab 7, hal 214-230
+- **When to invoke:** Designing any form.
+- **The thinking:** Single column = downward momentum. Label above input. Field width = match expected input length. Hint ABOVE input. Stick to conventional styles. Stack checkbox/radio vertically. Side-by-side OK if related & short.
+- **Anti-pattern:** 2-column form "to save space". Label beside the field. All fields full-width. Placeholder as label.
+- **Source:** Chapter 7, p. 214-230
 
 ---
 
-## Reading Map (peta topik kartu)
+## Reading Map (card topic map)
 
 | Topik | File | Tag | Apply-value |
 |-------|------|-----|-------------|
@@ -132,130 +132,130 @@ Quote verbatim author:
 | quote-if-everything-important-nothing-is | `kartu/quote-if-everything-important-nothing-is.md` | `#quote` `#hierarchy` | high |
 | quote-minimal-doesnt-mean-simple | `kartu/quote-minimal-doesnt-mean-simple.md` | `#quote` `#anti-pattern` | high |
 
-Total: 45 kartu.
+Total: 45 cards.
 
 ---
 
-## Money Quotes (5 quote signature)
+## Money Quotes (5 signature quotes)
 
 1. > "If everything is important, nothing is important."
-   — Bab 8 (Buttons), hal 259
+   — Chapter 8 (Buttons), p. 259
 
 2. > "Designing interfaces using objective logic, rather than subjective opinion, makes it faster and easier to make design decisions."
-   — Bab 1 (Fundamentals), hal 17
+   — Chapter 1 (Fundamentals), p. 17
 
 3. > "The higher the interaction cost, the harder it is for someone to achieve their task."
-   — Bab 1 (Fundamentals), hal 19
+   — Chapter 1 (Fundamentals), p. 19
 
 4. > "Minimal doesn't mean simple."
-   — Bab 2 (Less is more), hal 52
+   — Chapter 2 (Less is more), p. 52
 
 5. > "Buttons should have a clear visual hierarchy that isn't reliant on colour."
-   — Bab 8 (Buttons), hal 254
+   — Chapter 8 (Buttons), p. 254
 
 ---
 
-## Aplikasi untuk Paper.id
+## Application for Paper.id
 
-> Apply by modul / pattern context.
+> Apply by module / pattern context.
 
-**Untuk semua Form di Paper.id** (Tambah Mitra, Buat Invoice, Catat Pengeluaran, KYC, Setup):
-- Single column layout (Framework 8) — wajib default
-- Label di atas input (KARTU #2) — Aurora form-field udah default benar
-- Field width match expected (KARTU #3) — audit current, banyak yang full-width unnecessary
-- Mark required + optional (KARTU #7) — asterisk `*` + word "opsional"
-- Conventional styling (KARTU #8) — stick Aurora component, jangan eksperimen styling
-- Multi-step kalau >10 field (KARTU #11) — Setup Bisnis, KYC
-- Section heading kalau ga bisa multi-step (KARTU #12) — Edit Profile Perusahaan
+**For all Forms in Paper.id** (Tambah Mitra, Buat Invoice, Catat Pengeluaran, KYC, Setup):
+- Single column layout (Framework 8) — mandatory default
+- Label above input (CARD #2) — Aurora form-field is already default-correct
+- Field width matches expected (CARD #3) — audit current, many are full-width unnecessarily
+- Mark required + optional (CARD #7) — asterisk `*` + the word "opsional"
+- Conventional styling (CARD #8) — stick to the Aurora component, don't experiment with styling
+- Multi-step if >10 fields (CARD #11) — Setup Bisnis, KYC
+- Section heading if multi-step isn't possible (CARD #12) — Edit Profil Perusahaan
 
-**Untuk Buttons di seluruh prototype**:
-- 3-tier system Aurora primary/secondary/tertiary (KARTU #13)
-- 1 primary per screen (KARTU #14) — sudah lock di Action Hierarchy
-- Button text verb+noun deskriptif (KARTU #18) — "Simpan invoice" bukan "OK"
-- Friction ladder per severity (KARTU #19) — match definisi destructive Paperverse
+**For Buttons across the whole prototype**:
+- 3-tier system Aurora primary/secondary/tertiary (CARD #13)
+- 1 primary per screen (CARD #14) — already locked in Action Hierarchy
+- Descriptive verb+noun button text (CARD #18) — "Simpan invoice" not "OK"
+- Friction ladder per severity (CARD #19) — match the Paperverse destructive definition
 
-**Untuk Table list pattern**:
-- Action ⋮ dekat row, bukan global toolbar (KARTU #26)
-- Sticky kanan kolom action, klik row = detail (lock pattern existing)
-- 4-grouping methods (KARTU #21) — combine proximity + similarity + container untuk row grouping
+**For the Table list pattern**:
+- Action ⋮ near the row, not the global toolbar (CARD #26)
+- Action column sticky right, click row = detail (lock existing pattern)
+- 4-grouping methods (CARD #21) — combine proximity + similarity + container for row grouping
 
-**Untuk Destructive actions**:
-- Allow undo via snackbar (KARTU #20) > heavy friction modal
-- Hapus draft = light/no friction. Hapus published = medium. Hapus account = heavy.
+**For Destructive actions**:
+- Allow undo via snackbar (CARD #20) > heavy friction modal
+- Delete draft = light/no friction. Delete published = medium. Delete account = heavy.
 
-**Untuk Copywriting Indonesia**:
-- Be concise (KARTU #34) — coincide dengan [[user-prefers-plain-indonesian]]
-- Sentence case (KARTU #35) — "Hapus invoice?" bukan "Hapus Invoice?"
-- Front-load (KARTU #36) — important info di awal heading
+**For Indonesian Copywriting**:
+- Be concise (CARD #34) — coincides with [[user-prefers-plain-indonesian]]
+- Sentence case (CARD #35) — "Hapus invoice?" not "Hapus Invoice?"
+- Front-load (CARD #36) — important info at the start of the heading
 
-**Untuk Decision Mindset**:
-- Logical reason rationale (KARTU #40) — setiap rule di memory WAJIB punya Why + How to apply
-- 3-pillar audit (KARTU #41) — Pre-Generation Checklist
-- Jakob's Law (KARTU #42) — Aurora pattern conventional, jangan reinvent
+**For Decision Mindset**:
+- Logical reason rationale (CARD #40) — every rule in memory MUST have a Why + How to apply
+- 3-pillar audit (CARD #41) — Pre-Generation Checklist
+- Jakob's Law (CARD #42) — Aurora patterns are conventional, don't reinvent
 
 ---
 
-## Konflik dengan Aurora / Paper.id Rules
+## Conflict with Aurora / Paper.id Rules
 
-5 konflik teridentifikasi — semua di-log ke `IMPROVEMENT-OPPORTUNITIES.md` untuk diskusi maintainer DS.
+5 conflicts identified — all logged to `IMPROVEMENT-OPPORTUNITIES.md` for discussion with the DS maintainer.
 
-### Konflik 1: Hint text position (above vs below field)
-- **Topik:** Posisi helper/hint text relatif ke input field
-- **Buku bilang:** WAJIB di ATAS field — prevent error + maintain downward momentum + ga ke-cover autofill
-- **Paper.id pilih:** TBD — perlu audit Aurora form-field current pattern
-- **Alasan:** Konflik dengan kemungkinan pattern current. Critical hint mungkin pindah ke atas, decorative hint OK di bawah.
+### Conflict 1: Hint text position (above vs below field)
+- **Topic:** Position of helper/hint text relative to the input field
+- **Book says:** MUST be ABOVE the field — prevents errors + maintains downward momentum + isn't covered by autofill
+- **Paper.id chooses:** TBD — need to audit the current Aurora form-field pattern
+- **Reason:** Conflicts with the possible current pattern. Critical hints may move above, decorative hints OK below.
 - **Log:** `IMPROVEMENT-OPPORTUNITIES.md` entry "Hint text position"
 
-### Konflik 2: Disabled submit buttons
-- **Topik:** Apakah Submit/Save button di-disable sampai form valid?
-- **Buku bilang:** TRY TO AVOID disabled buttons. Enable + validate on submit. Disabled = user stuck, low contrast, keyboard inaccessible.
-- **Paper.id pilih:** Banyak modal Aurora pakai disabled Save pattern (perlu konfirmasi).
-- **Alasan:** Trade-off — disabled prevent invalid submission upfront, tapi sacrifice UX feedback clarity. Form kompleks dengan inter-field dependency mungkin perlu disable. Form simple mendingan enable+validate.
+### Conflict 2: Disabled submit buttons
+- **Topic:** Should the Submit/Save button be disabled until the form is valid?
+- **Book says:** TRY TO AVOID disabled buttons. Enable + validate on submit. Disabled = user stuck, low contrast, keyboard inaccessible.
+- **Paper.id chooses:** Many Aurora modals use the disabled Save pattern (needs confirmation).
+- **Reason:** Trade-off — disabled prevents invalid submission upfront, but sacrifices UX feedback clarity. Complex forms with inter-field dependency may need disable. Simple forms are better with enable+validate.
 - **Log:** `IMPROVEMENT-OPPORTUNITIES.md` entry "Disabled submit button pattern"
 
-### Konflik 3: Radio button threshold
-- **Topik:** Threshold opsi untuk pakai radio vs dropdown
-- **Buku bilang:** ≤10 opsi = radio
-- **Paper.id pilih:** ≤4 opsi = radio (lebih konservatif, per [[paperverse-design-decisions]])
-- **Alasan:** Paper.id menang — lebih strict = lebih safe. Buku threshold longgar, Paper.id rule lock 4. Catat data point untuk future evaluation.
+### Conflict 3: Radio button threshold
+- **Topic:** Option threshold for using radio vs dropdown
+- **Book says:** ≤10 options = radio
+- **Paper.id chooses:** ≤4 options = radio (more conservative, per [[paperverse-design-decisions]])
+- **Reason:** Paper.id wins — stricter = safer. The book's threshold is looser, Paper.id rule locks at 4. Note the data point for future evaluation.
 - **Log:** `IMPROVEMENT-OPPORTUNITIES.md` entry "Radio threshold evaluation"
 
-### Konflik 4: Inline validation vs validate-on-submit
-- **Topik:** Kapan show error message di form
-- **Buku bilang:** Validate on SUBMIT, bukan inline (real-time). Inline = annoying.
-- **Paper.id pilih:** TBD — perlu audit current pattern
-- **Alasan:** Trade-off — inline catches error faster tapi feel intrusive. On-submit feel batch tapi user finalize input first.
+### Conflict 4: Inline validation vs validate-on-submit
+- **Topic:** When to show the error message in a form
+- **Book says:** Validate on SUBMIT, not inline (real-time). Inline = annoying.
+- **Paper.id chooses:** TBD — need to audit the current pattern
+- **Reason:** Trade-off — inline catches errors faster but feels intrusive. On-submit feels batched but lets the user finalize input first.
 - **Log:** `IMPROVEMENT-OPPORTUNITIES.md` entry "Validation timing"
 
-### Konflik 5: WCAG 2 vs APCA contrast
-- **Topik:** Color contrast measurement system
-- **Buku bilang:** Pakai APCA (WCAG 3 draft) — more accessible, better for dark interfaces
-- **Paper.id pilih:** Pakai WCAG 2 (current standard)
-- **Alasan:** Commercial product perlu compliance dengan existing standard (WCAG 2 AA). APCA masih draft. Future migration evaluation kalau WCAG 3 finalized.
+### Conflict 5: WCAG 2 vs APCA contrast
+- **Topic:** Color contrast measurement system
+- **Book says:** Use APCA (WCAG 3 draft) — more accessible, better for dark interfaces
+- **Paper.id chooses:** Use WCAG 2 (current standard)
+- **Reason:** A commercial product needs compliance with the existing standard (WCAG 2 AA). APCA is still a draft. Future migration evaluation if WCAG 3 is finalized.
 - **Log:** `IMPROVEMENT-OPPORTUNITIES.md` entry "APCA migration evaluation"
 
 ---
 
 ## Adaptation Note
 
-Buku 2022 (2 tahun lalu), masih sangat current. Tidak ada outdated context. Beberapa contoh visual (e-commerce, travel app) ga match B2B finance — sudah di-adapt ke Paper.id context di setiap kartu. Bahasa Inggris — money quotes di-keep original + paraphrase Indonesia untuk apply.
+A 2022 book (2 years ago), still very current. No outdated context. Some visual examples (e-commerce, travel app) don't match B2B finance — already adapted to the Paper.id context in each card. English — money quotes are kept original + paraphrased into Indonesian for application.
 
 ---
 
-## Cross-refs (ke buku lain / rule lain)
+## Cross-refs (to other books / rules)
 
-**Overlap dengan `[[refactoring-ui]]` (Wathan & Schoger):**
-- `hierarchy-weight-color` ↔ `visual-hierarchy-variables` (Practical UI lebih granular: 6 lever)
-- `action-hierarchy-semantics` ↔ `3-button-weight-system` (3-tier system konsisten)
-- `spacing-system-scale` ↔ `predefined-spacing-scale` (predefined sets concept reinforce)
+**Overlap with `[[refactoring-ui]]` (Wathan & Schoger):**
+- `hierarchy-weight-color` ↔ `visual-hierarchy-variables` (Practical UI is more granular: 6 levers)
+- `action-hierarchy-semantics` ↔ `3-button-weight-system` (3-tier system consistent)
+- `spacing-system-scale` ↔ `predefined-spacing-scale` (predefined sets concept reinforced)
 - `selectable-cards-vs-radio` ↔ `radio-vs-dropdown-threshold` (input pattern decision)
 - `empty-state-priority` ↔ `inverted-pyramid-content-structure` (information ordering)
 
-**Memperkuat memory rules existing:**
-- `[[aurora-lookup-ritual]]` — Practical UI Framework 1 (logical reason) + Framework 8 (conventional patterns) confirm pendekatan strict.
-- `[[prototyping-gap-lessons]]` 0h Action Hierarchy — KARTU #14 + Money Quote #1 reinforce.
-- `[[paperverse-design-decisions]]` destructive definition — KARTU #19 friction ladder + KARTU #20 undo apply.
-- `[[user-prefers-plain-indonesian]]` — KARTU #34 be-concise + KARTU #35 sentence case + KARTU #36 front-load align dengan preference.
-- `[[smooth-transitions-rule]]` — KARTU #20 undo via toast align dengan toast pattern existing.
-- `[[composition-thinking-rule]]` — KARTU #43 modular design = framework parent.
-- `[[knowledge-vs-ds-priority-flow]]` — workflow handle konflik per Step 3 (surface to user + log) sudah diapply.
+**Reinforcing existing memory rules:**
+- `[[aurora-lookup-ritual]]` — Practical UI Framework 1 (logical reason) + Framework 8 (conventional patterns) confirm the strict approach.
+- `[[prototyping-gap-lessons]]` 0h Action Hierarchy — CARD #14 + Money Quote #1 reinforce.
+- `[[paperverse-design-decisions]]` destructive definition — CARD #19 friction ladder + CARD #20 undo apply.
+- `[[user-prefers-plain-indonesian]]` — CARD #34 be-concise + CARD #35 sentence case + CARD #36 front-load align with the preference.
+- `[[smooth-transitions-rule]]` — CARD #20 undo via toast aligns with the existing toast pattern.
+- `[[composition-thinking-rule]]` — CARD #43 modular design = parent framework.
+- `[[knowledge-vs-ds-priority-flow]]` — workflow handling conflicts per Step 3 (surface to user + log) is already applied.
