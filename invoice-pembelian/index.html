@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoice Pembelian — Paper.id</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    /* spacing */
+    --spacing-2xs:2px;--spacing-xs:4px;--spacing-sm:8px;--spacing-md:12px;--spacing-lg:16px;
+    --spacing-xl:20px;--spacing-2xl:24px;--spacing-3xl:28px;--spacing-4xl:32px;--spacing-5xl:36px;--spacing-6xl:40px;
+    /* radius */
+    --radius-none:0;--radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;--radius-full:9999px;
+    /* stroke */
+    --stroke-xs:1px;--stroke-md:1.5px;--stroke-lg:2px;
+    /* typography */
+    --text-body-font-family:'Lato',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --text-heading-font-family:'Lato',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --text-body-size-sm:12px;--text-body-size-md:14px;--text-body-size-lg:20px;
+    --text-body-line-height-sm:18px;--text-body-line-height-md:22px;
+    --text-body-weight-regular:400;--text-body-weight-medium:500;--text-body-weight-semibold:600;--text-body-weight-bold:700;
+    /* color: text */
+    --color-text-primary:#133f5d;--color-text-secondary:#718c9e;--color-text-muted:#a5b6c1;
+    --color-text-inverse:#ffffff;--color-text-brand:#133f5d;
+    /* color: surface */
+    --color-surface-light-default:#ffffff;--color-surface-light-raised:#f3f6f9;
+    --color-surface-light-muted:#e7eaec;--color-surface-light-platform:#f8fbfe;
+    /* color: action */
+    --color-action-primary-bg:#4199d5;--color-action-primary-hover:#89bde5;
+    --color-action-primary-pressed:#3385b5;--color-action-primary-fg:#ffffff;
+    --color-action-destructive-bg:#e35273;--color-action-destructive-hover:#ee94a8;
+    --color-action-destructive-pressed:#b52b55;--color-action-destructive-fg:#ffffff;
+    --color-action-disabled-bg:#e7eaec;--color-action-disabled-fg:#a5b6c1;
+    /* color: border / grey */
+    --color-border-default:#dbe2e8;--color-light-grey-15:#eef2f5;--color-light-grey-20:#e3e9ee;
+    --color-light-grey-40:#c4d0d9;--color-dark-grey-50:#3c5467;
+    /* color: brand / states */
+    --color-light-brand-15:#e3f0fa;--color-light-brand-25:#c7e1f3;--color-light-brand-40:#7bb8e0;
+    --color-light-brand-50:#4199d5;--color-light-red-50:#e35273;--color-neutral-white:#ffffff;
+    --color-light-blue-15:#e3f0fa;--color-light-blue-50:#4199d5;--color-light-blue-30:#c2def2;
+    --color-light-green-50:#97cc56;--color-light-orange-50:#f37d51;--color-dark-blue-45:#4e6f86;--color-dark-blue-40:#718c9e;
+    --color-state-success-bg:#eaf6e3;--color-state-success-text-dark:#356021;--color-state-success-border:#c3e3a8;
+    --color-state-warning-bg:#fdf3d9;--color-state-warning-text-dark:#8a6400;--color-state-warning-border:#f3dca0;
+    --color-state-danger-bg:#fce8ec;--color-state-danger-text-dark:#b52b55;--color-state-danger-border:#f3c2cf;
+    --color-state-active-bg:#e3f0fa;--color-state-active-text-dark:#1f6fa8;--color-state-active-border:#a9d3ee;
+    --color-focus-ring:#4199d5;
+    /* animation */
+    --speed-extra-fast:100ms;--speed-fast:200ms;--speed-normal:300ms;--speed-slow:400ms;--speed-extra-slow:500ms;
+    --ease-out-regular:cubic-bezier(.22,1,.36,1);--ease-out-relax:cubic-bezier(.25,.8,.35,1);
+    --ease-out-strong:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:var(--text-body-font-family);font-size:var(--text-body-size-md);
+    color:var(--color-text-primary);background:var(--color-surface-light-platform)}
+  .app-layout{display:flex;height:100vh;overflow:hidden}
+  .main-area{flex:1;overflow-y:auto;padding:var(--spacing-2xl);background:var(--color-surface-light-platform);min-width:0;
+    padding-bottom:96px}
+
+  /* APPROVED-CUSTOM (layout helper): page-head wrapper */
+  .page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--spacing-lg);flex-wrap:wrap}
+  .page-title{font-family:var(--text-heading-font-family);font-size:22px;line-height:28px;font-weight:var(--text-body-weight-bold);color:var(--color-text-primary)}
+
+  /* APPROVED-CUSTOM (layout helper): tab nav — My Invoice / Shared Invoice
+     (struktur tab = au-tab pattern; visual underline-active dari Aurora tab) */
+  .tabs{display:flex;align-items:center;gap:0;border-bottom:1px solid var(--color-border-default);margin-top:var(--spacing-md)}
+  .tab{display:inline-flex;align-items:center;gap:var(--spacing-sm);padding:var(--spacing-md) var(--spacing-lg);
+    background:transparent;border:0;border-bottom:2px solid transparent;cursor:pointer;
+    font-family:inherit;font-size:var(--text-body-size-md);font-weight:var(--text-body-weight-semibold);
+    color:var(--color-text-secondary);margin-bottom:-1px;transition:color var(--speed-fast),border-color var(--speed-fast)}
+  .tab>svg{width:18px;height:18px}
+  .tab.active{color:var(--color-text-primary);border-bottom-color:var(--color-action-primary-bg)}
+  .tab:hover:not(.active){color:var(--color-text-primary)}
+  .tab__new{font-size:var(--text-body-size-sm);font-weight:var(--text-body-weight-semibold);color:var(--color-text-inverse);
+    background:var(--color-action-primary-bg);border:1px solid var(--color-action-primary-bg);border-radius:99px;padding:var(--spacing-2xs) var(--spacing-sm);line-height:18px}
+
+  /* AURORA: au-btn (base) — Source: aurora/projects/ui/button/button.component.scss L86-103 */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--spacing-sm);padding:8px 16px;
+    border-radius:var(--radius-full);font-family:var(--text-heading-font-family);font-size:var(--text-body-size-md);
+    font-weight:var(--text-body-weight-medium);line-height:22px;border:none;cursor:pointer;white-space:nowrap;
+    transition:background var(--speed-slow) var(--ease-out-relax),color var(--speed-extra-slow) var(--ease-out-relax)}
+  .btn svg{width:18px;height:18px;flex-shrink:0}
+  /* AURORA: au-btn--primary — Source: button.component.scss L17-29 */
+  .btn--primary{background:var(--color-action-primary-bg);color:var(--color-action-primary-fg);
+    box-shadow:0 0 0 1px rgb(10 13 18 / 18%) inset,0 1px 0 1px rgb(255 255 255 / 10%) inset,0 -2px 0 0 rgb(10 13 18 / 5%) inset,0 1px 2px 0 rgb(10 13 18 / 5%)}
+  .btn--primary:hover{background:var(--color-action-primary-hover)}
+  .btn--primary:active{background:var(--color-action-primary-pressed)}
+  /* AURORA: au-btn--secondary — Source: button.component.scss L30-42 */
+  .btn--secondary{background:var(--color-surface-light-default);color:var(--color-dark-grey-50);
+    box-shadow:0 0 0 1px rgb(10 13 18 / 18%) inset,0 1px 0 1px rgb(10 13 18 / 5%) inset,0 -2px 0 0 rgb(10 13 18 / 5%) inset,0 1px 2px 0 rgb(10 13 18 / 5%)}
+  .btn--secondary:hover{background:var(--color-light-grey-15)}
+  .btn--secondary:active{background:var(--color-light-grey-20)}
+  /* AURORA: au-btn--tertiary — Source: button.component.scss L56-63 */
+  .btn--tertiary{background:transparent;color:var(--color-light-brand-50);box-shadow:none}
+  .btn--tertiary:hover{background:var(--color-light-brand-15)}
+  .btn--tertiary:active{background:var(--color-light-brand-25)}
+  /* AURORA: au-btn--tertiary-plain — Source: button.component.scss L64-71,L151-168 */
+  .btn--tertiary-plain{background:transparent;color:var(--color-light-brand-50);box-shadow:none;padding:0;border-radius:0}
+  .btn--tertiary-plain:hover,.btn--tertiary-plain:active{background:transparent;box-shadow:none}
+  .btn:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
+
+  /* APPROVED-CUSTOM (layout helper): page-level action bar */
+  .action-bar{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-md);flex-wrap:wrap;margin-top:var(--spacing-xl);margin-bottom:var(--spacing-lg)}
+  .action-bar__right{display:flex;align-items:center;gap:var(--spacing-md)}
+
+  /* APPROVED-CUSTOM (layout helper): in-card toolbar */
+  .tbl-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-md);background:transparent;flex-wrap:wrap}
+  .tbl-toolbar__left{display:flex;align-items:center;gap:var(--spacing-md);flex-wrap:wrap;min-width:0}
+  .tbl-toolbar__right{display:flex;align-items:center;gap:var(--spacing-lg)}
+
+  /* AURORA: au-form-field (search variant) — Source: form-field.component.scss L1-50 */
+  .search{display:flex;align-items:center;background:var(--color-neutral-white);
+    border:1px solid var(--color-light-grey-40);border-radius:var(--radius-sm);min-height:40px;flex:0 0 280px;min-width:240px;
+    padding:0 var(--spacing-md);transition:border-color var(--speed-normal) var(--ease-out-strong)}
+  .search:focus-within{border-color:var(--color-action-primary-bg)}
+  .search input{flex:1;border:none;outline:none;font-family:inherit;font-size:var(--text-body-size-md);
+    color:var(--color-text-primary);background:transparent;padding:var(--spacing-sm) 0;min-width:0}
+  .search input::placeholder{color:var(--color-text-muted)}
+  .search svg{width:18px;height:18px;color:var(--color-text-secondary);flex-shrink:0;margin-left:var(--spacing-sm)}
+
+  /* AURORA: au-chip — Source: aurora/projects/ui/chip + Figma node 12647:16406 (Shared Sales/Purchase Doc)
+     Figma spec: kotak rounded 5px, bg surface-light-platform, badge angka abu #eaedef (component/button/disabled/border),
+     label text-secondary regular, divider vertikal #eaedef, ✕ abu. (Bukan pill / badge biru.) */
+  .au-chip{display:inline-flex;align-items:center;gap:var(--spacing-xs);
+    padding:var(--spacing-2xs) var(--spacing-sm);background:var(--color-surface-light-platform);
+    border-radius:5px;white-space:nowrap}
+  .au-chip__count{display:inline-flex;align-items:center;color:var(--color-text-secondary);
+    font-size:var(--text-body-size-md);line-height:1;font-weight:var(--text-body-weight-semibold)}
+  .au-chip__label{color:var(--color-text-secondary);font-size:var(--text-body-size-md);font-weight:var(--text-body-weight-regular)}
+  .au-chip__div{width:1px;height:28px;background:#eaedef;flex-shrink:0}
+  .au-chip__x{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border:0;
+    background:transparent;cursor:pointer;color:var(--color-action-destructive-bg);border-radius:var(--radius-sm);
+    transition:background var(--speed-fast),color var(--speed-fast)}
+  .au-chip__x:hover{background:rgba(227,82,115,.12);color:var(--color-action-destructive-bg)}
+  .au-chip__x svg{width:12px;height:12px}
+  .au-chip[hidden]{display:none}
+  /* ===== GAYA B (alt) — pill + border abu + angka teks polos + ✕ merah ===== */
+  .au-chip.style-b{border-radius:var(--radius-full);border:1px solid var(--color-light-grey-40);
+    background:var(--color-surface-light-default);padding:var(--spacing-2xs) var(--spacing-md)}
+  .au-chip.style-b .au-chip__count{background:transparent;min-width:0;height:auto;padding:0;border-radius:0;
+    color:var(--color-text-secondary);font-weight:var(--text-body-weight-semibold)}
+  .au-chip.style-b .au-chip__x{color:var(--color-action-destructive-bg)}
+  .au-chip.style-b .au-chip__x:hover{background:rgba(227,82,115,.12);color:var(--color-action-destructive-bg)}
+  /* ===== GAYA C (alt) — pill + border biru #4199D5 + bg #F2F7FC + teks biru + ✕ merah ===== */
+  .au-chip.style-c{border-radius:var(--radius-full);border:1px solid #4199D5;
+    background:#F2F7FC;padding:var(--spacing-2xs) var(--spacing-md)}
+  .au-chip.style-c .au-chip__count{color:#4199D5;font-weight:var(--text-body-weight-semibold)}
+  .au-chip.style-c .au-chip__label{color:#4199D5}
+  .au-chip.style-c .au-chip__div{background:#4199D5;opacity:.3}
+  .au-chip.style-c .au-chip__x{color:var(--color-action-destructive-bg)}
+  .au-chip.style-c .au-chip__x:hover{background:rgba(227,82,115,.12);color:var(--color-action-destructive-bg)}
+  /* ===== A/B sticky toggle (review tool — SOLID BLACK, no white, bottom-right) ===== */
+  .ab-sticky{position:fixed;bottom:24px;right:24px;z-index:45;display:flex;align-items:center;gap:var(--spacing-md);
+    background:#000;border-radius:var(--radius-full);
+    padding:var(--spacing-sm) var(--spacing-sm) var(--spacing-sm) var(--spacing-lg);box-shadow:0 8px 24px rgba(0,0,0,.45)}
+  .ab-sticky__label{font-weight:700;color:#fff;font-size:13px;white-space:nowrap}
+  .ab-sticky__seg{display:inline-flex;background:#2c2c2e;border-radius:var(--radius-full);padding:3px;gap:2px}
+  .ab-sticky__btn{border:0;background:transparent;cursor:pointer;min-width:34px;height:28px;border-radius:var(--radius-full);
+    font-family:inherit;font-weight:700;color:#98989d;font-size:13px;transition:background .15s,color .15s}
+  .ab-sticky__btn:hover:not(.active){color:#fff}
+  .ab-sticky__btn.active{background:#5a5a5e;color:#fff}
+
+  /* APPROVED-CUSTOM: list-card wrapper (bungkus toolbar + table + pagination) */
+  .list-card{background:var(--color-surface-light-default);border:1px solid var(--color-border-default);
+    border-radius:var(--radius-md);padding:var(--spacing-xl);display:flex;flex-direction:column;gap:var(--spacing-xl)}
+
+  /* AURORA: au-table wrapper — Source: table.component.scss */
+  .table-wrap{background:var(--color-surface-light-default);border:1px solid var(--color-border-default);
+    border-radius:var(--radius-md);overflow:hidden}
+  .table-scroll{overflow-x:auto;overflow-y:hidden}
+  .table-scroll::-webkit-scrollbar{height:4px}
+  .table-scroll::-webkit-scrollbar-track{background:transparent}
+  .table-scroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,.2);border-radius:2px}
+  table{width:100%;border-collapse:separate;border-spacing:0;font-size:var(--text-body-size-md);min-width:1240px}
+  /* AURORA: au-table header cell — tinted block */
+  thead th{background:var(--color-surface-light-raised);text-align:left;padding:10px 16px 6px;
+    font-weight:var(--text-body-weight-bold);color:var(--color-text-primary);font-size:var(--text-body-size-sm);white-space:nowrap;border-bottom:none}
+  /* AURORA: au-table body cell */
+  tbody td{padding:14px 16px;border-bottom:1px solid var(--color-border-default);color:var(--color-text-primary);
+    font-weight:var(--text-body-weight-regular);vertical-align:middle;background:var(--color-surface-light-default);white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr{cursor:pointer}
+  tbody tr:hover td{background:var(--color-surface-light-platform)}
+  tbody tr.is-selected td{background:var(--color-light-brand-15)}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .muted{color:var(--color-text-secondary)}
+  .inv-no{font-weight:var(--text-body-weight-regular)}
+  .inv-meta{display:flex;align-items:center;gap:6px;margin-top:4px;color:var(--color-text-secondary)}
+  .inv-meta svg{width:16px;height:16px}
+  .inv-meta .ic-seal{width:17px;height:17px}
+  .inv-meta .att{display:inline-flex;align-items:center;gap:3px;font-size:var(--text-body-size-sm)}
+  .inv-meta .warn{color:#e0a800;cursor:help}
+  .sup{display:inline-flex;align-items:center;gap:6px}
+  .sup svg{width:15px;height:15px;flex-shrink:0}
+
+  /* sort icon */
+  .th-in{display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+  .sort-ic{width:14px;height:14px;color:var(--color-text-secondary);flex-shrink:0}
+  thead tr.filter-row th{padding:0 16px 10px;background:var(--color-surface-light-raised);border-bottom:1px solid var(--color-border-default)}
+
+  /* AURORA: au-form-field (inline column filter) compact 32px */
+  .col-f{width:100%;height:32px;padding:var(--spacing-xs) var(--spacing-md);border:1px solid var(--color-light-grey-40);
+    border-radius:var(--radius-sm);font-family:inherit;font-size:var(--text-body-size-sm);color:var(--color-text-primary);
+    background:var(--color-neutral-white);outline:none;min-width:120px;transition:border-color var(--speed-normal) var(--ease-out-strong)}
+  .col-f::placeholder{color:var(--color-text-muted);opacity:1}
+  .col-f:focus{border-color:var(--color-action-primary-bg)}
+  select.col-f{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M0 0h10L5 6z' fill='%23133f5d'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:28px;cursor:pointer}
+  select.col-f.is-placeholder{color:var(--color-text-muted)}
+  .col-search{position:relative}.col-search .col-f{padding-right:32px}
+  .col-search svg{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--color-text-muted);pointer-events:none}
+
+  /* sticky cols */
+  .col-chk{width:46px;min-width:46px;text-align:center;padding-left:14px;padding-right:8px;cursor:pointer}
+  .col-act{width:56px;min-width:56px;text-align:center}
+  .stk-r{position:sticky;right:0;z-index:2}
+  thead .stk-r{z-index:5}
+  .stk-r::before{content:"";position:absolute;top:0;left:0;bottom:-1px;width:6px;transform:translateX(-100%);
+    background:linear-gradient(270deg,rgba(19,63,93,.10),transparent);pointer-events:none}
+
+  /* AURORA: au-checkbox (visual) — Source: checkbox.component.scss L42-60 */
+  .chk{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--color-light-grey-40);
+    border-radius:var(--radius-sm);background:var(--color-neutral-white);cursor:pointer;margin:0;position:relative;flex-shrink:0;
+    transition:border-color var(--speed-fast),background var(--speed-fast);vertical-align:middle}
+  .chk:hover{border-color:var(--color-action-primary-bg)}
+  .chk:checked{background:var(--color-action-primary-bg);border-color:var(--color-action-primary-bg)}
+  .chk:checked::after{content:"";position:absolute;left:5px;top:1.5px;width:4px;height:9px;border:solid var(--color-neutral-white);border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .chk:indeterminate{background:var(--color-action-primary-bg);border-color:var(--color-action-primary-bg)}
+  .chk:indeterminate::after{content:"";position:absolute;left:3px;top:7px;width:9px;height:2px;background:var(--color-neutral-white);border-radius:1px}
+  .chk:focus-visible{outline:var(--stroke-lg) solid var(--color-focus-ring);outline-offset:var(--spacing-2xs)}
+
+  /* AURORA: au-chip-status — Source: chip-status.component.scss + STATUS_CONFIG (chip-status.component.ts)
+     normal = outline (border+text warna) · inverse = solid (bg warna + teks putih). Ukuran DEFAULT — match production. */
+  .badge{display:inline-flex;align-items:center;gap:4px;border-radius:99px;
+    padding:var(--spacing-2xs) var(--spacing-sm);border:solid 1px transparent;
+    font-size:var(--text-body-size-sm);font-weight:600;line-height:var(--text-body-line-height-sm);
+    text-transform:capitalize;white-space:nowrap}
+  /* normal (outline) */
+  .badge--n-blue{border-color:var(--color-light-blue-50);color:var(--color-light-blue-50)}
+  .badge--n-green{border-color:var(--color-light-green-50);color:var(--color-light-green-50)}
+  .badge--n-red{border-color:var(--color-light-red-50);color:var(--color-light-red-50)}
+  .badge--n-darkblue{border-color:var(--color-dark-blue-45);color:var(--color-dark-blue-40)}
+  /* inverse (solid) */
+  .badge--i-blue{border-color:var(--color-light-blue-50);background:var(--color-light-blue-50);color:var(--color-text-inverse)}
+  .badge--i-green{border-color:var(--color-light-green-50);background:var(--color-light-green-50);color:var(--color-text-inverse)}
+  .badge--i-red{border-color:var(--color-light-red-50);background:var(--color-light-red-50);color:var(--color-text-inverse)}
+  .badge--i-orange{border-color:var(--color-light-orange-50);background:var(--color-light-orange-50);color:var(--color-text-inverse)}
+  .badge--i-darkblue{border-color:var(--color-dark-blue-45);background:var(--color-dark-blue-45);color:var(--color-text-inverse)}
+  /* dok cell: badge + ikon kirim (status Not Sent) — match production */
+  .dok-cell{display:inline-flex;align-items:center;gap:var(--spacing-sm)}
+  .dok-send{display:inline-flex;color:var(--color-text-muted);cursor:pointer}
+  .dok-send svg{width:18px;height:18px}
+  .dok-send:hover{color:var(--color-light-blue-50)}
+
+  /* AURORA: au-context-menu (row 3-dot) */
+  .row-act{position:relative;display:inline-block}
+  .row-act__btn{background:transparent;border:none;cursor:pointer;padding:6px;border-radius:var(--radius-sm);color:var(--color-text-secondary);display:flex}
+  .row-act__btn:hover{background:var(--color-light-grey-15)}
+
+  /* AURORA: au-pagination — Source: pagination.component.scss L1-50 (production locked) */
+  .pagination{display:flex;align-items:center;justify-content:flex-end;gap:var(--spacing-lg);padding:0;font-size:var(--text-body-size-md);color:var(--color-text-secondary);flex-wrap:wrap}
+  .pg-rows{display:flex;align-items:center;gap:var(--spacing-sm);color:var(--color-text-primary)}
+  .pg-rows select{height:auto;padding:4px 20px 4px 4px;border:0;border-radius:var(--radius-sm);font-family:inherit;font-size:var(--text-body-size-md);font-weight:var(--text-body-weight-semibold);color:var(--color-text-primary);background:transparent;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3.5 5.5L7 9l3.5-3.5' stroke='%23133f5d' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0 center;appearance:none;outline:none;cursor:pointer}
+  .pg-rows select:hover{background-color:var(--color-light-grey-15)}
+  .pg-nav{display:flex;align-items:center;gap:var(--spacing-xs)}
+  .pg-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;background:transparent;border-radius:var(--radius-sm);cursor:pointer;color:var(--color-text-secondary);padding:0}
+  .pg-btn:hover:not(:disabled){background:var(--color-light-grey-15);color:var(--color-text-primary)}
+  .pg-btn:disabled{color:var(--color-text-muted);cursor:not-allowed;background:transparent;pointer-events:none}
+  .pg-btn svg{width:18px;height:18px}
+  .pg-pages{display:flex;align-items:center;gap:2px}
+  .pg-page{min-width:32px;height:32px;padding:var(--spacing-xs) var(--spacing-sm);display:flex;align-items:center;justify-content:center;border:0;background:transparent;border-radius:var(--radius-sm);font-size:var(--text-body-size-md);color:var(--color-text-primary);cursor:pointer;transition:background var(--speed-fast) var(--ease-out-regular)}
+  .pg-page:hover:not(.active){background:var(--color-light-grey-15)}
+  .pg-page.active{background:var(--color-light-brand-15);color:var(--color-text-primary);font-weight:var(--text-body-weight-bold);cursor:default}
+  .pg-ell{padding:0 6px;color:var(--color-text-muted);user-select:none}
+
+  /* APPROVED-CUSTOM (layout helper): bulk selection bar (bawah viewport).
+     Konteks production "Bayar ke Supplier" — komponen terpisah dari table.
+     Catatan: clear-all TIDAK ditaruh di sini (komponen terpisah, per keputusan user) → clear via chip di toolbar. */
+  .sel-bar{position:fixed;left:240px;right:0;bottom:0;z-index:20;
+    background:var(--color-surface-light-default);border-top:1px solid var(--color-border-default);
+    box-shadow:0 -2px 8px rgba(0,0,0,.06);
+    display:flex;align-items:center;justify-content:flex-end;gap:var(--spacing-2xl);
+    padding:var(--spacing-md) var(--spacing-2xl);
+    transform:translateY(110%);transition:transform var(--speed-slow) var(--ease-out-strong)}
+  .sel-bar.show{transform:translateY(0)}
+  .sel-bar__stat{display:flex;flex-direction:column;gap:2px;text-align:right}
+  .sel-bar__stat .k{font-size:var(--text-body-size-sm);color:var(--color-text-secondary)}
+  .sel-bar__stat .v{font-size:var(--text-body-size-md);font-weight:var(--text-body-weight-bold);color:var(--color-text-primary);font-variant-numeric:tabular-nums}
+
+  /* AURORA: au-toast (override 380/8 per Paperverse) */
+  .toast{position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-140px);width:380px;max-width:calc(100vw - 40px);
+    padding:var(--spacing-md);border-radius:var(--radius-md);background:linear-gradient(90deg,#133f5d 0%,#0a1d28 100%);color:var(--color-text-inverse);
+    box-shadow:0 3px 10px 0 rgb(0 0 0 / 8%);z-index:60;opacity:0;transition:transform var(--speed-slow) var(--ease-out-strong),opacity var(--speed-slow);
+    display:flex;align-items:center;gap:var(--spacing-sm)}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+  .toast__icon{flex-shrink:0;width:28px;height:28px}
+  .toast__text{display:flex;flex-direction:column;gap:2px}
+  .toast__text b{font-weight:var(--text-body-weight-bold);font-size:var(--text-body-size-md)}
+  .toast__text span{font-size:var(--text-body-size-sm);color:rgb(255 255 255 / 85%)}
+
+  /* Sidemenu */
+  .sidemenu{width:240px;min-width:240px;height:100vh;background:linear-gradient(to bottom,#0b2835,#206a9c 76.563%,#257ab4);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;position:relative}
+  .sidemenu__logo{height:96px;display:flex;align-items:center;padding:0 var(--spacing-xl);flex-shrink:0}
+  .sidemenu__logo svg{height:34px;width:auto}
+  .sidemenu__nav{display:flex;flex-direction:column;flex:1;padding-top:var(--spacing-sm)}
+  .sidemenu__item{display:flex;align-items:center;gap:var(--spacing-md);height:40px;padding:0 var(--spacing-lg);color:rgba(255,255,255,.85);text-decoration:none;cursor:pointer;font-size:13px;font-weight:var(--text-body-weight-regular);transition:background var(--speed-fast),color var(--speed-fast);border:none;background:transparent;width:100%;text-align:left;font-family:var(--text-body-font-family)}
+  .sidemenu__item:hover{background:rgba(255,255,255,.1);color:#fff}
+  .sidemenu__item.active{background:rgba(255,255,255,.1);color:#fff;font-weight:var(--text-body-weight-semibold)}
+  .sidemenu__item-icon{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .sidemenu__item-arrow{width:16px;height:16px;margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:transform var(--speed-fast);opacity:.5}
+  .sidemenu__item.expanded .sidemenu__item-arrow{transform:rotate(90deg)}
+  .sidemenu__submenu{display:flex;flex-direction:column;max-height:0;overflow:hidden}
+  .sidemenu__submenu.open{max-height:none;overflow:visible}
+  .sidemenu__subitem{display:flex;align-items:center;gap:var(--spacing-sm);height:34px;flex-shrink:0;padding:0 var(--spacing-xl);padding-left:52px;color:rgba(255,255,255,.6);font-size:13px;font-weight:var(--text-body-weight-regular);cursor:pointer;border:none;background:transparent;width:100%;text-align:left;font-family:var(--text-body-font-family);transition:background var(--speed-fast),color var(--speed-fast)}
+  .sidemenu__subitem:hover{background:rgba(255,255,255,.1);color:#fff}
+  .sidemenu__subitem.active{color:var(--sidebar-item-text-color-active,#b2ed7f);font-weight:var(--text-body-weight-semibold)}
+  .sidemenu__separator{height:1px;background:rgba(255,255,255,.1);margin:var(--spacing-sm) var(--spacing-lg)}
+
+  /* Right panel + nav header */
+  .right-panel{flex:1;display:flex;flex-direction:column;height:100vh;min-width:0}
+  .nav-header{background:var(--color-surface-light-default);box-shadow:0 1px 4px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:space-between;padding:12px 24px;flex-shrink:0;position:sticky;top:0;z-index:10;gap:var(--spacing-sm)}
+  .nav-header__left{display:flex;flex-direction:column;gap:2px}
+  .nav-header__company-name{display:flex;align-items:center;gap:var(--spacing-xs);font-size:14px;font-weight:700;color:var(--color-text-primary);cursor:pointer;user-select:none}
+  .nav-header__company-id{font-size:12px;font-weight:400;color:var(--color-text-secondary);line-height:18px}
+  .nav-header__right{display:flex;align-items:center;gap:2px}
+  .nav-header__btn{display:inline-flex;align-items:center;gap:4px;height:34px;padding:0 8px;border:none;background:transparent;border-radius:var(--radius-sm);cursor:pointer;font-family:var(--text-body-font-family);font-size:13px;font-weight:400;color:var(--color-text-primary);white-space:nowrap;transition:background var(--speed-fast)}
+  .nav-header__btn:hover{background:var(--color-light-grey-15)}
+  .nav-header__chevron{width:14px;height:14px;color:var(--color-text-secondary);flex-shrink:0}
+  .nav-header__notif{position:relative;padding:0 8px}
+  .nav-header__notif-badge{position:absolute;top:2px;right:2px;min-width:16px;height:16px;background:var(--color-light-red-50);color:#fff;font-size:10px;font-weight:700;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;padding:0 3px;pointer-events:none}
+  .nav-header__avatar{width:22px;height:22px;border-radius:var(--radius-full);background:var(--color-light-brand-50);color:#fff;font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .nav-header__divider{width:1px;height:20px;background:var(--color-border-default);margin:0 4px;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- ============ SIDEMENU ============ -->
+  <aside class="sidemenu">
+    <div class="sidemenu__logo">
+      <svg width="143" height="50" viewBox="0 0 143 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_589_30073)">
+        <path d="M27.5216 15.8697C26.5957 14.1669 25.249 12.6911 23.6329 11.607C20.979 9.82487 17.5561 9.2685 14.24 10.0802C11.1314 10.8408 8.30344 12.7422 6.28332 15.4441C6.06457 15.7392 5.85136 16.0457 5.64934 16.3522C4.26898 18.4978 3.33755 21.0633 2.95035 23.8105C2.43416 21.8636 1.89547 18.1061 3.7191 14.1613C4.64487 12.1634 6.53588 9.38779 10.3234 7.52604C12.3938 6.50436 14.7225 5.99912 17.068 6.06728C17.977 6.06728 20.3112 6.11268 22.3593 6.53845C23.2739 6.73136 23.734 6.86196 24.1605 6.99243C24.2165 7.00948 24.4354 7.09468 24.716 7.1912C25.6418 7.52604 26.1299 7.65651 26.1804 7.57144L26.7303 6.67464L26.5732 6.60088C26.1412 6.3908 25.698 6.19789 25.2602 6.02188L24.6543 5.78344C24.6149 5.76653 24.542 5.73804 24.4411 5.70409C24.3063 5.65856 24.1885 5.61889 24.1099 5.59625C18.2071 3.75149 13.2861 4.79026 13.2355 4.80157C11.9674 5.07969 8.60076 5.81752 5.50338 8.58739C4.22976 9.72835 3.03458 11.2325 2.13672 12.8274C1.52511 13.9172 0.251357 16.1819 0.0326157 19.2356C-0.191916 22.3744 0.75083 25.7119 2.61368 28.3967C2.84374 36.1273 6.45165 43.6423 12.2704 48.5011L12.6408 48.8133C13.1851 49.2617 13.7574 49.5 14.3017 49.5C14.8459 49.5 15.3117 49.273 15.6259 48.8756C15.9177 48.5011 16.0411 47.9958 15.9625 47.4965C15.8672 46.9232 15.5137 46.3668 14.9414 45.8958L14.571 45.5949C10.6096 42.3255 7.7254 37.4897 6.61998 32.2677C9.08891 33.8683 12.0517 34.7424 15.0031 34.7424H15.1994C18.7569 34.7026 22.2414 33.3802 24.7384 31.1155C27.4766 28.6408 29.0758 25.0364 28.9972 21.4776C28.9749 19.5308 28.4642 17.5895 27.5271 15.8641L27.5216 15.8697ZM23.0158 29.1516C20.9958 31.0473 18.1228 32.1825 15.1489 32.2677C11.8271 32.3528 8.55588 31.1666 6.16 29.0097C6.11498 28.3797 6.09827 27.7325 6.10946 27.0912C6.14315 24.0205 6.80516 21.1882 8.00034 18.9121C9.32463 16.3976 11.412 14.4224 13.735 13.4971C14.7955 13.0715 15.9345 12.8558 17.1242 12.8558C18.8916 12.8558 20.5861 13.3383 22.017 14.2521C23.2514 15.024 24.2951 16.1024 25.0302 17.3568C25.7764 18.634 26.203 20.0927 26.2702 21.5628C26.3713 24.3269 25.1593 27.165 23.0213 29.1629L23.0158 29.1516Z" fill="white"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M37.9943 7.43234L37.8805 7.41421H37.9032L21 0.5L23.9254 4.64252L34.1698 7.19693L24.21 6.03746L22.0302 9.38897L26.0881 9.27424L26.8052 10.5L38 7.43234H37.9943Z" fill="#ACCF23"/>
+        <path d="M60.7879 19.8942C60.3967 19.3738 59.9228 18.9354 59.3608 18.5793C58.7989 18.2232 58.1487 17.9548 57.416 17.774C56.6832 17.5932 55.8898 17.5 55.0302 17.5H46V38.5H49.3444V30.4353H55.0027C56.4132 30.4353 57.6419 30.1888 58.6887 29.7011C59.7356 29.208 60.5509 28.4903 61.1295 27.5261C61.7135 26.5673 62 25.373 62 23.954C62 23.1267 61.8953 22.3761 61.686 21.6913C61.4766 21.0064 61.1736 20.4093 60.7879 19.8942ZM58.4628 24.5347C58.4628 25.4935 58.1543 26.2605 57.5372 26.8412C56.9201 27.4165 56.0275 27.7069 54.8649 27.7069H49.3498V20.2997H54.8649C56.0275 20.2997 56.9201 20.5846 57.5372 21.1488C58.1543 21.7131 58.4628 22.4966 58.4628 23.4937V24.5347Z" fill="white"/>
+        <path d="M70.1695 17.5L62 38.5H65.5485L67.3969 33.7171H77.5746L79.423 38.5H83L74.8305 17.5H70.1581H70.1695ZM68.4353 31.0434L71.7955 22.3432L72.3603 20.1517H72.5998L73.1932 22.3432L76.5534 31.0434H68.4409H68.4353Z" fill="white"/>
+        <path d="M101.788 19.8942C101.397 19.3738 100.923 18.9354 100.361 18.5793C99.7989 18.2232 99.1488 17.9548 98.416 17.774C97.6832 17.5932 96.8898 17.5 96.0303 17.5H87V38.5H90.3443V30.4353H96.0028C97.4132 30.4353 98.6419 30.1888 99.6888 29.7011C100.736 29.208 101.551 28.4903 102.13 27.5261C102.713 26.5673 103 25.373 103 23.954C103 23.1267 102.895 22.3761 102.686 21.6913C102.477 21.0064 102.174 20.4093 101.788 19.8942ZM99.4573 24.5347C99.4573 25.4935 99.1488 26.2605 98.5318 26.8412C97.9147 27.4165 97.0221 27.7069 95.8595 27.7069H90.3443V20.2997H95.8595C97.0221 20.2997 97.9147 20.5846 98.5318 21.1488C99.1488 21.7131 99.4573 22.4966 99.4573 23.4937V24.5347Z" fill="white"/>
+        <path d="M109.517 29.1094H118.31V26.4304H109.517V20.3215H121.941V17.5H106V38.5H122V35.6785H109.511V29.1094H109.517Z" fill="white"/>
+        <path d="M141.895 32.7105C141.895 29.2312 140.122 28.2435 138.91 28.0562V27.9939C139.557 27.7497 142.233 26.6656 142.233 22.4484C142.233 18.7192 139.982 16.5 135.593 16.5H126V38.5H129.518V29.4412H134.696C137.931 29.4412 138.692 31.2291 138.692 35.2647C138.692 36.3432 138.692 37.5465 139.231 38.5H143C142.238 37.6032 141.902 35.2647 141.902 32.7105H141.895ZM135.288 26.5181H129.518V19.6445H135.234C137.061 19.6445 138.72 20.2007 138.72 23.0047C138.72 25.3147 137.507 26.5181 135.288 26.5181Z" fill="white"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_589_30073">
+          <rect width="143" height="50" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+    </div>
+    <nav class="sidemenu__nav">
+      <button class="sidemenu__item" data-menu="dashboard">
+        <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 21 20" fill="none"><path d="M10.5 18.33A8.33 8.33 0 1010.5 1.67a8.33 8.33 0 000 16.66z" stroke="currentColor" stroke-width="1.5"/><path d="M13.35 7.15l-1.96 3.39c-.1.17-.14.25-.2.32-.06.06-.12.12-.19.16-.08.05-.16.09-.34.16l-2.96 1.24c-.32.13-.48.2-.58.17a.28.28 0 01-.19-.19c-.03-.1.04-.26.17-.58l1.24-2.96c.07-.18.11-.27.16-.34.05-.07.1-.13.16-.19.07-.06.16-.1.32-.2l3.86-1.49z" fill="currentColor"/></svg></span>
+        Dashboard
+      </button>
+      <button class="sidemenu__item" data-menu="mitra" onclick="toggleSubmenu('mitra')">
+        <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M4 18v-1a4 4 0 014-4h2a4 4 0 014 4v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16.5" cy="10" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M14.5 18v-.5a3.5 3.5 0 013.5-3.5 3 3 0 012 .8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+        Mitra
+        <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="sidemenu__item" data-menu="penjualan" onclick="toggleSubmenu('penjualan')">
+        <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 2.27V6.4c0 .56 0 .84.11 1.05.09.19.25.35.44.44.21.11.49.11 1.05.11h4.13M20 17.2c0 1.68 0 2.52-.33 3.16-.28.57-.74 1.03-1.31 1.31-.64.33-1.48.33-3.16.33H8.8c-1.68 0-2.52 0-3.16-.33a3 3 0 01-1.31-1.31C4 19.72 4 18.88 4 17.2V6.8c0-1.68 0-2.52.33-3.16A3 3 0 015.64 2.33C6.28 2 7.12 2 8.8 2H14l6 6v9.2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Penjualan
+        <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="sidemenu__item expanded" data-menu="pembelian" onclick="toggleSubmenu('pembelian')">
+        <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7.21 12.43h12.97" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.45 7.5h11.89l-1.46 7.55c-.08.42-.3.79-.63 1.06-.33.27-.74.41-1.16.4H9.32c-.42.01-.83-.13-1.16-.4-.33-.27-.55-.64-.63-1.06L6.32 8.94 5.11 3H2.78" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17.71" cy="20.23" r="1" fill="currentColor"/><circle cx="10.22" cy="20.23" r="1" fill="currentColor"/></svg></span>
+        Pembelian
+        <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="sidemenu__submenu open" id="submenu-pembelian">
+        <button class="sidemenu__subitem">Order Pembelian</button>
+        <button class="sidemenu__subitem active">Invoice Pembelian</button>
+        <button class="sidemenu__subitem">Kuitansi Pembelian</button>
+        <button class="sidemenu__subitem">Surat Penerimaan Barang</button>
+      </div>
+      <button class="sidemenu__item" data-menu="pembayaran" onclick="toggleSubmenu('pembayaran')">
+        <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 10H2M21.78 17.91c-.19.37-.5.68-.87.87-.43.22-.99.22-2.11.22H5.2c-1.12 0-1.68 0-2.11-.22a2 2 0 01-.87-.87C2 17.48 2 16.92 2 15.8V8.2c0-1.12 0-1.68.22-2.11.19-.37.5-.68.87-.87C3.52 5 4.08 5 5.2 5h13.6c1.12 0 1.68 0 2.11.22.37.19.68.5.87.87.22.43.22.99.22 2.11V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Pembayaran Digital
+        <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="sidemenu__item" data-menu="solusi" onclick="toggleSubmenu('solusi')">
+        <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M16.77 8.33h3.21V6.69L11.82 2.76 4.02 6.69v1.64h3.02" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.29 8.35v1.73h13.42V8.35M4.02 18.86h15.96v2.38H4.02zM6.6 10.31v8.55M10.2 18.86v-5.91h3.19v5.91M17.4 10.08v8.78" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Solusi Pendanaan
+        <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button class="sidemenu__item" data-menu="produk" onclick="toggleSubmenu('produk')">
+        <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20.5 7.28L12 12 3.5 7.28M12 12v9.5M21 16.06c0 .34 0 .57-.05.73-.05.13-.12.25-.21.36-.11.12-.26.2-.56.37l-7.4 4.11c-.29.16-.43.23-.58.27-.13.02-.27.02-.4 0-.15-.04-.29-.11-.58-.27l-7.4-4.11c-.3-.17-.45-.25-.56-.37a1 1 0 01-.21-.36C3 16.63 3 16.4 3 16.06V7.94c0-.34 0-.57.05-.73.05-.13.12-.25.21-.36.11-.12.26-.2.56-.37l7.4-4.11c.29-.16.43-.23.58-.27.13-.02.27-.02.4 0 .15.04.29.11.58.27l7.4 4.11c.3.17.45.25.56.37.09.11.16.23.21.36.05.16.05.39.05.73V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Produk &amp; Stok
+        <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="sidemenu__separator"></div>
+      <button class="sidemenu__item" data-menu="lainnya" onclick="toggleSubmenu('lainnya')">
+        <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 13l5 5 5-5M7 6l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Lainnya
+        <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+    </nav>
+  </aside>
+
+  <div class="right-panel">
+    <!-- ============ NAV HEADER ============ -->
+    <header class="nav-header">
+      <div class="nav-header__left">
+        <div class="nav-header__company-name">
+          Iqbal Nurul Tinur's Store
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.33L2.67 3.67V7.33C2.67 11 5.2 14.47 8 15.33c2.8-.86 5.33-4.33 5.33-8V3.67L8 1.33z" fill="#4199d5"/><path d="M6.33 9.47L4.87 8 4 8.87l2.33 2.33L12 5.53l-.87-.86-4.8 4.8z" fill="#fff"/></svg>
+          <svg class="nav-header__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5L7 9l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="nav-header__company-id">Verifikasi Berhasil</div>
+      </div>
+      <div class="nav-header__right">
+        <button class="nav-header__btn nav-header__notif" title="Notifikasi">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 00-6 6v4l-2 2.5h16L18 13V9a6 6 0 00-6-6z" stroke="#133f5d" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.5 19a2.5 2.5 0 005 0" stroke="#133f5d" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span class="nav-header__notif-badge">3</span>
+        </button>
+        <div class="nav-header__divider"></div>
+        <button class="nav-header__btn">ID<svg class="nav-header__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5L7 9l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="nav-header__btn">Free<svg class="nav-header__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5L7 9l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="nav-header__btn"><span class="nav-header__avatar">IN</span>Iqbal Nurul Tinur<svg class="nav-header__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5L7 9l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="nav-header__btn" title="Pengaturan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="#133f5d" stroke-width="1.5"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="#133f5d" stroke-width="1.5"/></svg></button>
+      </div>
+    </header>
+
+    <main class="main-area">
+      <!-- A/B sticky toggle (review tool — stakeholder pilih gaya chip) -->
+      <div class="ab-sticky" role="group" aria-label="Choose chip style">
+        <span class="ab-sticky__label">Chip style</span>
+        <span class="ab-sticky__seg">
+          <button class="ab-sticky__btn active" id="abA" onclick="setChipStyle('a')" title="Style A: grey count · rounded box">A</button>
+          <button class="ab-sticky__btn" id="abB" onclick="setChipStyle('b')" title="Style B: pill + grey border · plain number · red ✕">B</button>
+          <button class="ab-sticky__btn" id="abC" onclick="setChipStyle('c')" title="Style C: pill + blue border · blue bg · blue text · red ✕">C</button>
+        </span>
+      </div>
+
+      <div class="page-head">
+        <div class="page-title">Invoice Pembelian</div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active">
+          <svg viewBox="0 0 18 18" fill="none"><svg x="3" y="4.232" width="12" height="11.8935" viewBox="0 0 12 11.8935" preserveAspectRatio="none"><path opacity="0.1" d="M1 11.8935H11C11.5523 11.8935 12 11.4458 12 10.8935V9.11693C12 9.11693 12 5.05937 6.73935 6.18497C1.30855 7.34697 0 1.99644 0 0V10.8935C0 11.4458 0.447715 11.8935 1 11.8935Z" fill="currentColor"/></svg><svg x="2.25" y="0.75" width="13.5" height="16.5" viewBox="0 0 13.5 16.5" preserveAspectRatio="none"><path d="M8.25 0.952149V4.05006C8.25 4.47009 8.25 4.68011 8.33175 4.84055C8.40365 4.98167 8.51839 5.0964 8.65951 5.16831C8.81994 5.25005 9.02996 5.25005 9.45 5.25005H12.5479M11.5215 15.5048C11.0402 15.75 10.4101 15.75 9.15 15.75H4.35C3.08988 15.75 2.45982 15.75 1.97852 15.5048C1.55516 15.2891 1.21095 14.9448 0.995236 14.5215C0.750001 14.0402 0.750001 13.4101 0.750001 12.15V4.35C0.750001 3.08988 0.750001 2.45982 0.995236 1.97852C1.21095 1.55516 1.55516 1.21095 1.97852 0.995236C2.45982 0.750001 3.08988 0.750001 4.35 0.750001H8.25L12.75 5.25V6.38702" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><svg x="4.835" y="9" width="11.29" height="4.909" viewBox="0 0 11.2904 4.90909" preserveAspectRatio="none"><path d="M0.593262 0C0.920911 0 1.18652 0.265612 1.18652 0.593262V4.31583C1.18652 4.64348 0.920911 4.90909 0.593262 4.90909C0.265612 4.90909 0 4.64348 0 4.31583V0.593262C0 0.265613 0.265612 0 0.593262 0Z" fill="currentColor"/><path d="M5.51733 0C5.84432 0 6.1094 0.265076 6.1094 0.592064V4.249C6.1094 4.61356 5.81386 4.90909 5.4493 4.90909C5.23226 4.90909 5.02908 4.80239 4.90587 4.6237L3.15517 2.08465C3.15136 2.07912 3.14507 2.07582 3.13835 2.07582C3.12707 2.07582 3.11792 2.08496 3.11792 2.09625V4.31583C3.11792 4.64348 2.85231 4.90909 2.52466 4.90909C2.19701 4.90909 1.9314 4.64348 1.9314 4.31583V0.668294C1.9314 0.299206 2.2306 0 2.59969 0C2.82047 0 3.02701 0.109043 3.15154 0.291355L4.87658 2.81685C4.88155 2.82413 4.88979 2.82848 4.8986 2.82848C4.91333 2.82848 4.92527 2.81654 4.92527 2.80181V0.592063C4.92527 0.265075 5.19035 0 5.51733 0Z" fill="currentColor"/><path d="M7.50923 0C7.78304 0 8.0247 0.17889 8.10466 0.44076L9.06197 3.57604C9.0655 3.58762 9.07619 3.59553 9.08829 3.59553C9.1004 3.59553 9.11108 3.58762 9.11462 3.57604L10.0719 0.44076C10.1519 0.178891 10.3935 0 10.6673 0C11.0932 0 11.3934 0.418051 11.2572 0.821594L10.1076 4.22879C9.97047 4.63535 9.58921 4.90909 9.16012 4.90909H9.01646C8.58737 4.90909 8.20611 4.63535 8.06894 4.22879L6.91934 0.821595C6.78319 0.418051 7.08334 0 7.50923 0Z" fill="currentColor"/></svg></svg>
+          My Invoice
+        </button>
+        <button class="tab">
+          <svg viewBox="0 0 18 18" fill="none"><svg x="1.7" y="1.7" width="14.5521" height="14.5938" viewBox="0 0 14.5521 14.5938" preserveAspectRatio="none"><path d="M11.3484 5.60977V3.78769C11.3484 2.65385 11.3484 2.08692 11.1277 1.65385C10.9336 1.27291 10.6238 0.963198 10.2428 0.769099C9.8096 0.548438 9.24254 0.548438 8.10844 0.548438H3.78844C2.65433 0.548438 2.08728 0.548438 1.65411 0.769099C1.27308 0.963198 0.963293 1.27291 0.76915 1.65385C0.548438 2.08692 0.548438 2.65385 0.548438 3.78769V10.8061C0.548438 11.9399 0.548438 12.5068 0.76915 12.9399C0.963293 13.3209 1.27308 13.6306 1.65411 13.8247C2.08728 14.0453 2.65433 14.0453 3.78844 14.0453H7.29844M7.29844 6.62204H3.24844M4.59844 9.32142H3.24844M8.64844 3.92266H3.24844" stroke="currentColor" stroke-width="1.09687" stroke-linecap="round" stroke-linejoin="round"/><path opacity="0.15" fill-rule="evenodd" clip-rule="evenodd" d="M1.27262 1.05212C1.50143 0.744177 1.88442 0.588966 2.26812 0.587203L10.0188 0.551588C10.7865 0.624784 11.3265 1.23611 11.3301 2.00333L11.3428 4.76529C10.9612 5.22739 10.5022 5.5364 9.96605 5.76904C8.9702 6.15723 7.81875 6.0858 6.81831 5.47661C6.27902 5.01875 5.74008 4.6376 5.12441 4.25682C5.04767 4.25717 5.04732 4.18044 4.97058 4.18079C3.97155 3.87849 2.97746 4.6503 1.81932 3.12115C1.35571 2.43277 1.12231 1.74332 1.27262 1.05212Z" fill="currentColor"/><path d="M11.0221 10.9925C11.3855 10.7476 11.818 10.6262 12.2557 10.6463C12.6934 10.6664 13.113 10.827 13.4524 11.1041C13.6289 11.2504 13.7729 11.432 13.8752 11.6371C13.9776 11.8423 14.0359 12.0665 14.0466 12.2956C14.0573 12.5246 14.0201 12.7533 13.9374 12.9671C13.8546 13.1809 13.7282 13.3751 13.5661 13.5372C13.404 13.6993 13.2099 13.8258 12.9961 13.9086C12.7824 13.9914 12.5537 14.0286 12.3248 14.0179C12.0958 14.0072 11.8716 13.9488 11.6665 13.8464C11.4614 13.7441 11.2799 13.6001 11.1337 13.4235C10.8615 13.0817 10.7043 12.6626 10.6842 12.2261C10.6642 11.7896 10.7824 11.3579 11.0221 10.9925ZM10.9998 10.9989C10.6415 11.2573 10.2064 11.387 9.76515 11.3667C9.32391 11.3464 8.9025 11.1775 8.56941 10.8873C8.39293 10.741 8.24893 10.5595 8.14661 10.3543C8.04429 10.1492 7.98592 9.92491 7.97522 9.69589C7.96452 9.46687 8.00174 9.23814 8.08449 9.02434C8.16723 8.81053 8.29369 8.61636 8.45576 8.45424C8.61784 8.29212 8.81196 8.16563 9.02571 8.08287C9.23946 8.0001 9.46813 7.96287 9.69709 7.97357C9.92604 7.98427 10.1502 8.04266 10.3554 8.14501C10.5605 8.24735 10.7419 8.39139 10.8882 8.56792C11.1695 8.90539 11.3328 9.32569 11.3529 9.76464C11.3731 10.2036 11.249 10.6371 10.9998 10.9989Z" fill="#F2F7FC" stroke="currentColor" stroke-width="1.00742" stroke-linecap="round" stroke-linejoin="round"/></svg></svg>
+          Shared Invoice
+          <span class="tab__new">New</span>
+        </button>
+      </div>
+
+      <!-- Action bar (luar card): menu trigger kiri + actions kanan -->
+      <div class="action-bar">
+        <button class="btn btn--tertiary-plain">
+          Tindakan Lainnya
+          <svg style="width:11px;height:7px" viewBox="0 0 11.0132 6.75773" fill="none"><path d="M10.0112 0H1.00196C0.136191 0 -0.320502 1.02544 0.258669 1.66897L4.39166 6.26118C4.98752 6.92325 6.02568 6.92325 6.62154 6.26118L10.7545 1.66896C11.3337 1.02544 10.877 0 10.0112 0Z" fill="currentColor"/></svg>
+        </button>
+        <div class="action-bar__right">
+          <button class="btn btn--secondary">
+            <svg viewBox="0 0 15 15" fill="none"><path d="M14.25 9.75V10.65C14.25 11.9101 14.25 12.5402 14.0048 13.0215C13.789 13.4448 13.4448 13.789 13.0215 14.0048C12.5402 14.25 11.9101 14.25 10.65 14.25H4.35C3.08988 14.25 2.45982 14.25 1.97852 14.0048C1.55516 13.789 1.21095 13.4448 0.995236 13.0215C0.750001 12.5402 0.750001 11.9101 0.750001 10.65V9.75M3.75 4.5L7.5 0.75L11.25 4.5M7.5 0.75V9.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Unggah Invoice
+          </button>
+          <button class="btn btn--primary">
+            <svg viewBox="0 0 16.5 16.5" fill="none"><path d="M15.75 8.25C15.75 12.3921 12.3921 15.75 8.25 15.75C4.10786 15.75 0.75 12.3921 0.75 8.25C0.75 4.10786 4.10786 0.75 8.25 0.75C10.5815 0.75 12.6645 1.81386 14.0401 3.48263M8.25 5.25V11.25M5.25 8.25H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Buat Invoice Baru
+          </button>
+        </div>
+      </div>
+
+      <!-- LIST CARD -->
+      <div class="list-card">
+        <!-- In-card toolbar: search + chips (kiri) · Atur Kolom + Unduh (kanan) -->
+        <div class="tbl-toolbar">
+          <div class="tbl-toolbar__left">
+            <div class="search">
+              <input type="text" id="globalSearch" placeholder="Cari" aria-label="Cari invoice" oninput="onSearch(this.value)">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+
+            <!-- AURORA au-chip: SELEKSI (count global lintas-halaman) -->
+            <div class="au-chip" id="chipSelected" hidden>
+              <span class="au-chip__count" id="chipSelectedCount">0</span>
+              <span class="au-chip__label">Invoice Terpilih</span>
+              <span class="au-chip__div"></span>
+              <button class="au-chip__x" title="Batalkan semua pilihan" aria-label="Batalkan semua pilihan" onclick="clearSelection()">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+
+            <!-- AURORA au-chip: FILTER AKTIF -->
+            <div class="au-chip" id="chipFilter" hidden>
+              <span class="au-chip__count" id="chipFilterCount">0</span>
+              <span class="au-chip__label">Filter & Sort Aktif</span>
+              <span class="au-chip__div"></span>
+              <button class="au-chip__x" title="Hapus semua filter" aria-label="Hapus semua filter" onclick="clearFilters()">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="tbl-toolbar__right">
+            <button class="btn btn--tertiary-plain">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M7 12h10M10 17h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+              Atur Kolom
+            </button>
+            <button class="btn btn--tertiary-plain">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 4v10m0 0l-4-4m4 4l4-4M5 18h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Unduh
+            </button>
+          </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th class="col-chk" onclick="headerToggle(event)"><input class="chk" type="checkbox" id="chkAll" aria-label="Pilih semua di halaman ini" onclick="toggleAllVisible(this)"></th>
+                  <th><span class="th-in">No. Invoice <svg class="sort-ic" viewBox="0 0 24 24" fill="none"><path d="M8 9l4-4 4 4M8 15l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+                  <th><span class="th-in">Supplier <svg class="sort-ic" viewBox="0 0 24 24" fill="none"><path d="M8 9l4-4 4 4M8 15l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+                  <th><span class="th-in">Status Pembayaran <svg class="sort-ic" viewBox="0 0 24 24" fill="none"><path d="M8 9l4-4 4 4M8 15l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+                  <th><span class="th-in">Status Dokumen <svg class="sort-ic" viewBox="0 0 24 24" fill="none"><path d="M8 9l4-4 4 4M8 15l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+                  <th class="num"><span class="th-in">Jumlah <svg class="sort-ic" viewBox="0 0 24 24" fill="none"><path d="M8 9l4-4 4 4M8 15l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+                  <th class="num"><span class="th-in">Jumlah Terhutang <svg class="sort-ic" viewBox="0 0 24 24" fill="none"><path d="M8 9l4-4 4 4M8 15l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+                  <th class="col-act stk-r"></th>
+                </tr>
+                <tr class="filter-row">
+                  <th class="col-chk"></th>
+                  <th><span class="col-search"><input class="col-f" type="text" id="fNomor" placeholder="Cari nomor" oninput="onFilter('nomor',this.value)"><svg viewBox="0 0 24 24" fill="none"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+                  <th><span class="col-search"><input class="col-f" type="text" id="fSupplier" placeholder="Cari supplier" oninput="onFilter('supplier',this.value)"><svg viewBox="0 0 24 24" fill="none"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+                  <th><select class="col-f is-placeholder" id="fBayar" onchange="onFilter('bayar',this.value);this.classList.toggle('is-placeholder',!this.value)"><option value="" selected>Pilih status</option><option value="Draft">Draft</option><option value="Unpaid">Unpaid</option><option value="Overdue">Overdue</option><option value="Paid">Paid</option><option value="Partially Paid">Partially Paid</option></select></th>
+                  <th><select class="col-f is-placeholder" id="fDok" onchange="onFilter('dok',this.value);this.classList.toggle('is-placeholder',!this.value)"><option value="" selected>Pilih status</option><option value="Not Sent">Not Sent</option><option value="Sent">Sent</option><option value="Failed">Failed</option><option value="Accepted">Accepted</option><option value="Rejected">Rejected</option></select></th>
+                  <th><select class="col-f is-placeholder"><option value="" selected>Semua</option></select></th>
+                  <th><select class="col-f is-placeholder"><option value="" selected>Semua</option></select></th>
+                  <th class="col-act stk-r"></th>
+                </tr>
+              </thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="pagination">
+          <div class="pg-rows">
+            <span>Jumlah Baris:</span>
+            <select id="pgSize" onchange="onPageSize(this.value)">
+              <option>10</option><option>25</option><option>50</option>
+            </select>
+          </div>
+          <div class="pg-nav">
+            <button class="pg-btn" id="pgPrev" onclick="goPage(state.page-1)" title="Sebelumnya"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="pg-pages" id="pgPages"></div>
+            <button class="pg-btn" id="pgNext" onclick="goPage(state.page+1)" title="Berikutnya"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+          <span id="pgInfo"></span>
+        </div>
+      </div>
+    </main>
+
+    <!-- BULK SELECTION BAR (konteks production "Bayar ke Supplier") -->
+    <div class="sel-bar" id="selBar">
+      <div class="sel-bar__stat"><span class="k">Invoice Terpilih</span><span class="v" id="selBarCount">0</span></div>
+      <div class="sel-bar__stat"><span class="k">Jumlah Terhutang</span><span class="v" id="selBarSum">Rp0</span></div>
+      <button class="btn btn--secondary">
+        Tindakan Lainnya
+        <svg style="width:11px;height:7px" viewBox="0 0 11.0132 6.75773" fill="none"><path d="M10.0112 0H1.00196C0.136191 0 -0.320502 1.02544 0.258669 1.66897L4.39166 6.26118C4.98752 6.92325 6.02568 6.92325 6.62154 6.26118L10.7545 1.66896C11.3337 1.02544 10.877 0 10.0112 0Z" fill="currentColor"/></svg>
+      </button>
+      <button class="btn btn--primary">Bayar ke Supplier</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast__icon"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" fill="#4199d5"/><path d="M16 10v.01M16 14v8" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg></span>
+  <span class="toast__text"><b id="toastTitle">Tersimpan</b><span id="toastMsg"></span></span>
+</div>
+
+<script>
+/* ===== Sidemenu submenu toggle ===== */
+function toggleSubmenu(id){
+  var btn=document.querySelector('[data-menu="'+id+'"]'), sm=document.getElementById('submenu-'+id);
+  if(!btn) return;
+  btn.classList.toggle('expanded');
+  if(sm) sm.classList.toggle('open');
+}
+
+/* ===== Data model ===== */
+var SUPPLIERS=['PT JFI - Cabang Krian','CV Jalan Sesama','PT Maju Bersama','UD Sumber Rejeki','PT Sinar Abadi','PT JFI - Cabang Krian'];
+var DOK_STATUSES=['Not Sent','Sent','Failed','Accepted','Rejected'];
+var BAY_STATUSES=['Draft','Unpaid','Overdue','Paid','Partially Paid'];
+function rp(n){return 'Rp'+n.toLocaleString('id-ID')+',00';}
+
+// Generate 43 invoice biar pagination punya banyak halaman → demo seleksi lintas-halaman
+var DATA=(function(){
+  var arr=[], i;
+  for(i=1;i<=43;i++){
+    var supplier = SUPPLIERS[i%SUPPLIERS.length];
+    var jumlah = (i%4+1)*5000000 + (i%3)*2500000; // varian angka
+    var bayar = BAY_STATUSES[(i*2) % BAY_STATUSES.length]; // sebar 5 status pembayaran
+    var terh = bayar==='Paid'?0:(bayar==='Partially Paid'?Math.round(jumlah/2):jumlah);
+    arr.push({
+      id:i,
+      no:'PYI/2025/'+String(8 + (i*3)%90).padStart(4,'0'),
+      supplier:supplier,
+      verified: supplier.indexOf('JFI')>=0 || supplier.indexOf('Maju')>=0,
+      bayar: bayar,
+      dok: DOK_STATUSES[(i + (i%2)) % DOK_STATUSES.length],
+      jumlah:jumlah,
+      terhutang: terh,
+      att:(i%3===0)?2:0,
+      warn:(i===3), // satu baris kasih warning rekening kosong (match screenshot)
+      star:(i%3===0) // state seal-bintang (biru aktif / abu nonaktif) — match production
+    });
+  }
+  return arr;
+})();
+
+/* ===== State ===== */
+var state={page:1, pageSize:10, selected:new Set(), filters:{nomor:'',supplier:'',bayar:'',dok:'',q:''}};
+
+/* ===== Filtering ===== */
+function getFiltered(){
+  var f=state.filters;
+  return DATA.filter(function(d){
+    if(f.q && (d.no+' '+d.supplier).toLowerCase().indexOf(f.q.toLowerCase())<0) return false;
+    if(f.nomor && d.no.toLowerCase().indexOf(f.nomor.toLowerCase())<0) return false;
+    if(f.supplier && d.supplier.toLowerCase().indexOf(f.supplier.toLowerCase())<0) return false;
+    if(f.bayar && d.bayar!==f.bayar) return false;
+    if(f.dok && d.dok!==f.dok) return false;
+    return true;
+  });
+}
+// count filter kolom aktif (search global TIDAK dihitung sbg "Filter Aktif")
+function activeFilterCount(){
+  var f=state.filters, c=0;
+  if(f.nomor)c++; if(f.supplier)c++; if(f.bayar)c++; if(f.dok)c++;
+  return c;
+}
+
+/* ===== Render ===== */
+var BAY_BADGE={'Draft':'i-darkblue','Unpaid':'i-orange','Overdue':'i-red','Paid':'i-green','Partially Paid':'i-blue'};
+function badgeBayar(v){return '<span class="badge badge--'+(BAY_BADGE[v]||'i-darkblue')+'">'+v+'</span>';}
+var DOK_BADGE={'Not Sent':'n-darkblue','Sent':'n-blue','Failed':'n-red','Accepted':'n-green','Rejected':'n-red'};
+function badgeDok(v){var c=DOK_BADGE[v]||'n-darkblue';
+  var ic=(v==='Not Sent')?' <span class="dok-send" title="Kirim dokumen" onclick="event.stopPropagation();toast(\'Kirim dokumen\',\'(demo) kirim invoice\')"><svg viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>':'';
+  return '<span class="dok-cell"><span class="badge badge--'+c+'">'+v+'</span>'+ic+'</span>';}
+
+var IC_DOC='<svg viewBox="0 0 24 24" fill="none"><path d="M13 3.5H7A1.5 1.5 0 005.5 5v14A1.5 1.5 0 007 20.5h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8h6M8.5 11h6M8.5 14h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="16.2" cy="16.2" r="2.8" stroke="currentColor" stroke-width="1.4"/><path d="M18.3 18.3L20.2 20.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
+var IC_SEAL_ON='<svg class="ic-seal" viewBox="0 0 24 24" fill="none"><path d="M12.00 4.40 Q15.76 0.44 16.47 5.85 Q21.84 4.85 19.23 9.65 Q24.16 12.00 19.23 14.35 Q21.84 19.15 16.47 18.15 Q15.76 23.56 12.00 19.60 Q8.24 23.56 7.53 18.15 Q2.16 19.15 4.77 14.35 Q-0.16 12.00 4.77 9.65 Q2.16 4.85 7.53 5.85 Q8.24 0.44 12.00 4.40 Z" fill="#1c4f7c"/><path d="M12.00 7.40 L13.19 10.36 L16.37 10.58 L13.92 12.63 L14.70 15.72 L12.00 14.02 L9.30 15.72 L10.08 12.63 L7.63 10.58 L10.81 10.36 Z" fill="#f5c451"/></svg>';
+var IC_SEAL_OFF='<svg class="ic-seal" viewBox="0 0 24 24" fill="none"><path d="M12.00 4.40 Q15.76 0.44 16.47 5.85 Q21.84 4.85 19.23 9.65 Q24.16 12.00 19.23 14.35 Q21.84 19.15 16.47 18.15 Q15.76 23.56 12.00 19.60 Q8.24 23.56 7.53 18.15 Q2.16 19.15 4.77 14.35 Q-0.16 12.00 4.77 9.65 Q2.16 4.85 7.53 5.85 Q8.24 0.44 12.00 4.40 Z" fill="#9aa9b8"/><path d="M12.00 7.40 L13.19 10.36 L16.37 10.58 L13.92 12.63 L14.70 15.72 L12.00 14.02 L9.30 15.72 L10.08 12.63 L7.63 10.58 L10.81 10.36 Z" fill="#ffffff"/></svg>';
+function rowHtml(d){
+  var sel=state.selected.has(d.id);
+  var verified = d.verified
+    ? '<svg viewBox="0 0 16 16" fill="none"><path d="M8 1.33L2.67 3.67V7.33C2.67 11 5.2 14.47 8 15.33c2.8-.86 5.33-4.33 5.33-8V3.67L8 1.33z" fill="#4199d5"/><path d="M6.33 9.47L4.87 8 4 8.87l2.33 2.33L12 5.53l-.87-.86-4.8 4.8z" fill="#fff"/></svg>'
+    : '';
+  var warn = d.warn
+    ? '<svg class="warn" title="Rekening bank mitra kosong. Tambahkan rekening" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M10.3 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.7 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    : '';
+  var att = '<span class="att"><svg viewBox="0 0 24 24" fill="none"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'+d.att+'</span>';
+  return '<tr class="'+(sel?'is-selected':'')+'" onclick="onRowClick(event,'+d.id+')">'+
+    '<td class="col-chk" onclick="cellToggle(event,'+d.id+')"><input class="chk" type="checkbox" '+(sel?'checked':'')+' aria-label="Pilih baris" onclick="event.stopPropagation();toggleRow('+d.id+',this.checked)"></td>'+
+    '<td><div class="inv-no">'+d.no+'</div><div class="inv-meta">'+att+IC_DOC+(d.star?IC_SEAL_ON:IC_SEAL_OFF)+warn+'</div></td>'+
+    '<td><span class="sup">'+d.supplier+verified+'</span></td>'+
+    '<td>'+badgeBayar(d.bayar)+'</td>'+
+    '<td>'+badgeDok(d.dok)+'</td>'+
+    '<td class="num">'+rp(d.jumlah)+'</td>'+
+    '<td class="num">'+(d.terhutang?rp(d.terhutang):'<span class="muted">Rp0,00</span>')+'</td>'+
+    '<td class="col-act stk-r"><span class="row-act"><button class="row-act__btn" onclick="event.stopPropagation();toast(\'Menu aksi\',\'(demo) menu baris '+d.no+'\')" title="Aksi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/></svg></button></span></td>'+
+    '</tr>';
+}
+
+function currentPageRows(){
+  var f=getFiltered();
+  var start=(state.page-1)*state.pageSize;
+  return f.slice(start,start+state.pageSize);
+}
+
+function render(){
+  var f=getFiltered();
+  var total=f.length;
+  var pages=Math.max(1,Math.ceil(total/state.pageSize));
+  if(state.page>pages) state.page=pages;
+  if(state.page<1) state.page=1;
+  var start=(state.page-1)*state.pageSize;
+  var rows=f.slice(start,start+state.pageSize);
+
+  document.getElementById('tbody').innerHTML = rows.length
+    ? rows.map(rowHtml).join('')
+    : '<tr><td colspan="8" style="text-align:center;padding:48px 0;color:var(--color-text-muted)">Tidak ada invoice yang cocok dengan filter.</td></tr>';
+
+  renderPagination(total,pages,start,rows.length);
+  updateHeaderCheckbox(rows);
+  updateChips();
+  updateSelBar();
+}
+
+function renderPagination(total,pages,start,shown){
+  var html='', i;
+  function pageBtn(n){return '<button class="pg-page '+(n===state.page?'active':'')+'" onclick="goPage('+n+')">'+n+'</button>';}
+  if(pages<=7){ for(i=1;i<=pages;i++) html+=pageBtn(i); }
+  else{
+    html+=pageBtn(1);
+    var s=Math.max(2,state.page-1), e=Math.min(pages-1,state.page+1);
+    if(s>2) html+='<span class="pg-ell">…</span>';
+    for(i=s;i<=e;i++) html+=pageBtn(i);
+    if(e<pages-1) html+='<span class="pg-ell">…</span>';
+    html+=pageBtn(pages);
+  }
+  document.getElementById('pgPages').innerHTML=html;
+  document.getElementById('pgPrev').disabled = state.page<=1;
+  document.getElementById('pgNext').disabled = state.page>=pages;
+  var from = total? start+1 : 0, to = start+shown;
+  document.getElementById('pgInfo').textContent='Menampilkan '+from+' hingga '+to+' dari '+total+' entri';
+}
+
+/* ===== Header checkbox (per halaman) — checked / indeterminate / unchecked ===== */
+function updateHeaderCheckbox(rows){
+  var box=document.getElementById('chkAll');
+  var sel=rows.filter(function(d){return state.selected.has(d.id);}).length;
+  if(rows.length===0){box.checked=false;box.indeterminate=false;return;}
+  if(sel===0){box.checked=false;box.indeterminate=false;}
+  else if(sel===rows.length){box.checked=true;box.indeterminate=false;}
+  else{box.checked=false;box.indeterminate=true;}
+}
+
+/* ===== Chips (count GLOBAL lintas-halaman) ===== */
+function updateChips(){
+  var n=state.selected.size;
+  var cs=document.getElementById('chipSelected');
+  cs.hidden = n===0;
+  document.getElementById('chipSelectedCount').textContent=n;
+
+  var fc=activeFilterCount();
+  var cf=document.getElementById('chipFilter');
+  cf.hidden = fc===0;
+  document.getElementById('chipFilterCount').textContent=fc;
+}
+
+/* ===== Bulk selection bar ===== */
+function updateSelBar(){
+  var n=state.selected.size;
+  var bar=document.getElementById('selBar');
+  bar.classList.toggle('show', n>0);
+  document.getElementById('selBarCount').textContent=n;
+  var sum=0;
+  DATA.forEach(function(d){ if(state.selected.has(d.id)) sum+=d.terhutang; });
+  document.getElementById('selBarSum').textContent=rp(sum);
+}
+
+/* ===== Interaksi seleksi ===== */
+// Klik di mana aja dalam sel checkbox = toggle (area klik lega, ga harus pas di kotak)
+function cellToggle(e,id){
+  e.stopPropagation();
+  if(e.target && e.target.classList && e.target.classList.contains('chk')) return; // checkbox handle sendiri
+  var c=e.currentTarget.querySelector('.chk');
+  c.checked=!c.checked;
+  toggleRow(id,c.checked);
+}
+function headerToggle(e){
+  if(e.target && e.target.id==='chkAll') return;
+  var c=document.getElementById('chkAll');
+  c.checked=!c.checked; c.indeterminate=false;
+  toggleAllVisible(c);
+}
+function toggleRow(id,checked){
+  if(checked) state.selected.add(id); else state.selected.delete(id);
+  // update tampilan baris + header + chip + bar tanpa full re-render
+  updateHeaderCheckbox(currentPageRows());
+  updateChips(); updateSelBar();
+  var tr=document.querySelector('#tbody input[onclick*="toggleRow('+id+',"]');
+  if(tr){var row=tr.closest('tr'); if(row) row.classList.toggle('is-selected',checked);}
+}
+function toggleAllVisible(box){
+  var rows=currentPageRows();
+  rows.forEach(function(d){ if(box.checked) state.selected.add(d.id); else state.selected.delete(d.id); });
+  render();
+}
+function clearSelection(){
+  if(state.selected.size===0) return;
+  var n=state.selected.size;
+  state.selected.clear();
+  render();
+}
+function onRowClick(e,id){ toast('Buka detail','(demo) buka detail invoice'); }
+
+/* ===== Filter & search ===== */
+function onFilter(key,val){ state.filters[key]=val; state.page=1; render(); }
+function onSearch(val){ state.filters.q=val; state.page=1; render(); }
+function clearFilters(){
+  state.filters.nomor=''; state.filters.supplier=''; state.filters.bayar=''; state.filters.dok='';
+  document.getElementById('fNomor').value='';
+  document.getElementById('fSupplier').value='';
+  var b=document.getElementById('fBayar'); b.value=''; b.classList.add('is-placeholder');
+  var k=document.getElementById('fDok'); k.value=''; k.classList.add('is-placeholder');
+  state.page=1; render();
+}
+
+/* ===== Pagination nav ===== */
+function goPage(n){ state.page=n; render(); }
+function onPageSize(v){ state.pageSize=parseInt(v,10); state.page=1; render(); }
+
+/* ===== Toast ===== */
+var _toastT;
+function toast(title,msg){
+  document.getElementById('toastTitle').textContent=title;
+  document.getElementById('toastMsg').textContent=msg||'';
+  var t=document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(_toastT);
+  _toastT=setTimeout(function(){t.classList.remove('show');},2600);
+}
+
+/* ===== A/B chip style chooser ===== */
+function setChipStyle(s){
+  ['chipSelected','chipFilter'].forEach(function(id){
+    var e=document.getElementById(id);
+    if(e){e.classList.toggle('style-b',s==='b');e.classList.toggle('style-c',s==='c');}
+  });
+  ['a','b','c'].forEach(function(k){var el=document.getElementById('ab'+k.toUpperCase());if(el)el.classList.toggle('active',k===s);});
+}
+
+/* init */
+render();
+</script>
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  KOMEN OVERLAY ala Figma — SISIPKAN BLOK INI PERSIS SEBELUM </body> ║
+  ║  Self-contained. data-suxc="flow" = kanvas; "prototype" = scroll.║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<style>
+body.suxc-on,body.suxc-on *{cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="%23cdd8df" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>') 4 4,crosshair !important}
+#suxc-panel,#suxc-panel *,#suxc-nav,#suxc-nav *,.suxc-pop,.suxc-pop *{cursor:default !important}
+body.suxc-on .suxc-pop,body.suxc-on .suxc-pop *{cursor:default !important}
+#suxc-panel .suxc-item,#suxc-nav button,.suxc-pop button,.suxc-item-act{cursor:pointer !important}
+
+/* ── PINS ── */
+.suxc-pin{position:absolute;z-index:99998;width:28px;height:28px;border-radius:50% 50% 50% 4px;
+  background:#7B61FF;color:#fff;font:700 11px/28px 'Lato',sans-serif;text-align:center;
+  transform:translate(-2px,-30px);box-shadow:0 2px 8px rgba(0,0,0,.5);user-select:none;cursor:pointer;
+  transition:transform .12s,box-shadow .12s}
+.suxc-pin:hover{transform:translate(-2px,-32px) scale(1.08);box-shadow:0 4px 16px rgba(123,97,255,.5)}
+.suxc-pin.submitted{background:transparent;border:2px dashed #7B61FF;color:#7B61FF;line-height:24px;
+  box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.suxc-pin.submitted:hover{background:rgba(123,97,255,.12);box-shadow:0 4px 12px rgba(123,97,255,.4)}
+
+/* ── AREA RECT ── */
+.suxc-rect{position:absolute;z-index:99997;border:2px dashed #7B61FF;background:rgba(123,97,255,.07);border-radius:6px;pointer-events:none}
+.suxc-rect.live{z-index:99996}
+
+/* ── POPUP ── */
+.suxc-pop{position:fixed;z-index:100000;width:340px;background:#2C2C2E;
+  border:1px solid rgba(255,255,255,.10);border-radius:12px;
+  box-shadow:0 12px 40px rgba(0,0,0,.65);font-family:'Lato',sans-serif;overflow:hidden}
+.suxc-pop-head{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px 8px;border-bottom:1px solid rgba(255,255,255,.07)}
+.suxc-pop-title{font:600 13px 'Lato',sans-serif;color:#E5E5EA}
+.suxc-pop-hacts{display:flex;align-items:center;gap:2px}
+.suxc-pop-hacts button,.suxc-pop-closebtn{width:28px;height:28px;border:0;border-radius:6px;background:transparent;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;color:#8A8A8E;
+  font-size:14px;transition:background .12s,color .12s}
+.suxc-pop-hacts button:hover,.suxc-pop-closebtn:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+.suxc-pop-resbtn.on{color:#30D158}
+.suxc-pop-resbtn:hover{color:#30D158 !important}
+.suxc-pop-loc{display:flex;align-items:center;gap:6px;padding:8px 12px;
+  background:rgba(123,97,255,.08);border-bottom:1px solid rgba(255,255,255,.06);
+  font:500 11px/1.4 'Lato',sans-serif;color:#9B8AFF}
+.suxc-pop-loc-ico{flex:none;opacity:.85}
+.suxc-pop-loc-txt{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.suxc-pop-sub{display:flex;align-items:center;gap:8px;padding:8px 12px;
+  background:rgba(155,138,255,.10);border-bottom:1px solid rgba(255,255,255,.06);
+  font:500 11px/1.4 'Lato',sans-serif;color:#C9BEFF}
+.suxc-pop-sub-txt{flex:1}
+.suxc-pop-unsubmit{flex:none;border:1px solid rgba(155,138,255,.4);background:transparent;
+  color:#C9BEFF;border-radius:5px;padding:3px 8px;font:600 11px 'Lato',sans-serif;cursor:pointer;
+  transition:background .12s,border-color .12s}
+.suxc-pop-unsubmit:hover{background:rgba(155,138,255,.18);border-color:rgba(155,138,255,.7)}
+.suxc-av{width:32px;height:32px;border-radius:50%;background:#7B61FF;color:#fff;
+  font:700 13px/32px 'Lato',sans-serif;text-align:center;flex:none;user-select:none}
+.suxc-av.sm{width:28px;height:28px;font-size:11px;line-height:28px}
+
+/* thread */
+.suxc-pop-thread{padding:12px;display:flex;gap:10px;align-items:flex-start}
+.suxc-thread-msg{flex:1;min-width:0}
+.suxc-thread-meta{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.suxc-thread-user{font:600 13px 'Lato',sans-serif;color:#E5E5EA}
+.suxc-thread-time{font:400 11px 'Lato',sans-serif;color:#8A8A8E;flex:1}
+.suxc-thread-morebtn{width:24px;height:24px;border:0;border-radius:4px;background:transparent;
+  color:#636366;font:600 14px 'Lato',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.suxc-thread-morebtn:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+.suxc-thread-text{font:400 13px/20px 'Lato',sans-serif;color:#E5E5EA;word-break:break-word}
+.suxc-thread-editta{display:none;width:100%;box-sizing:border-box;font:400 13px/20px 'Lato',sans-serif;
+  background:#3A3A3C;color:#E5E5EA;border:1px solid rgba(255,255,255,.15);border-radius:6px;
+  padding:6px 8px;resize:none;min-height:48px;margin-top:4px;font-family:'Lato',sans-serif;outline:none}
+.suxc-thread-editta.show{display:block}
+
+/* reply input */
+.suxc-pop-reply{padding:8px 12px 12px;border-top:1px solid rgba(255,255,255,.06)}
+.suxc-reply-wrap{position:relative}
+.suxc-reply-ta{width:100%;box-sizing:border-box;font:400 13px/20px 'Lato',sans-serif;
+  background:#3A3A3C;color:#E5E5EA;border:1px solid rgba(255,255,255,.12);border-radius:8px;
+  padding:8px 10px 32px 10px;resize:none;min-height:72px;max-height:140px;
+  transition:border-color .15s;font-family:'Lato',sans-serif;outline:none}
+.suxc-reply-ta::placeholder{color:#636366}
+.suxc-reply-ta:focus{border-color:rgba(123,97,255,.6)}
+.suxc-send-btn{position:absolute;bottom:8px;right:8px;width:26px;height:26px;border:0;
+  border-radius:50%;background:#0A84FF;color:#fff;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s}
+.suxc-send-btn:disabled{background:transparent;color:#48484A;cursor:not-allowed}
+.suxc-send-btn:not(:disabled):hover{background:#0070D1}
+
+/* ── NAV BAR ── */
+#suxc-nav{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:100001;
+  display:flex;gap:4px;background:#2C2C2E;border-radius:14px;padding:6px;
+  box-shadow:0 8px 32px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.08)}
+#suxc-nav button{position:relative;width:40px;height:40px;border:0;border-radius:10px;background:transparent;
+  color:#98989D;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .12s,color .12s}
+#suxc-nav button:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+#suxc-nav button:disabled{opacity:.3;cursor:not-allowed}
+#suxc-nav button[data-tip]:hover:after{content:attr(data-tip);position:absolute;bottom:50px;left:50%;
+  transform:translateX(-50%);background:#1C1C1E;color:#E5E5EA;font:600 11px 'Lato',sans-serif;
+  padding:5px 10px;border-radius:6px;white-space:nowrap;pointer-events:none;
+  border:1px solid rgba(255,255,255,.10)}
+#suxc-nav button.on{background:rgba(123,97,255,.22);color:#9B8AFF}
+#suxc-nav .sep{width:1px;align-self:stretch;background:rgba(255,255,255,.10);margin:3px 2px}
+#suxc-cbadge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9999px;
+  background:#FF3B30;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;
+  padding:0 3px;border:2px solid #2C2C2E}
+#suxc-sbadge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9999px;
+  background:#9B8AFF;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;
+  padding:0 3px;border:2px solid #2C2C2E}
+#suxc-abadge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9999px;
+  background:#30D158;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;
+  padding:0 3px;border:2px solid #2C2C2E}
+#suxc-approve{color:#30D158 !important}
+#suxc-approve:hover{background:rgba(48,209,88,.18) !important;color:#5CDE7F !important}
+
+/* ── FAB ── */
+#suxc-fab{position:fixed;right:24px;bottom:24px;z-index:100001;width:50px;height:50px;
+  border-radius:50%;background:#2C2C2E;color:#E5E5EA;border:1px solid rgba(255,255,255,.12);
+  cursor:grab;display:none;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px rgba(0,0,0,.45);touch-action:none;user-select:none;transition:background .12s}
+#suxc-fab.show{display:flex}
+#suxc-fab.drag{cursor:grabbing}
+#suxc-fab:hover{background:#3A3A3C}
+#suxc-fbadge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9999px;
+  background:#FF3B30;color:#fff;font:700 11px/18px 'Lato',sans-serif;text-align:center;
+  padding:0 4px;display:none;border:2px solid #2C2C2E}
+#suxc-nav.suxc-asmenu{left:auto;right:auto;bottom:auto;top:auto;transform:none}
+
+/* ── FLOW canvas ── */
+html.suxc-flow,body.suxc-flow{margin:0;height:100%;overflow:hidden}
+#suxc-stage{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;min-width:100vw;box-sizing:border-box;padding:40px}
+body.suxc-on{outline:2px solid rgba(123,97,255,.4);outline-offset:-2px}
+body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
+
+/* ── STATE SWITCHER ── */
+.suxc-sw{position:fixed;z-index:100003;display:inline-flex;flex-direction:column;align-items:flex-start;user-select:none}
+.suxc-sw-pill{display:inline-flex;align-items:center;gap:8px;background:#1C1C1E;color:#E5E5EA;
+  border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:12px 16px 12px 12px;
+  font:600 14px/1 'Lato',sans-serif;cursor:grab;white-space:nowrap;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);transition:background .12s,box-shadow .12s}
+.suxc-sw-pill:hover{background:#2C2C2E;box-shadow:0 6px 20px rgba(0,0,0,.65)}
+.suxc-sw-pill.drag{cursor:grabbing}
+.suxc-sw-dot{width:9px;height:9px;border-radius:50%;background:#48484A;flex:none;transition:background .2s}
+.suxc-sw-dot.on{background:#30D158}
+.suxc-sw-pop{position:absolute;top:calc(100% + 7px);left:0;background:#2C2C2E;
+  border:1px solid rgba(255,255,255,.10);border-radius:10px;min-width:172px;
+  box-shadow:0 10px 36px rgba(0,0,0,.65);overflow:hidden;display:none}
+.suxc-sw-pop.open{display:block}
+.suxc-sw-head{padding:8px 14px 6px;font:600 10px/1 'Lato',sans-serif;color:#636366;letter-spacing:.06em;text-transform:uppercase}
+.suxc-sw-item{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;
+  font:500 13px/1 'Lato',sans-serif;color:#E5E5EA;cursor:pointer;transition:background .1s}
+.suxc-sw-item:hover{background:rgba(255,255,255,.07)}
+.suxc-sw-item.active{color:#30D158}
+.suxc-sw-check{font-size:12px;opacity:0}
+.suxc-sw-item.active .suxc-sw-check{opacity:1}
+
+/* ── TOAST ── */
+#suxc-toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(10px);
+  background:#1C1C1E;color:#E5E5EA;font:600 12px 'Lato',sans-serif;padding:9px 16px;
+  border-radius:9999px;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:100002;opacity:0;
+  pointer-events:none;transition:opacity .18s,transform .18s;border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;gap:10px;white-space:nowrap}
+#suxc-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.suxc-toast-undo{border:0;background:rgba(255,255,255,.15);color:#E5E5EA;padding:3px 10px;
+  border-radius:6px;cursor:pointer;font:700 11px 'Lato',sans-serif;flex:none;
+  transition:background .12s;font-family:'Lato',sans-serif}
+.suxc-toast-undo:hover{background:rgba(255,255,255,.28)}
+
+/* ── ZOOM ── */
+#suxc-zoom{position:fixed;left:16px;bottom:18px;z-index:100001;display:flex;gap:4px;
+  background:#2C2C2E;border-radius:10px;padding:5px;box-shadow:0 8px 24px rgba(0,0,0,.4);
+  border:1px solid rgba(255,255,255,.08)}
+#suxc-zoom button{width:32px;height:32px;border:0;border-radius:7px;background:transparent;
+  color:#98989D;font:700 14px 'Lato',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#suxc-zoom button:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+#suxc-zoom span{min-width:44px;text-align:center;align-self:center;color:#636366;font:600 11px 'Lato',sans-serif}
+
+/* ── PANEL ── */
+#suxc-panel{position:fixed;top:0;right:0;height:100vh;width:240px;background:#1C1C1E;
+  border-left:1px solid rgba(255,255,255,.08);box-shadow:-6px 0 24px rgba(0,0,0,.4);
+  z-index:99999;font-family:'Lato',sans-serif;display:flex;flex-direction:column;
+  transition:transform .2s ease}
+#suxc-panel.closed{transform:translateX(240px)}
+#suxc-ph{padding:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+#suxc-ph-title{font:700 13px 'Lato',sans-serif;color:#E5E5EA;padding:2px 0 10px;
+  display:flex;align-items:center;justify-content:space-between}
+#suxc-ph-title span{font:400 12px 'Lato',sans-serif;color:#636366}
+#suxc-search-row{display:flex;gap:6px;align-items:center}
+#suxc-search-wrap{flex:1;display:flex;align-items:center;gap:7px;background:#3A3A3C;
+  border-radius:8px;padding:7px 10px}
+#suxc-search-wrap svg{color:#8A8A8E;flex:none}
+#suxc-search-input{flex:1;border:0;background:transparent;color:#E5E5EA;
+  font:400 13px 'Lato',sans-serif;outline:none}
+#suxc-search-input::placeholder{color:#636366}
+#suxc-close{width:34px;height:34px;border:0;border-radius:8px;background:#3A3A3C;
+  color:#8A8A8E;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:background .12s}
+#suxc-close:hover{background:#4A4A4E;color:#E5E5EA}
+#suxc-list{flex:1;overflow:auto;padding:8px}
+#suxc-empty{padding:32px 16px;color:#636366;font:400 13px/20px 'Lato',sans-serif;text-align:center}
+
+/* panel cards */
+.suxc-item{padding:12px;border-radius:10px;margin-bottom:6px;cursor:pointer;
+  background:#2C2C2E;border:1px solid transparent;transition:border-color .12s,background .12s}
+.suxc-item:hover{border-color:rgba(255,255,255,.10)}
+.suxc-item.active{background:#3D3D5C;border-color:rgba(123,97,255,.4)}
+.suxc-item.resolved{opacity:.48}
+.suxc-item.submitted{border-color:rgba(123,97,255,.5);background:rgba(123,97,255,.06)}
+.suxc-item.submitted::before{content:"🕓 submitted";display:block;font:600 9px/1 'Lato',sans-serif;
+  color:#9B8AFF;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.suxc-item-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+.suxc-item-acts{display:flex;gap:4px}
+.suxc-item-act{width:32px;height:32px;border:0;border-radius:7px;background:transparent;
+  color:#636366;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;
+  transition:background .12s,color .12s}
+.suxc-item-act:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+.suxc-item-act.ok.on{color:#30D158}
+.suxc-item-act.ok:hover{color:#30D158}
+.suxc-item-act.del:hover{color:#FF453A}
+.suxc-item-ref{font:400 11px 'Lato',sans-serif;color:#636366;align-self:center}
+.suxc-item-who{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.suxc-item-name{font:600 12px 'Lato',sans-serif;color:#E5E5EA}
+.suxc-item-time{font:400 11px 'Lato',sans-serif;color:#636366}
+.suxc-item-text{font:400 12px/18px 'Lato',sans-serif;color:#98989D;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.suxc-item.resolved .suxc-item-text{text-decoration:line-through}
+</style>
+
+<div id="suxc-nav">
+  <button id="suxc-tgl" type="button" data-tip="Mode komen (C)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
+    <span id="suxc-cbadge" style="display:none">0</span>
+  </button>
+  <button id="suxc-tab" type="button" data-tip="Daftar komen (L)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+  </button>
+  <span class="sep"></span>
+  <button id="suxc-submit" type="button" data-tip="Submit komen — copy (S)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+    <span id="suxc-sbadge" style="display:none">0</span>
+  </button>
+  <button id="suxc-approve" type="button" data-tip="Approve submitted pins (A)" style="display:none">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="suxc-abadge">0</span>
+  </button>
+  <span class="sep"></span>
+  <button id="suxc-figma" type="button" data-tip="Generate Figma (G)">
+    <svg width="16" height="16" viewBox="0 0 38 57" fill="currentColor"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>
+  </button>
+</div>
+
+<div id="suxc-panel" class="closed">
+  <div id="suxc-ph">
+    <div id="suxc-ph-title">Comments <span id="suxc-count"></span></div>
+    <div id="suxc-search-row">
+      <div id="suxc-search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="suxc-search-input" placeholder="Search" type="text">
+      </div>
+      <button id="suxc-close">✕</button>
+    </div>
+  </div>
+  <div id="suxc-list"></div>
+</div>
+
+<div id="suxc-zoom">
+  <button id="suxc-zout" type="button">−</button>
+  <span id="suxc-zlvl">100%</span>
+  <button id="suxc-zin" type="button">+</button>
+  <button id="suxc-zfit" type="button">⤢</button>
+</div>
+
+<button id="suxc-fab" type="button" aria-label="Tools review">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
+  <span id="suxc-fbadge">0</span>
+</button>
+
+<script>
+(function(){
+  var MODE=(document.body.getAttribute('data-suxc')||'prototype').toLowerCase();
+  var FLOW=(MODE==='flow');
+  var KEY='suxc:'+location.pathname, on=false, data=[];
+  var UNAME='Working', UINIT='W';
+  try{data=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(data))data=[];}
+  catch(e){data=[];try{localStorage.removeItem(KEY);}catch(_){}}
+
+  var panel=document.getElementById('suxc-panel'),
+      tab=document.getElementById('suxc-tab'),
+      tgl=document.getElementById('suxc-tgl'),
+      badge=document.getElementById('suxc-cbadge'),
+      nav=document.getElementById('suxc-nav'),
+      fab=document.getElementById('suxc-fab'),
+      searchInput=document.getElementById('suxc-search-input');
+
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}}
+  var LOGKEY='suxc:log';
+  function logEvent(c,act){try{
+    var L=JSON.parse(localStorage.getItem(LOGKEY)||'[]');if(!Array.isArray(L))L=[];
+    L.push({t:new Date().toISOString(),file:(location.pathname.split('/').pop()||''),
+      act:act,text:(c.text||''),loc:(c.ctx||''),x:Math.round(c.x),y:Math.round(c.y),area:!!(c.w&&c.h)});
+    localStorage.setItem(LOGKEY,JSON.stringify(L));}catch(e){}}
+  window.suxcDownloadLog=function(){
+    var blob=new Blob([localStorage.getItem(LOGKEY)||'[]'],{type:'application/json'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='comment-log.json';document.body.appendChild(a);a.click();a.remove();};
+
+  var toastT,toastUndoFn=null;
+  function toast(msg){
+    var el=document.getElementById('suxc-toast');
+    if(!el){el=document.createElement('div');el.id='suxc-toast';document.body.appendChild(el);}
+    toastUndoFn=null;
+    el.innerHTML='<span>'+msg+'</span>';
+    el.classList.add('show');
+    clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove('show');},2400);}
+  function toastUndo(msg,fn){
+    var el=document.getElementById('suxc-toast');
+    if(!el){el=document.createElement('div');el.id='suxc-toast';document.body.appendChild(el);}
+    toastUndoFn=fn;
+    el.innerHTML='<span>'+msg+'</span><button class="suxc-toast-undo">Undo</button>';
+    el.classList.add('show');
+    clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove('show');toastUndoFn=null;},4500);
+    el.querySelector('.suxc-toast-undo').onclick=function(){
+      clearTimeout(toastT);el.classList.remove('show');
+      var f=toastUndoFn;toastUndoFn=null;if(f)f();};}
+
+  function fmtFull(ts){
+    if(!ts)return'';
+    var d=new Date(ts),z=function(n){return n<10?'0'+n:''+n;};
+    return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())+
+      ' '+z(d.getHours())+':'+z(d.getMinutes())+':'+z(d.getSeconds());}
+
+  function fmtRel(ts){
+    if(!ts)return'';
+    var d=Date.now()-ts;
+    if(d<60000)return'Just now';
+    if(d<3600000)return Math.floor(d/60000)+'m ago';
+    if(d<86400000)return Math.floor(d/3600000)+'h ago';
+    return Math.floor(d/86400000)+'d ago';}
+
+  var stage,T={x:0,y:0,s:1},spaceDown=false;
+  if(FLOW){
+    document.documentElement.classList.add('suxc-flow');
+    document.body.classList.add('suxc-flow');
+    stage=document.createElement('div');stage.id='suxc-stage';
+    (function(){var ns=[].slice.call(document.body.childNodes);
+      ns.forEach(function(n){
+        if(n.nodeType===1){var id=n.id||'',tg=n.tagName;
+          if(id.indexOf('suxc-')===0||tg==='SCRIPT'||tg==='STYLE'||tg==='LINK')return;}
+        else if(n.nodeType!==3)return;
+        stage.appendChild(n);});
+      document.body.appendChild(stage);})();
+  }else{stage=document.body;}
+
+  function applyT(){if(!FLOW)return;
+    stage.style.transform='translate('+T.x+'px,'+T.y+'px) scale('+T.s+')';
+    var z=document.getElementById('suxc-zlvl');if(z)z.textContent=Math.round(T.s*100)+'%';}
+  function scX(){return window.scrollX||window.pageXOffset||0;}
+  function scY(){return window.scrollY||window.pageYOffset||0;}
+  function toLocal(cx,cy){return FLOW?{x:(cx-T.x)/T.s,y:(cy-T.y)/T.s}:{x:cx+scX(),y:cy+scY()};}
+  function toClient(lx,ly){return FLOW?{x:T.x+lx*T.s,y:T.y+ly*T.s}:{x:lx-scX(),y:ly-scY()};}
+  function clamp(v,a,b){return v<a?a:v>b?b:v;}
+  function zoomAt(cx,cy,ns){ns=clamp(ns,0.2,3);var L=toLocal(cx,cy);T.s=ns;T.x=cx-L.x*ns;T.y=cy-L.y*ns;applyT();}
+  function smooth(fn){stage.style.transition='transform .22s ease';fn();setTimeout(function(){stage.style.transition='';},240);}
+  function panTo(c){
+    if(c.fixedSel)return; // fixed pin sudah di viewport
+    if(c.scrollSel){var _sc=document.querySelector(c.scrollSel);
+      if(_sc&&_sc.scrollTo)_sc.scrollTo({left:Math.max(0,c.sx-120),top:Math.max(0,c.sy-160),behavior:'smooth'});return;}
+    if(!FLOW){window.scrollTo({left:Math.max(0,c.x-120),top:Math.max(0,c.y-160),behavior:'smooth'});return;}
+    smooth(function(){T.x=window.innerWidth/2-(c.x+(c.w||0)/2)*T.s;T.y=window.innerHeight/2-(c.y+(c.h||0)/2)*T.s;applyT();});}
+  function setOn(v){on=v;document.body.classList.toggle('suxc-on',on);tgl.classList.toggle('on',on);
+    if(on){setPanel(true);toast('Mode komen aktif 💬');}else{clearRects();toast('Mode komen nonaktif');}}
+  function setPanel(o){panel.classList.toggle('closed',!o);}
+  tgl.onclick=function(){setOn(!on);};
+  tab.onclick=function(){setPanel(panel.classList.contains('closed'));};
+  document.getElementById('suxc-close').onclick=function(){setPanel(false);};
+
+  function clearRects(){document.querySelectorAll('.suxc-rect:not(.live)').forEach(function(e){e.remove();});}
+  function showRect(c){clearRects();
+    if(c.fixedSel&&c.fw&&c.fh){
+      var r=document.createElement('div');r.className='suxc-rect';
+      r.style.cssText='position:fixed;left:'+c.fx+'px;top:'+c.fy+'px;width:'+c.fw+'px;height:'+c.fh+'px';
+      if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
+      document.body.appendChild(r);return;}
+    if(c.scrollSel&&c.sw&&c.sh){
+      var _sc=document.querySelector(c.scrollSel);
+      if(_sc){var r=document.createElement('div');r.className='suxc-rect';
+        r.style.cssText='left:'+c.sx+'px;top:'+c.sy+'px;width:'+c.sw+'px;height:'+c.sh+'px';
+        if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
+        _sc.appendChild(r);return;}}
+    if(!(c.w&&c.h))return;
+    var r=document.createElement('div');r.className='suxc-rect';
+    r.style.cssText='left:'+c.x+'px;top:'+c.y+'px;width:'+c.w+'px;height:'+c.h+'px';
+    if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
+    stage.appendChild(r);}
+
+  function txt(e){return((e.innerText||e.textContent||'').replace(/\s+/g,' ').trim());}
+  function findFixedLayer(el){
+    while(el&&el!==document.body&&el!==document.documentElement){
+      if(el.nodeType===1){var cs=getComputedStyle(el);
+        if(cs.position==='fixed'&&cs.display!=='none'){
+          var id=el.id;if(id&&id.indexOf('suxc-')!==0)return'#'+id;
+          var lyr=el.getAttribute('data-layer');if(lyr)return'[data-layer="'+lyr+'"]';
+          return null;}}
+      el=el.parentElement;}
+    return null;}
+  function findScrollContainer(el){
+    while(el&&el!==document.body&&el!==document.documentElement){
+      if(el.nodeType===1){var cs=getComputedStyle(el),oy=cs.overflowY,ox=cs.overflowX;
+        if(((oy==='auto'||oy==='scroll')&&el.scrollHeight>el.clientHeight+4)||
+           ((ox==='auto'||ox==='scroll')&&el.scrollWidth>el.clientWidth+4))return el;}
+      el=el.parentElement;}
+    return null;}
+  function findAttrName(el,attr){
+    while(el&&el!==document.body&&el!==document.documentElement){
+      if(el.nodeType===1&&el.hasAttribute&&el.hasAttribute(attr))return el.getAttribute(attr);
+      el=el.parentElement;}
+    return null;}
+  function isAttrActive(attr,name){
+    if(!name)return true;
+    var els=document.querySelectorAll('['+attr+'="'+name.replace(/"/g,'\\"')+'"]');
+    for(var i=0;i<els.length;i++){var cs=getComputedStyle(els[i]);
+      if(cs.display!=='none'&&cs.visibility!=='hidden')return true;}
+    return false;}
+  function selFor(el){
+    if(!el)return null;
+    if(el.id&&el.id.indexOf('suxc-')!==0)return'#'+el.id;
+    var dl=el.getAttribute&&el.getAttribute('data-layer');if(dl)return'[data-layer="'+dl+'"]';
+    var cls=(typeof el.className==='string'?el.className:'').trim().split(/\s+/)[0];
+    if(cls&&document.querySelectorAll('.'+cls).length===1)return'.'+cls;
+    return null;}
+  function anchorAtViewport(cx,cy){
+    if(cx<0||cy<0||cx>window.innerWidth||cy>window.innerHeight)return'';
+    var els=document.elementsFromPoint?document.elementsFromPoint(cx,cy):[document.elementFromPoint(cx,cy)];
+    for(var k=0;k<els.length;k++){var e=els[k];
+      if(!e||!e.closest||e===document.body||e===document.documentElement)continue;
+      if(e.closest('#suxc-nav,#suxc-panel,.suxc-pop,.suxc-pin,.suxc-rect'))continue;
+      var s=txt(e);if(s&&s.length<=110)return s.length>80?s.slice(0,80)+'…':s;}
+    return'';}
+  function anchorAt(px,py){
+    var sc=toClient(px,py),cx=sc.x,cy=sc.y;
+    if(cx<0||cy<0||cx>window.innerWidth||cy>window.innerHeight)return'';
+    var els=document.elementsFromPoint?document.elementsFromPoint(cx,cy):[document.elementFromPoint(cx,cy)];
+    for(var k=0;k<els.length;k++){var e=els[k];
+      if(!e||!e.closest||e===document.body||e===document.documentElement)continue;
+      if(e.closest('#suxc-nav,#suxc-panel,.suxc-pop,.suxc-pin,.suxc-rect'))continue;
+      var s=txt(e);if(s&&s.length<=110)return s.length>80?s.slice(0,80)+'…':s;}
+    return'';}
+  function ctxFor(c){
+    if(c.fixedSel){
+      if(c.fw&&c.fh){
+        var P=[[c.fx+c.fw/2,c.fy+c.fh/2],[c.fx+10,c.fy+10],[c.fx+c.fw-10,c.fy+10],[c.fx+10,c.fy+c.fh-10],[c.fx+c.fw-10,c.fy+c.fh-10]],seen=[];
+        P.forEach(function(p){var a=anchorAtViewport(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
+        if(seen.length)return seen.slice(0,2).join(' & ');}
+      return anchorAtViewport(c.fx,c.fy);}
+    if(c.scrollSel){
+      var sc=document.querySelector(c.scrollSel);
+      if(sc){var r=sc.getBoundingClientRect();
+        var vx=r.left+c.sx-sc.scrollLeft,vy=r.top+c.sy-sc.scrollTop;
+        if(c.sw&&c.sh){
+          var P=[[vx+c.sw/2,vy+c.sh/2],[vx+10,vy+10],[vx+c.sw-10,vy+10],[vx+10,vy+c.sh-10],[vx+c.sw-10,vy+c.sh-10]],seen=[];
+          P.forEach(function(p){var a=anchorAtViewport(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
+          if(seen.length)return seen.slice(0,2).join(' & ');}
+        return anchorAtViewport(vx,vy);}}
+    if(c.w&&c.h){
+      var P=[[c.x+c.w/2,c.y+c.h/2],[c.x+10,c.y+10],[c.x+c.w-10,c.y+10],[c.x+10,c.y+c.h-10],[c.x+c.w-10,c.y+c.h-10]],seen=[];
+      P.forEach(function(p){var a=anchorAt(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
+      if(seen.length)return seen.slice(0,2).join(' & ');
+      var n=nearest(c.x+c.w/2,c.y+c.h/2);return n?'di dekat: '+n:'';}
+    var d=anchorAt(c.x,c.y);if(d)return d;
+    var nn=nearest(c.x,c.y);return nn?'di dekat: '+nn:'';}
+  function nearest(lx,ly){
+    var sc=toClient(lx,ly),best=null,bd=1e9;
+    var all=stage.querySelectorAll('div,span,h1,h2,h3,p,td,li,b,a,button');
+    for(var i=0;i<all.length;i++){var e=all[i];
+      if(e.children.length>2)continue;
+      var s=txt(e);if(!s||s.length<3||s.length>90)continue;
+      var r=e.getBoundingClientRect();if(!r.width)continue;
+      var dx=Math.max(r.left-sc.x,0,sc.x-r.right),dy=Math.max(r.top-sc.y,0,sc.y-r.bottom);
+      var dist=dx*dx+dy*dy;if(dist<bd){bd=dist;best=s;}}
+    return best?(best.length>70?best.slice(0,70)+'…':best):'';}
+
+  var fileName=(location.pathname.split('/').pop()||'page').replace(/\.html?$/i,'');
+
+  function render(){
+    document.querySelectorAll('.suxc-pin,.suxc-rect:not(.live)').forEach(function(e){e.remove();});
+    var list=document.getElementById('suxc-list');list.innerHTML='';
+    var openCount=data.filter(function(c){return !c.resolved;}).length;
+    var subCount=data.filter(function(c){return c.submitted&&!c.resolved;}).length;
+    var draftCount=openCount-subCount;
+    var countEl=document.getElementById('suxc-count');
+    if(countEl)countEl.textContent=data.length?'('+data.length+')':'';
+    badge.style.display=openCount?'block':'none';badge.textContent=openCount;
+    var fb=document.getElementById('suxc-fbadge');
+    if(fb){fb.style.display=openCount?'block':'none';fb.textContent=openCount;}
+    var sb=document.getElementById('suxc-sbadge');
+    if(sb){sb.style.display=draftCount?'block':'none';sb.textContent=draftCount;}
+    var ap=document.getElementById('suxc-approve'),ab=document.getElementById('suxc-abadge');
+    if(ap){ap.style.display=subCount?'flex':'none';if(ab)ab.textContent=subCount;}
+
+    var query=(searchInput&&searchInput.value||'').toLowerCase().trim();
+
+    if(!data.length){
+      list.innerHTML='<div id="suxc-empty">Belum ada komen.<br><br>Nyalain mode komen (💬 / tekan C) lalu klik area di layar.</div>';
+      return;}
+
+    // sorted: unresolved newest first, resolved oldest last
+    var sorted=data.map(function(c,i){return{c:c};});
+    sorted.sort(function(a,b){
+      if(a.c.resolved===b.c.resolved)return(b.c.ts||0)-(a.c.ts||0);
+      return a.c.resolved?1:-1;});
+
+    sorted.forEach(function(entry,si){
+      var c=entry.c, num=si+1;
+      // pin — hanya unresolved
+      // Filter: pin terikat ke [data-screen]/[data-state] hanya muncul saat layer-nya active
+      var layerOk=isAttrActive('data-screen',c.screenName)&&isAttrActive('data-state',c.stateName);
+      if(!c.resolved&&layerOk){
+        if(c.fixedSel){
+          var lyr=document.querySelector(c.fixedSel);
+          if(lyr){var lcs=getComputedStyle(lyr);
+            if(lcs.display!=='none'&&lcs.visibility!=='hidden'){
+              var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
+              p.style.position='fixed';p.style.left=c.fx+'px';p.style.top=c.fy+'px';p.textContent=num;
+              p.onmousedown=function(ev){
+                ev.stopPropagation();ev.preventDefault();
+                var sx=ev.clientX,sy=ev.clientY,moved=false;
+                function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>10)moved=true;
+                  if(moved){c.fx=e.clientX;c.fy=e.clientY;
+                    p.style.left=c.fx+'px';p.style.top=c.fy+'px';
+                    document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+                function upH(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',upH);
+                  if(moved){save();render();}else{openEditor(c);}}
+                document.addEventListener('mousemove',mv);document.addEventListener('mouseup',upH);};
+              p.onmouseenter=function(){if(on&&!document.querySelector('.suxc-pop'))openEditor(c);};
+              document.body.appendChild(p);}}
+        }else if(c.scrollSel){
+          var sc=document.querySelector(c.scrollSel);
+          if(sc){
+            if(getComputedStyle(sc).position==='static')sc.style.position='relative';
+            var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
+            p.style.left=c.sx+'px';p.style.top=c.sy+'px';p.textContent=num;
+            p.onmousedown=(function(scEl){return function(ev){
+              ev.stopPropagation();ev.preventDefault();
+              var sx=ev.clientX,sy=ev.clientY,moved=false;
+              function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>10)moved=true;
+                if(moved){var rr=scEl.getBoundingClientRect();
+                  c.sx=e.clientX-rr.left+scEl.scrollLeft;c.sy=e.clientY-rr.top+scEl.scrollTop;
+                  p.style.left=c.sx+'px';p.style.top=c.sy+'px';
+                  document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+              function upH(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',upH);
+                if(moved){save();render();}else{openEditor(c);}}
+              document.addEventListener('mousemove',mv);document.addEventListener('mouseup',upH);};})(sc);
+            p.onmouseenter=function(){if(on&&!document.querySelector('.suxc-pop'))openEditor(c);};
+            sc.appendChild(p);}
+        }else{
+          var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
+          p.style.left=c.x+'px';p.style.top=c.y+'px';p.textContent=num;
+          p.onmousedown=function(ev){
+            ev.stopPropagation();ev.preventDefault();
+            var sx=ev.clientX,sy=ev.clientY,moved=false;
+            function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>10)moved=true;
+              if(moved){var L=toLocal(e.clientX,e.clientY);c.x=L.x;c.y=L.y;
+                p.style.left=c.x+'px';p.style.top=c.y+'px';
+                document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+            function up(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);
+              if(moved){save();render();}else{openEditor(c);}}
+            document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);};
+          p.onmouseenter=function(){if(on&&!document.querySelector('.suxc-pop'))openEditor(c);};
+          stage.appendChild(p);}}
+
+      // panel card — search filter
+      if(query&&(!c.text||c.text.toLowerCase().indexOf(query)<0))return;
+      var it=document.createElement('div');
+      it.className='suxc-item'+(c.resolved?' resolved':'')+(c.submitted&&!c.resolved?' submitted':'');
+      it.innerHTML=
+        '<div class="suxc-item-who">'+
+          '<span class="suxc-item-name">'+UNAME+'</span>'+
+          '<span class="suxc-item-time">'+fmtRel(c.ts)+'</span>'+
+          '<div class="suxc-item-acts" style="margin-left:auto">'+
+            '<button class="suxc-item-act ok'+(c.resolved?' on':'')+'" title="Tandai selesai">✓</button>'+
+            '<button class="suxc-item-act del" title="Hapus">✕</button>'+
+          '</div>'+
+        '</div>'+
+        '<div class="suxc-item-text">'+((c.text||'(kosong)').replace(/</g,'&lt;'))+'</div>';
+
+      it.onclick=function(ev){if(ev.target.closest('.suxc-item-act'))return;panTo(c);openEditor(c);};
+      it.onmouseenter=function(){showRect(c);};
+      it.onmouseleave=function(){if(!document.querySelector('.suxc-pop'))clearRects();};
+      it.querySelector('.ok').onclick=function(ev){
+        ev.stopPropagation();c.resolved=!c.resolved;
+        logEvent(c,c.resolved?'resolve':'reopen');save();render();
+        toast(c.resolved?'Ditandai selesai ✓':'Dibuka kembali ↩');};
+      it.querySelector('.del').onclick=function(ev){
+        ev.stopPropagation();
+        var oi=data.indexOf(c);if(oi<0)return;
+        var snap=c,snapIdx=oi;
+        logEvent(c,'delete');data.splice(oi,1);save();render();
+        toastUndo('Komen dihapus',function(){data.splice(snapIdx,0,snap);save();render();toast('Dikembalikan ✓');});};
+      list.appendChild(it);});}
+
+  function openEditor(c){
+    document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});
+    var isNew=data.indexOf(c)<0;
+    var pop=document.createElement('div');pop.className='suxc-pop';
+    var sc;
+    if(c.fixedSel)sc={x:c.fx,y:c.fy};
+    else if(c.scrollSel){var _sc=document.querySelector(c.scrollSel);
+      if(_sc){var _r=_sc.getBoundingClientRect();sc={x:_r.left+c.sx-_sc.scrollLeft,y:_r.top+c.sy-_sc.scrollTop};}
+      else sc={x:0,y:0};}
+    else sc=toClient(c.x,c.y);
+    pop.style.cssText='position:fixed;left:'+Math.max(8,Math.min(sc.x+28,window.innerWidth-316))+'px;top:'+Math.max(8,Math.min(sc.y-10,window.innerHeight-300))+'px';
+    showRect(c);
+
+    var EDIT_ICON='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>';
+    var threadHtml='';
+    if(!isNew&&c.text){
+      threadHtml=
+        '<div class="suxc-pop-thread">'+
+          '<div class="suxc-thread-msg">'+
+            '<div class="suxc-thread-meta">'+
+              '<span class="suxc-thread-user">'+UNAME+'</span>'+
+              '<span class="suxc-thread-time">'+fmtRel(c.ts)+'</span>'+
+              '<button class="suxc-thread-morebtn" title="Edit">'+EDIT_ICON+'</button>'+
+            '</div>'+
+            '<div class="suxc-thread-text">'+((c.text||'').replace(/</g,'&lt;'))+'</div>'+
+            '<textarea class="suxc-thread-editta" rows="2"></textarea>'+
+          '</div>'+
+        '</div>';}
+
+    var locTxt=(c.ctx||'').replace(/</g,'&lt;');
+    var layerParts=[];
+    if(c.screenName)layerParts.push(c.screenName);
+    if(c.stateName)layerParts.push(c.stateName);
+    if(c.fixedSel)layerParts.push(c.fixedSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1'));
+    else if(c.scrollSel)layerParts.push(c.scrollSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1'));
+    var layerLbl=layerParts.join(' · ');
+    var locLine=(locTxt||layerLbl)?
+      ('<div class="suxc-pop-loc">'+
+        '<svg class="suxc-pop-loc-ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'+
+        '<span class="suxc-pop-loc-txt">'+
+          (layerLbl?'<b>'+layerLbl+'</b>'+(locTxt?' · ':''):'')+
+          (locTxt||'')+
+        '</span>'+
+      '</div>'):'';
+    var subLine=(c.submitted&&!c.resolved)?
+      ('<div class="suxc-pop-sub">'+
+        '<span class="suxc-pop-sub-txt">🕓 <b>Submitted</b>'+(c.batchId?(' · batch '+c.batchId):'')+'</span>'+
+        '<button class="suxc-pop-unsubmit" type="button">Un-submit</button>'+
+      '</div>'):'';
+    pop.innerHTML=
+      '<div class="suxc-pop-head">'+
+        '<span class="suxc-pop-title">'+(isNew?'New comment':'Comment')+'</span>'+
+        '<div class="suxc-pop-hacts">'+
+          (!isNew?'<button class="suxc-pop-resbtn'+(c.resolved?' on':'')+'" title="Mark resolved">✓</button>':'')+
+          '<button class="suxc-pop-closebtn">✕</button>'+
+        '</div>'+
+      '</div>'+
+      locLine+
+      subLine+
+      threadHtml+
+      (isNew?'<div class="suxc-pop-reply">'+
+        '<div class="suxc-reply-wrap">'+
+          '<textarea class="suxc-reply-ta" placeholder="Add a comment…" rows="3"></textarea>'+
+          '<button class="suxc-send-btn" disabled type="button">'+
+            '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>'+
+          '</button>'+
+        '</div>'+
+      '</div>':'');
+
+    var ta=pop.querySelector('.suxc-reply-ta');
+    var sendBtn=pop.querySelector('.suxc-send-btn');
+
+    pop.querySelector('.suxc-pop-closebtn').onclick=closePop;
+
+    var resBtn=pop.querySelector('.suxc-pop-resbtn');
+    if(resBtn)resBtn.onclick=function(){
+      c.resolved=!c.resolved;if(c.resolved)c.submitted=false;resBtn.classList.toggle('on',c.resolved);
+      logEvent(c,c.resolved?'resolve':'reopen');save();render();
+      toast(c.resolved?'Ditandai selesai ✓':'Dibuka kembali ↩');closePop();};
+    var unsubBtn=pop.querySelector('.suxc-pop-unsubmit');
+    if(unsubBtn)unsubBtn.onclick=function(){unsubmit(c);closePop();};
+
+    var moreBtn=pop.querySelector('.suxc-thread-morebtn');
+    if(moreBtn)moreBtn.onclick=function(ev){
+      ev.stopPropagation();
+      var textEl=pop.querySelector('.suxc-thread-text');
+      var editEl=pop.querySelector('.suxc-thread-editta');
+      if(!textEl||!editEl)return;
+      var editing=editEl.classList.contains('show');
+      if(editing){textEl.style.display='';editEl.classList.remove('show');}
+      else{
+        editEl.value=c.text||'';textEl.style.display='none';editEl.classList.add('show');editEl.focus();
+        editEl.onkeydown=function(e){
+          if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();
+            var v=editEl.value.trim();if(v){c.text=v;logEvent(c,'edit');save();render();toast('Komen diperbarui ✓');}closePop();}
+          if(e.key==='Escape'){textEl.style.display='';editEl.classList.remove('show');}};
+        editEl.onblur=function(){
+          var v=editEl.value.trim();
+          if(v&&v!==c.text){c.text=v;logEvent(c,'edit');save();render();toast('Komen diperbarui ✓');}};}};
+
+    if(ta&&sendBtn){
+      ta.oninput=function(){sendBtn.disabled=!ta.value.trim();};
+      ta.onkeydown=function(ev){
+        if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();commit();}
+        if(ev.key==='Escape')closePop();};
+      sendBtn.onclick=commit;}
+
+    function commit(){
+      if(!ta)return;var v=ta.value.trim();if(!v)return;
+      var wasNew=isNew;
+      if(isNew){c.text=v;c.ts=Date.now();data.push(c);logEvent(c,'add');}
+      else{c.text=c.text?(c.text+'\n'+v):v;logEvent(c,'edit');}
+      save();render();closePop();
+      toast(wasNew?'Komen ditambah ✓':'Komen diperbarui ✓');}
+
+    function closePop(){
+      document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});clearRects();}
+
+    pop.onclick=function(ev){ev.stopPropagation();};
+    document.body.appendChild(pop);if(ta)ta.focus();}
+
+  if(searchInput)searchInput.oninput=function(){render();};
+
+  function isChrome(t){return t.closest&&(t.closest('#suxc-panel')||t.closest('#suxc-nav')||t.closest('#suxc-zoom')||t.closest('#suxc-fab')||t.closest('.suxc-pop')||t.closest('.suxc-pin'));}
+  document.addEventListener('click',function(ev){if(on&&!spaceDown&&!isChrome(ev.target)){ev.preventDefault();ev.stopPropagation();}},true);
+  document.addEventListener('mousedown',function(ev){
+    if(isChrome(ev.target))return;
+    var doPan=FLOW&&((ev.button===1)||spaceDown||(!on&&ev.button===0));
+    var doCmt=on&&ev.button===0&&!spaceDown;
+    if(!doPan&&!doCmt)return;
+    ev.preventDefault();
+    if(doPan){
+      var sx=ev.clientX,sy=ev.clientY,ox=T.x,oy=T.y;document.body.classList.add('suxc-pan');
+      function pm(e){T.x=ox+(e.clientX-sx);T.y=oy+(e.clientY-sy);applyT();}
+      function pu(){document.removeEventListener('mousemove',pm);document.removeEventListener('mouseup',pu);document.body.classList.remove('suxc-pan');}
+      document.addEventListener('mousemove',pm);document.addEventListener('mouseup',pu);return;}
+    var L0=toLocal(ev.clientX,ev.clientY),rect=null;
+    function mv(e){
+      var L=toLocal(e.clientX,e.clientY),w=Math.abs(L.x-L0.x),h=Math.abs(L.y-L0.y);
+      if(!rect&&(w+h)>6){rect=document.createElement('div');rect.className='suxc-rect live';stage.appendChild(rect);}
+      if(rect){rect.style.left=Math.min(L0.x,L.x)+'px';rect.style.top=Math.min(L0.y,L.y)+'px';rect.style.width=w+'px';rect.style.height=h+'px';}}
+    function up(e){
+      document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);
+      if(rect)rect.remove();
+      var L=toLocal(e.clientX,e.clientY),w=Math.abs(L.x-L0.x),h=Math.abs(L.y-L0.y);
+      var anchorEl=document.elementFromPoint(e.clientX,e.clientY);
+      var fixedSel=anchorEl?findFixedLayer(anchorEl):null;
+      var screenName=anchorEl?findAttrName(anchorEl,'data-screen'):null;
+      var stateName=anchorEl?findAttrName(anchorEl,'data-state'):null;
+      var c={text:'',resolved:false};
+      if(screenName)c.screenName=screenName;
+      if(stateName)c.stateName=stateName;
+      if(fixedSel){
+        c.fixedSel=fixedSel;
+        var vx0=L0.x-scX(),vy0=L0.y-scY();
+        if(w>6&&h>6){c.fx=Math.min(vx0,e.clientX);c.fy=Math.min(vy0,e.clientY);c.fw=Math.abs(e.clientX-vx0);c.fh=Math.abs(e.clientY-vy0);}
+        else{c.fx=e.clientX;c.fy=e.clientY;}
+      }else{
+        var scEl=anchorEl?findScrollContainer(anchorEl):null;
+        var scSel=scEl?selFor(scEl):null;
+        if(scSel){
+          c.scrollSel=scSel;
+          if(getComputedStyle(scEl).position==='static')scEl.style.position='relative';
+          var r=scEl.getBoundingClientRect();
+          var vx0=L0.x-scX(),vy0=L0.y-scY();
+          if(w>6&&h>6){
+            c.sx=Math.min(vx0,e.clientX)-r.left+scEl.scrollLeft;
+            c.sy=Math.min(vy0,e.clientY)-r.top+scEl.scrollTop;
+            c.sw=Math.abs(e.clientX-vx0);c.sh=Math.abs(e.clientY-vy0);
+          }else{
+            c.sx=e.clientX-r.left+scEl.scrollLeft;
+            c.sy=e.clientY-r.top+scEl.scrollTop;
+          }
+        }else{
+          c.x=Math.min(L0.x,L.x);c.y=Math.min(L0.y,L.y);
+          if(w>6&&h>6){c.w=w;c.h=h;}else{c.x=L0.x;c.y=L0.y;}
+        }
+      }
+      c.ctx=ctxFor(c);openEditor(c);}
+    document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);},true);
+
+  document.addEventListener('wheel',function(ev){
+    if(!FLOW)return;if(isChrome(ev.target))return;ev.preventDefault();
+    if(ev.ctrlKey||ev.metaKey){zoomAt(ev.clientX,ev.clientY,T.s*Math.exp(-ev.deltaY*0.0028));}
+    else{T.x-=ev.deltaX;T.y-=ev.deltaY;applyT();}},{passive:false});
+  document.getElementById('suxc-zin').onclick=function(){smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s*1.2);});};
+  document.getElementById('suxc-zout').onclick=function(){smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s/1.2);});};
+  document.getElementById('suxc-zfit').onclick=function(){smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});};
+
+  function typing(t){return t&&(t.tagName==='TEXTAREA'||t.tagName==='INPUT'||t.isContentEditable);}
+  document.addEventListener('keydown',function(ev){
+    if(ev.key==='Escape'){
+      if(!FLOW&&navOpen){hideNav();return;}
+      var pop=document.querySelector('.suxc-pop');
+      if(pop){pop.remove();clearRects();return;}
+      if(on){setOn(false);return;}
+      setPanel(false);return;}
+    if(FLOW&&(ev.ctrlKey||ev.metaKey)){
+      var z=ev.key;
+      if(z==='='||z==='+'){ev.preventDefault();smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s*1.2);});}
+      else if(z==='-'||z==='_'){ev.preventDefault();smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s/1.2);});}
+      else if(z==='0'){ev.preventDefault();smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});}
+      return;}
+    if(typing(ev.target))return;
+    if(FLOW&&(ev.code==='Space'||ev.key===' ')){spaceDown=true;ev.preventDefault();return;}
+    if(ev.ctrlKey||ev.metaKey||ev.altKey)return; // biarkan browser handle (Cmd+S, Cmd+C, dll)
+    var k=ev.key.toLowerCase();
+    if(k==='c'){ev.preventDefault();setOn(!on);}
+    else if(k==='l'){ev.preventDefault();setPanel(panel.classList.contains('closed'));}
+    else if(k==='s'){ev.preventDefault();doSubmit();}
+    else if(k==='a'){ev.preventDefault();approveSubmitted();}
+    else if(k==='g'){ev.preventDefault();doFigma();}
+    else if(FLOW&&k==='0'){ev.preventDefault();smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});}});
+  document.addEventListener('keyup',function(ev){if(ev.code==='Space'||ev.key===' ')spaceDown=false;});
+
+  function doSubmit(){
+    var active=data.filter(function(c){return !c.resolved;});
+    if(!active.length){toast('Belum ada komen aktif');return;}
+    var file=location.pathname.split('/').pop()||'flow';
+    var d=new Date(),pad=function(n){return n<10?'0'+n:n;};
+    var batchId=d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'-'+pad(d.getHours())+pad(d.getMinutes());
+    var head='Revisi dari user di '+file+' (kerjakan sesuai lokasi tiap poin):\n'+
+             'Batch: '+batchId+' ('+active.length+' komen)\n\n';
+    var body=active.map(function(c,i){
+      var loc=c.ctx||(c.fixedSel?('area sekitar x'+Math.round(c.fx)+' y'+Math.round(c.fy)):
+                     c.scrollSel?('area sekitar x'+Math.round(c.sx)+' y'+Math.round(c.sy)):
+                     ('area sekitar x'+Math.round(c.x)+' y'+Math.round(c.y)));
+      var tags=[];
+      if(c.screenName)tags.push('screen: '+c.screenName);
+      if(c.stateName)tags.push('state: '+c.stateName);
+      if(c.fixedSel)tags.push('modal: '+c.fixedSel);
+      else if(c.scrollSel)tags.push('scroll: '+c.scrollSel);
+      var layer=tags.length?(' ['+tags.join(' | ')+']'):'';
+      return (i+1)+'. '+(c.text||'(kosong)')+'\n   ↳ lokasi: '+loc+layer;}).join('\n\n');
+    var foot='\n\n---\nSetelah selesai semua, kasih tau user: "Done batch '+batchId+'. Cek hasil dan klik Approve di overlay buat resolve semua pin submitted."';
+    var t=head+body+foot;
+    function markSubmitted(){active.forEach(function(c){c.submitted=true;c.batchId=batchId;});save();render();}
+    navigator.clipboard.writeText(t).then(function(){markSubmitted();toast(active.length+' komen tersalin ✔ marked submitted');},
+      function(){prompt('Copy komen ini, paste ke chat:',t);markSubmitted();});}
+  function approveSubmitted(){
+    var sub=data.filter(function(c){return c.submitted&&!c.resolved;});
+    if(!sub.length){toast('Nggak ada pin submitted');return;}
+    if(!confirm('Approve & resolve '+sub.length+' pin submitted?'))return;
+    sub.forEach(function(c){c.resolved=true;c.submitted=false;logEvent(c,'resolve');});
+    save();render();toast(sub.length+' pin resolved ✓');}
+  function unsubmit(c){c.submitted=false;delete c.batchId;save();render();toast('Pin dikembalikan ke draft');}
+  document.getElementById('suxc-submit').onclick=doSubmit;
+  var _apBtn=document.getElementById('suxc-approve');if(_apBtn)_apBtn.onclick=approveSubmitted;
+
+  // ── GENERATE FIGMA ──
+  function extractTree(rootEl){
+    function dirText(el){var t='';for(var i=0;i<el.childNodes.length;i++){var n=el.childNodes[i];if(n.nodeType===3){var s=n.textContent.trim();if(s)t+=(t?' ':'')+s;}}return t;}
+    function st(cs){return{backgroundColor:cs.backgroundColor,backgroundImage:cs.backgroundImage,borderTopLeftRadius:parseFloat(cs.borderTopLeftRadius)||0,borderTopRightRadius:parseFloat(cs.borderTopRightRadius)||0,borderBottomRightRadius:parseFloat(cs.borderBottomRightRadius)||0,borderBottomLeftRadius:parseFloat(cs.borderBottomLeftRadius)||0,borderTopWidth:parseFloat(cs.borderTopWidth)||0,borderRightWidth:parseFloat(cs.borderRightWidth)||0,borderBottomWidth:parseFloat(cs.borderBottomWidth)||0,borderLeftWidth:parseFloat(cs.borderLeftWidth)||0,borderTopColor:cs.borderTopColor,borderRightColor:cs.borderRightColor,borderBottomColor:cs.borderBottomColor,borderLeftColor:cs.borderLeftColor,boxShadow:cs.boxShadow,opacity:parseFloat(cs.opacity),overflow:cs.overflow};}
+    function ts(cs){return{fontFamily:cs.fontFamily.split(',')[0].replace(/['"]/g,'').trim(),fontSize:parseFloat(cs.fontSize),fontWeight:parseInt(cs.fontWeight),color:cs.color,lineHeight:cs.lineHeight==='normal'?Math.round(parseFloat(cs.fontSize)*1.4):parseFloat(cs.lineHeight),textAlign:cs.textAlign,letterSpacing:cs.letterSpacing==='normal'?0:parseFloat(cs.letterSpacing)};}
+    function lay(cs){var d=cs.display||'';if(d.indexOf('flex')<0)return null;return{display:'flex',flexDirection:cs.flexDirection||'row',flexWrap:cs.flexWrap||'nowrap',justifyContent:cs.justifyContent||'flex-start',alignItems:cs.alignItems||'stretch',rowGap:parseFloat(cs.rowGap)||0,columnGap:parseFloat(cs.columnGap)||0,pt:parseFloat(cs.paddingTop)||0,pr:parseFloat(cs.paddingRight)||0,pb:parseFloat(cs.paddingBottom)||0,pl:parseFloat(cs.paddingLeft)||0};}
+    function skip(el){var id=el.id||'';if(id.indexOf('suxc-')===0)return true;if(el.classList){for(var _i=0;_i<el.classList.length;_i++){if(el.classList[_i].indexOf('suxc-')===0)return true;}}return false;}
+    function ex(el,pr,pe){
+      if(skip(el))return null;
+      var r=el.getBoundingClientRect();if(r.width<=0||r.height<=0)return null;
+      var cs=getComputedStyle(el);if(cs.display==='none'||cs.visibility==='hidden')return null;
+      var tag=el.tagName.toLowerCase(),cn=el.classList.length>0?el.classList[0]:'',id=el.id||'';
+      var nm=id||cn||tag,pos=cs.position;
+      var sl=pe?pe.scrollLeft:0,st2=pe?pe.scrollTop:0,px=pr?pr.left:0,py=pr?pr.top:0;
+      var x=r.left-px+sl,y=r.top-py+st2,w=r.width,h=r.height;
+      if(tag==='svg')return{type:'SVG',name:cn||'svg',x:x,y:y,width:w,height:h,pos:pos,svg:el.outerHTML};
+      if(tag==='img'){var du=null;try{var cv=document.createElement('canvas');cv.width=el.naturalWidth||w;cv.height=el.naturalHeight||h;cv.getContext('2d').drawImage(el,0,0);du=cv.toDataURL('image/png');}catch(e){}return{type:'IMAGE',name:el.alt||'image',x:x,y:y,width:w,height:h,pos:pos,src:el.src,dataUrl:du};}
+      var hasKids=el.children.length>0,dt=dirText(el);
+      if(!hasKids&&dt){var pl=parseFloat(cs.paddingLeft)||0,pt=parseFloat(cs.paddingTop)||0,prr=parseFloat(cs.paddingRight)||0,pb=parseFloat(cs.paddingBottom)||0;
+        var hasPad=pl>0||pt>0||prr>0||pb>0,hasBg=cs.backgroundColor!=='rgba(0, 0, 0, 0)'&&cs.backgroundColor!=='transparent';
+        if(hasPad||hasBg)return{type:'FRAME',name:nm,x:x,y:y,width:w,height:h,pos:pos,styles:st(cs),children:[{type:'TEXT',name:dt.slice(0,40),text:dt,x:pl,y:pt,width:Math.max(1,w-pl-prr),height:Math.max(1,h-pt-pb),textStyles:ts(cs)}]};
+        return{type:'TEXT',name:dt.slice(0,40),text:dt,x:x,y:y,width:w,height:h,pos:pos,styles:st(cs),textStyles:ts(cs)};}
+      var node={type:'FRAME',name:nm,x:x,y:y,width:w,height:h,pos:pos,styles:st(cs),layout:lay(cs),children:[]};
+      for(var i=0;i<el.childNodes.length;i++){var ch=el.childNodes[i];
+        if(ch.nodeType===1){var cl=ex(ch,r,el);if(cl)node.children.push(cl);}
+        else if(ch.nodeType===3&&ch.textContent.trim()){var rg=document.createRange();rg.selectNodeContents(ch);var tr=rg.getBoundingClientRect();
+          if(tr.width>0&&tr.height>0)node.children.push({type:'TEXT',name:ch.textContent.trim().slice(0,40),text:ch.textContent.trim(),x:tr.left-r.left,y:tr.top-r.top,width:tr.width,height:tr.height,textStyles:ts(cs)});}}
+      return node;}
+    return ex(rootEl,null,null);}
+  function topScreens(){var all=[].slice.call(document.querySelectorAll('[data-screen]'));return all.filter(function(e){return !e.parentElement||!e.parentElement.closest('[data-screen]');});}
+  function buildFigmaPayload(){
+    var screens=topScreens();
+    if(screens.length>=2){
+      var names=screens.map(function(e){return e.getAttribute('data-screen')||'screen';});
+      var trees=[],edges=[],hasExplicit=false;
+      screens.forEach(function(e,i){var t=extractTree(e);if(t){t.name=names[i];trees.push({name:names[i],tree:t});}
+        var nx=e.getAttribute('data-flow-next');
+        if(nx){hasExplicit=true;nx.split(',').forEach(function(to){to=to.trim();if(to)edges.push({from:names[i],to:to,label:e.getAttribute('data-flow-label')||''});});}});
+      if(!hasExplicit)for(var i=0;i<trees.length-1;i++)edges.push({from:trees[i].name,to:trees[i+1].name,label:''});
+      return{type:'FLOW',name:(location.pathname.split('/').pop()||'flow').replace(/\.html?$/i,''),screens:trees,edges:edges};}
+    var root=document.querySelector('.app-layout')||(stage&&stage.firstElementChild)||document.body;
+    return extractTree(root);}
+  function doFigma(){
+    var chrome=[];
+    ['suxc-nav','suxc-panel','suxc-zoom','suxc-toast','suxc-fab'].forEach(function(id){var e=document.getElementById(id);if(e)chrome.push(e);});
+    [].forEach.call(document.querySelectorAll('.suxc-pin,.suxc-rect,.suxc-pop'),function(e){chrome.push(e);});
+    var prev=chrome.map(function(e){return e.style.display;});
+    chrome.forEach(function(e){e.style.display='none';});
+    var hadOn=document.body.classList.contains('suxc-on');if(hadOn)document.body.classList.remove('suxc-on');
+    function restore(){chrome.forEach(function(e,i){e.style.display=prev[i];});if(hadOn)document.body.classList.add('suxc-on');}
+    var pT,pTs;
+    if(FLOW){pT=stage.style.transform;pTs=stage.style.transition;stage.style.transition='none';stage.style.transform='none';void stage.offsetWidth;}
+    var stickyOverrides=[];[].forEach.call(document.querySelectorAll('*'),function(el){var p=getComputedStyle(el).position;if(p==='sticky'||p==='-webkit-sticky'){stickyOverrides.push([el,el.style.position]);el.style.position='relative';}});
+    var screenReveal=[];[].forEach.call(document.querySelectorAll('[data-screen]'),function(el){var cs=getComputedStyle(el);if(cs.display==='none'){screenReveal.push([el,el.style.display,'d']);el.style.display=el.getAttribute('data-screen-display')||'flex';}else if(cs.visibility==='hidden'){screenReveal.push([el,el.style.visibility,'v']);el.style.visibility='visible';}});
+    if(screenReveal.length)void document.body.offsetWidth;
+    var payload;try{payload=buildFigmaPayload();}catch(e){payload=null;}
+    screenReveal.forEach(function(item){if(item[2]==='d')item[0].style.display=item[1];else item[0].style.visibility=item[1];});
+    stickyOverrides.forEach(function(item){item[0].style.position=item[1];});
+    if(FLOW){stage.style.transform=pT;stage.style.transition=pTs;}
+    if(!payload){restore();toast('Gagal ekstrak — konten kosong');return;}
+    function cnt(n){if(!n)return 0;var c=1;(n.children||[]).forEach(function(k){c+=cnt(k);});return c;}
+    var total,extra;
+    if(payload.type==='FLOW'){total=payload.screens.reduce(function(a,s){return a+cnt(s.tree);},0);extra=payload.screens.length+' screen + '+payload.edges.length+' panah';}
+    else{total=cnt(payload);extra='1 screen';}
+    var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var name=(location.pathname.split('/').pop()||'ui').replace(/\.html?$/i,'')+'.figma.json';
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
+    document.body.appendChild(a);a.click();a.remove();
+    restore();toast(total+' layer · '+extra+' → '+name+' · overlay balik ✓');}
+  window.suxcGenerateFigma=doFigma;
+  var _fSrc=document.body.getAttribute('data-figma-src');
+  if(_fSrc){document.getElementById('suxc-figma').onclick=function(){window.open(_fSrc,'_blank');};}
+  else{document.getElementById('suxc-figma').onclick=doFigma;}
+
+  // ── FAB (prototype) ──
+  var navOpen=false;
+  function placeNav(){
+    nav.classList.add('suxc-asmenu');nav.style.display='flex';nav.style.left='-9999px';nav.style.top='0px';
+    var nw=nav.offsetWidth,nh=nav.offsetHeight,fr=fab.getBoundingClientRect();
+    var L=fr.right-nw;if(L<8)L=8;if(L+nw>window.innerWidth-8)L=window.innerWidth-8-nw;
+    var Tp=fr.top-nh-12;if(Tp<8)Tp=fr.bottom+12;if(Tp+nh>window.innerHeight-8)Tp=Math.max(8,window.innerHeight-8-nh);
+    nav.style.left=L+'px';nav.style.top=Tp+'px';}
+  function showNav(){placeNav();navOpen=true;}
+  function hideNav(){nav.style.display='none';navOpen=false;}
+  function setupFab(){
+    var zoomEl=document.getElementById('suxc-zoom');if(zoomEl)zoomEl.style.display='none';
+    nav.style.display='none';fab.classList.add('show');
+    try{var fp=JSON.parse(localStorage.getItem('suxc:fab')||'null');}catch(e){fp=null;}
+    if(fp&&typeof fp.l==='number'){fab.style.left=fp.l+'px';fab.style.top=fp.t+'px';fab.style.right='auto';fab.style.bottom='auto';}
+    fab.addEventListener('mousedown',function(ev){
+      if(ev.button!==0)return;ev.preventDefault();
+      var sx=ev.clientX,sy=ev.clientY,fr=fab.getBoundingClientRect(),ox=ev.clientX-fr.left,oy=ev.clientY-fr.top,moved=false;
+      function mm(e){if(!moved&&Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4){moved=true;fab.classList.add('drag');}
+        if(moved){var l=Math.min(Math.max(4,e.clientX-ox),window.innerWidth-fab.offsetWidth-4);var t=Math.min(Math.max(4,e.clientY-oy),window.innerHeight-fab.offsetHeight-4);fab.style.left=l+'px';fab.style.top=t+'px';fab.style.right='auto';fab.style.bottom='auto';if(navOpen)placeNav();}}
+      function mu(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);fab.classList.remove('drag');
+        if(moved){var f2=fab.getBoundingClientRect();try{localStorage.setItem('suxc:fab',JSON.stringify({l:Math.round(f2.left),t:Math.round(f2.top)}));}catch(e){}}
+        else{navOpen?hideNav():showNav();}}
+      document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+    nav.addEventListener('click',function(ev){if(ev.target.closest&&ev.target.closest('button'))setTimeout(hideNav,0);});
+    document.addEventListener('mousedown',function(ev){if(navOpen&&ev.target.closest&&!ev.target.closest('#suxc-nav')&&!ev.target.closest('#suxc-fab'))hideNav();},true);}
+  function initStates(){
+    [].forEach.call(document.querySelectorAll('[data-states]'),function(container,idx){
+      var states=[].slice.call(container.querySelectorAll(':scope>[data-state]'));
+      if(!states.length)return;
+      if(getComputedStyle(container).position==='static')container.style.position='relative';
+      var cur=0;
+      states.forEach(function(s,i){if(s.getAttribute('data-state')==='default')cur=i;});
+      // widget
+      var widget=document.createElement('div');widget.className='suxc-sw';
+      var pill=document.createElement('div');pill.className='suxc-sw-pill';
+      var dot=document.createElement('span');dot.className='suxc-sw-dot';
+      var lbl=document.createElement('span');
+      pill.appendChild(dot);pill.appendChild(lbl);
+      var pop=document.createElement('div');pop.className='suxc-sw-pop';
+      var head=document.createElement('div');head.className='suxc-sw-head';head.textContent='Pilih State';
+      pop.appendChild(head);
+      widget.appendChild(pill);widget.appendChild(pop);
+      document.body.appendChild(widget);
+      // restore or set initial position
+      (function(){var key='suxc:sw:'+idx;var saved=null;try{saved=JSON.parse(localStorage.getItem(key)||'null');}catch(e){}
+        if(saved&&typeof saved.l==='number'){widget.style.left=saved.l+'px';widget.style.top=saved.t+'px';}
+        else{requestAnimationFrame(function(){widget.style.left='24px';widget.style.top=Math.max(8,window.innerHeight-widget.offsetHeight-24)+'px';});}})();
+      var popOpen=false;
+      function activate(idx){
+        states.forEach(function(s,i){s.style.display=i===idx?'':'none';});
+        cur=idx;
+        var name=states[idx].getAttribute('data-state');
+        var isDefault=(name==='default'||idx===0&&name!=='default'&&!states.some(function(s){return s.getAttribute('data-state')==='default';}));
+        if(name==='default'){lbl.textContent='State';dot.classList.remove('on');}
+        else{lbl.textContent=name.charAt(0).toUpperCase()+name.slice(1)+' Active';dot.classList.add('on');}
+        // update items
+        [].forEach.call(pop.querySelectorAll('.suxc-sw-item'),function(el,i){
+          el.classList.toggle('active',i===idx);});}
+      function buildPop(){
+        var old=[].slice.call(pop.querySelectorAll('.suxc-sw-item'));
+        old.forEach(function(el){el.parentNode.removeChild(el);});
+        states.forEach(function(s,i){
+          var name=s.getAttribute('data-state');
+          var item=document.createElement('div');item.className='suxc-sw-item'+(i===cur?' active':'');
+          var nm=document.createElement('span');nm.textContent=name.charAt(0).toUpperCase()+name.slice(1);
+          var ck=document.createElement('span');ck.className='suxc-sw-check';ck.textContent='✓';
+          item.appendChild(nm);item.appendChild(ck);
+          item.addEventListener('mousedown',function(e){e.stopPropagation();});
+          item.addEventListener('click',function(e){e.stopPropagation();activate(i);closePop();});
+          pop.appendChild(item);});}
+      function openPop(){buildPop();pop.classList.add('open');popOpen=true;
+        var pr=pop.getBoundingClientRect();
+        if(pr.bottom>window.innerHeight-8){pop.style.top='auto';pop.style.bottom='calc(100% + 7px)';}
+        else{pop.style.top='calc(100% + 7px)';pop.style.bottom='auto';}}
+      function closePop(){pop.classList.remove('open');popOpen=false;}
+      // drag + click on pill
+      pill.addEventListener('mousedown',function(e){
+        if(e.button!==0)return;e.preventDefault();
+        var wr=widget.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,ox=e.clientX-wr.left,oy=e.clientY-wr.top,moved=false;
+        function mm(e){if(!moved&&Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4){moved=true;pill.classList.add('drag');}
+          if(moved){widget.style.left=Math.max(0,Math.min(e.clientX-ox,window.innerWidth-widget.offsetWidth))+'px';widget.style.top=Math.max(0,Math.min(e.clientY-oy,window.innerHeight-widget.offsetHeight))+'px';}}
+        function mu(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);pill.classList.remove('drag');
+          if(moved){try{localStorage.setItem('suxc:sw:'+idx,JSON.stringify({l:Math.round(parseFloat(widget.style.left)),t:Math.round(parseFloat(widget.style.top))}));}catch(e){}}
+          else{popOpen?closePop():openPop();}}
+        document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+      document.addEventListener('mousedown',function(e){if(popOpen&&!widget.contains(e.target))closePop();},true);
+      activate(cur);});}
+  if(!FLOW){setupFab();initStates();}
+  applyT();render();
+  // Re-render fixed-layer pins when modal/popup visibility changes
+  try{var _mo=new MutationObserver(function(){
+    if(!data.some(function(c){return c.fixedSel||c.screenName||c.stateName;}))return;
+    if(_mo._rt)return;_mo._rt=setTimeout(function(){_mo._rt=null;render();},80);});
+    _mo.observe(document.body,{attributes:true,subtree:true,attributeFilter:['class','style']});}catch(e){}
+})();
+</script>
+</body>
+</html>
