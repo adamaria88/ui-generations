@@ -6,27 +6,6 @@ Skill Claude Code untuk generate prototype HTML dari Design System Aurora. Dipak
 
 Selalu **Bahasa Indonesia santai/awam**, kalimat pendek, hindari jargon. Opsi berlabel ([1]/[2]) > pertanyaan terbuka panjang.
 
-## Publish Link Publik (hosting ROG)
-
-Kalau user minta hasil generate UI **dibikin link publik** — trigger: "buat link public", "open public", "jadiin link", "publish", "share link", "biar bisa diakses orang" — JALANIN:
-
-```bash
-./scripts/publish-public.sh <path di _output>
-```
-
-Contoh:
-```bash
-./scripts/publish-public.sh invoice-pembelian/02-ui.html   # 1 file
-./scripts/publish-public.sh invoice-pembelian              # 1 folder (semua html dapat link)
-```
-
-Script ngirim file ke ROG (lewat SSH→WSL2) ke folder static dashboard yang udah ke-expose Tailscale Funnel, lalu balikin URL `https://adam-1.tailc9cc10.ts.net/ui/...`. **Langsung kasih URL-nya ke user** — itu link final yang bisa di-share ke siapa aja (akses bebas, gak perlu login).
-
-- Path HARUS di dalam `_output/`. Kalau user nyebut file yang barusan di-generate, pakai path itu.
-- Re-run script = overwrite (update file lama di link yang sama).
-- Backend (route `/ui/` di repo `claude-telegram-bot` + Funnel ROG) udah disetup permanen — JANGAN bikin tunnel/server baru.
-- Detail lengkap: `paper-designer/memory/shared/publish-public-link.md`
-
 ## Known Bugs (active)
 
 - **Overlay screenReveal** — hidden `[data-screen]` di-force `display:flex` saat Figma export. Sudah difix tapi belum confirmed working (user bilang masih broken). Detail: `paper-designer/memory/shared/overlay-screenfigma-bugs.md`
@@ -56,6 +35,7 @@ Baca file ini hanya kalau konteks butuh — JANGAN auto-load:
 - Project overview/onboarding → `paper-designer/memory/shared/senior-uiux-designer-concept.md`
 - Style Learner agent docs → `paper-designer/memory/shared/style-learner-agent.md`
 - Showcase audit status → `paper-designer/memory/shared/showcase-audit-status.md`
+- **Figma → HTML mirror method (SOP)** → `paper-designer/memory/shared/figma-mirror-method.md` — WAJIB baca saat user share link Figma + minta direproduksi jadi HTML. Baca dari node tree + copas aset, JANGAN eyeball.
 
 ## Knowledge Library — Buku UIUX + Artikel (LAZY, opt-in trigger)
 
