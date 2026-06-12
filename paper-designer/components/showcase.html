@@ -2626,6 +2626,17 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
            ((ox==='auto'||ox==='scroll')&&el.scrollWidth>el.clientWidth+4))return el;}
       el=el.parentElement;}
     return null;}
+  function findAttrName(el,attr){
+    while(el&&el!==document.body&&el!==document.documentElement){
+      if(el.nodeType===1&&el.hasAttribute&&el.hasAttribute(attr))return el.getAttribute(attr);
+      el=el.parentElement;}
+    return null;}
+  function isAttrActive(attr,name){
+    if(!name)return true;
+    var els=document.querySelectorAll('['+attr+'="'+name.replace(/"/g,'\\"')+'"]');
+    for(var i=0;i<els.length;i++){var cs=getComputedStyle(els[i]);
+      if(cs.display!=='none'&&cs.visibility!=='hidden')return true;}
+    return false;}
   function selFor(el){
     if(!el)return null;
     if(el.id&&el.id.indexOf('suxc-')!==0)return'#'+el.id;
@@ -2687,7 +2698,7 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
   var fileName=(location.pathname.split('/').pop()||'page').replace(/\.html?$/i,'');
 
   function render(){
-    document.querySelectorAll('.suxc-pin,.suxc-pop,.suxc-rect:not(.live)').forEach(function(e){e.remove();});
+    document.querySelectorAll('.suxc-pin,.suxc-rect:not(.live)').forEach(function(e){e.remove();});
     var list=document.getElementById('suxc-list');list.innerHTML='';
     var openCount=data.filter(function(c){return !c.resolved;}).length;
     var subCount=data.filter(function(c){return c.submitted&&!c.resolved;}).length;
@@ -2717,7 +2728,9 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
     sorted.forEach(function(entry,si){
       var c=entry.c, num=si+1;
       // pin — hanya unresolved
-      if(!c.resolved){
+      // Filter: pin terikat ke [data-screen]/[data-state] hanya muncul saat layer-nya active
+      var layerOk=isAttrActive('data-screen',c.screenName)&&isAttrActive('data-state',c.stateName);
+      if(!c.resolved&&layerOk){
         if(c.fixedSel){
           var lyr=document.querySelector(c.fixedSel);
           if(lyr){var lcs=getComputedStyle(lyr);
@@ -2727,14 +2740,14 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
               p.onmousedown=function(ev){
                 ev.stopPropagation();ev.preventDefault();
                 var sx=ev.clientX,sy=ev.clientY,moved=false;
-                function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4)moved=true;
+                function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>10)moved=true;
                   if(moved){c.fx=e.clientX;c.fy=e.clientY;
                     p.style.left=c.fx+'px';p.style.top=c.fy+'px';
                     document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
                 function upH(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',upH);
                   if(moved){save();render();}else{openEditor(c);}}
                 document.addEventListener('mousemove',mv);document.addEventListener('mouseup',upH);};
-              p.onmouseenter=function(){if(on)openEditor(c);};
+              p.onmouseenter=function(){if(on&&!document.querySelector('.suxc-pop'))openEditor(c);};
               document.body.appendChild(p);}}
         }else if(c.scrollSel){
           var sc=document.querySelector(c.scrollSel);
@@ -2745,7 +2758,7 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
             p.onmousedown=(function(scEl){return function(ev){
               ev.stopPropagation();ev.preventDefault();
               var sx=ev.clientX,sy=ev.clientY,moved=false;
-              function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4)moved=true;
+              function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>10)moved=true;
                 if(moved){var rr=scEl.getBoundingClientRect();
                   c.sx=e.clientX-rr.left+scEl.scrollLeft;c.sy=e.clientY-rr.top+scEl.scrollTop;
                   p.style.left=c.sx+'px';p.style.top=c.sy+'px';
@@ -2753,7 +2766,7 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
               function upH(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',upH);
                 if(moved){save();render();}else{openEditor(c);}}
               document.addEventListener('mousemove',mv);document.addEventListener('mouseup',upH);};})(sc);
-            p.onmouseenter=function(){if(on)openEditor(c);};
+            p.onmouseenter=function(){if(on&&!document.querySelector('.suxc-pop'))openEditor(c);};
             sc.appendChild(p);}
         }else{
           var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
@@ -2761,14 +2774,14 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
           p.onmousedown=function(ev){
             ev.stopPropagation();ev.preventDefault();
             var sx=ev.clientX,sy=ev.clientY,moved=false;
-            function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4)moved=true;
+            function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>10)moved=true;
               if(moved){var L=toLocal(e.clientX,e.clientY);c.x=L.x;c.y=L.y;
                 p.style.left=c.x+'px';p.style.top=c.y+'px';
                 document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
             function up(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);
               if(moved){save();render();}else{openEditor(c);}}
             document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);};
-          p.onmouseenter=function(){if(on)openEditor(c);};
+          p.onmouseenter=function(){if(on&&!document.querySelector('.suxc-pop'))openEditor(c);};
           stage.appendChild(p);}}
 
       // panel card — search filter
@@ -2831,8 +2844,12 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
         '</div>';}
 
     var locTxt=(c.ctx||'').replace(/</g,'&lt;');
-    var layerLbl=c.fixedSel?(c.fixedSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1')):
-                 (c.scrollSel?(c.scrollSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1')):'');
+    var layerParts=[];
+    if(c.screenName)layerParts.push(c.screenName);
+    if(c.stateName)layerParts.push(c.stateName);
+    if(c.fixedSel)layerParts.push(c.fixedSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1'));
+    else if(c.scrollSel)layerParts.push(c.scrollSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1'));
+    var layerLbl=layerParts.join(' · ');
     var locLine=(locTxt||layerLbl)?
       ('<div class="suxc-pop-loc">'+
         '<svg class="suxc-pop-loc-ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'+
@@ -2944,7 +2961,11 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
       var L=toLocal(e.clientX,e.clientY),w=Math.abs(L.x-L0.x),h=Math.abs(L.y-L0.y);
       var anchorEl=document.elementFromPoint(e.clientX,e.clientY);
       var fixedSel=anchorEl?findFixedLayer(anchorEl):null;
+      var screenName=anchorEl?findAttrName(anchorEl,'data-screen'):null;
+      var stateName=anchorEl?findAttrName(anchorEl,'data-state'):null;
       var c={text:'',resolved:false};
+      if(screenName)c.screenName=screenName;
+      if(stateName)c.stateName=stateName;
       if(fixedSel){
         c.fixedSel=fixedSel;
         var vx0=L0.x-scX(),vy0=L0.y-scY();
@@ -3020,7 +3041,12 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
       var loc=c.ctx||(c.fixedSel?('area sekitar x'+Math.round(c.fx)+' y'+Math.round(c.fy)):
                      c.scrollSel?('area sekitar x'+Math.round(c.sx)+' y'+Math.round(c.sy)):
                      ('area sekitar x'+Math.round(c.x)+' y'+Math.round(c.y)));
-      var layer=c.fixedSel?(' [layer: '+c.fixedSel+']'):(c.scrollSel?(' [scroll: '+c.scrollSel+']'):'');
+      var tags=[];
+      if(c.screenName)tags.push('screen: '+c.screenName);
+      if(c.stateName)tags.push('state: '+c.stateName);
+      if(c.fixedSel)tags.push('modal: '+c.fixedSel);
+      else if(c.scrollSel)tags.push('scroll: '+c.scrollSel);
+      var layer=tags.length?(' ['+tags.join(' | ')+']'):'';
       return (i+1)+'. '+(c.text||'(kosong)')+'\n   ↳ lokasi: '+loc+layer;}).join('\n\n');
     var foot='\n\n---\nSetelah selesai semua, kasih tau user: "Done batch '+batchId+'. Cek hasil dan klik Approve di overlay buat resolve semua pin submitted."';
     var t=head+body+foot;
@@ -3203,11 +3229,14 @@ body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
   applyT();render();
   // Re-render fixed-layer pins when modal/popup visibility changes
   try{var _mo=new MutationObserver(function(){
-    if(!data.some(function(c){return c.fixedSel;}))return;
+    if(!data.some(function(c){return c.fixedSel||c.screenName||c.stateName;}))return;
     if(_mo._rt)return;_mo._rt=setTimeout(function(){_mo._rt=null;render();},80);});
     _mo.observe(document.body,{attributes:true,subtree:true,attributeFilter:['class','style']});}catch(e){}
 })();
 </script>
+
+
+
 
 
 

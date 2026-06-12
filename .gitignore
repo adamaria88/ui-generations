@@ -2,3 +2,12 @@ node_modules/
 .DS_Store
 *.log
 paper-designer/figma-export/*.json
+
+# Prototype output — disposable, regenerate dari Figma on-the-fly (BUKAN sumber kebenaran).
+# CATATAN: file _output/ yg UDAH ke-track (reference hidup yg ditunjuk rules:
+# expense-management, audit, learning/*-review + konflik-buku, _figma-test, tagih-invoice)
+# tetep ke-track — gitignore ga nge-untrack file yg udah masuk. Yg baru-generate → ke-ignore.
+_output/
+
+# Output skill brainstorming (BMAD) — artifact sesi
+_bmad-output/
