@@ -192,6 +192,26 @@
 
 ---
 
+### Override: Button hijau "Tambah Baris" (varian hijau TIDAK ADA di Aurora)
+
+- **Aurora spec:** `au-btn` di `aurora/projects/ui/button/button.component.scss` — `ButtonType` cuma `primary | secondary | tertiary | tertiary-plain` (+ `destructive` internal). **TIDAK ada varian hijau/success.**
+- **Override jadi:** Button pill hijau (warna `--green`, brand success) untuk aksi "Tambah Baris" di form line-item. Struktur tetap ikut Aurora button base (radius-full, padding 8px 16px, font 14px/500, gap 8px, shadow stack) — cuma background yang custom hijau.
+- **Alasan:** Figma SI Invoice (file `w3Tv03Zm8qMAcXAfDkxmff`) menampilkan tombol "Tambah Baris" warna hijau. Mirror method = setia ke Figma. Aurora button belum punya varian hijau → kandidat develop di DS (success button) ke depannya.
+- **Approved by:** user (design.paper.id) on 2026-06-11
+- **Class CSS di output:** `.btn-add.green` di `_output/sales-invoice/si-full.html`
+
+---
+
+### Override: Rich-text toolbar icons (formatting icons TIDAK ADA di Aurora)
+
+- **Aurora spec:** `aurora/projects/ui/icons/assets/` (846 ikon) — **TIDAK ada** Bold / Italic / Underline / ordered-list / unordered-list / format-selector. Aurora icon set ga cover formatting/editor icons.
+- **Override jadi:** Ikon toolbar rich-text (Quill editor) di-**copas dari aset Figma** node `1:22024` ("Editors"): `ic-fmt-bold.svg`, `ic-fmt-italic.svg`, `ic-fmt-underline.svg`, `ic-fmt-ol.svg`, `ic-fmt-ul.svg`, `ic-fmt-selector.svg`. Toolbar style: bg `#f6f6f6`, border `#d2d2d2` (dari Figma). Font label "Normal"/"Sans Serif" = Roboto 14px.
+- **Alasan:** Komponen rich-text editor (Keterangan / Syarat & Ketentuan) butuh formatting icons yang ga ada di Aurora. Mirror method = copas aset Figma, bukan ngarang glyph teks. Kandidat: tambah formatting icon set ke Aurora kalau editor jadi komponen resmi.
+- **Approved by:** user (design.paper.id) on 2026-06-11
+- **Class CSS di output:** `.editor .tbar .fmt img` + `.editor .tbar .sel img` di `_output/sales-invoice/si-full.html`
+
+---
+
 ## Hubungan dengan Aurora Lookup Ritual
 
 - Mekanisme 1 (Pre-coding lookup) → kalau hasilnya ❌ TIDAK ADA → STOP & lapor user → user pilih (a/b/c)
