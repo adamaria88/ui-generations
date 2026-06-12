@@ -7,7 +7,131 @@ Memory disimpan di: `paper-designer/memory/<slug-fitur>.md`.
 
 ---
 
-## LANGKAH 0 — Routing (Tweak vs Full)
+## ⛔ ANTI-STUCK PROTOCOL (baca duluan, WAJIB dipatuhi)
+
+> **Kenapa ada section ini:** Claude sering stuck/interrupt saat generate prototype karena over-read sebelum nulis + Write file gede sekaligus. Protokol ini biar setiap tool call survivable dan setiap interrupt recoverable.
+
+### Read Budget (sebelum Write pertama)
+
+- **MAX 3 file read** sebelum mulai Write. Prioritas: brief user → `ds/ds-core.md` → memory terkait.
+- **`rules/design-rules.md` > 500 baris** — JANGAN read full. Baca section spesifik aja pakai `Read` dengan `offset` + `limit`. Header/index biasanya di baris 1-150.
+- **Aurora SCSS source (`/Users/working/aurora/projects/ui/...`)** — DILARANG read full file saat generate prototype. Pakai class name dari `ds-core.md`. Kalau bener-bener butuh detail value: `grep` aja, jangan `Read` full.
+- **LAZY file di CLAUDE.md** — read on-demand, hanya kalau konteks butuh.
+
+### Write/Edit Size Budget
+
+- **Write pertama = skeleton only**, max ~80 baris. Cuma struktur HTML kosong + slot/placeholder per section.
+- **Edit per section**, max 150 baris per pair. 1 screen = 1 Edit call. Script block = Edit terpisah. CSS overrides = Edit terpisah.
+- **Hindari satu Write besar** (>500 baris) — guaranteed timeout/interrupt risk.
+
+### Skeleton-First Pattern (wajib untuk prototype)
+
+```
+1. Write  → 02-ui.html skeleton (~80 baris)
+            <html><head>...</head><body>
+              <!-- SLOT: sidemenu -->
+              <!-- SLOT: nav-header -->
+              <!-- SLOT: screen-1 (Daftar X) -->
+              <!-- SLOT: screen-2 (Form X) -->
+              <!-- SLOT: scripts -->
+              <!-- SUXC:overlay -->
+            </body></html>
+2. Edit   → fill sidemenu
+3. Edit   → fill nav-header
+4. Edit   → fill screen-1 (data-states + content)
+5. Edit   → fill screen-2
+6. Edit   → fill scripts
+7. Run inject script untuk overlay
+```
+
+Interrupt? Skeleton + section yang udah ke-fill tetap ada. Tinggal lanjut Edit berikutnya.
+
+### Checkpoint Pattern
+
+Setelah tiap Edit besar, kasih comment singkat ke user: `✓ sidemenu (47 baris) → next: nav-header`. Kalau interrupt, user tau persis posisi terakhir.
+
+### Anti-pattern (DILARANG)
+
+- ❌ Read 5+ file sebelum Write pertama
+- ❌ Read Aurora SCSS source saat generate prototype
+- ❌ Read full `design-rules.md` (838 baris)
+- ❌ Satu Write file 2000+ baris langsung
+- ❌ Read file LAZY (lihat CLAUDE.md) tanpa alasan jelas
+
+---
+
+## ⛔ OVERLAY INJECTION (HARGA MATI — TIDAK BOLEH SKIP)
+
+**Setiap HTML yang lo generate WAJIB ada overlay-nya.** Tanpa overlay, user nggak bisa komen, nggak bisa Submit, nggak bisa Generate Figma — workflow Paper Designer mati.
+
+### Aturan absolut
+
+1. **Marker WAJIB ditulis** — taruh `<!--SUXC:overlay-->` tepat sebelum `</body>` di SETIAP file HTML yang lo generate. Berlaku untuk:
+   - `01-flow.html`
+   - `02-ui.html`
+   - Semua varian: `02-ui-aurora.html`, `03-figma.html`, dst
+   - File HTML lain yang masuk workflow Paper Designer
+
+2. **Inject script WAJIB di-run** setelah generate file selesai (sebelum lapor ke user):
+   ```bash
+   python3 /Users/working/ui-generations/.claude/skills/senior-uiux-designer/inject-components.py <absolute-path-to-file.html>
+   ```
+   Script ini mengganti `<!--SUXC:overlay-->` marker dengan isi `paper-designer/components/overlay.html` terkini, **plus auto-insert favicon** ke `<head>` kalau belum ada. Selalu pakai overlay versi engine yang lagi committed — JANGAN copy paste manual.
+
+3. **Verify setelah inject** — quick grep untuk pastikan:
+   ```bash
+   grep -c "KOMEN OVERLAY" <file>  # harus >= 1
+   grep -c "findFixedLayer\|findScrollContainer" <file>  # harus >= 1
+   ```
+   Kalau 0, inject gagal — debug script dulu, jangan lapor "selesai".
+
+### Kenapa wajib pakai inject script (bukan manual)
+
+- Engine overlay sering update (bug fix, fitur baru — modal pin, scroll container, submit/approve workflow)
+- Manual copy-paste = drift cepat → file lama ketinggalan fitur baru
+- Inject script always sync dengan `paper-designer/components/overlay.html` terkini
+- Kalau lo Edit overlay.html, semua file yang udah ke-inject akan otomatis dapet update di run berikutnya
+
+### Anti-pattern (DILARANG)
+
+- ❌ Generate HTML tanpa `<!--SUXC:overlay-->` marker
+- ❌ Skip inject script "biar cepet"
+- ❌ Copy-paste overlay manual dari file lain
+- ❌ Lapor "selesai" tanpa verify overlay ke-inject
+
+### Edge case
+
+- **File yang sudah ada overlay** → tetap jalanin inject script, dia detect `KOMEN OVERLAY` marker dan replace dengan versi terkini. Aman.
+- **File HTML internal (komponen, fragment)** yang nggak dipakai langsung user → boleh skip overlay. Tapi default-nya: kalau ragu, inject.
+
+---
+
+## LANGKAH 0 — Routing (Mode + Tweak vs Full)
+
+### 0a — Mode Classification (locked 2026-05-22, ref [[knowledge-mode-trigger-rule]])
+
+**Default: Mode 1 (PELAKSANA)** — execute spesifik pakai rules teknis. JANGAN buka knowledge folder.
+
+**Mode 2 (KONSULTAN)** — TRIGGER kalau user EKSPLISIT minta ide/revamp/improvement open-ended:
+- "Ada ide lain ga untuk page ini?"
+- "Revamp page ini" / "Improvement apa yang bisa kita lakukan?"
+- "Bisa lebih baik ga UX-nya?" / "Gimana cara bikin ini lebih ___?"
+- Tag `@book` / `@article` di brief
+- Permintaan **curate ide / perspektif baru**
+
+**Behavior Mode 2:**
+1. Grep `paper-designer/knowledge/INDEX.md` untuk problem keyword
+2. Load ringkasan + kartu relevan (max 1-2 file)
+3. Propose 2-3 opsi dengan **cite source verbatim** (book + chapter + page, atau article URL + author)
+4. Kalau knowledge ga cover → lapor "knowledge ga cover topik ini, improvise dari rules" — JANGAN ngarang citation
+5. Lalu lanjut ke 0b setelah user pilih opsi
+
+**Anti-pattern absolute:**
+- ❌ Mode 1 brief → over-propose alternatif yg ga diminta
+- ❌ Mode 2 tanpa trigger eksplisit dari user
+- ❌ Halusinasi page/quote dari buku
+
+### 0b — Tweak vs Full Routing
 
 - Brief = ubahan receh pada layar yang sudah ada & **tidak mengubah alur**
   (hapus/ubah field, warna, teks, posisi) → **JALUR TWEAK** (lihat bawah).
@@ -25,6 +149,7 @@ Tanya: **"Cepet apa Mateng?"** (lihat SKILL.md untuk teks). Tunggu jawaban.
 1. Baca memory terkait di `paper-designer/memory/` (Dasar #10).
 2. Baca WAJIB: `ds/ds-core.md` (1 file — semua aturan universal, token, layout, komponen catalog).
    Kalau butuh detail styling komponen tertentu yang akan dipakai → baca section-nya di `rules/design-rules.md`.
+   **Wajib juga baca:** section "⛔ HARGA MATI — Aurora Component Lookup Ritual (4 Mekanisme)" di `rules/design-rules.md` — itu hukum prosedural baru per 2026-05-20.
 3. Cek `rules/page-registry.md` → ini fitur baru atau modifikasi screen yang
    sudah ada?
    - **Fitur baru**: lanjut seperti biasa.
@@ -43,6 +168,92 @@ Tanya: **"Cepet apa Mateng?"** (lihat SKILL.md untuk teks). Tunggu jawaban.
 5. Kalau butuh komponen yang tidak ada di Aurora → **STOP** (Hukum Mati #2):
    lapor + pembelaan (kenapa baru / kenapa bukan yang ada / alasan UX). Tunggu
    keputusan user sebelum lanjut.
+
+### Langkah 2.5 — ⛔ AURORA COMPONENT MAPPING (WAJIB sebelum coding UI prototype)
+
+> **Phase ini dikunci user 2026-05-20** setelah audit Expense Management nemu 15 dari 17 komponen ternyata custom/ngarang. Rincian mekanisme: `rules/design-rules.md` section "HARGA MATI — Aurora Component Lookup Ritual". A+B mechanism (Intent Scan + Mapping Table) dikunci user 2026-05-20 sesi audit "ada di rules ga lo pake".
+
+**Phase ini WAJIB jalan SEBELUM Langkah 5 (HTML UI Prototype) — bukan boleh-skip.** Hasilnya = mapping table yang user **approve eksplisit** sebelum coding dimulai.
+
+**Prosedur (4 substep urut):**
+
+#### 2.5a — Aurora Intent Scan (WAJIB, baca lookup table DULU)
+
+**Tujuan:** discovery komponen Aurora yang lo MUNGKIN ga ke pikiran kalau cuma jalan dari ingatan. Aurora punya 33 komponen, sering "luput dari radar" karena lo default ke yang familiar.
+
+**Prosedur:**
+
+1. **Pecah brief** jadi list "interaction need" (mis. "user pilih tanggal", "input PIN", "konfirmasi hapus", "step-by-step onboarding").
+
+2. **Buka `paper-designer/ds/aurora-intent-lookup.md`** — itu reverse lookup table (intent → Aurora component).
+
+3. **Untuk tiap interaction need, cocokin ke tabel.** Catat kandidat komponen Aurora. Bisa lebih dari satu kandidat (mis. "pilih 1 dari banyak" → `au-dropdown-menu` atau `au-autocomplete` tergantung searchable).
+
+4. **Catat hasil scan** dalam format:
+
+   ```
+   Brief intent           → Aurora kandidat        | Override?
+   ──────────────────────────────────────────────────────────────────
+   pilih tanggal            au-datepicker            -
+   step-by-step onboarding  au-stepper               -
+   konfirmasi hapus         au-dialog sectioned      YES (override)
+   table list bawah         au-pagination            YES (override)
+   loading skeleton         au-skeleton              -
+   ```
+
+5. **Cek override status** untuk tiap kandidat:
+   - Buka `paper-designer/ds/AURORA-OVERRIDES.md` — cari entry per komponen
+   - Kalau ada → mark "YES (override)" + spec override menang vs Aurora source
+   - Kalau tidak ada → mark "-" → pakai Aurora source persis
+
+**Anti-pattern 2.5a:**
+- Skip baca aurora-intent-lookup.md → langsung mikir UI element → guaranteed lo lewatin komponen Aurora yang available
+- Lupa cek AURORA-OVERRIDES.md → pakai Aurora source padahal ada override locked → revert progress user
+
+#### 2.5b — Aurora Source Lookup (per kandidat dari 2.5a)
+
+Untuk tiap kandidat komponen dari Intent Scan, jalankan lookup detail:
+
+1. **`ls /Users/working/aurora/projects/ui/`** — confirm folder exist
+2. **Baca `<component>/<component>.component.scss`** untuk CSS VALUE (color, padding, radius, font, transition)
+3. **Baca `<component>/<component>.interface.ts`** untuk VARIANTS (size, type, color enum)
+4. **Kalau folder tidak ada** → mark ❌ TIDAK ADA → STOP & lapor (HUKUM MATI #2)
+
+#### 2.5c — Susun Component Mapping Table
+
+Format:
+
+| UI Need | Aurora Component | Variant | Source file | Override? | Notes |
+|---------|------------------|---------|-------------|-----------|-------|
+| Primary action btn | `au-btn` | `primary` | `button/button.component.scss` | — | pill filled #4199d5 |
+| Bulk action trigger | `au-btn` | `tertiary-plain` | `button/button.component.scss` | — | text-link no border |
+| Pick tanggal (form) | `au-datepicker` | default | `datepicker/datepicker.component.scss` | — | NOT native input type=date |
+| Konfirmasi hapus | `au-dialog` | sectioned | `dialog/dialog.component.scss` | **YES** (sectioned + outer stroke + body text-primary 16px) | Lihat AURORA-OVERRIDES.md entry au-dialog |
+| Pagination | `au-pagination` | default | `pagination/pagination.component.scss` | **YES** (justify-end + borderless + active light-brand-15 + inside list-card) | Lihat AURORA-OVERRIDES.md entry au-pagination |
+| Empty state | ❌ TIDAK ADA → custom `.empty` | — | — | **YES** (no Aurora — custom dengan token) | Lihat AURORA-OVERRIDES.md entry Empty State |
+
+#### 2.5d — Approval User + Catat Override Baru
+
+1. **Share mapping table ke user** — minta approve eksplisit:
+   - "oke lanjut" → boleh coding
+   - "ganti komponen X" → revisi mapping
+   - "yang ini override jadi custom" → record entry baru di AURORA-OVERRIDES.md
+   - "skip fitur Y karena Aurora ga punya" → drop from scope
+
+2. **Catat override baru kalau ada** (user bilang "Aurora-nya jelek, pakai custom" / "value beda sama production"):
+   - Tulis entry di `paper-designer/ds/AURORA-OVERRIDES.md` dengan format standard
+   - Alasan + tanggal + approver
+   - Class CSS yang dipakai (anotasi `OVERRIDE:` bukan `AURORA:`)
+
+3. **Setelah user approve mapping table** → boleh lanjut Langkah 3 (User Flow) → Langkah 5 (UI Prototype).
+
+**Anti-pattern 2.5 keseluruhan yang dilarang:**
+- Lompat ke coding tanpa Intent Scan + Mapping Table — guaranteed bakal ngarang
+- Build mapping table tapi ga share/approve dulu — gerbang harus dilewati
+- Custom komponen tanpa entry di AURORA-OVERRIDES.md — pelanggaran
+- Pakai Aurora source padahal ada override locked di AURORA-OVERRIDES.md — pelanggaran HARD RULE [[frozen-baseline-overrides-rule]]
+
+**Kapan phase ini boleh di-skip?** **TIDAK PERNAH** untuk full prototype. Boleh skip cuma di **JALUR TWEAK** (ubahan receh di file yang sudah ada — komponennya sudah ter-map sebelumnya).
 
 ### Langkah 3 — HTML USER FLOW / JOURNEY (BUKAN UI)
 Bikin `_output/<slug>/01-flow.html`. Ini harus **beneran menggambarkan
@@ -111,7 +322,51 @@ ke UI sebelum alur disepakati.**
 ### Langkah 5 — HTML UI PROTOTYPE
 Bikin `_output/<slug>/02-ui.html`: UI jadi, bisa diklik, **semua state**
 (loading, kosong, error, sukses, no-akses — Dasar #8/J1), **100% dari Aurora**
-(Hukum Mati). Pakai struktur 3-Zone dari `layout-rules.md` & template yang tepat
+(Hukum Mati).
+
+**⚠️ WAJIB — State Switcher (tidak boleh dilewati):**
+Setiap area yang punya lebih dari 1 kondisi tampilan (tabel ada data vs kosong vs
+loading, form sukses vs error, dsb) **HARUS** dibungkus dengan `[data-states]`.
+Jangan hardcode satu state saja — reviewer harus bisa cek semua kondisi tanpa
+ganti kode.
+
+```html
+<div data-states>
+  <div data-state="default"><!-- UI normal / ada data --></div>
+  <div data-state="empty"><!-- Belum ada data --></div>
+  <div data-state="loading"><!-- Skeleton shimmer --></div>
+  <div data-state="error"><!-- Error / gagal load --></div>
+</div>
+```
+
+Cara kerja overlay: widget gelap **"State"** muncul otomatis di kiri bawah layar
+(draggable, ingat posisi terakhir via localStorage). Klik → pilih state → label
+berubah jadi **"Empty Active"** dll. Widget tidak ikut di-export Figma.
+
+> ⚠️ **KNOWN LIMITATION** — comment system overlay belum track `[data-screen]`/`[data-state]` context. Pin pindah-pindah ngambang saat user switch screen/state, submit output tidak nyebut screen/state asal komen. Kalau generate prototype multi-screen, **kasih warning ke user**: "FYI komen di overlay masih ambiguous untuk multi-screen — kasih konteks manual di teks komen, contoh: '[Daftar] tombol kekecilan'". Detail: `memory/shared/overlay-screenfigma-bugs.md` Bug 3.
+
+State wajib yang selalu ada (kecuali tidak relevan secara konteks):
+- `default` — UI dengan data / kondisi normal
+- `empty` — belum ada data, belum pernah diisi
+- `loading` — sedang memuat (pakai `.skel` shimmer dari Aurora)
+
+State tambahan sesuai kebutuhan: `error`, `no-akses`, `sukses`, `partial` dll.
+Kalau satu area memang hanya punya 1 kondisi → tidak perlu `[data-states]`.
+
+**⚠️ WAJIB — Auto-Layout Friendly HTML (tidak boleh dilewati):**
+HTML harus generate dengan pola flexbox konsisten, supaya **export ke Figma otomatis jadi auto-layout** (bukan absolute positioning). Pipeline `overlay.html` → Figma plugin sudah baca flex properties — yang penting HTML-nya disiplin pakai flex.
+
+Aturan:
+- **Container layout = `display:flex`** (kolom: `flex-direction:column`). Jangan pakai `display:block` untuk container yang punya children stack — pakai flex column.
+- **Spacing antar children = `gap`**, BUKAN `margin`. Margin pada child = absolute positioning di Figma, gap = auto-layout itemSpacing.
+- **Padding di container, bukan margin di child.** Container yang punya padding bakal jadi frame dengan padding auto-layout.
+- **Absolute positioning HANYA untuk:** FAB, modal scrim, dropdown menu, tooltip, toast — element yang memang "floating". Selain itu wajib flex.
+- **Jangan pakai `width`/`height` fixed di flex container** kecuali komponen spesifik (avatar, ikon, button width). Container biarin auto-size.
+- **`[data-screen]`, `.app-layout`, `.main-area`** wajib flex container (sudah convention engine).
+
+Hasilnya: setiap frame di Figma punya auto-layout dengan `layoutMode`, `itemSpacing`, `padding` yang persis seperti HTML — designer DS nggak perlu konversi manual.
+
+Pakai struktur 3-Zone dari `layout-rules.md` & template yang tepat
 dari `page-templates.md`. Gunakan komponen shell dengan tag inject:
 `<!--SUXC:sidemenu-->`, `<!--SUXC:nav-header-->` — taruh di posisi yang tepat
 dalam layout. Deklarasikan token dari `ds/aurora-tokens.md` sebagai `:root` CSS vars.
@@ -138,6 +393,11 @@ hand-edit file hasil generate** — overlay sudah otomatis nyesuain mode dari
   jadi 1 frame terpisah di Figma, disusun kiri→kanan + panah konektor. Default
   panah = urutan DOM; mau bercabang: `data-flow-next="Layar B,Layar C"`
   (opsional `data-flow-label="bayar"`). Cuma 1 layar → nggak usah `data-screen`.
+  **Layar aktif/nonaktif via JS (`display:none`)**: oke — overlay otomatis
+  force-show semua `[data-screen]` yang tersembunyi saat export (G), lalu restore.
+  **Nggak perlu file `03-figma.html` terpisah.**
+  Edge case: kalau tetap butuh file terpisah → tambah `data-figma-src="03-figma.html"`
+  di `<body>` → tombol G redirect ke file itu tanpa script override manual.
 
 Sebelum setor, jalankan **Pre-Generation Checklist** di `rules/design-rules.md`
 + Penjaga Konsistensi (Dasar #13): bandingkan vs acuan screen lama

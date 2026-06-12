@@ -41,8 +41,8 @@ Setiap halaman Paper.id terdiri dari **3 zona utama**:
 
 ### Aturan Sidemenu
 - Sidemenu **TIDAK BERUBAH** saat berpindah halaman — hanya highlight menu aktif yang berubah
-- Setiap menu item height: **52px**
-- Detail styling sidemenu akan ditambahkan nanti
+- Setiap menu item height: **44px** (sumber: Aurora SCSS via `design-rules.md` — kode produksi asli)
+- Detail styling lengkap: lihat section "Sidemenu" di `design-rules.md`
 
 ---
 
@@ -97,11 +97,12 @@ Setiap halaman Paper.id terdiri dari **3 zona utama**:
    - Dashboard widgets
    - Settings pages
 
-2. **Konten MENGGANTIKAN (replace)** isi Main Area, bukan:
-   - ❌ Bukan di tab terpisah
-   - ❌ Bukan di dialog/modal (kecuali untuk konfirmasi singkat seperti delete confirmation)
-   - ❌ Bukan di halaman baru terpisah
-   - ✅ Konten langsung replace di Main Area
+2. **Flow utama MENGGANTIKAN (replace)** isi Main Area:
+   - ❌ Flow utama (list, form create, form edit, detail view) **bukan** di tab terpisah
+   - ❌ Flow utama **bukan** di modal/dialog
+   - ❌ Flow utama **bukan** di halaman baru terpisah
+   - ✅ Flow utama langsung replace di Main Area
+   - ✅ **Task sekunder/kontekstual** (buat mitra cepat, konfirmasi hapus, kasih info) **boleh** pakai Side Sheet / Confirmation Modal / Information Modal — ikut decision tree `page-templates.md`
 
 3. **Navigasi antar konten**:
    - Dari **list → create**: Klik tombol "Tambah" → Main Area berubah jadi form create

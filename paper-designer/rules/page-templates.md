@@ -29,7 +29,7 @@ Apakah ini flow utama atau kompleks?
 |------|----------------|--------------|------------|----------|--------|
 | **Form Page** (Full Page) | Core process, multi-step flow | Tinggi | Full screen | Primary tasks | Create Invoice, Create Partner, dll |
 | **Side Sheet Form** | Edit kontekstual dalam main view | Sedang | Partial | Contextual tasks | Buat Mitra Baru dari halaman Invoice |
-| **Modal Form** | Task cepat & sederhana (1-4 fields) | Rendah | Focused | Secondary tasks | Edit Nama, Tambah Note, dll |
+| **Modal Form** | Task cepat & sederhana (maks 3 fields) | Rendah | Focused | Secondary tasks | Edit Nama, Tambah Note, dll |
 
 ---
 
@@ -136,24 +136,68 @@ Apakah ini flow utama atau kompleks?
 - Button save & cancel **SELALU** di kanan bawah
 - Style ini berlaku untuk SEMUA form page: Sales Invoice, Order Penjualan, Surat Jalan, dan document lainnya
 
+#### Detail Field & Text (sumber: Paperverse "Create Document")
+- **Label**: 14px, dark blue, **bold** (readability kuat)
+- **Input text**: 14px, regular
+- **Font minimum**: 12px — jangan lebih kecil
+- **Required field**: selalu ditandai `*`
+- **Text color by state**: placeholder = muted grey | filled = dark text | disabled = grey + **wajib tooltip jelasin kenapa disabled**
+- Semua text area panjang (keterangan, S&K) = **rich text editor**
+
+#### Detail Numeric & Financial
+- Semua angka di tabel form (jumlah, qty, harga, total) **WAJIB right-aligned** — buat scanning finansial
+- Line item: **default quantity = 1** saat produk/jasa ditambahkan
+
+#### Detail Field Actions
+- **Primary button selalu enabled** — error ditampilkan inline, jangan block flow user
+- Semua aksi di dalam form / advance settings = **text button + icon + label** (BUKAN standalone icon)
+- **Delete baris tabel = BUKAN destructive** (gampang di-add lagi, belum tersimpan permanen) → tidak perlu confirmation modal. (Definisi destructive: permanen & susah dibatalkan)
+
+#### Primary Action Placement
+- Primary action **selalu kanan**, secondary (Cancel/Back) **kiri**, **hanya 1 primary per page**
+- Urutan kiri→kanan: `[Text Button] [Secondary] [Primary]`
+- **Sticky di bottom-right** walau form panjang (selalu kelihatan)
+- Tooltip untuk disabled action wajib jelasin alasannya saat hover
+
+#### Help & Advanced Options
+- Panel digrup di **kanan halaman**, scroll vertikal ikut konten parent
+- Setting yang **impact form langsung** → taruh di atas
+- Setting indirect / tambahan → taruh di bawah
+- Pisahkan kedua grup dengan **divider**
+
+#### Keyboard Shortcuts (Form Page)
+| Key | Aksi |
+|-----|------|
+| `Tab` | Pindah field berikutnya. Kalau next field = date picker / dropdown → auto-open. Field aktif wajib punya signifier visible (highlight/border) |
+| `Enter` | Submit aksi yang sedang dipilih (pilih dropdown, confirm date) |
+| `Esc` | Cancel / tutup form Create Document |
+| `Ctrl/Cmd + V` | Paste data |
+| `Ctrl/Cmd + C` | Copy data |
+| `Ctrl/Cmd + S` | Save data |
+
+> Di list form (table rows): saat pindah antar baris, tawarkan suggested action (misal "Copy nilai baris sebelumnya") yang bisa di-accept / skip cepat.
+
 ---
 
 ## Template 2: Side Sheet Form
 
 ### Kapan Digunakan
 - User perlu edit data sambil melihat halaman utama
+- Form pendek ATAU bagian dari cross-process flow (misal: buat mitra baru saat sedang isi invoice)
 - Kompleksitas sedang (4-10 fields)
 - Mendukung contextual editing atau extended quick actions
 
 ### Kapan TIDAK Digunakan
-- Form panjang atau core process
+- Quick Action ≤ 4 fields → pakai **Modal Form** (lebih simpel, nggak makan space)
+- Primary/core flow (bikin invoice penuh, setup mitra lengkap) → pakai **Form Page**
+- Task yang butuh fokus penuh (verifikasi identitas, input finansial detail) → **Form Page**
 - Butuh multi-step flow
 
 ### Struktur Visual
 
 ```
 +------------------------------------------+------------------+
-|                                          |  Side Sheet      |
+|                                          |  Side Sheet  [X] |
 |         Main Page (dimmed/partial)       |  ──────────────  |
 |                                          |  [Form Title]    |
 |                                          |                  |
@@ -172,51 +216,233 @@ Apakah ini flow utama atau kompleks?
 ### Aturan Side Sheet
 - Muncul dari kanan, overlay di atas Main Area
 - Halaman utama tetap terlihat (dimmed) di belakang
-- Lebar: ~40-50% dari Main Area
-- Scrollable jika konten panjang
+- **Lebar: default 40% dari Main Area. Naik ke 50% kalau form-nya kompleks banget** (banyak field / nested section) — analisa per kasus
+- **TIDAK bisa ditutup dengan klik di luar** (cegah kehilangan data tak sengaja). Hanya bisa ditutup via tombol Close (X) di header ATAU tombol Cancel di footer
+- Konten Side Sheet scroll independen
+- **Header**: judul jelas & singkat (contoh: "Buat Mitra Baru", "Tambah Produk") + tombol Close (X) di kanan atas
+- **Footer**: Primary Action (Save/Apply) + Secondary (Cancel). Label = kata kerja jelas (Simpan, Update, Batal). Selalu sediakan exit aman (Cancel)
+- Background: subtle shadow untuk bedain dari halaman utama
 - Contoh: Buat Mitra Baru dari halaman Create Invoice
 
 ---
 
-## Template 3: Modal Form
+## Template 3: Modal — 3 Tipe Berbeda
 
-### Kapan Digunakan
-- Task cepat dan sekunder
-- Hanya 1-4 fields
-- Tidak butuh navigasi atau preview
+> Paperverse punya **3 tipe modal** dengan fungsi & behavior BERBEDA. Jangan dicampur. Default focus-nya bahkan berlawanan (Confirmation = Cancel, Information = Primary).
 
-### Kapan TIDAK Digunakan
-- Form panjang atau mengandung logika kompleks
-- User perlu mempertahankan konteks halaman
+| Tipe | Fungsi | Risk | Default focus | Action |
+|------|--------|------|---------------|--------|
+| **Modal Form** | Input task cepat sekunder | Low | Field pertama | Save / Cancel |
+| **Confirmation Modal** | Minta consent sebelum aksi berat | **High** | **Cancel** (aksi aman) | Destructive / Permanent |
+| **Information Modal** | Kasih tau info / acknowledgment | Low | **Primary** | Safe / Reversible |
 
-### Struktur Visual
+---
+
+### 3a. Modal Form
+
+**Kapan**: task cepat & sekunder, maks **3 fields**, tidak butuh navigasi/preview.
+**Jangan**: form panjang / logika kompleks / user perlu pertahankan konteks halaman (→ Side Sheet / Form Page).
 
 ```
-+------------------------------------------------------------------+
-|                                                                    |
-|         Main Page (dimmed)                                        |
-|                                                                    |
-|         +------------------------------------------+              |
-|         |  Modal Title                        [X]  |              |
-|         |------------------------------------------|              |
-|         |                                          |              |
-|         |  Field 1 *                               |              |
-|         |  [________________________]              |              |
-|         |                                          |              |
-|         |  Field 2                                 |              |
-|         |  [________________________]              |              |
-|         |                                          |              |
-|         |           [Simpan]  [Batal]              |              |
-|         +------------------------------------------+              |
-|                                                                    |
-+------------------------------------------------------------------+
++----------------------------------------------+
+|         Main Page (dimmed)                   |
+|     +----------------------------------+     |
+|     |  Modal Title                [X]  |     |
+|     |----------------------------------|     |
+|     |  Field 1 *                       |     |
+|     |  [______________________]        |     |
+|     |  Field 2                         |     |
+|     |  [______________________]        |     |
+|     |          [Simpan]  [Batal]       |     |
+|     +----------------------------------+     |
++----------------------------------------------+
 ```
 
-### Aturan Modal
 - Center di layar, backdrop dimmed
-- Maksimal 1-4 fields
-- Tidak boleh ada navigasi di dalam modal
+- Maks 3 fields, tidak ada navigasi di dalam modal
 - Contoh: Edit nama user, tambah note
+
+---
+
+### 3b. Confirmation Modal
+
+**Tujuan**: checkpoint sadar sebelum aksi berat/irreversible — bukan sekadar warning, tapi momen refleksi sengaja.
+
+**Kapan dipakai:**
+- Destructive action (delete/void/overwrite) **pada entity tersimpan** (permanen & susah dibatalkan)
+- Navigasi dengan unsaved changes (mau keluar tanpa simpan)
+- High-impact org action (update nama/NPWP yang trigger re-verifikasi KYC, atau pengaruhi data legal)
+
+**JANGAN dipakai untuk:** success/completion state ("Invoice berhasil dibuat" → itu Toast / Information Modal), atau delete baris form yang belum tersimpan (bukan destructive).
+
+**Anatomy:**
+1. Illustration (visual warning/destructive)
+2. Title — `verb + object` (mis. "Hapus 3 Invoice?")
+3. Body text — jelasin konsekuensi (mis. "Aksi ini tidak bisa dibatalkan. 3 invoice akan dihapus permanen")
+4. Primary button — aksi destructive (merah)
+5. Secondary button — Cancel (aksi aman)
+
+**Behavior:**
+- **Default focus = Cancel** (aksi aman). `Esc` hanya nutup modal kalau kondisi aman
+- Primary di-klik → loading state di tombol
+- **Async**: sukses → modal auto-close → tampilkan success toast. Gagal → modal **tetap buka** + opsi Try Again
+- Cancel → tutup modal langsung, tanpa perubahan
+- Mobile → tampil sebagai bottom sheet, tombol Cancel sticky footer
+
+**Copy rules:** `What happened → What can do → Action/next step`
+| Rule | ✅ Good | ❌ Bad |
+|------|--------|-------|
+| Clear action | "Hapus 3 Invoice?" | "Yakin?" |
+| Explain consequence | "Invoice akan dihapus permanen" | "OK / Ya" |
+| Explicit label | "Hapus" / "Batal" | label generik |
+
+---
+
+### 3c. Information Modal
+
+**Tujuan**: inform info penting / minta acknowledgment / minta keputusan sederhana risk rendah. Tujuan utama: bikin flow tetap smooth & predictable — hindari "eh moment".
+
+**Kapan dipakai:**
+- Acknowledge info penting sebelum lanjut (mis. "Maintenance terjadwal jam 11 malam")
+- Inform kondisi sistem yang block aksi (mis. "Pembayaran melebihi batas waktu")
+- Minta keputusan sederhana (mis. "Sesi berakhir")
+- Saran next step setelah selesai (opsional — kalau info opsional, mending pakai Toast/inline)
+
+**JANGAN dipakai untuk:** destructive action (→ Confirmation Modal), paragraf panjang, kebanyakan opsi, modal chain (modal nyambung modal), block flow dengan modal berulang.
+
+**Anatomy:** Illustration (info/success/warning — pakai soft illustration, BUKAN harsh warning icon) → Title (singkat, to the point) → Body (what happened + what to do next) → Primary button (resolve/lanjut) → Secondary (cancel/close, opsional).
+
+**Behavior:**
+- **Default focus = Primary action** (beda dari Confirmation Modal!). `Enter` → trigger primary. `Esc`/klik luar → tutup aman
+- 1 primary action, 1 secondary opsional. Hindari destructive action di sini
+- **Async**: aksi butuh waktu → loading di tombol. Sukses → modal auto-close → success toast
+
+**Copy rules:** `What happened → Why it matters → What to do next`. Title deskriptif ("A Currency Adjustment Has Been Applied"), bukan "Something changed!". Primary "Continue Payment" bukan "OK". Secondary "Cancel Payment" bukan "Later".
+
+---
+
+## Page Navigation (sumber: Paperverse "Page Navigation")
+
+Pola navigasi di halaman child/detail. **3 elemen**: Back Link + Breadcrumb + Pagination Detail.
+
+### Kapan Dipakai
+- User di halaman detail yang berasal dari sebuah list
+- Perlu lihat struktur hierarki konten
+- Pindah antar item tanpa balik ke list dulu
+
+### Kapan TIDAK Dipakai
+- Halaman single-task / standalone form (nggak ada hierarki)
+- User sudah di root level (nggak ada origin page)
+
+### Anatomy
+
+```
+[← Kembali]  Invoice Penjualan  >  Buat Invoice Penjualan        [←] 1 dari 24 Invoice [→]
+ └ Back Link  └────────── Breadcrumb ──────────┘                  └── Pagination Detail ──┘
+```
+
+1. **Back Link** — paling kiri, sebelum breadcrumb. Teks `← Kembali` / `← Back`. Selalu balik ke origin page.
+2. **Breadcrumb** — format `Entity > Section > Current Page`. Tiap level **clickable kecuali current** (current = bold, non-clickable). Ellipsis `...` kalau hierarki kepanjangan.
+3. **Pagination Detail View** — kanan atas, dipisah dari breadcrumb. Format `X dari Y [entity]` (mis. "1 dari 24 Invoice"). Navigasi antar item **tanpa full reload**. Prev/next disabled di item pertama/terakhir.
+
+### Behavior
+- Transition antar item = smooth, **bukan full reload**
+- Responsive: breadcrumb boleh dipersingkat dengan ellipsis di viewport sempit; back link & pagination tetap visible & accessible di mobile
+
+> Relasi dengan Form Page: **Breadcrumb WAJIB** di halaman child (Create/View/Edit), TIDAK ada di list/root. Back Link & Pagination Detail opsional sesuai konteks (ada origin list atau enggak).
+
+---
+
+## Template 4: View Document Page (Detail View)
+
+> **SOURCE**: Paperverse 1.0 — View Document + reference hidup `_output/expense-management/02-ui-aurora.html` (Detail Pengeluaran)
+
+### Kapan Dipakai
+- User klik baris di list → masuk Detail untuk lihat info lengkap entity
+- Aksi read-only utama + handoff ke Edit / aksi lain via tombol/menu
+- Mengandung metadata, content section, attachment, history (optional)
+
+### Kapan TIDAK Dipakai
+- Quick preview yang ga butuh full screen → pakai **Side Sheet** atau **Tooltip**
+- Inline edit cepat tanpa standalone view → pakai **Modal Form** atau **inline editing di list**
+
+### Anatomy
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│ ‹ Kembali  ·  Pengeluaran  ·  EXP/2026/0042                 │  ← Breadcrumb + back button
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  EXP/2026/0042                          [ Ubah ]  [Tindakan ▾]│  ← Title + entity actions
+│  Rp 4.551.000   ·   12 Mei 2026                             │     (Ubah extracted, sisanya di menu)
+│                                                              │
+│  ┌─────────────────────────┐  ┌────────────────────────────┐│
+│  │ Informasi Umum          │  │ Status & Pembayaran        ││  ← Info cards (grid 2-col)
+│  │ ─────────────────────── │  │ ─────────────────────────  ││
+│  │ Kategori    Operasional │  │ Status     ● Lunas         ││
+│  │ Penerima    PT XYZ      │  │ Metode     Transfer Bank   ││
+│  │ Tanggal     12 Mei 2026 │  │ Akun       BCA 1234        ││
+│  │ Jatuh Tempo 26 Mei 2026 │  │ Lampiran   [📎] 2 file ·   ││
+│  │ Deskripsi   Sewa kantor │  │             Unduh · +Tambah ││
+│  └─────────────────────────┘  └────────────────────────────┘│
+│                                                              │
+│  [History / Activity Log — optional, kalau relevant]         │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Komponen wajib:**
+1. **Breadcrumb + Back Button** (Aurora `au-breadcrumb` + `au-breadcrumb-back-button`) — kiri atas, "‹ Kembali" navigate balik ke list
+2. **Title block** — entity ID + secondary metadata (nominal, tanggal) di bawah title. Hero treatment (font lebih besar)
+3. **Entity actions** — `Ubah` (extracted standalone primary action) + `Tindakan ▾` dropdown (sisa aksi: Hapus, Duplikat, dst sesuai `[[action-menu-derivation-rule]]`)
+4. **Info cards** — minimum 2 card layout (grid 2-col responsive ke 1-col mobile):
+   - **Informasi Umum** — metadata identitas entity
+   - **Status & Pembayaran** (atau equivalent) — status badge, payment info, attachment metadata
+5. **(Optional) Activity / History section** — kalau entity punya audit trail relevant
+
+**Komponen optional:**
+- **Pagination Detail** (kanan atas, "X dari Y entries") — kalau user mungkin navigate antar entries via Detail
+- **Tabs** — kalau Detail punya multi-section yang berbeda secara konteks (mis. Detail + Items + History)
+- **Banner** — kalau ada notice/warning relevant (mis. "Pembayaran sudah jatuh tempo")
+
+### Aturan View Document
+
+#### 1. Label Disambiguation (default no-label)
+Detail card **default tanpa label** untuk value yang ga ambigu. Label dipakai HANYA kalau:
+- Multi-instance value (mis. 2 tanggal: "Tanggal" + "Jatuh Tempo")
+- Value tanpa konteks bingung (mis. "BCA 1234" — perlu label "Akun")
+- Status yang ga obvious dari value
+
+Lihat `[[label-disambiguation-rule]]`.
+
+#### 2. Lampiran Inline Pattern (composition)
+Lampiran/attachment **bukan card terpisah** — jadi field metadata di Info card. Pakai composition `.meta-inline` (lihat `[[composition-thinking-rule]]`):
+```
+Lampiran   [📎] 2 file · Unduh · + Tambah
+```
+Kalau belum ada lampiran: "Belum ada · + Tambah Lampiran".
+
+#### 3. Action Hierarchy
+**Maksimum 1 primary action** di Detail page (biasanya `Ubah`). Sisanya di `Tindakan ▾` dropdown menu. Aksi yang sudah jadi standalone TIDAK boleh muncul lagi di dropdown menu (konsistensi mental model — lihat `[[action-menu-derivation-rule]]`).
+
+#### 4. Read-only ≠ Static
+Walaupun View, tetap interaktif:
+- Klik row attachment → download bukti
+- Klik status badge → tooltip explain status
+- Klik nominal → boleh copy ke clipboard (optional)
+
+#### 5. Back Navigation
+`‹ Kembali` di breadcrumb WAJIB balik ke origin list dengan **state preserved** (scroll position, filter applied, page selected). JANGAN reset list ke default state.
+
+#### 6. Edit Handoff (smooth)
+Klik `Ubah` → pre-fill form Edit dengan data sekarang → switch screen smooth (fade out Detail → fade in Edit form). JANGAN open Edit di modal/sheet (kecuali Edit cepat ≤3 field).
+
+#### 7. Delete Flow (destructive)
+Hapus di dropdown menu = trigger **Confirmation Modal** (Aurora sectioned spec, primary destructive button). Setelah konfirmasi → smooth delete (fade out row di list) → toast "Pengeluaran berhasil dihapus" → back to list. Lihat `[[smooth-transitions-rule]]`.
+
+### Reference Hidup
+- Implementasi: `_output/expense-management/02-ui-aurora.html` → search `viewDetail()` function + Detail screen markup
+- Action menu derivation: lihat juga `[[action-menu-derivation-rule]]`
 
 ---
 
@@ -226,11 +452,13 @@ Apakah ini flow utama atau kompleks?
 
 | Kondisi | Gunakan | Jangan Gunakan |
 |---------|---------|----------------|
-| Opsi < 4 | **Radio Group** (tampilkan langsung) | Select/Dropdown |
-| Opsi >= 4 | **Select/Dropdown** | Radio Group |
-| Opsi banyak + perlu search | **Autocomplete/Combobox** | Radio/Select |
+| Opsi ≤ 4 | **Radio Group** (tampilkan langsung) | Select/Dropdown |
+| Opsi ≥ 5 | **Select/Dropdown** | Radio Group |
+| Opsi banyak (≥ 5) + perlu search | **Autocomplete/Combobox** | Radio/Select |
 | Teks panjang | **Rich Text Editor / Textarea** | Input biasa |
 | Tanggal | **Date Picker** (support typing + kalender) | Input teks biasa |
+
+> **Threshold (keputusan user 2026-05-19):** Radio kalau opsi **≤ 4**, Dropdown kalau **≥ 5**. Autocomplete hanya kalau opsi banyak DAN butuh search (kalau < 5 opsi → tetap Dropdown, jangan Autocomplete).
 
 ### 2. Guidance & Flow — Satu Path yang Jelas
 

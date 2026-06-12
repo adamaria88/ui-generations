@@ -253,7 +253,9 @@ function drawArrow(parent, a, b, label) {
   line.rotation = -Math.atan2(dy, dx) * 180 / Math.PI;
   line.strokes = [{ type: 'SOLID', color: { r: 0.255, g: 0.6, b: 0.835 } }]; // #4199d5
   line.strokeWeight = 2;
-  try { line.strokeCap = 'ARROW_LINES'; } catch (e) {}
+  try { line.strokeCapStart = 'NONE'; line.strokeCapEnd = 'ARROW_LINES'; } catch (e) {
+    try { line.strokeCap = 'ARROW_LINES'; } catch (e2) {}
+  }
   parent.appendChild(line);
   if (label) {
     fontReady.then(() => {

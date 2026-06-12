@@ -1,0 +1,1762 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Belajar Bareng — Konflik Antar Buku UIUX</title>
+<style>
+  :root{
+    --bg:#f8fbfe; --surface:#ffffff; --surface-raised:#f3f6f9; --border:#dbe2e8;
+    --text:#133f5d; --text-2:#718c9e; --muted:#a5b6c1;
+    --brand:#4199d5; --brand-15:#e3f0fa;
+    --ok:#356021; --ok-bg:#eaf6e3; --ok-bd:#c3e3a8;
+    --warn:#8a6400; --warn-bg:#fdf3d9; --warn-bd:#f3dca0;
+    --rec:#1f6fa8; --rec-bg:#e3f0fa; --rec-bd:#a9d3ee;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Lato',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;padding:32px 24px}
+  .container{max-width:1280px;margin:0 auto}
+  h1{font-size:28px;font-weight:700;margin-bottom:8px}
+  h2{font-size:18px;font-weight:700;margin-bottom:4px}
+  .lead{color:var(--text-2);font-size:14px;margin-bottom:24px}
+
+  /* Portal section */
+  .portal-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:24px;overflow:hidden}
+  .portal-section__hd{padding:18px 22px;background:linear-gradient(135deg,#fff 0%,#f3f7fb 100%);border-bottom:1px solid var(--border)}
+  .portal-section__title{font-size:18px;font-weight:700;color:var(--text)}
+  .portal-section__sub{font-size:13px;color:var(--text-2);margin-top:4px}
+  .portal-section__bd{padding:20px 22px}
+
+  /* Cara pakai */
+  .how{font-size:13px;line-height:1.7}
+  .how ol{padding-left:20px;color:var(--text)}
+  .how li{margin-bottom:4px}
+  .how p{margin-top:10px}
+
+  /* Compare grid */
+  .compare{display:grid;gap:14px;margin:12px 0}
+  .compare--2{grid-template-columns:1fr 1fr}
+  .compare--3{grid-template-columns:repeat(3,1fr)}
+  @media (max-width:900px){.compare--2,.compare--3{grid-template-columns:1fr}}
+
+  /* Approach card */
+  .approach{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+  .approach__hd{padding:10px 14px;background:var(--surface-raised);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .approach__src{font-size:10px;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+  .approach__name{font-size:13px;font-weight:700;color:var(--text)}
+  .approach__bd{padding:16px;flex:1}
+  .approach__bd p{font-size:13px;line-height:1.6;color:var(--text)}
+  .approach__note{font-size:12px;color:var(--text-2);margin-top:10px;padding-top:10px;border-top:1px dashed var(--border)}
+  .approach--rec{border-color:#52a847;box-shadow:0 0 0 1px #52a847 inset}
+  .approach--rec .approach__hd{background:#eaf6e3;border-bottom-color:#c3e3a8}
+  .badge-rec{background:#52a847;color:#fff;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+
+  /* Quote box (buku says) */
+  .quote-box{background:var(--surface-raised);border-left:3px solid var(--brand);padding:12px 14px;border-radius:0 6px 6px 0;font-size:13px;line-height:1.55;color:var(--text);margin:8px 0;font-style:italic}
+  .quote-src{font-style:normal;font-size:11px;color:var(--text-2);font-weight:600;margin-top:6px;display:block}
+
+  /* Claude recommendation */
+  .claude-rec{background:#e3f0fa;border:1px solid #a9d3ee;border-radius:8px;padding:14px 16px;margin-top:16px}
+  .claude-rec__l{font-size:14px;font-weight:700;color:#1f6fa8;display:flex;gap:8px;align-items:flex-start}
+  .claude-rec__l::before{content:"💡";flex-shrink:0}
+  .claude-rec__bd{font-size:13px;color:var(--text);margin-top:6px;line-height:1.6}
+  .claude-rec__bd ul{margin:8px 0 0 18px}
+  .claude-rec__bd li{margin-bottom:4px}
+
+  /* Trade-off table */
+  .tradeoff{margin-top:14px;border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:12px}
+  .tradeoff table{width:100%;border-collapse:collapse}
+  .tradeoff th,.tradeoff td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  .tradeoff th{background:var(--surface-raised);font-weight:700;color:var(--text);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  .tradeoff tr:last-child td{border-bottom:0}
+  .tradeoff td:first-child{font-weight:600;color:var(--text-2);width:160px}
+
+  /* Komen slot */
+  .komen-slot{margin-top:16px;padding:12px 14px;background:#fffbf0;border:1px dashed #f3dca0;border-radius:6px;font-size:13px;color:#8a6400}
+  .komen-slot::before{content:"💬 ";margin-right:4px}
+
+  /* ─── DEMO STYLES ─── */
+
+  /* Mini Detail Invoice */
+  .inv{background:#fff;padding:18px;font-family:'Lato',sans-serif;color:#133f5d;font-size:13px;line-height:1.5;border-radius:6px;border:1px solid #eef2f5}
+  .inv__title{font-size:20px;margin-bottom:4px}
+  .inv__sub{color:#718c9e;font-size:12px;margin-bottom:14px}
+  .inv__section{font-size:13px;margin:14px 0 6px;color:#133f5d}
+  .inv__row{display:flex;justify-content:space-between;padding:5px 0;font-size:13px;align-items:baseline}
+  .inv__row-l{color:#718c9e}
+  .inv__row-v{color:#133f5d}
+  .inv__total{display:flex;justify-content:space-between;padding:10px 0;border-top:2px solid #133f5d;margin-top:8px;font-size:16px;align-items:baseline}
+  .inv__btn{display:inline-block;background:#4199d5;color:#fff;padding:7px 14px;border-radius:99px;font-size:13px;font-weight:500;margin-top:10px}
+  /* Variants: restrict / flexible / hybrid */
+  .inv--restrict .inv__title{font-weight:700}
+  .inv--restrict .inv__section{font-weight:400;color:#4199d5;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  .inv--restrict .inv__row-v{font-weight:400}
+  .inv--restrict .inv__total{font-weight:700}
+
+  .inv--flexible .inv__title{font-weight:700}
+  .inv--flexible .inv__section{font-weight:700}
+  .inv--flexible .inv__row-l{font-weight:400}
+  .inv--flexible .inv__row-v{font-weight:700}
+  .inv--flexible .inv__total{font-weight:700}
+
+  .inv--hybrid .inv__title{font-weight:700}
+  .inv--hybrid .inv__section{font-weight:700}
+  .inv--hybrid .inv__row-l{font-weight:400}
+  .inv--hybrid .inv__row-v{font-weight:400;color:#133f5d}
+  .inv--hybrid .inv__total{font-weight:700}
+
+  /* Radio buttons demo */
+  .radio-form{display:flex;flex-direction:column;gap:10px;padding:8px}
+  .radio-row{display:flex;align-items:center;gap:8px;padding:8px 10px;font-size:13px;color:#133f5d}
+  .radio-row input{appearance:none;width:18px;height:18px;border:1.5px solid #c4d0d9;border-radius:50%;cursor:pointer;position:relative;flex-shrink:0}
+  .radio-row input:checked{border-color:#4199d5}
+  .radio-row input:checked::after{content:"";position:absolute;left:3px;top:3px;width:9px;height:9px;border-radius:50%;background:#4199d5}
+  .radio-row label{font-size:13px;cursor:pointer}
+  .radio-row__sub{font-size:11px;color:#718c9e;margin-top:2px}
+
+  /* Selectable cards demo */
+  .sel-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px}
+  .sel-card{padding:12px;border:2px solid #dbe2e8;border-radius:8px;cursor:pointer;display:flex;flex-direction:column;gap:4px;background:#fff;transition:border-color .12s,background .12s}
+  .sel-card:hover{border-color:#89bde5}
+  .sel-card.active{border-color:#4199d5;background:#e3f0fa}
+  .sel-card__ic{font-size:18px}
+  .sel-card__t{font-size:13px;font-weight:700;color:#133f5d}
+  .sel-card__s{font-size:11px;color:#718c9e}
+
+  /* Detail card variants for border conflict */
+  .det-section{padding:14px;background:#fff;border-radius:6px;display:flex;flex-direction:column;gap:8px}
+  .det-section--bordered{border:1px solid #dbe2e8}
+  .det-section--no-border{border:0;border-bottom:1px solid #eef2f5}
+  .det-section h4{font-size:13px;font-weight:700;color:#133f5d;margin-bottom:4px}
+  .det-section .det-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0}
+  .det-section .det-row span:first-child{color:#718c9e}
+  .det-section .det-row span:last-child{color:#133f5d}
+
+  /* Modal section example for border conflict */
+  .modal-mock{padding:0;background:#fff;border-radius:8px;border:1px solid #dbe2e8;width:100%;max-width:340px;overflow:hidden}
+  .modal-mock__hd{padding:12px 16px;border-bottom:1px solid #dbe2e8;font-size:14px;font-weight:700;color:#133f5d}
+  .modal-mock__bd{padding:14px 16px;font-size:13px;color:#718c9e}
+  .modal-mock__ac{padding:10px 16px;border-top:1px solid #dbe2e8;display:flex;justify-content:flex-end;gap:8px}
+  .modal-mock__btn{padding:6px 14px;font-size:12px;border-radius:99px;font-weight:500}
+  .modal-mock__btn--p{background:#4199d5;color:#fff}
+  .modal-mock__btn--s{background:#fff;color:#3c5467;border:1px solid #c4d0d9}
+
+  /* Shadow demo cards */
+  .sh-stage{display:flex;gap:18px;justify-content:center;padding:24px;background:#f3f6f9;border-radius:6px;flex-wrap:wrap}
+  .sh-card{width:120px;height:80px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#718c9e;font-weight:600}
+  .sh-card--ref-1{box-shadow:0 1px 2px rgba(0,0,0,.05),0 1px 3px rgba(0,0,0,.10)}
+  .sh-card--ref-2{box-shadow:0 1px 2px rgba(0,0,0,.05),0 4px 8px rgba(0,0,0,.10)}
+  .sh-card--ref-3{box-shadow:0 1px 2px rgba(0,0,0,.05),0 12px 24px rgba(0,0,0,.12)}
+  .sh-card--prac-1{box-shadow:0 1px 3px rgba(0,0,0,.12)}
+  .sh-card--prac-2{box-shadow:0 4px 12px rgba(0,0,0,.15)}
+  .sh-card--prac-3{box-shadow:0 12px 32px rgba(0,0,0,.18)}
+
+  /* Spacing demo */
+  .sp-form{padding:14px;background:#fff;border-radius:6px}
+  .sp-form__lbl{font-size:13px;font-weight:600;color:#133f5d}
+  .sp-form__in{display:block;width:100%;margin-top:var(--sp-gap,8px);padding:8px 12px;border:1px solid #c4d0d9;border-radius:4px;font-size:14px;color:#133f5d;background:#fff}
+  .sp-form__hint{font-size:11px;color:#718c9e;margin-top:6px}
+  .sp-form--4px{--sp-gap:4px}
+  .sp-form--8px{--sp-gap:8px}
+  .sp-marker{font-size:10px;color:#b52b55;font-weight:600;display:block;margin-top:6px}
+</style>
+</head>
+<body data-suxc="prototype">
+<div class="container">
+
+  <h1>Belajar Bareng — Konflik Antar Buku UIUX</h1>
+  <p class="lead">2 buku referensi (<b>Refactoring UI</b> by Wathan/Schoger + <b>Practical UI</b> by Dannaway) ga selalu sepakat. Mari putus Paper.id position-nya bareng — pilih + alasan via overlay komen, gue compile jadi 1 cara mikir Paper Designer.</p>
+
+  <!-- Cara Pakai -->
+  <div class="portal-section">
+    <div class="portal-section__hd">
+      <div class="portal-section__title">📚 Cara Pakai Halaman Ini</div>
+      <div class="portal-section__sub">Belajar bareng → decide bareng → simpan jadi 1 thinking</div>
+    </div>
+    <div class="portal-section__bd how">
+      <ol>
+        <li>Baca konflik #N — lihat 2 buku bilang apa (di kotak quote).</li>
+        <li>Lihat <b>visual side-by-side</b> per approach. Visual = real Paper.id use-case.</li>
+        <li>Lihat <b>rekomendasi gue</b> (kotak biru 💡) + alasan kenapa.</li>
+        <li>Klik tombol <b>💬 kanan bawah</b> → klik di section konflik → tulis pilihan + alasan.</li>
+        <li>Selesai semua? Klik <b>"Salin semua komen"</b> di overlay → paste ke chat → gue compile jadi <code>paper-designer-thinking.md</code>.</li>
+      </ol>
+      <p><b>Legenda:</b> <span class="badge-rec">🟢 REKOMENDASI GUE</span> = approach yang gue rasa fit untuk Paper.id, dengan alasan di bawahnya. Lo bebas reject + pilih lain.</p>
+    </div>
+  </div>
+
+  <!-- ═════ KONFLIK #1 — Convention vs Exploration ═════ -->
+  <div class="portal-section">
+    <div class="portal-section__hd">
+      <div class="portal-section__title">⚔️ Konflik #1 — Convention vs Exploration (Mindset)</div>
+      <div class="portal-section__sub">Default cara mikir saat doubt: stick conventional atau explore beyond?</div>
+    </div>
+    <div class="portal-section__bd">
+
+      <h2>📖 Kedua buku bilang apa</h2>
+      <div class="compare compare--2">
+        <div>
+          <div class="approach__src" style="margin-bottom:6px">📕 REFACTORING UI</div>
+          <div class="quote-box">
+            "Default itu starting point, BUKAN constraint. Tanya: 'apa yang komponen ini sebenarnya coba capai untuk user?' — jawabannya sering generate format yang lebih baik dari default."
+            <span class="quote-src">— Wathan & Schoger, thinking.md existing</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-2)">Mindset: <b>EXPLORE</b>. Default = starting point, boleh beyond.</p>
+        </div>
+        <div>
+          <div class="approach__src" style="margin-bottom:6px">📘 PRACTICAL UI</div>
+          <div class="quote-box">
+            "Stick conventional patterns kecuali inovasi punya compelling reason. Innovation = risk usability. Jakob's Law: users spend most of their time on OTHER sites."
+            <span class="quote-src">— Dannaway, Bab 7 hal 229</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-2)">Mindset: <b>SAFE</b>. Convention = default, explore butuh justification.</p>
+        </div>
+      </div>
+
+      <h2 style="margin-top:24px">🎨 Visual — Form Pilih Skala Bisnis (real Paper.id onboarding)</h2>
+      <div class="compare compare--2">
+        <div class="approach">
+          <div class="approach__hd">
+            <span class="approach__src">A. CONVENTION</span>
+            <span class="approach__name">Radio buttons standar</span>
+          </div>
+          <div class="approach__bd">
+            <div class="radio-form">
+              <div class="radio-row"><input type="radio" name="biz1" checked><label>Mikro (omzet &lt;Rp 300 jt/tahun)</label></div>
+              <div class="radio-row"><input type="radio" name="biz1"><label>Kecil (Rp 300 jt – 2,5 M)</label></div>
+              <div class="radio-row"><input type="radio" name="biz1"><label>Menengah (Rp 2,5 M – 50 M)</label></div>
+              <div class="radio-row"><input type="radio" name="biz1"><label>Besar (&gt;Rp 50 M)</label></div>
+            </div>
+            <p class="approach__note">Familiar — user pernah lihat di banyak app. Aurora `au-radio` udah ada. 1-click select.</p>
+          </div>
+        </div>
+        <div class="approach">
+          <div class="approach__hd">
+            <span class="approach__src">B. EXPLORATION</span>
+            <span class="approach__name">Selectable cards</span>
+          </div>
+          <div class="approach__bd">
+            <div class="sel-cards">
+              <div class="sel-card active"><div class="sel-card__ic">🏪</div><div class="sel-card__t">Mikro</div><div class="sel-card__s">&lt;Rp 300 jt/tahun</div></div>
+              <div class="sel-card"><div class="sel-card__ic">🏬</div><div class="sel-card__t">Kecil</div><div class="sel-card__s">Rp 300 jt – 2,5 M</div></div>
+              <div class="sel-card"><div class="sel-card__ic">🏢</div><div class="sel-card__t">Menengah</div><div class="sel-card__s">Rp 2,5 M – 50 M</div></div>
+              <div class="sel-card"><div class="sel-card__ic">🏭</div><div class="sel-card__t">Besar</div><div class="sel-card__s">&gt;Rp 50 M</div></div>
+            </div>
+            <p class="approach__note">Lebih engaging, icon bantu scan, less wall-of-text. Tapi: target lebih besar, custom component (Aurora belum punya), butuh dev work.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 style="margin-top:20px">⚖️ Trade-off</h2>
+      <div class="tradeoff">
+        <table>
+          <tr><th></th><th>A. Convention (Radio)</th><th>B. Exploration (Cards)</th></tr>
+          <tr><td>Familiar</td><td>Tinggi (universal)</td><td>Medium (perlu adapt)</td></tr>
+          <tr><td>Visual appeal</td><td>Standard</td><td>Lebih menarik</td></tr>
+          <tr><td>Aurora component</td><td>Sudah ada</td><td>Belum, custom</td></tr>
+          <tr><td>Dev effort</td><td>Zero</td><td>Medium</td></tr>
+          <tr><td>Onboarding time</td><td>Cepat (familiar)</td><td>Slightly more (novel)</td></tr>
+          <tr><td>Risk usability</td><td>Rendah</td><td>Medium</td></tr>
+        </table>
+      </div>
+
+      <div class="claude-rec approach--rec" style="border-radius:8px;border-left:4px solid #52a847">
+        <div class="claude-rec__l">Rekomendasi gue: <b style="margin-left:6px">A. Convention (Default)</b> <span class="badge-rec" style="margin-left:8px">🟢 REKOMENDASI</span></div>
+        <div class="claude-rec__bd">
+          <b>Alasan:</b>
+          <ul>
+            <li>Paper.id = B2B finance. User = operator akuntansi/admin yang udah familiar tools (Xero, Mekari, Jurnal). Convention friendly = onboarding lebih cepat.</li>
+            <li>Aurora DS udah established. Eksperimen pattern baru = risk inconsistency + dev rework.</li>
+            <li>Innovation OK di area peripheral (marketing site, onboarding hero, empty state). Tapi <b>DEFAULT = convention</b>.</li>
+            <li>Pattern selectable cards bisa di-explore di feature spesifik dengan compelling reason (mis. pricing comparison di marketing landing), tapi <b>bukan default</b> untuk semua form.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="komen-slot">Komen di sini: <b>pilih A / B / Hybrid + alasan</b>. Atau "setuju rekomen" kalau A oke.</div>
+    </div>
+  </div>
+
+  <!-- ═════ KONFLIK #2 — Borders & Containers ═════ -->
+  <div class="portal-section">
+    <div class="portal-section__hd">
+      <div class="portal-section__title">⚔️ Konflik #2 — Borders & Containers</div>
+      <div class="portal-section__sub">Saat butuh grouping: pakai border atau cukup spacing?</div>
+    </div>
+    <div class="portal-section__bd">
+
+      <h2>📖 Kedua buku bilang apa</h2>
+      <div class="compare compare--2">
+        <div>
+          <div class="approach__src" style="margin-bottom:6px">📕 REFACTORING UI</div>
+          <div class="quote-box">
+            "Border menambah visual weight ke struktur. Struktur tidak butuh perhatian — konten yang butuh. Alternatif: spacing (proximity), background color, shadow tipis. Pakai border HANYA kalau tiga alternatif itu tidak cukup."
+            <span class="quote-src">— Wathan & Schoger, fewer-borders-alternatives</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-2)">Mindset: <b>SKEPTICAL</b>. Border last resort.</p>
+        </div>
+        <div>
+          <div class="approach__src" style="margin-bottom:6px">📘 PRACTICAL UI</div>
+          <div class="quote-box">
+            "Container = strongest visual cue untuk grouping. Cards & dialog boxes common type. Use container ketika grouping tidak clear without it."
+            <span class="quote-src">— Dannaway, Bab 4 hal 106</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-2)">Mindset: <b>PRAGMATIC</b>. Container OK kalau bantu grouping.</p>
+        </div>
+      </div>
+
+      <h2 style="margin-top:24px">🎨 Visual — Detail Page Section</h2>
+      <div class="compare compare--3">
+        <div class="approach">
+          <div class="approach__hd">
+            <span class="approach__src">A. SKEPTICAL</span>
+            <span class="approach__name">No border, spacing only</span>
+          </div>
+          <div class="approach__bd" style="background:#fafcfe">
+            <div class="det-section det-section--no-border">
+              <h4>Info Customer</h4>
+              <div class="det-row"><span>Nama</span><span>PT XYZ Tbk</span></div>
+              <div class="det-row"><span>Email</span><span>finance@xyz.id</span></div>
+            </div>
+            <div style="height:24px"></div>
+            <div class="det-section det-section--no-border">
+              <h4>Info Pembayaran</h4>
+              <div class="det-row"><span>Metode</span><span>Transfer Bank</span></div>
+              <div class="det-row"><span>Status</span><span>Lunas</span></div>
+            </div>
+            <p class="approach__note">Cleaner, less visual noise. Proximity (jarak antar section 24pt) yang bikin grouping.</p>
+          </div>
+        </div>
+        <div class="approach">
+          <div class="approach__hd">
+            <span class="approach__src">B. PRAGMATIC</span>
+            <span class="approach__name">Pakai border tiap section</span>
+          </div>
+          <div class="approach__bd" style="background:#fafcfe">
+            <div class="det-section det-section--bordered">
+              <h4>Info Customer</h4>
+              <div class="det-row"><span>Nama</span><span>PT XYZ Tbk</span></div>
+              <div class="det-row"><span>Email</span><span>finance@xyz.id</span></div>
+            </div>
+            <div style="height:12px"></div>
+            <div class="det-section det-section--bordered">
+              <h4>Info Pembayaran</h4>
+              <div class="det-row"><span>Metode</span><span>Transfer Bank</span></div>
+              <div class="det-row"><span>Status</span><span>Lunas</span></div>
+            </div>
+            <p class="approach__note">Grouping crystal clear. User ga perlu interpret spacing. Tapi: lebih busy visually.</p>
+          </div>
+        </div>
+        <div class="approach approach--rec">
+          <div class="approach__hd">
+            <span class="approach__src">C. HYBRID</span>
+            <span class="approach__name">Context-dependent <span class="badge-rec">🟢</span></span>
+          </div>
+          <div class="approach__bd" style="background:#fafcfe">
+            <p style="font-size:11px;color:var(--text-2);margin-bottom:6px">Detail page (skeptical):</p>
+            <div class="det-section det-section--no-border" style="margin-bottom:8px">
+              <h4>Info Customer</h4>
+              <div class="det-row"><span>Nama</span><span>PT XYZ Tbk</span></div>
+            </div>
+            <p style="font-size:11px;color:var(--text-2);margin:12px 0 6px">Modal/dialog (pragmatic):</p>
+            <div class="modal-mock" style="max-width:100%">
+              <div class="modal-mock__hd">Hapus invoice?</div>
+              <div class="modal-mock__bd">Kamu nggak bisa balikin ini.</div>
+              <div class="modal-mock__ac">
+                <button class="modal-mock__btn modal-mock__btn--s">Batal</button>
+                <button class="modal-mock__btn modal-mock__btn--p">Hapus</button>
+              </div>
+            </div>
+            <p class="approach__note">Best of both: detail page no border (clean), modal pakai border (boundary clear).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="claude-rec approach--rec" style="border-radius:8px;border-left:4px solid #52a847">
+        <div class="claude-rec__l">Rekomendasi gue: <b style="margin-left:6px">C. Hybrid (Context-dependent)</b> <span class="badge-rec" style="margin-left:8px">🟢 REKOMENDASI</span></div>
+        <div class="claude-rec__bd">
+          <b>Alasan:</b>
+          <ul>
+            <li>Detail page (View Document, profile, settings) = banyak info, density tinggi. Border tiap section = clutter. Spacing aja cukup.</li>
+            <li>Modal/dialog = boundary harus jelas (visual separation dari background). Border bantu.</li>
+            <li>Form panjang dengan multi-section bisa pakai border tipis OR heading + spacing — case-by-case.</li>
+            <li>Aurora `au-dialog` default udah pakai border + radius. Detail page Aurora pattern bisa lean ke no-border kalau ga ada konflik.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="komen-slot">Komen di sini: <b>pilih A / B / C + alasan</b>, atau kasih konteks lain yang gue belum cover.</div>
+    </div>
+  </div>
+
+  <!-- ═════ KONFLIK #3 — Bold Weight ═════ -->
+  <div class="portal-section">
+    <div class="portal-section__hd">
+      <div class="portal-section__title">⚔️ Konflik #3 — Pakai Bold Seberapa Sering?</div>
+      <div class="portal-section__sub">Bold restrictive (only data hero) atau flexible (heading + emphasis)?</div>
+    </div>
+    <div class="portal-section__bd">
+
+      <h2>📖 Kedua buku bilang apa</h2>
+      <div class="compare compare--2">
+        <div>
+          <div class="approach__src" style="margin-bottom:6px">📕 REFACTORING UI</div>
+          <div class="quote-box">
+            "Bold = emphasis. Emphasis hanya bekerja karena langka. Hierarchy lewat warna (dark vs muted) sudah cukup untuk label-value pair. Bold dihemat untuk data yang benar-benar perlu stand out (angka total, judul)."
+            <span class="quote-src">— Wathan & Schoger, thinking.md</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-2)">Mindset: <b>RESTRICTIVE</b>. Bold langka = bold powerful.</p>
+        </div>
+        <div>
+          <div class="approach__src" style="margin-bottom:6px">📘 PRACTICAL UI</div>
+          <div class="quote-box">
+            "Use regular and bold font weights only. Use <b>bold font weight for headings</b> to emphasise them. Use regular font weight for other smaller text."
+            <span class="quote-src">— Dannaway, Bab 5 hal 173</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-2)">Mindset: <b>FLEXIBLE</b>. Bold untuk heading + emphasis, convention.</p>
+        </div>
+      </div>
+
+      <h2 style="margin-top:24px">🎨 Visual — Mini Halaman Detail Invoice</h2>
+      <div class="compare compare--3">
+        <div class="approach">
+          <div class="approach__hd">
+            <span class="approach__src">A. RESTRICTIVE</span>
+            <span class="approach__name">Bold cuma title + total</span>
+          </div>
+          <div class="approach__bd" style="background:#fafcfe">
+            <div class="inv inv--restrict">
+              <div class="inv__title">Invoice INV-001</div>
+              <div class="inv__sub">PT XYZ Tbk · Jatuh tempo 15 Mei 2026</div>
+              <div class="inv__section">Detail Pembayaran</div>
+              <div class="inv__row"><span class="inv__row-l">Sub Total</span><span class="inv__row-v">Rp 5.000.000</span></div>
+              <div class="inv__row"><span class="inv__row-l">PPN 11%</span><span class="inv__row-v">Rp 550.000</span></div>
+              <div class="inv__total"><span>Grand Total</span><span>Rp 5.550.000</span></div>
+            </div>
+            <p class="approach__note">Section heading SMALL CAPS muted (bukan bold). Value regular. Cuma title + total bold. Visual rhythm: 2 anchor point only.</p>
+          </div>
+        </div>
+        <div class="approach">
+          <div class="approach__hd">
+            <span class="approach__src">B. FLEXIBLE</span>
+            <span class="approach__name">Heading + value bold</span>
+          </div>
+          <div class="approach__bd" style="background:#fafcfe">
+            <div class="inv inv--flexible">
+              <div class="inv__title">Invoice INV-001</div>
+              <div class="inv__sub">PT XYZ Tbk · Jatuh tempo 15 Mei 2026</div>
+              <div class="inv__section">Detail Pembayaran</div>
+              <div class="inv__row"><span class="inv__row-l">Sub Total</span><span class="inv__row-v">Rp 5.000.000</span></div>
+              <div class="inv__row"><span class="inv__row-l">PPN 11%</span><span class="inv__row-v">Rp 550.000</span></div>
+              <div class="inv__total"><span>Grand Total</span><span>Rp 5.550.000</span></div>
+            </div>
+            <p class="approach__note">Bold di banyak tempat — heading, value, total. Convention friendly tapi visual ramai. Risk: bold lose impact.</p>
+          </div>
+        </div>
+        <div class="approach approach--rec">
+          <div class="approach__hd">
+            <span class="approach__src">C. HYBRID</span>
+            <span class="approach__name">Heading bold, value via color <span class="badge-rec">🟢</span></span>
+          </div>
+          <div class="approach__bd" style="background:#fafcfe">
+            <div class="inv inv--hybrid">
+              <div class="inv__title">Invoice INV-001</div>
+              <div class="inv__sub">PT XYZ Tbk · Jatuh tempo 15 Mei 2026</div>
+              <div class="inv__section">Detail Pembayaran</div>
+              <div class="inv__row"><span class="inv__row-l">Sub Total</span><span class="inv__row-v">Rp 5.000.000</span></div>
+              <div class="inv__row"><span class="inv__row-l">PPN 11%</span><span class="inv__row-v">Rp 550.000</span></div>
+              <div class="inv__total"><span>Grand Total</span><span>Rp 5.550.000</span></div>
+            </div>
+            <p class="approach__note">Heading bold (convention friendly), label muted + value dark regular (Refactoring UI insight), Total bold (hero). Best of both — convention + elegant.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="claude-rec approach--rec" style="border-radius:8px;border-left:4px solid #52a847">
+        <div class="claude-rec__l">Rekomendasi gue: <b style="margin-left:6px">C. Hybrid</b> <span class="badge-rec" style="margin-left:8px">🟢 REKOMENDASI</span></div>
+        <div class="claude-rec__bd">
+          <b>Rule konkret untuk Paper.id:</b>
+          <ul>
+            <li><b>Bold:</b> Page title, Section heading, Data hero (Total Amount, Grand Total), CTA button text.</li>
+            <li><b>Regular:</b> Label, value (label-value pair), body text, helper text, secondary info.</li>
+            <li><b>Hierarchy value pair via color:</b> label <code>text-muted</code> (#718c9e), value <code>text-primary</code> (#133f5d) — bukan via bold.</li>
+            <li>Saat ada doubt: <b>"kalau ini bold, apakah masih ada yang lebih penting yang harus stand out lebih?"</b> Kalau ya, jangan bold.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="komen-slot">Komen di sini: <b>pilih A / B / C + alasan</b>.</div>
+    </div>
+  </div>
+
+  <!-- ═════ KONFLIK #4 — Shadow Approach ═════ -->
+  <div class="portal-section">
+    <div class="portal-section__hd">
+      <div class="portal-section__title">⚔️ Konflik #4 — Shadow & Elevation</div>
+      <div class="portal-section__sub">Shadow 2-layer (subtle premium) atau 3-level discrete (sistematis DS)?</div>
+    </div>
+    <div class="portal-section__bd">
+
+      <h2>📖 Kedua buku bilang apa</h2>
+      <div class="compare compare--2">
+        <div>
+          <div class="approach__src" style="margin-bottom:6px">📕 REFACTORING UI</div>
+          <div class="quote-box">
+            Shadow pakai 2 layer (sharp offset + soft ambient). Kombinasi ini bikin shadow terasa "real" — match physical world depth. Avoid harsh single-layer drop shadow.
+            <span class="quote-src">— Wathan & Schoger, shadow-two-layers</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-2)">Mindset: <b>SUBTLE</b>. Premium feel via 2-layer composition.</p>
+        </div>
+        <div>
+          <div class="approach__src" style="margin-bottom:6px">📘 PRACTICAL UI</div>
+          <div class="quote-box">
+            "Creating 3 shadow options (small, medium, and large) works well for most projects. Use small and sharp shadow to slightly raise; larger softer shadow to elevate higher."
+            <span class="quote-src">— Dannaway, Bab 4 hal 130</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-2)">Mindset: <b>SISTEMATIS</b>. 3-tier elevation token untuk DS.</p>
+        </div>
+      </div>
+
+      <h2 style="margin-top:24px">🎨 Visual — Card Stack di 3 Level Elevation</h2>
+      <div class="compare compare--2">
+        <div class="approach">
+          <div class="approach__hd">
+            <span class="approach__src">A. 2-LAYER (Refactoring)</span>
+            <span class="approach__name">Sharp + ambient kombi</span>
+          </div>
+          <div class="approach__bd">
+            <div class="sh-stage">
+              <div class="sh-card sh-card--ref-1">Low</div>
+              <div class="sh-card sh-card--ref-2">Medium</div>
+              <div class="sh-card sh-card--ref-3">High</div>
+            </div>
+            <p class="approach__note">Shadow lebih subtle, "earned" feel. Tiap level masih kombinasi 2 layer. Tapi: lebih sulit document sebagai DS token (banyak permutasi).</p>
+          </div>
+        </div>
+        <div class="approach approach--rec">
+          <div class="approach__hd">
+            <span class="approach__src">B. 3-LEVEL (Practical)</span>
+            <span class="approach__name">Small / Medium / Large <span class="badge-rec">🟢</span></span>
+          </div>
+          <div class="approach__bd">
+            <div class="sh-stage">
+              <div class="sh-card sh-card--prac-1">Small</div>
+              <div class="sh-card sh-card--prac-2">Medium</div>
+              <div class="sh-card sh-card--prac-3">Large</div>
+            </div>
+            <p class="approach__note">3 token discrete: shadow-sm, shadow-md, shadow-lg. Lebih sistematis untuk DS, easier handoff dev. Aurora kemungkinan udah punya pattern ini.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="claude-rec approach--rec" style="border-radius:8px;border-left:4px solid #52a847">
+        <div class="claude-rec__l">Rekomendasi gue: <b style="margin-left:6px">B. 3-level (Practical)</b> <span class="badge-rec" style="margin-left:8px">🟢 REKOMENDASI</span></div>
+        <div class="claude-rec__bd">
+          <b>Alasan:</b>
+          <ul>
+            <li>Aurora DS = systematic token. 3-level (small/medium/large) match DS philosophy: predefined options.</li>
+            <li>Refactoring UI 2-layer = better aesthetic, tapi lebih sulit token-ize untuk DS scale.</li>
+            <li>Compromise: pakai 3-level Practical, tapi tiap level <b>internally pakai 2-layer kombinasi</b> (Refactoring UI insight). Hidden complexity.</li>
+            <li>Aurora-OVERRIDES kemungkinan udah lock shadow token. Stick.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="komen-slot">Komen di sini: <b>A / B + alasan</b>. Atau "stick Aurora" kalau lo prefer ga keduanya.</div>
+    </div>
+  </div>
+
+  <!-- ═════ KONFLIK #5 — Selectable Cards vs Radio ═════ -->
+  <div class="portal-section">
+    <div class="portal-section__hd">
+      <div class="portal-section__title">⚔️ Konflik #5 — Pilihan Form: Cards vs Radio</div>
+      <div class="portal-section__sub">Sub-aspect dari #1, tapi specific use-case form selection. (Konsekuensi #1 = decided lewat #1)</div>
+    </div>
+    <div class="portal-section__bd">
+
+      <h2>📖 Kedua buku bilang apa</h2>
+      <div class="compare compare--2">
+        <div>
+          <div class="approach__src" style="margin-bottom:6px">📕 REFACTORING UI</div>
+          <div class="quote-box">
+            "When radio buttons feel limiting, consider selectable cards — bigger target area, more info per option (icon + title + description). Especially for category/plan/profile selection."
+            <span class="quote-src">— Wathan & Schoger, selectable-cards-vs-radio</span>
+          </div>
+        </div>
+        <div>
+          <div class="approach__src" style="margin-bottom:6px">📘 PRACTICAL UI</div>
+          <div class="quote-box">
+            "Stick conventional radio buttons. Jakob's Law. Inovasi pattern = risk usability. If ≤10 options, radio buttons safer than dropdown."
+            <span class="quote-src">— Dannaway, Bab 7 hal 235</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 style="margin-top:24px">🎨 Visual — Pilih Plan Pricing</h2>
+      <div class="compare compare--2">
+        <div class="approach approach--rec">
+          <div class="approach__hd">
+            <span class="approach__src">A. RADIO (Default)</span>
+            <span class="approach__name">Stack vertical <span class="badge-rec">🟢</span></span>
+          </div>
+          <div class="approach__bd" style="background:#fafcfe">
+            <div class="radio-form" style="background:#fff;border-radius:6px">
+              <div class="radio-row"><input type="radio" name="pln" checked><label><b>Basic</b> — Rp 99rb/bln. 1 user, 50 invoice/bulan.</label></div>
+              <div class="radio-row"><input type="radio" name="pln"><label><b>Pro</b> — Rp 299rb/bln. 5 user, unlimited invoice.</label></div>
+              <div class="radio-row"><input type="radio" name="pln"><label><b>Enterprise</b> — Custom. Multi-bisnis, API access.</label></div>
+            </div>
+            <p class="approach__note">Convention, familiar. 1-click select. Aurora `au-radio` ready.</p>
+          </div>
+        </div>
+        <div class="approach">
+          <div class="approach__hd">
+            <span class="approach__src">B. SELECTABLE CARDS</span>
+            <span class="approach__name">Grid dengan detail</span>
+          </div>
+          <div class="approach__bd" style="background:#fafcfe">
+            <div class="sel-cards" style="grid-template-columns:1fr 1fr 1fr">
+              <div class="sel-card active"><div class="sel-card__ic">📦</div><div class="sel-card__t">Basic</div><div class="sel-card__s">Rp 99rb/bln</div><div class="sel-card__s">1 user · 50 inv</div></div>
+              <div class="sel-card"><div class="sel-card__ic">🚀</div><div class="sel-card__t">Pro</div><div class="sel-card__s">Rp 299rb/bln</div><div class="sel-card__s">5 user · unlim</div></div>
+              <div class="sel-card"><div class="sel-card__ic">🏢</div><div class="sel-card__t">Enterprise</div><div class="sel-card__s">Custom</div><div class="sel-card__s">API access</div></div>
+            </div>
+            <p class="approach__note">Lebih visual, info lebih banyak per option. Tapi: custom component, bukan Aurora pattern.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="claude-rec approach--rec" style="border-radius:8px;border-left:4px solid #52a847">
+        <div class="claude-rec__l">Rekomendasi gue: <b style="margin-left:6px">A. Radio (Default)</b> <span class="badge-rec" style="margin-left:8px">🟢 REKOMENDASI</span></div>
+        <div class="claude-rec__bd">
+          <b>Konsisten dengan Konflik #1 (Default Convention).</b>
+          <ul>
+            <li>Default form selection = radio. Convention familiar.</li>
+            <li><b>Exception OK</b> untuk: pricing page di marketing landing (compare focus tinggi), feature selection dengan visual identity penting (mis. pilih theme dashboard).</li>
+            <li>Di Paper.id main app (Settings, Onboarding, Form Buat Invoice) → radio. Marketing/landing/promotional → bisa cards.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="komen-slot">Komen di sini: <b>A / B + alasan</b>. Atau define exception use-case mana di Paper.id yang OK pakai cards.</div>
+    </div>
+  </div>
+
+  <!-- ═════ KONFLIK #6 — Spacing Label-Input Gap ═════ -->
+  <div class="portal-section">
+    <div class="portal-section__hd">
+      <div class="portal-section__title">⚔️ Konflik #6 — Spacing Label-Input Gap</div>
+      <div class="portal-section__sub">Jarak label ke input: 4px tight (Refactoring) atau 8pt XS (Practical)?</div>
+    </div>
+    <div class="portal-section__bd">
+
+      <h2>📖 Kedua buku bilang apa</h2>
+      <div class="compare compare--2">
+        <div>
+          <div class="approach__src" style="margin-bottom:6px">📕 REFACTORING UI</div>
+          <div class="quote-box">
+            Gap label→input = 4px (sangat dekat, "clearly belongs to"). Gap antar field = 16px (related tapi distinct). Gap antar section = 32px (clearly separate groups). Spacing exponential, bukan linear.
+            <span class="quote-src">— Wathan & Schoger, spacing-system-scale</span>
+          </div>
+        </div>
+        <div>
+          <div class="approach__src" style="margin-bottom:6px">📘 PRACTICAL UI</div>
+          <div class="quote-box">
+            8pt grid: XS=8, S=16, M=24, L=32. Label-input pakai XS (8pt). Inner spacing &lt; outer spacing.
+            <span class="quote-src">— Dannaway, Bab 4 hal 137</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 style="margin-top:24px">🎨 Visual — Form Field</h2>
+      <div class="compare compare--2">
+        <div class="approach approach--rec">
+          <div class="approach__hd">
+            <span class="approach__src">A. 4px (Refactoring)</span>
+            <span class="approach__name">Tight, intimately related <span class="badge-rec">🟢</span></span>
+          </div>
+          <div class="approach__bd" style="background:#fafcfe">
+            <div class="sp-form sp-form--4px">
+              <div class="sp-form__lbl">Nama Customer *</div>
+              <input class="sp-form__in" placeholder="Contoh: PT XYZ Tbk">
+              <span class="sp-marker">↑ gap 4px (tight)</span>
+            </div>
+            <p class="approach__note">Label clearly "milik" input. Visual binding lebih kuat. Field padat tapi clear.</p>
+          </div>
+        </div>
+        <div class="approach">
+          <div class="approach__hd">
+            <span class="approach__src">B. 8pt (Practical)</span>
+            <span class="approach__name">XS spacing scale</span>
+          </div>
+          <div class="approach__bd" style="background:#fafcfe">
+            <div class="sp-form sp-form--8px">
+              <div class="sp-form__lbl">Nama Customer *</div>
+              <input class="sp-form__in" placeholder="Contoh: PT XYZ Tbk">
+              <span class="sp-marker">↑ gap 8px (moderate)</span>
+            </div>
+            <p class="approach__note">Comfortable readable. 8pt grid consistency dengan token. Tapi: visual binding label-input slightly weaker.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="claude-rec approach--rec" style="border-radius:8px;border-left:4px solid #52a847">
+        <div class="claude-rec__l">Rekomendasi gue: <b style="margin-left:6px">A. 4px (Refactoring)</b> <span class="badge-rec" style="margin-left:8px">🟢 REKOMENDASI</span></div>
+        <div class="claude-rec__bd">
+          <b>Alasan:</b>
+          <ul>
+            <li>4px = "intimately related" — label dan input adalah 1 unit, bukan 2 element terpisah.</li>
+            <li>Visual rhythm form lebih clean (less spacing redundant).</li>
+            <li>Sudah di-log di <code>IMPROVEMENT-OPPORTUNITIES.md</code> (Form label-input proximity gap) — open item untuk DS Aurora.</li>
+            <li>Worth raise ke Aurora maintainer untuk update <code>.field</code> default gap dari 8px ke 4px.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="komen-slot">Komen di sini: <b>A / B + alasan</b>. Atau "stick Aurora 8px" kalau tech effort terlalu mahal sekarang.</div>
+    </div>
+  </div>
+
+  <!-- ═════ FOOTER — Summary ═════ -->
+  <div class="portal-section">
+    <div class="portal-section__hd">
+      <div class="portal-section__title">📋 Setelah Lo Komen Semua</div>
+      <div class="portal-section__sub">Next step workflow</div>
+    </div>
+    <div class="portal-section__bd how">
+      <ol>
+        <li>Klik tombol <b>"Salin semua komen"</b> di overlay bawah (icon submit ⬆️).</li>
+        <li>Paste hasil copy ke chat.</li>
+        <li>Gue compile keputusan jadi <code>paper-designer/knowledge/paper-designer-thinking.md</code> (1 unified thinking).</li>
+        <li>Update CLAUDE.md eager-load → file ini auto-load saat <code>/paper-designer</code> jalan.</li>
+        <li>Existing <code>refactoring-ui/thinking.md</code> content di-merge ke unified, file lama di-archive.</li>
+      </ol>
+      <p>Setelah itu: lo brief gue, default thinking gue udah include semua keputusan ini. Ga perlu trigger Mode 2 / cite buku.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- OVERLAY MODULE BEGIN ─────────────────────────────────────────────── -->
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  KOMEN OVERLAY ala Figma — SISIPKAN BLOK INI PERSIS SEBELUM </body> ║
+  ║  Self-contained. data-suxc="flow" = kanvas; "prototype" = scroll.║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<style>
+body.suxc-on,body.suxc-on *{cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="%23cdd8df" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>') 4 4,crosshair !important}
+#suxc-panel,#suxc-panel *,#suxc-nav,#suxc-nav *,.suxc-pop,.suxc-pop *{cursor:default !important}
+body.suxc-on .suxc-pop,body.suxc-on .suxc-pop *{cursor:default !important}
+#suxc-panel .suxc-item,#suxc-nav button,.suxc-pop button,.suxc-item-act{cursor:pointer !important}
+
+/* ── PINS ── */
+.suxc-pin{position:absolute;z-index:99998;width:28px;height:28px;border-radius:50% 50% 50% 4px;
+  background:#7B61FF;color:#fff;font:700 11px/28px 'Lato',sans-serif;text-align:center;
+  transform:translate(-2px,-30px);box-shadow:0 2px 8px rgba(0,0,0,.5);user-select:none;cursor:pointer;
+  transition:transform .12s,box-shadow .12s}
+.suxc-pin:hover{transform:translate(-2px,-32px) scale(1.08);box-shadow:0 4px 16px rgba(123,97,255,.5)}
+.suxc-pin.submitted{background:transparent;border:2px dashed #7B61FF;color:#7B61FF;line-height:24px;
+  box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.suxc-pin.submitted:hover{background:rgba(123,97,255,.12);box-shadow:0 4px 12px rgba(123,97,255,.4)}
+
+/* ── AREA RECT ── */
+.suxc-rect{position:absolute;z-index:99997;border:2px dashed #7B61FF;background:rgba(123,97,255,.07);border-radius:6px;pointer-events:none}
+.suxc-rect.live{z-index:99996}
+
+/* ── POPUP ── */
+.suxc-pop{position:fixed;z-index:100000;width:340px;background:#2C2C2E;
+  border:1px solid rgba(255,255,255,.10);border-radius:12px;
+  box-shadow:0 12px 40px rgba(0,0,0,.65);font-family:'Lato',sans-serif;overflow:hidden}
+.suxc-pop-head{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px 8px;border-bottom:1px solid rgba(255,255,255,.07)}
+.suxc-pop-title{font:600 13px 'Lato',sans-serif;color:#E5E5EA}
+.suxc-pop-hacts{display:flex;align-items:center;gap:2px}
+.suxc-pop-hacts button,.suxc-pop-closebtn{width:28px;height:28px;border:0;border-radius:6px;background:transparent;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;color:#8A8A8E;
+  font-size:14px;transition:background .12s,color .12s}
+.suxc-pop-hacts button:hover,.suxc-pop-closebtn:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+.suxc-pop-resbtn.on{color:#30D158}
+.suxc-pop-resbtn:hover{color:#30D158 !important}
+.suxc-pop-loc{display:flex;align-items:center;gap:6px;padding:8px 12px;
+  background:rgba(123,97,255,.08);border-bottom:1px solid rgba(255,255,255,.06);
+  font:500 11px/1.4 'Lato',sans-serif;color:#9B8AFF}
+.suxc-pop-loc-ico{flex:none;opacity:.85}
+.suxc-pop-loc-txt{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.suxc-pop-sub{display:flex;align-items:center;gap:8px;padding:8px 12px;
+  background:rgba(155,138,255,.10);border-bottom:1px solid rgba(255,255,255,.06);
+  font:500 11px/1.4 'Lato',sans-serif;color:#C9BEFF}
+.suxc-pop-sub-txt{flex:1}
+.suxc-pop-unsubmit{flex:none;border:1px solid rgba(155,138,255,.4);background:transparent;
+  color:#C9BEFF;border-radius:5px;padding:3px 8px;font:600 11px 'Lato',sans-serif;cursor:pointer;
+  transition:background .12s,border-color .12s}
+.suxc-pop-unsubmit:hover{background:rgba(155,138,255,.18);border-color:rgba(155,138,255,.7)}
+.suxc-av{width:32px;height:32px;border-radius:50%;background:#7B61FF;color:#fff;
+  font:700 13px/32px 'Lato',sans-serif;text-align:center;flex:none;user-select:none}
+.suxc-av.sm{width:28px;height:28px;font-size:11px;line-height:28px}
+
+/* thread */
+.suxc-pop-thread{padding:12px;display:flex;gap:10px;align-items:flex-start}
+.suxc-thread-msg{flex:1;min-width:0}
+.suxc-thread-meta{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.suxc-thread-user{font:600 13px 'Lato',sans-serif;color:#E5E5EA}
+.suxc-thread-time{font:400 11px 'Lato',sans-serif;color:#8A8A8E;flex:1}
+.suxc-thread-morebtn{width:24px;height:24px;border:0;border-radius:4px;background:transparent;
+  color:#636366;font:600 14px 'Lato',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.suxc-thread-morebtn:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+.suxc-thread-text{font:400 13px/20px 'Lato',sans-serif;color:#E5E5EA;word-break:break-word}
+.suxc-thread-editta{display:none;width:100%;box-sizing:border-box;font:400 13px/20px 'Lato',sans-serif;
+  background:#3A3A3C;color:#E5E5EA;border:1px solid rgba(255,255,255,.15);border-radius:6px;
+  padding:6px 8px;resize:none;min-height:48px;margin-top:4px;font-family:'Lato',sans-serif;outline:none}
+.suxc-thread-editta.show{display:block}
+
+/* reply input */
+.suxc-pop-reply{padding:8px 12px 12px;border-top:1px solid rgba(255,255,255,.06)}
+.suxc-reply-wrap{position:relative}
+.suxc-reply-ta{width:100%;box-sizing:border-box;font:400 13px/20px 'Lato',sans-serif;
+  background:#3A3A3C;color:#E5E5EA;border:1px solid rgba(255,255,255,.12);border-radius:8px;
+  padding:8px 10px 32px 10px;resize:none;min-height:72px;max-height:140px;
+  transition:border-color .15s;font-family:'Lato',sans-serif;outline:none}
+.suxc-reply-ta::placeholder{color:#636366}
+.suxc-reply-ta:focus{border-color:rgba(123,97,255,.6)}
+.suxc-send-btn{position:absolute;bottom:8px;right:8px;width:26px;height:26px;border:0;
+  border-radius:50%;background:#0A84FF;color:#fff;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s}
+.suxc-send-btn:disabled{background:transparent;color:#48484A;cursor:not-allowed}
+.suxc-send-btn:not(:disabled):hover{background:#0070D1}
+
+/* ── NAV BAR ── */
+#suxc-nav{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:100001;
+  display:flex;gap:4px;background:#2C2C2E;border-radius:14px;padding:6px;
+  box-shadow:0 8px 32px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.08)}
+#suxc-nav button{position:relative;width:40px;height:40px;border:0;border-radius:10px;background:transparent;
+  color:#98989D;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .12s,color .12s}
+#suxc-nav button:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+#suxc-nav button:disabled{opacity:.3;cursor:not-allowed}
+#suxc-nav button[data-tip]:hover:after{content:attr(data-tip);position:absolute;bottom:50px;left:50%;
+  transform:translateX(-50%);background:#1C1C1E;color:#E5E5EA;font:600 11px 'Lato',sans-serif;
+  padding:5px 10px;border-radius:6px;white-space:nowrap;pointer-events:none;
+  border:1px solid rgba(255,255,255,.10)}
+#suxc-nav button.on{background:rgba(123,97,255,.22);color:#9B8AFF}
+#suxc-nav .sep{width:1px;align-self:stretch;background:rgba(255,255,255,.10);margin:3px 2px}
+#suxc-cbadge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9999px;
+  background:#FF3B30;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;
+  padding:0 3px;border:2px solid #2C2C2E}
+#suxc-sbadge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9999px;
+  background:#9B8AFF;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;
+  padding:0 3px;border:2px solid #2C2C2E}
+#suxc-abadge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9999px;
+  background:#30D158;color:#fff;font:700 10px/16px 'Lato',sans-serif;text-align:center;
+  padding:0 3px;border:2px solid #2C2C2E}
+#suxc-approve{color:#30D158 !important}
+#suxc-approve:hover{background:rgba(48,209,88,.18) !important;color:#5CDE7F !important}
+
+/* ── FAB ── */
+#suxc-fab{position:fixed;right:24px;bottom:24px;z-index:100001;width:50px;height:50px;
+  border-radius:50%;background:#2C2C2E;color:#E5E5EA;border:1px solid rgba(255,255,255,.12);
+  cursor:grab;display:none;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px rgba(0,0,0,.45);touch-action:none;user-select:none;transition:background .12s}
+#suxc-fab.show{display:flex}
+#suxc-fab.drag{cursor:grabbing}
+#suxc-fab:hover{background:#3A3A3C}
+#suxc-fbadge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9999px;
+  background:#FF3B30;color:#fff;font:700 11px/18px 'Lato',sans-serif;text-align:center;
+  padding:0 4px;display:none;border:2px solid #2C2C2E}
+#suxc-nav.suxc-asmenu{left:auto;right:auto;bottom:auto;top:auto;transform:none}
+
+/* ── FLOW canvas ── */
+html.suxc-flow,body.suxc-flow{margin:0;height:100%;overflow:hidden}
+#suxc-stage{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;min-width:100vw;box-sizing:border-box;padding:40px}
+body.suxc-on{outline:2px solid rgba(123,97,255,.4);outline-offset:-2px}
+body.suxc-pan,body.suxc-pan *{cursor:grabbing !important}
+
+/* ── STATE SWITCHER ── */
+.suxc-sw{position:fixed;z-index:100003;display:inline-flex;flex-direction:column;align-items:flex-start;user-select:none}
+.suxc-sw-pill{display:inline-flex;align-items:center;gap:8px;background:#1C1C1E;color:#E5E5EA;
+  border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:12px 16px 12px 12px;
+  font:600 14px/1 'Lato',sans-serif;cursor:grab;white-space:nowrap;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);transition:background .12s,box-shadow .12s}
+.suxc-sw-pill:hover{background:#2C2C2E;box-shadow:0 6px 20px rgba(0,0,0,.65)}
+.suxc-sw-pill.drag{cursor:grabbing}
+.suxc-sw-dot{width:9px;height:9px;border-radius:50%;background:#48484A;flex:none;transition:background .2s}
+.suxc-sw-dot.on{background:#30D158}
+.suxc-sw-pop{position:absolute;top:calc(100% + 7px);left:0;background:#2C2C2E;
+  border:1px solid rgba(255,255,255,.10);border-radius:10px;min-width:172px;
+  box-shadow:0 10px 36px rgba(0,0,0,.65);overflow:hidden;display:none}
+.suxc-sw-pop.open{display:block}
+.suxc-sw-head{padding:8px 14px 6px;font:600 10px/1 'Lato',sans-serif;color:#636366;letter-spacing:.06em;text-transform:uppercase}
+.suxc-sw-item{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;
+  font:500 13px/1 'Lato',sans-serif;color:#E5E5EA;cursor:pointer;transition:background .1s}
+.suxc-sw-item:hover{background:rgba(255,255,255,.07)}
+.suxc-sw-item.active{color:#30D158}
+.suxc-sw-check{font-size:12px;opacity:0}
+.suxc-sw-item.active .suxc-sw-check{opacity:1}
+
+/* ── TOAST ── */
+#suxc-toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(10px);
+  background:#1C1C1E;color:#E5E5EA;font:600 12px 'Lato',sans-serif;padding:9px 16px;
+  border-radius:9999px;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:100002;opacity:0;
+  pointer-events:none;transition:opacity .18s,transform .18s;border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;gap:10px;white-space:nowrap}
+#suxc-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.suxc-toast-undo{border:0;background:rgba(255,255,255,.15);color:#E5E5EA;padding:3px 10px;
+  border-radius:6px;cursor:pointer;font:700 11px 'Lato',sans-serif;flex:none;
+  transition:background .12s;font-family:'Lato',sans-serif}
+.suxc-toast-undo:hover{background:rgba(255,255,255,.28)}
+
+/* ── ZOOM ── */
+#suxc-zoom{position:fixed;left:16px;bottom:18px;z-index:100001;display:flex;gap:4px;
+  background:#2C2C2E;border-radius:10px;padding:5px;box-shadow:0 8px 24px rgba(0,0,0,.4);
+  border:1px solid rgba(255,255,255,.08)}
+#suxc-zoom button{width:32px;height:32px;border:0;border-radius:7px;background:transparent;
+  color:#98989D;font:700 14px 'Lato',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#suxc-zoom button:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+#suxc-zoom span{min-width:44px;text-align:center;align-self:center;color:#636366;font:600 11px 'Lato',sans-serif}
+
+/* ── PANEL ── */
+#suxc-panel{position:fixed;top:0;right:0;height:100vh;width:240px;background:#1C1C1E;
+  border-left:1px solid rgba(255,255,255,.08);box-shadow:-6px 0 24px rgba(0,0,0,.4);
+  z-index:99999;font-family:'Lato',sans-serif;display:flex;flex-direction:column;
+  transition:transform .2s ease}
+#suxc-panel.closed{transform:translateX(240px)}
+#suxc-ph{padding:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+#suxc-ph-title{font:700 13px 'Lato',sans-serif;color:#E5E5EA;padding:2px 0 10px;
+  display:flex;align-items:center;justify-content:space-between}
+#suxc-ph-title span{font:400 12px 'Lato',sans-serif;color:#636366}
+#suxc-search-row{display:flex;gap:6px;align-items:center}
+#suxc-search-wrap{flex:1;display:flex;align-items:center;gap:7px;background:#3A3A3C;
+  border-radius:8px;padding:7px 10px}
+#suxc-search-wrap svg{color:#8A8A8E;flex:none}
+#suxc-search-input{flex:1;border:0;background:transparent;color:#E5E5EA;
+  font:400 13px 'Lato',sans-serif;outline:none}
+#suxc-search-input::placeholder{color:#636366}
+#suxc-close{width:34px;height:34px;border:0;border-radius:8px;background:#3A3A3C;
+  color:#8A8A8E;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:background .12s}
+#suxc-close:hover{background:#4A4A4E;color:#E5E5EA}
+#suxc-list{flex:1;overflow:auto;padding:8px}
+#suxc-empty{padding:32px 16px;color:#636366;font:400 13px/20px 'Lato',sans-serif;text-align:center}
+
+/* panel cards */
+.suxc-item{padding:12px;border-radius:10px;margin-bottom:6px;cursor:pointer;
+  background:#2C2C2E;border:1px solid transparent;transition:border-color .12s,background .12s}
+.suxc-item:hover{border-color:rgba(255,255,255,.10)}
+.suxc-item.active{background:#3D3D5C;border-color:rgba(123,97,255,.4)}
+.suxc-item.resolved{opacity:.48}
+.suxc-item.submitted{border-color:rgba(123,97,255,.5);background:rgba(123,97,255,.06)}
+.suxc-item.submitted::before{content:"🕓 submitted";display:block;font:600 9px/1 'Lato',sans-serif;
+  color:#9B8AFF;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.suxc-item-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+.suxc-item-acts{display:flex;gap:4px}
+.suxc-item-act{width:32px;height:32px;border:0;border-radius:7px;background:transparent;
+  color:#636366;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;
+  transition:background .12s,color .12s}
+.suxc-item-act:hover{background:rgba(255,255,255,.10);color:#E5E5EA}
+.suxc-item-act.ok.on{color:#30D158}
+.suxc-item-act.ok:hover{color:#30D158}
+.suxc-item-act.del:hover{color:#FF453A}
+.suxc-item-ref{font:400 11px 'Lato',sans-serif;color:#636366;align-self:center}
+.suxc-item-who{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.suxc-item-name{font:600 12px 'Lato',sans-serif;color:#E5E5EA}
+.suxc-item-time{font:400 11px 'Lato',sans-serif;color:#636366}
+.suxc-item-text{font:400 12px/18px 'Lato',sans-serif;color:#98989D;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.suxc-item.resolved .suxc-item-text{text-decoration:line-through}
+</style>
+
+<div id="suxc-nav">
+  <button id="suxc-tgl" type="button" data-tip="Mode komen (C)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
+    <span id="suxc-cbadge" style="display:none">0</span>
+  </button>
+  <button id="suxc-tab" type="button" data-tip="Daftar komen (L)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+  </button>
+  <span class="sep"></span>
+  <button id="suxc-submit" type="button" data-tip="Submit komen — copy (S)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+    <span id="suxc-sbadge" style="display:none">0</span>
+  </button>
+  <button id="suxc-approve" type="button" data-tip="Approve submitted pins (A)" style="display:none">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="suxc-abadge">0</span>
+  </button>
+  <span class="sep"></span>
+  <button id="suxc-figma" type="button" data-tip="Generate Figma (G)">
+    <svg width="16" height="16" viewBox="0 0 38 57" fill="currentColor"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>
+  </button>
+</div>
+
+<div id="suxc-panel" class="closed">
+  <div id="suxc-ph">
+    <div id="suxc-ph-title">Comments <span id="suxc-count"></span></div>
+    <div id="suxc-search-row">
+      <div id="suxc-search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="suxc-search-input" placeholder="Search" type="text">
+      </div>
+      <button id="suxc-close">✕</button>
+    </div>
+  </div>
+  <div id="suxc-list"></div>
+</div>
+
+<div id="suxc-zoom">
+  <button id="suxc-zout" type="button">−</button>
+  <span id="suxc-zlvl">100%</span>
+  <button id="suxc-zin" type="button">+</button>
+  <button id="suxc-zfit" type="button">⤢</button>
+</div>
+
+<button id="suxc-fab" type="button" aria-label="Tools review">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
+  <span id="suxc-fbadge">0</span>
+</button>
+
+<script>
+(function(){
+  var MODE=(document.body.getAttribute('data-suxc')||'prototype').toLowerCase();
+  var FLOW=(MODE==='flow');
+  var KEY='suxc:'+location.pathname, on=false, data=[];
+  var UNAME='Working', UINIT='W';
+  try{data=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(data))data=[];}
+  catch(e){data=[];try{localStorage.removeItem(KEY);}catch(_){}}
+
+  var panel=document.getElementById('suxc-panel'),
+      tab=document.getElementById('suxc-tab'),
+      tgl=document.getElementById('suxc-tgl'),
+      badge=document.getElementById('suxc-cbadge'),
+      nav=document.getElementById('suxc-nav'),
+      fab=document.getElementById('suxc-fab'),
+      searchInput=document.getElementById('suxc-search-input');
+
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}}
+  var LOGKEY='suxc:log';
+  function logEvent(c,act){try{
+    var L=JSON.parse(localStorage.getItem(LOGKEY)||'[]');if(!Array.isArray(L))L=[];
+    L.push({t:new Date().toISOString(),file:(location.pathname.split('/').pop()||''),
+      act:act,text:(c.text||''),loc:(c.ctx||''),x:Math.round(c.x),y:Math.round(c.y),area:!!(c.w&&c.h)});
+    localStorage.setItem(LOGKEY,JSON.stringify(L));}catch(e){}}
+  window.suxcDownloadLog=function(){
+    var blob=new Blob([localStorage.getItem(LOGKEY)||'[]'],{type:'application/json'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='comment-log.json';document.body.appendChild(a);a.click();a.remove();};
+
+  var toastT,toastUndoFn=null;
+  function toast(msg){
+    var el=document.getElementById('suxc-toast');
+    if(!el){el=document.createElement('div');el.id='suxc-toast';document.body.appendChild(el);}
+    toastUndoFn=null;
+    el.innerHTML='<span>'+msg+'</span>';
+    el.classList.add('show');
+    clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove('show');},2400);}
+  function toastUndo(msg,fn){
+    var el=document.getElementById('suxc-toast');
+    if(!el){el=document.createElement('div');el.id='suxc-toast';document.body.appendChild(el);}
+    toastUndoFn=fn;
+    el.innerHTML='<span>'+msg+'</span><button class="suxc-toast-undo">Undo</button>';
+    el.classList.add('show');
+    clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove('show');toastUndoFn=null;},4500);
+    el.querySelector('.suxc-toast-undo').onclick=function(){
+      clearTimeout(toastT);el.classList.remove('show');
+      var f=toastUndoFn;toastUndoFn=null;if(f)f();};}
+
+  function fmtFull(ts){
+    if(!ts)return'';
+    var d=new Date(ts),z=function(n){return n<10?'0'+n:''+n;};
+    return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())+
+      ' '+z(d.getHours())+':'+z(d.getMinutes())+':'+z(d.getSeconds());}
+
+  function fmtRel(ts){
+    if(!ts)return'';
+    var d=Date.now()-ts;
+    if(d<60000)return'Just now';
+    if(d<3600000)return Math.floor(d/60000)+'m ago';
+    if(d<86400000)return Math.floor(d/3600000)+'h ago';
+    return Math.floor(d/86400000)+'d ago';}
+
+  var stage,T={x:0,y:0,s:1},spaceDown=false;
+  if(FLOW){
+    document.documentElement.classList.add('suxc-flow');
+    document.body.classList.add('suxc-flow');
+    stage=document.createElement('div');stage.id='suxc-stage';
+    (function(){var ns=[].slice.call(document.body.childNodes);
+      ns.forEach(function(n){
+        if(n.nodeType===1){var id=n.id||'',tg=n.tagName;
+          if(id.indexOf('suxc-')===0||tg==='SCRIPT'||tg==='STYLE'||tg==='LINK')return;}
+        else if(n.nodeType!==3)return;
+        stage.appendChild(n);});
+      document.body.appendChild(stage);})();
+  }else{stage=document.body;}
+
+  function applyT(){if(!FLOW)return;
+    stage.style.transform='translate('+T.x+'px,'+T.y+'px) scale('+T.s+')';
+    var z=document.getElementById('suxc-zlvl');if(z)z.textContent=Math.round(T.s*100)+'%';}
+  function scX(){return window.scrollX||window.pageXOffset||0;}
+  function scY(){return window.scrollY||window.pageYOffset||0;}
+  function toLocal(cx,cy){return FLOW?{x:(cx-T.x)/T.s,y:(cy-T.y)/T.s}:{x:cx+scX(),y:cy+scY()};}
+  function toClient(lx,ly){return FLOW?{x:T.x+lx*T.s,y:T.y+ly*T.s}:{x:lx-scX(),y:ly-scY()};}
+  function clamp(v,a,b){return v<a?a:v>b?b:v;}
+  function zoomAt(cx,cy,ns){ns=clamp(ns,0.2,3);var L=toLocal(cx,cy);T.s=ns;T.x=cx-L.x*ns;T.y=cy-L.y*ns;applyT();}
+  function smooth(fn){stage.style.transition='transform .22s ease';fn();setTimeout(function(){stage.style.transition='';},240);}
+  function panTo(c){
+    if(c.fixedSel)return; // fixed pin sudah di viewport
+    if(c.scrollSel){var _sc=document.querySelector(c.scrollSel);
+      if(_sc&&_sc.scrollTo)_sc.scrollTo({left:Math.max(0,c.sx-120),top:Math.max(0,c.sy-160),behavior:'smooth'});return;}
+    if(!FLOW){window.scrollTo({left:Math.max(0,c.x-120),top:Math.max(0,c.y-160),behavior:'smooth'});return;}
+    smooth(function(){T.x=window.innerWidth/2-(c.x+(c.w||0)/2)*T.s;T.y=window.innerHeight/2-(c.y+(c.h||0)/2)*T.s;applyT();});}
+  function setOn(v){on=v;document.body.classList.toggle('suxc-on',on);tgl.classList.toggle('on',on);
+    if(on){setPanel(true);toast('Mode komen aktif 💬');}else{clearRects();toast('Mode komen nonaktif');}}
+  function setPanel(o){panel.classList.toggle('closed',!o);}
+  tgl.onclick=function(){setOn(!on);};
+  tab.onclick=function(){setPanel(panel.classList.contains('closed'));};
+  document.getElementById('suxc-close').onclick=function(){setPanel(false);};
+
+  function clearRects(){document.querySelectorAll('.suxc-rect:not(.live)').forEach(function(e){e.remove();});}
+  function showRect(c){clearRects();
+    if(c.fixedSel&&c.fw&&c.fh){
+      var r=document.createElement('div');r.className='suxc-rect';
+      r.style.cssText='position:fixed;left:'+c.fx+'px;top:'+c.fy+'px;width:'+c.fw+'px;height:'+c.fh+'px';
+      if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
+      document.body.appendChild(r);return;}
+    if(c.scrollSel&&c.sw&&c.sh){
+      var _sc=document.querySelector(c.scrollSel);
+      if(_sc){var r=document.createElement('div');r.className='suxc-rect';
+        r.style.cssText='left:'+c.sx+'px;top:'+c.sy+'px;width:'+c.sw+'px;height:'+c.sh+'px';
+        if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
+        _sc.appendChild(r);return;}}
+    if(!(c.w&&c.h))return;
+    var r=document.createElement('div');r.className='suxc-rect';
+    r.style.cssText='left:'+c.x+'px;top:'+c.y+'px;width:'+c.w+'px;height:'+c.h+'px';
+    if(c.resolved)r.style.borderColor='rgba(255,255,255,.18)';
+    stage.appendChild(r);}
+
+  function txt(e){return((e.innerText||e.textContent||'').replace(/\s+/g,' ').trim());}
+  function findFixedLayer(el){
+    while(el&&el!==document.body&&el!==document.documentElement){
+      if(el.nodeType===1){var cs=getComputedStyle(el);
+        if(cs.position==='fixed'&&cs.display!=='none'){
+          var id=el.id;if(id&&id.indexOf('suxc-')!==0)return'#'+id;
+          var lyr=el.getAttribute('data-layer');if(lyr)return'[data-layer="'+lyr+'"]';
+          return null;}}
+      el=el.parentElement;}
+    return null;}
+  function findScrollContainer(el){
+    while(el&&el!==document.body&&el!==document.documentElement){
+      if(el.nodeType===1){var cs=getComputedStyle(el),oy=cs.overflowY,ox=cs.overflowX;
+        if(((oy==='auto'||oy==='scroll')&&el.scrollHeight>el.clientHeight+4)||
+           ((ox==='auto'||ox==='scroll')&&el.scrollWidth>el.clientWidth+4))return el;}
+      el=el.parentElement;}
+    return null;}
+  function findAttrName(el,attr){
+    while(el&&el!==document.body&&el!==document.documentElement){
+      if(el.nodeType===1&&el.hasAttribute&&el.hasAttribute(attr))return el.getAttribute(attr);
+      el=el.parentElement;}
+    return null;}
+  function isAttrActive(attr,name){
+    if(!name)return true;
+    var els=document.querySelectorAll('['+attr+'="'+name.replace(/"/g,'\\"')+'"]');
+    for(var i=0;i<els.length;i++){var cs=getComputedStyle(els[i]);
+      if(cs.display!=='none'&&cs.visibility!=='hidden')return true;}
+    return false;}
+  function selFor(el){
+    if(!el)return null;
+    if(el.id&&el.id.indexOf('suxc-')!==0)return'#'+el.id;
+    var dl=el.getAttribute&&el.getAttribute('data-layer');if(dl)return'[data-layer="'+dl+'"]';
+    var cls=(typeof el.className==='string'?el.className:'').trim().split(/\s+/)[0];
+    if(cls&&document.querySelectorAll('.'+cls).length===1)return'.'+cls;
+    return null;}
+  function anchorAtViewport(cx,cy){
+    if(cx<0||cy<0||cx>window.innerWidth||cy>window.innerHeight)return'';
+    var els=document.elementsFromPoint?document.elementsFromPoint(cx,cy):[document.elementFromPoint(cx,cy)];
+    for(var k=0;k<els.length;k++){var e=els[k];
+      if(!e||!e.closest||e===document.body||e===document.documentElement)continue;
+      if(e.closest('#suxc-nav,#suxc-panel,.suxc-pop,.suxc-pin,.suxc-rect'))continue;
+      var s=txt(e);if(s&&s.length<=110)return s.length>80?s.slice(0,80)+'…':s;}
+    return'';}
+  function anchorAt(px,py){
+    var sc=toClient(px,py),cx=sc.x,cy=sc.y;
+    if(cx<0||cy<0||cx>window.innerWidth||cy>window.innerHeight)return'';
+    var els=document.elementsFromPoint?document.elementsFromPoint(cx,cy):[document.elementFromPoint(cx,cy)];
+    for(var k=0;k<els.length;k++){var e=els[k];
+      if(!e||!e.closest||e===document.body||e===document.documentElement)continue;
+      if(e.closest('#suxc-nav,#suxc-panel,.suxc-pop,.suxc-pin,.suxc-rect'))continue;
+      var s=txt(e);if(s&&s.length<=110)return s.length>80?s.slice(0,80)+'…':s;}
+    return'';}
+  function ctxFor(c){
+    if(c.fixedSel){
+      if(c.fw&&c.fh){
+        var P=[[c.fx+c.fw/2,c.fy+c.fh/2],[c.fx+10,c.fy+10],[c.fx+c.fw-10,c.fy+10],[c.fx+10,c.fy+c.fh-10],[c.fx+c.fw-10,c.fy+c.fh-10]],seen=[];
+        P.forEach(function(p){var a=anchorAtViewport(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
+        if(seen.length)return seen.slice(0,2).join(' & ');}
+      return anchorAtViewport(c.fx,c.fy);}
+    if(c.scrollSel){
+      var sc=document.querySelector(c.scrollSel);
+      if(sc){var r=sc.getBoundingClientRect();
+        var vx=r.left+c.sx-sc.scrollLeft,vy=r.top+c.sy-sc.scrollTop;
+        if(c.sw&&c.sh){
+          var P=[[vx+c.sw/2,vy+c.sh/2],[vx+10,vy+10],[vx+c.sw-10,vy+10],[vx+10,vy+c.sh-10],[vx+c.sw-10,vy+c.sh-10]],seen=[];
+          P.forEach(function(p){var a=anchorAtViewport(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
+          if(seen.length)return seen.slice(0,2).join(' & ');}
+        return anchorAtViewport(vx,vy);}}
+    if(c.w&&c.h){
+      var P=[[c.x+c.w/2,c.y+c.h/2],[c.x+10,c.y+10],[c.x+c.w-10,c.y+10],[c.x+10,c.y+c.h-10],[c.x+c.w-10,c.y+c.h-10]],seen=[];
+      P.forEach(function(p){var a=anchorAt(p[0],p[1]);if(a&&seen.indexOf(a)<0)seen.push(a);});
+      if(seen.length)return seen.slice(0,2).join(' & ');
+      var n=nearest(c.x+c.w/2,c.y+c.h/2);return n?'di dekat: '+n:'';}
+    var d=anchorAt(c.x,c.y);if(d)return d;
+    var nn=nearest(c.x,c.y);return nn?'di dekat: '+nn:'';}
+  function nearest(lx,ly){
+    var sc=toClient(lx,ly),best=null,bd=1e9;
+    var all=stage.querySelectorAll('div,span,h1,h2,h3,p,td,li,b,a,button');
+    for(var i=0;i<all.length;i++){var e=all[i];
+      if(e.children.length>2)continue;
+      var s=txt(e);if(!s||s.length<3||s.length>90)continue;
+      var r=e.getBoundingClientRect();if(!r.width)continue;
+      var dx=Math.max(r.left-sc.x,0,sc.x-r.right),dy=Math.max(r.top-sc.y,0,sc.y-r.bottom);
+      var dist=dx*dx+dy*dy;if(dist<bd){bd=dist;best=s;}}
+    return best?(best.length>70?best.slice(0,70)+'…':best):'';}
+
+  var fileName=(location.pathname.split('/').pop()||'page').replace(/\.html?$/i,'');
+
+  function render(){
+    document.querySelectorAll('.suxc-pin,.suxc-rect:not(.live)').forEach(function(e){e.remove();});
+    var list=document.getElementById('suxc-list');list.innerHTML='';
+    var openCount=data.filter(function(c){return !c.resolved;}).length;
+    var subCount=data.filter(function(c){return c.submitted&&!c.resolved;}).length;
+    var draftCount=openCount-subCount;
+    var countEl=document.getElementById('suxc-count');
+    if(countEl)countEl.textContent=data.length?'('+data.length+')':'';
+    badge.style.display=openCount?'block':'none';badge.textContent=openCount;
+    var fb=document.getElementById('suxc-fbadge');
+    if(fb){fb.style.display=openCount?'block':'none';fb.textContent=openCount;}
+    var sb=document.getElementById('suxc-sbadge');
+    if(sb){sb.style.display=draftCount?'block':'none';sb.textContent=draftCount;}
+    var ap=document.getElementById('suxc-approve'),ab=document.getElementById('suxc-abadge');
+    if(ap){ap.style.display=subCount?'flex':'none';if(ab)ab.textContent=subCount;}
+
+    var query=(searchInput&&searchInput.value||'').toLowerCase().trim();
+
+    if(!data.length){
+      list.innerHTML='<div id="suxc-empty">Belum ada komen.<br><br>Nyalain mode komen (💬 / tekan C) lalu klik area di layar.</div>';
+      return;}
+
+    // sorted: unresolved newest first, resolved oldest last
+    var sorted=data.map(function(c,i){return{c:c};});
+    sorted.sort(function(a,b){
+      if(a.c.resolved===b.c.resolved)return(b.c.ts||0)-(a.c.ts||0);
+      return a.c.resolved?1:-1;});
+
+    sorted.forEach(function(entry,si){
+      var c=entry.c, num=si+1;
+      // pin — hanya unresolved
+      // Filter: pin terikat ke [data-screen]/[data-state] hanya muncul saat layer-nya active
+      var layerOk=isAttrActive('data-screen',c.screenName)&&isAttrActive('data-state',c.stateName);
+      if(!c.resolved&&layerOk){
+        if(c.fixedSel){
+          var lyr=document.querySelector(c.fixedSel);
+          if(lyr){var lcs=getComputedStyle(lyr);
+            if(lcs.display!=='none'&&lcs.visibility!=='hidden'){
+              var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
+              p.style.position='fixed';p.style.left=c.fx+'px';p.style.top=c.fy+'px';p.textContent=num;
+              p.onmousedown=function(ev){
+                ev.stopPropagation();ev.preventDefault();
+                var sx=ev.clientX,sy=ev.clientY,moved=false;
+                function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>10)moved=true;
+                  if(moved){c.fx=e.clientX;c.fy=e.clientY;
+                    p.style.left=c.fx+'px';p.style.top=c.fy+'px';
+                    document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+                function upH(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',upH);
+                  if(moved){save();render();}else{openEditor(c);}}
+                document.addEventListener('mousemove',mv);document.addEventListener('mouseup',upH);};
+              p.onmouseenter=function(){if(on&&!document.querySelector('.suxc-pop'))openEditor(c);};
+              document.body.appendChild(p);}}
+        }else if(c.scrollSel){
+          var sc=document.querySelector(c.scrollSel);
+          if(sc){
+            if(getComputedStyle(sc).position==='static')sc.style.position='relative';
+            var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
+            p.style.left=c.sx+'px';p.style.top=c.sy+'px';p.textContent=num;
+            p.onmousedown=(function(scEl){return function(ev){
+              ev.stopPropagation();ev.preventDefault();
+              var sx=ev.clientX,sy=ev.clientY,moved=false;
+              function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>10)moved=true;
+                if(moved){var rr=scEl.getBoundingClientRect();
+                  c.sx=e.clientX-rr.left+scEl.scrollLeft;c.sy=e.clientY-rr.top+scEl.scrollTop;
+                  p.style.left=c.sx+'px';p.style.top=c.sy+'px';
+                  document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+              function upH(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',upH);
+                if(moved){save();render();}else{openEditor(c);}}
+              document.addEventListener('mousemove',mv);document.addEventListener('mouseup',upH);};})(sc);
+            p.onmouseenter=function(){if(on&&!document.querySelector('.suxc-pop'))openEditor(c);};
+            sc.appendChild(p);}
+        }else{
+          var p=document.createElement('div');p.className='suxc-pin'+(c.submitted?' submitted':'');
+          p.style.left=c.x+'px';p.style.top=c.y+'px';p.textContent=num;
+          p.onmousedown=function(ev){
+            ev.stopPropagation();ev.preventDefault();
+            var sx=ev.clientX,sy=ev.clientY,moved=false;
+            function mv(e){if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>10)moved=true;
+              if(moved){var L=toLocal(e.clientX,e.clientY);c.x=L.x;c.y=L.y;
+                p.style.left=c.x+'px';p.style.top=c.y+'px';
+                document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});}}
+            function up(){document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);
+              if(moved){save();render();}else{openEditor(c);}}
+            document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);};
+          p.onmouseenter=function(){if(on&&!document.querySelector('.suxc-pop'))openEditor(c);};
+          stage.appendChild(p);}}
+
+      // panel card — search filter
+      if(query&&(!c.text||c.text.toLowerCase().indexOf(query)<0))return;
+      var it=document.createElement('div');
+      it.className='suxc-item'+(c.resolved?' resolved':'')+(c.submitted&&!c.resolved?' submitted':'');
+      it.innerHTML=
+        '<div class="suxc-item-who">'+
+          '<span class="suxc-item-name">'+UNAME+'</span>'+
+          '<span class="suxc-item-time">'+fmtRel(c.ts)+'</span>'+
+          '<div class="suxc-item-acts" style="margin-left:auto">'+
+            '<button class="suxc-item-act ok'+(c.resolved?' on':'')+'" title="Tandai selesai">✓</button>'+
+            '<button class="suxc-item-act del" title="Hapus">✕</button>'+
+          '</div>'+
+        '</div>'+
+        '<div class="suxc-item-text">'+((c.text||'(kosong)').replace(/</g,'&lt;'))+'</div>';
+
+      it.onclick=function(ev){if(ev.target.closest('.suxc-item-act'))return;panTo(c);openEditor(c);};
+      it.onmouseenter=function(){showRect(c);};
+      it.onmouseleave=function(){if(!document.querySelector('.suxc-pop'))clearRects();};
+      it.querySelector('.ok').onclick=function(ev){
+        ev.stopPropagation();c.resolved=!c.resolved;
+        logEvent(c,c.resolved?'resolve':'reopen');save();render();
+        toast(c.resolved?'Ditandai selesai ✓':'Dibuka kembali ↩');};
+      it.querySelector('.del').onclick=function(ev){
+        ev.stopPropagation();
+        var oi=data.indexOf(c);if(oi<0)return;
+        var snap=c,snapIdx=oi;
+        logEvent(c,'delete');data.splice(oi,1);save();render();
+        toastUndo('Komen dihapus',function(){data.splice(snapIdx,0,snap);save();render();toast('Dikembalikan ✓');});};
+      list.appendChild(it);});}
+
+  function openEditor(c){
+    document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});
+    var isNew=data.indexOf(c)<0;
+    var pop=document.createElement('div');pop.className='suxc-pop';
+    var sc;
+    if(c.fixedSel)sc={x:c.fx,y:c.fy};
+    else if(c.scrollSel){var _sc=document.querySelector(c.scrollSel);
+      if(_sc){var _r=_sc.getBoundingClientRect();sc={x:_r.left+c.sx-_sc.scrollLeft,y:_r.top+c.sy-_sc.scrollTop};}
+      else sc={x:0,y:0};}
+    else sc=toClient(c.x,c.y);
+    pop.style.cssText='position:fixed;left:'+Math.max(8,Math.min(sc.x+28,window.innerWidth-316))+'px;top:'+Math.max(8,Math.min(sc.y-10,window.innerHeight-300))+'px';
+    showRect(c);
+
+    var EDIT_ICON='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>';
+    var threadHtml='';
+    if(!isNew&&c.text){
+      threadHtml=
+        '<div class="suxc-pop-thread">'+
+          '<div class="suxc-thread-msg">'+
+            '<div class="suxc-thread-meta">'+
+              '<span class="suxc-thread-user">'+UNAME+'</span>'+
+              '<span class="suxc-thread-time">'+fmtRel(c.ts)+'</span>'+
+              '<button class="suxc-thread-morebtn" title="Edit">'+EDIT_ICON+'</button>'+
+            '</div>'+
+            '<div class="suxc-thread-text">'+((c.text||'').replace(/</g,'&lt;'))+'</div>'+
+            '<textarea class="suxc-thread-editta" rows="2"></textarea>'+
+          '</div>'+
+        '</div>';}
+
+    var locTxt=(c.ctx||'').replace(/</g,'&lt;');
+    var layerParts=[];
+    if(c.screenName)layerParts.push(c.screenName);
+    if(c.stateName)layerParts.push(c.stateName);
+    if(c.fixedSel)layerParts.push(c.fixedSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1'));
+    else if(c.scrollSel)layerParts.push(c.scrollSel.replace(/^[#.]/,'').replace(/\[data-layer="(.+)"\]/,'$1'));
+    var layerLbl=layerParts.join(' · ');
+    var locLine=(locTxt||layerLbl)?
+      ('<div class="suxc-pop-loc">'+
+        '<svg class="suxc-pop-loc-ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'+
+        '<span class="suxc-pop-loc-txt">'+
+          (layerLbl?'<b>'+layerLbl+'</b>'+(locTxt?' · ':''):'')+
+          (locTxt||'')+
+        '</span>'+
+      '</div>'):'';
+    var subLine=(c.submitted&&!c.resolved)?
+      ('<div class="suxc-pop-sub">'+
+        '<span class="suxc-pop-sub-txt">🕓 <b>Submitted</b>'+(c.batchId?(' · batch '+c.batchId):'')+'</span>'+
+        '<button class="suxc-pop-unsubmit" type="button">Un-submit</button>'+
+      '</div>'):'';
+    pop.innerHTML=
+      '<div class="suxc-pop-head">'+
+        '<span class="suxc-pop-title">'+(isNew?'New comment':'Comment')+'</span>'+
+        '<div class="suxc-pop-hacts">'+
+          (!isNew?'<button class="suxc-pop-resbtn'+(c.resolved?' on':'')+'" title="Mark resolved">✓</button>':'')+
+          '<button class="suxc-pop-closebtn">✕</button>'+
+        '</div>'+
+      '</div>'+
+      locLine+
+      subLine+
+      threadHtml+
+      (isNew?'<div class="suxc-pop-reply">'+
+        '<div class="suxc-reply-wrap">'+
+          '<textarea class="suxc-reply-ta" placeholder="Add a comment…" rows="3"></textarea>'+
+          '<button class="suxc-send-btn" disabled type="button">'+
+            '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>'+
+          '</button>'+
+        '</div>'+
+      '</div>':'');
+
+    var ta=pop.querySelector('.suxc-reply-ta');
+    var sendBtn=pop.querySelector('.suxc-send-btn');
+
+    pop.querySelector('.suxc-pop-closebtn').onclick=closePop;
+
+    var resBtn=pop.querySelector('.suxc-pop-resbtn');
+    if(resBtn)resBtn.onclick=function(){
+      c.resolved=!c.resolved;if(c.resolved)c.submitted=false;resBtn.classList.toggle('on',c.resolved);
+      logEvent(c,c.resolved?'resolve':'reopen');save();render();
+      toast(c.resolved?'Ditandai selesai ✓':'Dibuka kembali ↩');closePop();};
+    var unsubBtn=pop.querySelector('.suxc-pop-unsubmit');
+    if(unsubBtn)unsubBtn.onclick=function(){unsubmit(c);closePop();};
+
+    var moreBtn=pop.querySelector('.suxc-thread-morebtn');
+    if(moreBtn)moreBtn.onclick=function(ev){
+      ev.stopPropagation();
+      var textEl=pop.querySelector('.suxc-thread-text');
+      var editEl=pop.querySelector('.suxc-thread-editta');
+      if(!textEl||!editEl)return;
+      var editing=editEl.classList.contains('show');
+      if(editing){textEl.style.display='';editEl.classList.remove('show');}
+      else{
+        editEl.value=c.text||'';textEl.style.display='none';editEl.classList.add('show');editEl.focus();
+        editEl.onkeydown=function(e){
+          if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();
+            var v=editEl.value.trim();if(v){c.text=v;logEvent(c,'edit');save();render();toast('Komen diperbarui ✓');}closePop();}
+          if(e.key==='Escape'){textEl.style.display='';editEl.classList.remove('show');}};
+        editEl.onblur=function(){
+          var v=editEl.value.trim();
+          if(v&&v!==c.text){c.text=v;logEvent(c,'edit');save();render();toast('Komen diperbarui ✓');}};}};
+
+    if(ta&&sendBtn){
+      ta.oninput=function(){sendBtn.disabled=!ta.value.trim();};
+      ta.onkeydown=function(ev){
+        if(ev.key==='Enter'&&!ev.shiftKey){ev.preventDefault();commit();}
+        if(ev.key==='Escape')closePop();};
+      sendBtn.onclick=commit;}
+
+    function commit(){
+      if(!ta)return;var v=ta.value.trim();if(!v)return;
+      var wasNew=isNew;
+      if(isNew){c.text=v;c.ts=Date.now();data.push(c);logEvent(c,'add');}
+      else{c.text=c.text?(c.text+'\n'+v):v;logEvent(c,'edit');}
+      save();render();closePop();
+      toast(wasNew?'Komen ditambah ✓':'Komen diperbarui ✓');}
+
+    function closePop(){
+      document.querySelectorAll('.suxc-pop').forEach(function(e){e.remove();});clearRects();}
+
+    pop.onclick=function(ev){ev.stopPropagation();};
+    document.body.appendChild(pop);if(ta)ta.focus();}
+
+  if(searchInput)searchInput.oninput=function(){render();};
+
+  function isChrome(t){return t.closest&&(t.closest('#suxc-panel')||t.closest('#suxc-nav')||t.closest('#suxc-zoom')||t.closest('#suxc-fab')||t.closest('.suxc-pop')||t.closest('.suxc-pin'));}
+  document.addEventListener('click',function(ev){if(on&&!spaceDown&&!isChrome(ev.target)){ev.preventDefault();ev.stopPropagation();}},true);
+  document.addEventListener('mousedown',function(ev){
+    if(isChrome(ev.target))return;
+    var doPan=FLOW&&((ev.button===1)||spaceDown||(!on&&ev.button===0));
+    var doCmt=on&&ev.button===0&&!spaceDown;
+    if(!doPan&&!doCmt)return;
+    ev.preventDefault();
+    if(doPan){
+      var sx=ev.clientX,sy=ev.clientY,ox=T.x,oy=T.y;document.body.classList.add('suxc-pan');
+      function pm(e){T.x=ox+(e.clientX-sx);T.y=oy+(e.clientY-sy);applyT();}
+      function pu(){document.removeEventListener('mousemove',pm);document.removeEventListener('mouseup',pu);document.body.classList.remove('suxc-pan');}
+      document.addEventListener('mousemove',pm);document.addEventListener('mouseup',pu);return;}
+    var L0=toLocal(ev.clientX,ev.clientY),rect=null;
+    function mv(e){
+      var L=toLocal(e.clientX,e.clientY),w=Math.abs(L.x-L0.x),h=Math.abs(L.y-L0.y);
+      if(!rect&&(w+h)>6){rect=document.createElement('div');rect.className='suxc-rect live';stage.appendChild(rect);}
+      if(rect){rect.style.left=Math.min(L0.x,L.x)+'px';rect.style.top=Math.min(L0.y,L.y)+'px';rect.style.width=w+'px';rect.style.height=h+'px';}}
+    function up(e){
+      document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);
+      if(rect)rect.remove();
+      var L=toLocal(e.clientX,e.clientY),w=Math.abs(L.x-L0.x),h=Math.abs(L.y-L0.y);
+      var anchorEl=document.elementFromPoint(e.clientX,e.clientY);
+      var fixedSel=anchorEl?findFixedLayer(anchorEl):null;
+      var screenName=anchorEl?findAttrName(anchorEl,'data-screen'):null;
+      var stateName=anchorEl?findAttrName(anchorEl,'data-state'):null;
+      var c={text:'',resolved:false};
+      if(screenName)c.screenName=screenName;
+      if(stateName)c.stateName=stateName;
+      if(fixedSel){
+        c.fixedSel=fixedSel;
+        var vx0=L0.x-scX(),vy0=L0.y-scY();
+        if(w>6&&h>6){c.fx=Math.min(vx0,e.clientX);c.fy=Math.min(vy0,e.clientY);c.fw=Math.abs(e.clientX-vx0);c.fh=Math.abs(e.clientY-vy0);}
+        else{c.fx=e.clientX;c.fy=e.clientY;}
+      }else{
+        var scEl=anchorEl?findScrollContainer(anchorEl):null;
+        var scSel=scEl?selFor(scEl):null;
+        if(scSel){
+          c.scrollSel=scSel;
+          if(getComputedStyle(scEl).position==='static')scEl.style.position='relative';
+          var r=scEl.getBoundingClientRect();
+          var vx0=L0.x-scX(),vy0=L0.y-scY();
+          if(w>6&&h>6){
+            c.sx=Math.min(vx0,e.clientX)-r.left+scEl.scrollLeft;
+            c.sy=Math.min(vy0,e.clientY)-r.top+scEl.scrollTop;
+            c.sw=Math.abs(e.clientX-vx0);c.sh=Math.abs(e.clientY-vy0);
+          }else{
+            c.sx=e.clientX-r.left+scEl.scrollLeft;
+            c.sy=e.clientY-r.top+scEl.scrollTop;
+          }
+        }else{
+          c.x=Math.min(L0.x,L.x);c.y=Math.min(L0.y,L.y);
+          if(w>6&&h>6){c.w=w;c.h=h;}else{c.x=L0.x;c.y=L0.y;}
+        }
+      }
+      c.ctx=ctxFor(c);openEditor(c);}
+    document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);},true);
+
+  document.addEventListener('wheel',function(ev){
+    if(!FLOW)return;if(isChrome(ev.target))return;ev.preventDefault();
+    if(ev.ctrlKey||ev.metaKey){zoomAt(ev.clientX,ev.clientY,T.s*Math.exp(-ev.deltaY*0.0028));}
+    else{T.x-=ev.deltaX;T.y-=ev.deltaY;applyT();}},{passive:false});
+  document.getElementById('suxc-zin').onclick=function(){smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s*1.2);});};
+  document.getElementById('suxc-zout').onclick=function(){smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s/1.2);});};
+  document.getElementById('suxc-zfit').onclick=function(){smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});};
+
+  function typing(t){return t&&(t.tagName==='TEXTAREA'||t.tagName==='INPUT'||t.isContentEditable);}
+  document.addEventListener('keydown',function(ev){
+    if(ev.key==='Escape'){
+      if(!FLOW&&navOpen){hideNav();return;}
+      var pop=document.querySelector('.suxc-pop');
+      if(pop){pop.remove();clearRects();return;}
+      if(on){setOn(false);return;}
+      setPanel(false);return;}
+    if(FLOW&&(ev.ctrlKey||ev.metaKey)){
+      var z=ev.key;
+      if(z==='='||z==='+'){ev.preventDefault();smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s*1.2);});}
+      else if(z==='-'||z==='_'){ev.preventDefault();smooth(function(){zoomAt(window.innerWidth/2,window.innerHeight/2,T.s/1.2);});}
+      else if(z==='0'){ev.preventDefault();smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});}
+      return;}
+    if(typing(ev.target))return;
+    if(FLOW&&(ev.code==='Space'||ev.key===' ')){spaceDown=true;ev.preventDefault();return;}
+    if(ev.ctrlKey||ev.metaKey||ev.altKey)return; // biarkan browser handle (Cmd+S, Cmd+C, dll)
+    var k=ev.key.toLowerCase();
+    if(k==='c'){ev.preventDefault();setOn(!on);}
+    else if(k==='l'){ev.preventDefault();setPanel(panel.classList.contains('closed'));}
+    else if(k==='s'){ev.preventDefault();doSubmit();}
+    else if(k==='a'){ev.preventDefault();approveSubmitted();}
+    else if(k==='g'){ev.preventDefault();doFigma();}
+    else if(FLOW&&k==='0'){ev.preventDefault();smooth(function(){T.x=0;T.y=0;T.s=1;applyT();});}});
+  document.addEventListener('keyup',function(ev){if(ev.code==='Space'||ev.key===' ')spaceDown=false;});
+
+  function doSubmit(){
+    var active=data.filter(function(c){return !c.resolved;});
+    if(!active.length){toast('Belum ada komen aktif');return;}
+    var file=location.pathname.split('/').pop()||'flow';
+    var d=new Date(),pad=function(n){return n<10?'0'+n:n;};
+    var batchId=d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'-'+pad(d.getHours())+pad(d.getMinutes());
+    var head='Revisi dari user di '+file+' (kerjakan sesuai lokasi tiap poin):\n'+
+             'Batch: '+batchId+' ('+active.length+' komen)\n\n';
+    var body=active.map(function(c,i){
+      var loc=c.ctx||(c.fixedSel?('area sekitar x'+Math.round(c.fx)+' y'+Math.round(c.fy)):
+                     c.scrollSel?('area sekitar x'+Math.round(c.sx)+' y'+Math.round(c.sy)):
+                     ('area sekitar x'+Math.round(c.x)+' y'+Math.round(c.y)));
+      var tags=[];
+      if(c.screenName)tags.push('screen: '+c.screenName);
+      if(c.stateName)tags.push('state: '+c.stateName);
+      if(c.fixedSel)tags.push('modal: '+c.fixedSel);
+      else if(c.scrollSel)tags.push('scroll: '+c.scrollSel);
+      var layer=tags.length?(' ['+tags.join(' | ')+']'):'';
+      return (i+1)+'. '+(c.text||'(kosong)')+'\n   ↳ lokasi: '+loc+layer;}).join('\n\n');
+    var foot='\n\n---\nSetelah selesai semua, kasih tau user: "Done batch '+batchId+'. Cek hasil dan klik Approve di overlay buat resolve semua pin submitted."';
+    var t=head+body+foot;
+    function markSubmitted(){active.forEach(function(c){c.submitted=true;c.batchId=batchId;});save();render();}
+    navigator.clipboard.writeText(t).then(function(){markSubmitted();toast(active.length+' komen tersalin ✔ marked submitted');},
+      function(){prompt('Copy komen ini, paste ke chat:',t);markSubmitted();});}
+  function approveSubmitted(){
+    var sub=data.filter(function(c){return c.submitted&&!c.resolved;});
+    if(!sub.length){toast('Nggak ada pin submitted');return;}
+    if(!confirm('Approve & resolve '+sub.length+' pin submitted?'))return;
+    sub.forEach(function(c){c.resolved=true;c.submitted=false;logEvent(c,'resolve');});
+    save();render();toast(sub.length+' pin resolved ✓');}
+  function unsubmit(c){c.submitted=false;delete c.batchId;save();render();toast('Pin dikembalikan ke draft');}
+  document.getElementById('suxc-submit').onclick=doSubmit;
+  var _apBtn=document.getElementById('suxc-approve');if(_apBtn)_apBtn.onclick=approveSubmitted;
+
+  // ── GENERATE FIGMA ──
+  function extractTree(rootEl){
+    function dirText(el){var t='';for(var i=0;i<el.childNodes.length;i++){var n=el.childNodes[i];if(n.nodeType===3){var s=n.textContent.trim();if(s)t+=(t?' ':'')+s;}}return t;}
+    function st(cs){return{backgroundColor:cs.backgroundColor,backgroundImage:cs.backgroundImage,borderTopLeftRadius:parseFloat(cs.borderTopLeftRadius)||0,borderTopRightRadius:parseFloat(cs.borderTopRightRadius)||0,borderBottomRightRadius:parseFloat(cs.borderBottomRightRadius)||0,borderBottomLeftRadius:parseFloat(cs.borderBottomLeftRadius)||0,borderTopWidth:parseFloat(cs.borderTopWidth)||0,borderRightWidth:parseFloat(cs.borderRightWidth)||0,borderBottomWidth:parseFloat(cs.borderBottomWidth)||0,borderLeftWidth:parseFloat(cs.borderLeftWidth)||0,borderTopColor:cs.borderTopColor,borderRightColor:cs.borderRightColor,borderBottomColor:cs.borderBottomColor,borderLeftColor:cs.borderLeftColor,boxShadow:cs.boxShadow,opacity:parseFloat(cs.opacity),overflow:cs.overflow};}
+    function ts(cs){return{fontFamily:cs.fontFamily.split(',')[0].replace(/['"]/g,'').trim(),fontSize:parseFloat(cs.fontSize),fontWeight:parseInt(cs.fontWeight),color:cs.color,lineHeight:cs.lineHeight==='normal'?Math.round(parseFloat(cs.fontSize)*1.4):parseFloat(cs.lineHeight),textAlign:cs.textAlign,letterSpacing:cs.letterSpacing==='normal'?0:parseFloat(cs.letterSpacing)};}
+    function lay(cs){var d=cs.display||'';if(d.indexOf('flex')<0)return null;return{display:'flex',flexDirection:cs.flexDirection||'row',flexWrap:cs.flexWrap||'nowrap',justifyContent:cs.justifyContent||'flex-start',alignItems:cs.alignItems||'stretch',rowGap:parseFloat(cs.rowGap)||0,columnGap:parseFloat(cs.columnGap)||0,pt:parseFloat(cs.paddingTop)||0,pr:parseFloat(cs.paddingRight)||0,pb:parseFloat(cs.paddingBottom)||0,pl:parseFloat(cs.paddingLeft)||0};}
+    function skip(el){var id=el.id||'';if(id.indexOf('suxc-')===0)return true;if(el.classList){for(var _i=0;_i<el.classList.length;_i++){if(el.classList[_i].indexOf('suxc-')===0)return true;}}return false;}
+    function ex(el,pr,pe){
+      if(skip(el))return null;
+      var r=el.getBoundingClientRect();if(r.width<=0||r.height<=0)return null;
+      var cs=getComputedStyle(el);if(cs.display==='none'||cs.visibility==='hidden')return null;
+      var tag=el.tagName.toLowerCase(),cn=el.classList.length>0?el.classList[0]:'',id=el.id||'';
+      var nm=id||cn||tag,pos=cs.position;
+      var sl=pe?pe.scrollLeft:0,st2=pe?pe.scrollTop:0,px=pr?pr.left:0,py=pr?pr.top:0;
+      var x=r.left-px+sl,y=r.top-py+st2,w=r.width,h=r.height;
+      if(tag==='svg')return{type:'SVG',name:cn||'svg',x:x,y:y,width:w,height:h,pos:pos,svg:el.outerHTML};
+      if(tag==='img'){var du=null;try{var cv=document.createElement('canvas');cv.width=el.naturalWidth||w;cv.height=el.naturalHeight||h;cv.getContext('2d').drawImage(el,0,0);du=cv.toDataURL('image/png');}catch(e){}return{type:'IMAGE',name:el.alt||'image',x:x,y:y,width:w,height:h,pos:pos,src:el.src,dataUrl:du};}
+      var hasKids=el.children.length>0,dt=dirText(el);
+      if(!hasKids&&dt){var pl=parseFloat(cs.paddingLeft)||0,pt=parseFloat(cs.paddingTop)||0,prr=parseFloat(cs.paddingRight)||0,pb=parseFloat(cs.paddingBottom)||0;
+        var hasPad=pl>0||pt>0||prr>0||pb>0,hasBg=cs.backgroundColor!=='rgba(0, 0, 0, 0)'&&cs.backgroundColor!=='transparent';
+        if(hasPad||hasBg)return{type:'FRAME',name:nm,x:x,y:y,width:w,height:h,pos:pos,styles:st(cs),children:[{type:'TEXT',name:dt.slice(0,40),text:dt,x:pl,y:pt,width:Math.max(1,w-pl-prr),height:Math.max(1,h-pt-pb),textStyles:ts(cs)}]};
+        return{type:'TEXT',name:dt.slice(0,40),text:dt,x:x,y:y,width:w,height:h,pos:pos,styles:st(cs),textStyles:ts(cs)};}
+      var node={type:'FRAME',name:nm,x:x,y:y,width:w,height:h,pos:pos,styles:st(cs),layout:lay(cs),children:[]};
+      for(var i=0;i<el.childNodes.length;i++){var ch=el.childNodes[i];
+        if(ch.nodeType===1){var cl=ex(ch,r,el);if(cl)node.children.push(cl);}
+        else if(ch.nodeType===3&&ch.textContent.trim()){var rg=document.createRange();rg.selectNodeContents(ch);var tr=rg.getBoundingClientRect();
+          if(tr.width>0&&tr.height>0)node.children.push({type:'TEXT',name:ch.textContent.trim().slice(0,40),text:ch.textContent.trim(),x:tr.left-r.left,y:tr.top-r.top,width:tr.width,height:tr.height,textStyles:ts(cs)});}}
+      return node;}
+    return ex(rootEl,null,null);}
+  function topScreens(){var all=[].slice.call(document.querySelectorAll('[data-screen]'));return all.filter(function(e){return !e.parentElement||!e.parentElement.closest('[data-screen]');});}
+  function buildFigmaPayload(){
+    var screens=topScreens();
+    if(screens.length>=2){
+      var names=screens.map(function(e){return e.getAttribute('data-screen')||'screen';});
+      var trees=[],edges=[],hasExplicit=false;
+      screens.forEach(function(e,i){var t=extractTree(e);if(t){t.name=names[i];trees.push({name:names[i],tree:t});}
+        var nx=e.getAttribute('data-flow-next');
+        if(nx){hasExplicit=true;nx.split(',').forEach(function(to){to=to.trim();if(to)edges.push({from:names[i],to:to,label:e.getAttribute('data-flow-label')||''});});}});
+      if(!hasExplicit)for(var i=0;i<trees.length-1;i++)edges.push({from:trees[i].name,to:trees[i+1].name,label:''});
+      return{type:'FLOW',name:(location.pathname.split('/').pop()||'flow').replace(/\.html?$/i,''),screens:trees,edges:edges};}
+    var root=document.querySelector('.app-layout')||(stage&&stage.firstElementChild)||document.body;
+    return extractTree(root);}
+  function doFigma(){
+    var chrome=[];
+    ['suxc-nav','suxc-panel','suxc-zoom','suxc-toast','suxc-fab'].forEach(function(id){var e=document.getElementById(id);if(e)chrome.push(e);});
+    [].forEach.call(document.querySelectorAll('.suxc-pin,.suxc-rect,.suxc-pop'),function(e){chrome.push(e);});
+    var prev=chrome.map(function(e){return e.style.display;});
+    chrome.forEach(function(e){e.style.display='none';});
+    var hadOn=document.body.classList.contains('suxc-on');if(hadOn)document.body.classList.remove('suxc-on');
+    function restore(){chrome.forEach(function(e,i){e.style.display=prev[i];});if(hadOn)document.body.classList.add('suxc-on');}
+    var pT,pTs;
+    if(FLOW){pT=stage.style.transform;pTs=stage.style.transition;stage.style.transition='none';stage.style.transform='none';void stage.offsetWidth;}
+    var stickyOverrides=[];[].forEach.call(document.querySelectorAll('*'),function(el){var p=getComputedStyle(el).position;if(p==='sticky'||p==='-webkit-sticky'){stickyOverrides.push([el,el.style.position]);el.style.position='relative';}});
+    var screenReveal=[];[].forEach.call(document.querySelectorAll('[data-screen]'),function(el){var cs=getComputedStyle(el);if(cs.display==='none'){screenReveal.push([el,el.style.display,'d']);el.style.display=el.getAttribute('data-screen-display')||'flex';}else if(cs.visibility==='hidden'){screenReveal.push([el,el.style.visibility,'v']);el.style.visibility='visible';}});
+    if(screenReveal.length)void document.body.offsetWidth;
+    var payload;try{payload=buildFigmaPayload();}catch(e){payload=null;}
+    screenReveal.forEach(function(item){if(item[2]==='d')item[0].style.display=item[1];else item[0].style.visibility=item[1];});
+    stickyOverrides.forEach(function(item){item[0].style.position=item[1];});
+    if(FLOW){stage.style.transform=pT;stage.style.transition=pTs;}
+    if(!payload){restore();toast('Gagal ekstrak — konten kosong');return;}
+    function cnt(n){if(!n)return 0;var c=1;(n.children||[]).forEach(function(k){c+=cnt(k);});return c;}
+    var total,extra;
+    if(payload.type==='FLOW'){total=payload.screens.reduce(function(a,s){return a+cnt(s.tree);},0);extra=payload.screens.length+' screen + '+payload.edges.length+' panah';}
+    else{total=cnt(payload);extra='1 screen';}
+    var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var name=(location.pathname.split('/').pop()||'ui').replace(/\.html?$/i,'')+'.figma.json';
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
+    document.body.appendChild(a);a.click();a.remove();
+    restore();toast(total+' layer · '+extra+' → '+name+' · overlay balik ✓');}
+  window.suxcGenerateFigma=doFigma;
+  var _fSrc=document.body.getAttribute('data-figma-src');
+  if(_fSrc){document.getElementById('suxc-figma').onclick=function(){window.open(_fSrc,'_blank');};}
+  else{document.getElementById('suxc-figma').onclick=doFigma;}
+
+  // ── FAB (prototype) ──
+  var navOpen=false;
+  function placeNav(){
+    nav.classList.add('suxc-asmenu');nav.style.display='flex';nav.style.left='-9999px';nav.style.top='0px';
+    var nw=nav.offsetWidth,nh=nav.offsetHeight,fr=fab.getBoundingClientRect();
+    var L=fr.right-nw;if(L<8)L=8;if(L+nw>window.innerWidth-8)L=window.innerWidth-8-nw;
+    var Tp=fr.top-nh-12;if(Tp<8)Tp=fr.bottom+12;if(Tp+nh>window.innerHeight-8)Tp=Math.max(8,window.innerHeight-8-nh);
+    nav.style.left=L+'px';nav.style.top=Tp+'px';}
+  function showNav(){placeNav();navOpen=true;}
+  function hideNav(){nav.style.display='none';navOpen=false;}
+  function setupFab(){
+    var zoomEl=document.getElementById('suxc-zoom');if(zoomEl)zoomEl.style.display='none';
+    nav.style.display='none';fab.classList.add('show');
+    try{var fp=JSON.parse(localStorage.getItem('suxc:fab')||'null');}catch(e){fp=null;}
+    if(fp&&typeof fp.l==='number'){fab.style.left=fp.l+'px';fab.style.top=fp.t+'px';fab.style.right='auto';fab.style.bottom='auto';}
+    fab.addEventListener('mousedown',function(ev){
+      if(ev.button!==0)return;ev.preventDefault();
+      var sx=ev.clientX,sy=ev.clientY,fr=fab.getBoundingClientRect(),ox=ev.clientX-fr.left,oy=ev.clientY-fr.top,moved=false;
+      function mm(e){if(!moved&&Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4){moved=true;fab.classList.add('drag');}
+        if(moved){var l=Math.min(Math.max(4,e.clientX-ox),window.innerWidth-fab.offsetWidth-4);var t=Math.min(Math.max(4,e.clientY-oy),window.innerHeight-fab.offsetHeight-4);fab.style.left=l+'px';fab.style.top=t+'px';fab.style.right='auto';fab.style.bottom='auto';if(navOpen)placeNav();}}
+      function mu(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);fab.classList.remove('drag');
+        if(moved){var f2=fab.getBoundingClientRect();try{localStorage.setItem('suxc:fab',JSON.stringify({l:Math.round(f2.left),t:Math.round(f2.top)}));}catch(e){}}
+        else{navOpen?hideNav():showNav();}}
+      document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+    nav.addEventListener('click',function(ev){if(ev.target.closest&&ev.target.closest('button'))setTimeout(hideNav,0);});
+    document.addEventListener('mousedown',function(ev){if(navOpen&&ev.target.closest&&!ev.target.closest('#suxc-nav')&&!ev.target.closest('#suxc-fab'))hideNav();},true);}
+  function initStates(){
+    [].forEach.call(document.querySelectorAll('[data-states]'),function(container,idx){
+      var states=[].slice.call(container.querySelectorAll(':scope>[data-state]'));
+      if(!states.length)return;
+      if(getComputedStyle(container).position==='static')container.style.position='relative';
+      var cur=0;
+      states.forEach(function(s,i){if(s.getAttribute('data-state')==='default')cur=i;});
+      // widget
+      var widget=document.createElement('div');widget.className='suxc-sw';
+      var pill=document.createElement('div');pill.className='suxc-sw-pill';
+      var dot=document.createElement('span');dot.className='suxc-sw-dot';
+      var lbl=document.createElement('span');
+      pill.appendChild(dot);pill.appendChild(lbl);
+      var pop=document.createElement('div');pop.className='suxc-sw-pop';
+      var head=document.createElement('div');head.className='suxc-sw-head';head.textContent='Pilih State';
+      pop.appendChild(head);
+      widget.appendChild(pill);widget.appendChild(pop);
+      document.body.appendChild(widget);
+      // restore or set initial position
+      (function(){var key='suxc:sw:'+idx;var saved=null;try{saved=JSON.parse(localStorage.getItem(key)||'null');}catch(e){}
+        if(saved&&typeof saved.l==='number'){widget.style.left=saved.l+'px';widget.style.top=saved.t+'px';}
+        else{requestAnimationFrame(function(){widget.style.left='24px';widget.style.top=Math.max(8,window.innerHeight-widget.offsetHeight-24)+'px';});}})();
+      var popOpen=false;
+      function activate(idx){
+        states.forEach(function(s,i){s.style.display=i===idx?'':'none';});
+        cur=idx;
+        var name=states[idx].getAttribute('data-state');
+        var isDefault=(name==='default'||idx===0&&name!=='default'&&!states.some(function(s){return s.getAttribute('data-state')==='default';}));
+        if(name==='default'){lbl.textContent='State';dot.classList.remove('on');}
+        else{lbl.textContent=name.charAt(0).toUpperCase()+name.slice(1)+' Active';dot.classList.add('on');}
+        // update items
+        [].forEach.call(pop.querySelectorAll('.suxc-sw-item'),function(el,i){
+          el.classList.toggle('active',i===idx);});}
+      function buildPop(){
+        var old=[].slice.call(pop.querySelectorAll('.suxc-sw-item'));
+        old.forEach(function(el){el.parentNode.removeChild(el);});
+        states.forEach(function(s,i){
+          var name=s.getAttribute('data-state');
+          var item=document.createElement('div');item.className='suxc-sw-item'+(i===cur?' active':'');
+          var nm=document.createElement('span');nm.textContent=name.charAt(0).toUpperCase()+name.slice(1);
+          var ck=document.createElement('span');ck.className='suxc-sw-check';ck.textContent='✓';
+          item.appendChild(nm);item.appendChild(ck);
+          item.addEventListener('mousedown',function(e){e.stopPropagation();});
+          item.addEventListener('click',function(e){e.stopPropagation();activate(i);closePop();});
+          pop.appendChild(item);});}
+      function openPop(){buildPop();pop.classList.add('open');popOpen=true;
+        var pr=pop.getBoundingClientRect();
+        if(pr.bottom>window.innerHeight-8){pop.style.top='auto';pop.style.bottom='calc(100% + 7px)';}
+        else{pop.style.top='calc(100% + 7px)';pop.style.bottom='auto';}}
+      function closePop(){pop.classList.remove('open');popOpen=false;}
+      // drag + click on pill
+      pill.addEventListener('mousedown',function(e){
+        if(e.button!==0)return;e.preventDefault();
+        var wr=widget.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,ox=e.clientX-wr.left,oy=e.clientY-wr.top,moved=false;
+        function mm(e){if(!moved&&Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>4){moved=true;pill.classList.add('drag');}
+          if(moved){widget.style.left=Math.max(0,Math.min(e.clientX-ox,window.innerWidth-widget.offsetWidth))+'px';widget.style.top=Math.max(0,Math.min(e.clientY-oy,window.innerHeight-widget.offsetHeight))+'px';}}
+        function mu(){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);pill.classList.remove('drag');
+          if(moved){try{localStorage.setItem('suxc:sw:'+idx,JSON.stringify({l:Math.round(parseFloat(widget.style.left)),t:Math.round(parseFloat(widget.style.top))}));}catch(e){}}
+          else{popOpen?closePop():openPop();}}
+        document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+      document.addEventListener('mousedown',function(e){if(popOpen&&!widget.contains(e.target))closePop();},true);
+      activate(cur);});}
+  if(!FLOW){setupFab();initStates();}
+  applyT();render();
+  // Re-render fixed-layer pins when modal/popup visibility changes
+  try{var _mo=new MutationObserver(function(){
+    if(!data.some(function(c){return c.fixedSel||c.screenName||c.stateName;}))return;
+    if(_mo._rt)return;_mo._rt=setTimeout(function(){_mo._rt=null;render();},80);});
+    _mo.observe(document.body,{attributes:true,subtree:true,attributeFilter:['class','style']});}catch(e){}
+})();
+</script>
+
+<!-- OVERLAY MODULE END ───────────────────────────────────────────────── -->
+
+</body>
+</html>
