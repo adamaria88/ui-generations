@@ -47,6 +47,7 @@ Screenshot itu gambar pipih (raster) — dia rekam tampilan tapi **buang 5 hal**
   - **Ikon** → petain dulu ikon apa aja yang dibutuhin → cek `/Users/working/aurora/projects/ui/icons/assets/` + URL aset Figma. Ambil dari yang ada.
   - **Kenapa wajib (alasan user):** kalau nggak cek dulu → gue **rebuild komponen yang udah ada** = (a) kerja dobel, (b) **inkonsisten** sama prototype lain (versi gue beda dari versi canonical). Ini leak S3/S10 di **level makro** (bukan cuma ikon — komponen utuh). Bukti: sidemenu SI gue rebuild placeholder padahal `components/sidemenu.html` udah ada & lebih bener.
   - **Mindset:** "komponen ini udah ada belum?" ditanya SEBELUM build, bukan sesudah.
+  - **DEFAULT: instansiasi komponen Aurora TER-TOKEN > rebuild dari node (lock 2026-06-17).** Kalau Aurora punya komponennya, JANGAN bangun ulang — pakai snippet ter-token (`paper-designer/components/aurora-tokenized.html`): **struktur + BEHAVIOR (hover/active/dropdown/focus/collapse) dari Aurora** (color-agnostic, port CSS-nya — Aurora itu Angular, JANGAN ubah prototype ke Angular cuma demi ini; port CSS+JS cukup), **WARNA via CSS variable di-override ikut Figma.** Efek: behavior dateng GRATIS → nutup gap S15 **di sumber**, bukan ditambal; behavior-audit (step 6) tinggal jaring pengaman. Rebuild murni cuma kalau Aurora beneran ga punya. Bukti: button hijau Figma = button Aurora + token `--au-btn-bg:#93c854` → hover-hijau (`light-green-40`) otomatis, 0 baris hover ditulis tangan (Kirim Pembayaran 2026-06-17).
 
 **0.7. Kanvas/surface DULU — baca fill frame, JANGAN warisi.** Sebelum nempel komponen, baca **warna background + padding frame utama** (main area / content area). Bg itu **BUKAN komponen** → ga ada di decompose per-blok → paling gampang lolos diam-diam. Ambil dari `get_variable_defs` / fill node, atau **sampling pixel** screenshot region (`PIL getpixel` sudut yg kosong) kalau ragu. **JANGAN warisi bg dari screen sebelumnya / dari shell yang di-reuse.** Bukti (2026-06-12): bg ke-set `#EEF1F4` (abu, ikut CSS si-full) padahal node ini `#F8FBFE` (light-blue-10) — ketauan cuma pas sampling pixel `(248,251,254)` (S12).
 
@@ -58,6 +59,8 @@ Screenshot itu gambar pipih (raster) — dia rekam tampilan tapi **buang 5 hal**
 - **HARAM**: emoji, karakter teks (⌄ ⚙), gambar tangan. Ikon = copas dari URL Figma ATAU ambil dari Aurora DS (`/Users/working/aurora/projects/ui/icons/assets/`).
 - Copas-dari-Figma = pixel-perfect & tercepat. DS-lookup = kalau mau versi canonical / cek komponen ada di DS (training period).
 - ⚠️ URL aset Figma **expire 7 hari** → "copas" = download+simpen, BUKAN nge-link URL.
+- ⚠️ **Aset ikon = tight-crop (cuma bentuknya), BUKAN full-bleed.** Di Figma ikon duduk dalam kotak (24/36px) tapi grafiknya di-**inset** (punya padding). Baca ukuran/inset graphic **per-ikon** dari design_context — jangan ngeret ke penuh kotak (kegedean) & **jangan generalisasi** (sebagian ikon full-bleed, sebagian inset 10–25%). Scale pakai `width/height %` + `object-fit:contain`, BUKAN 4-side `inset` di `<img>` (replaced element ga ke-constrain → malah meledak). (S14, bukti: Kirim Pembayaran 2026-06-13 — nav-icon medal/user/gear kegedean, diff 2.5→1.6 abis pakai ukuran inset asli.)
+  - 🔒 **ENFORCEMENT (lock 2026-06-17): `tools/icon-size-audit.py` WAJIB jalan pre-delivery.** S14 kambuh 3×: financing → nav-icon → **Lainnya** (sidemenu paling bawah, tight-crop `13.87×16.44` dipaksa fill kotak 22px → render 22px = 34% kegedean). Pola gagalnya: rule generik `img{width:100%;height:100%;object-fit:contain}` itu **bug-generator diam-diam** — ga error, pede ngasih hasil salah buat tiap tight-crop yang belum di-override khusus. Selama ini dibenerin **reaktif satu-satu pas user nunjuk** → ikon yang ga kebetulan dilihat = lolos. Dua verifier lain BUTA: heatmap full-page (beda ~6px di ikon kecil di bawah noise-floor, ketelen anti-alias teks) + behavior-audit (cek interaksi, bukan ukuran). Ini **blind-spot UKURAN** — sodara S15. Tool ngukur `getBoundingClientRect` tiap `<img svg>` lawan viewBox aset; scale (min ratio, object-fit:contain) > 1.15 = ke-scale-up → BLOK. Catat ilmu doang ga cukup — yang ngehentiin bug diam-diam = gerbang mekanis.
 
 **3. Token — nilai persis.** `get_variable_defs` → warna/spacing/font dari token. Teks = **copas verbatim** (jangan ketik ulang → typo).
 
@@ -67,6 +70,22 @@ Screenshot itu gambar pipih (raster) — dia rekam tampilan tapi **buang 5 hal**
 - WAJIB per-region, BUKAN sekilas full page. Full-page glance **nutupin error level-region** (kejadian: posisi sub-header + bg salah lolos sampe user nunjuk).
 - **Mesin, bukan mata.** Model (gue) **ga punya rasa visual** — beda halus (bg `#EEF1F4` vs `#F8FBFE`, chevron tipis vs segitiga isi, help icon biru vs abu) cuma ketangkep sampling/diff, BUKAN dipandang. Banding mekanis = WAJIB tiap region, bukan opsional. (ref [[visual-judgment-limit-rule]])
 - **Cek ambient + scaffolding, bukan cuma elemen:** warna kanvas, sisa note/demo/placeholder debug. **Node off-canvas** (x/y di luar lebar/tinggi frame) = dokumentasi *detached* → JANGAN ditaruh nangkring di layar; render dormant/hidden. **Bersihin semua scaffolding sebelum bilang "kelar"** (S13).
+- ⚠️ **Verifikasi pakai Lato LOKAL, JANGAN Google Fonts.** Di headless, Google Fonts gagal load → fallback Arial lebih lebar → teks wrap salah → tombol/baris ke-dorong → **diff palsu yang keliatan kayak bug struktural**. Bundle `@font-face` dari Aurora `design-tokens/fonts/lato/`. (Bukti: Kirim Pembayaran 2026-06-17 — baris "Unduh Bukti Transaksi" wrap 2 baris, tombol drift.)
+- **Diff heatmap > side-by-side.** Render selisih per-pixel (PIL `ImageChops.difference` → threshold → highlight merah) sandingin Figma|gue|diff. Heatmap misahin **L5 teks** (merah berbentuk huruf = align, cuma anti-alias) dari **bug struktural** (blok merah solid = drift/posisi). Side-by-side + angka rata-rata **ga nangkep drift**; heatmap nangkep.
+
+**6. Behavior pass — WAJIB, type-driven (BUKAN Figma-driven).** Figma = snapshot statis → behavior (hover/active/dropdown/focus/expand) **GA ADA di node** DAN **ga ke-catch pixel-diff** (render statis identik walau behavior ilang) → behavior **lolos tiap gate** kalau ga dipaksa (S15). Diturunin dari **TIPE komponen**, bukan Figma:
+
+| Affordance (cue) | Behavior wajib | Sumber |
+|---|---|---|
+| Button (filled/outline) | hover + active + cursor | [[behavior-recipes]] Button |
+| Text-link | hover (warna/underline) | recipe |
+| Chevron/caret ▾ di item | dropdown/expand toggle + chevron rotate | recipe Sidemenu/Accordion |
+| Header collapsible ("Tutup"/accordion) | expand/collapse | recipe Accordion |
+| Input field | focus ring | recipe |
+| Row tabel | hover + klik→detail | [[prototyping-gap-lessons]] 0k |
+| Tab | switch active | recipe |
+
+Tiap affordance: **wire dari `behavior-recipes.md`, ATAU tandai `static-with-reason`.** Behavior = default, BUKAN "bonus kalau user minta". Di-tag pas Inventory (0.5): tandai mana komponen interaktif → behavior-nya udah ke-plan sebelum build, bukan ditambal pas user nunjuk.
 
 ## Gerbang per-region (wajib sebelum region disebut "jadi")
 
@@ -77,7 +96,9 @@ Screenshot itu gambar pipih (raster) — dia rekam tampilan tapi **buang 5 hal**
 ☐ Tree dibaca        → posisi & nesting dari frame, bukan tebakan
 ☐ Aset di-copas      → semua ikon/gambar dari URL Figma/DS, nol emoji-teks/inline-ngarang
 ☐ Token ditarik      → warna/spacing dari variable_defs
-☐ Verifikasi mekanis → render vs screenshot region + sampling pixel; cek ambient(bg) & sisa scaffolding (S13)
+☐ Verifikasi mekanis → render (Lato LOKAL) vs screenshot region + diff heatmap + sampling pixel; cek ambient(bg) & scaffolding (S13)
+☐ Ukuran ikon        → tools/icon-size-audit.py LULUS (scale render/viewBox ≤ ~1.15, tight-crop ga dipaksa fill) (S14)
+☐ Behavior pass      → tiap affordance interaktif (button/chevron/input/row/tab) di-wire dari behavior-recipes, ATAU static-with-reason (S15)
 ```
 Ada 1 kosong → blok **belum selesai**, nggak boleh lanjut. Ini yang bikin "skip biar cepet" ketauan — karena akar masalahnya bukan "nggak tau caranya", tapi **motong jalan pas kepepet.**
 
@@ -101,7 +122,9 @@ Reproduksi **cuma yang ADA di node Figma yang di-share**. State lain (empty/erro
 
 ## Leak taxonomy (referensi cepat)
 
-**Sabotase (S):** S1 warna-dari-screenshot · S2 spacing-dikira · S3 komponen-ngarang · S4 skip-aset · S5 lupa-state · S6 teks-ketik-ulang · S7 buta-posisi · S8 salah-node · S9 viewport-only · S10 komponen-nggak-setia (sub-item disunat) · **S11 reuse-bawa-nilai-basi** (reuse komponen/CSS screen lain tanpa diff isi) · **S12 kanvas-diwarisi** (bg/surface dari asumsi/screen lain, bukan dibaca) · **S13 scaffolding-bocor** (note/demo/off-canvas-node nangkring di layar produksi).
+**Sabotase (S):** S1 warna-dari-screenshot · S2 spacing-dikira · S3 komponen-ngarang · S4 skip-aset · S5 lupa-state · S6 teks-ketik-ulang · S7 buta-posisi · S8 salah-node · S9 viewport-only · S10 komponen-nggak-setia (sub-item disunat) · **S11 reuse-bawa-nilai-basi** (reuse komponen/CSS screen lain tanpa diff isi) · **S12 kanvas-diwarisi** (bg/surface dari asumsi/screen lain, bukan dibaca) · **S13 scaffolding-bocor** (note/demo/off-canvas-node nangkring di layar produksi) · **S14 ikon-full-bleed** (aset ikon = tight-crop diretto ke penuh kotak tanpa baca inset per-ikon → kegedean; sebagian ikon full-bleed sebagian inset, JANGAN generalisasi).
+
+**Sabotase lanjutan:** **S15 behavior-kelewat** (hover/dropdown/focus/expand ga ada di Figma static & ga ke-catch pixel-diff → default ke-skip; lawan = behavior pass type-driven + gate item).
 
 **Leak teknis (L):** L1 node-truncate · L2 lapisan-terjemahan · L3 Aurora≠Figma · L4 nilai-hardcode · L5 sub-pixel (batas fisika) · L6 kelalaian.
 

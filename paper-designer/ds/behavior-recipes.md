@@ -70,6 +70,37 @@ function toggleAcc(btn){var i=btn.closest('.acc-item'),c=i.querySelector('.acc-c
 
 ---
 
+## Sidemenu / Collapsible Nav — pola dari node + accordion recipe
+
+> Behavior nav samping (dropdown submenu + active state) **ga ada di Figma** (cuma 1 snapshot, biasanya 1 dropdown kebuka). Pola diturunin dari: (a) **node itu sendiri** yg udah nunjukin 1 parent expanded (chevron muter + submenu tampil) → generalisasi ke parent lain; (b) **Aurora accordion** buat timing; (c) konvensi web buat sisanya.
+
+**3 interaksi:**
+- **Dropdown** (parent ber-chevron): klik → toggle submenu. Chevron `›` (collapsed) → `rotate(90deg)` jadi `˅` (expanded).
+- **Pilihan** (item daun / submenu): klik → set active. Active submenu = teks accent (Paper lama: hijau `#93c854`).
+- **Hover**: item `cursor:pointer` + highlight tipis (`rgba(255,255,255,.10)` di atas bg gelap).
+
+**Motion:** chevron `transform 300ms ease-out-relax`; submenu `max-height 450ms ease-out-strong` (pakai `scrollHeight` buat tinggi akurat — sama mekanisme kayak accordion).
+
+```css
+.chev{transition:transform 300ms cubic-bezier(0.25,0.46,0.45,0.94);}
+.sm-group.open > .sm-item .chev{transform:rotate(90deg);}
+.sm-submenu{overflow:hidden;max-height:0;transition:max-height 450ms cubic-bezier(0.16,0.84,0.44,1);}
+.sm-sub.active .txt{color:#93c854;}          /* active = accent text */
+.sm-item:hover{background:rgba(255,255,255,.10);}
+```
+```js
+function subHeight(g){var s=g.querySelector('.sm-submenu');
+  s.style.maxHeight=g.classList.contains('open')?s.scrollHeight+'px':'0';}
+function toggleMenu(p){var g=p.closest('.sm-group');g.classList.toggle('open');subHeight(g);}
+function setActive(el){document.querySelectorAll('.sm-sub.active').forEach(function(e){e.classList.remove('active');});
+  el.classList.add('active');}
+document.querySelectorAll('.sm-group.open').forEach(subHeight);   // init yg default kebuka
+```
+
+> ⚠️ Submenu yg isinya ga ada di node (parent lain yg collapsed) → JANGAN ngarang item asli; pakai placeholder/lorem + flag (S5).
+
+---
+
 ## Cara nambah recipe baru
 
 Tiap ketemu komponen interaktif baru (tab, dropdown, toggle, dialog):
@@ -79,4 +110,4 @@ Tiap ketemu komponen interaktif baru (tab, dropdown, toggle, dialog):
 4. Tulis 1 section di file ini (tabel state + snippet CSS/JS).
 5. Tervalidasi tervalidasi di prototype → tandai.
 
-**Tervalidasi:** Button + Accordion → `_output/invoice-list/index.html` (2026-06-12).
+**Tervalidasi:** Button + Accordion → invoice-list (2026-06-12). Sidemenu collapsible nav → kirim-pembayaran (2026-06-12). *(artifact sesi — regenerate dari Figma, ga di-commit.)*

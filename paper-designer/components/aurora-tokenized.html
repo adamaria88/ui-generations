@@ -1,0 +1,66 @@
+<!-- ============================================================================
+  Aurora Tokenized Components — port HTML/CSS/JS dari Aurora (Angular) buat prototype STATIS.
+
+  PRINSIP (lock 2026-06-17):
+    • Struktur + BEHAVIOR (hover/active/dropdown/focus/collapse) → dari AURORA (color-agnostic).
+    • WARNA → via CSS variable, di-override IKUT FIGMA per-screen.
+    • Hasilnya: behavior dateng GRATIS (ga koding hover tangan) — nutup gap S15 di sumber,
+      bukan ditambal. behavior-audit (tools/behavior-audit.py) jadi jaring pengaman.
+
+  Cara pakai: copy <style>/<script> yang relevan ke prototype, set token warna per-Figma.
+  Sumber: /Users/working/aurora/projects/ui/<komponen>/*.component.scss
+============================================================================ -->
+
+<style>
+/* ========== BUTTON — button/button.component.scss ========== */
+/* hover/active/transition MURNI CSS (no JS). Instansiasi: set --au-btn-* ke warna Figma. */
+.au-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;border:none;cursor:pointer;
+  text-align:center;white-space:nowrap;background:var(--au-btn-bg);color:var(--au-btn-fg);
+  border-radius:var(--au-btn-radius,9999px);
+  transition:background 400ms cubic-bezier(0.25,0.46,0.45,0.94),color 500ms cubic-bezier(0.25,0.46,0.45,0.94);}
+.au-btn:hover{background:var(--au-btn-hover);}
+.au-btn:active{background:var(--au-btn-active);}
+.au-btn:disabled{background:var(--au-btn-disabled,#e6e8ea);color:#9aa5ad;cursor:default;}
+.au-btn--outline{background:transparent;border:1px solid var(--au-btn-bc);}
+/* contoh instance:
+   .btn-primary{--au-btn-bg:#4199d5;--au-btn-hover:#89bde5;--au-btn-active:#3385b5;--au-btn-fg:#fff;}  // Aurora biru
+   .btn-green  {--au-btn-bg:#93c854;--au-btn-hover:#bcdd95;--au-btn-active:#6faf35;--au-btn-fg:#fff;}  // override Figma hijau (Aurora light-green-40/60) */
+
+/* ========== DROPDOWN MENU — dropdown-menu/dropdown-menu.component.scss ========== */
+.au-dd{position:relative;}
+.au-dropdown-menu{position:absolute;top:calc(100% + 4px);right:0;z-index:1000;display:none;
+  background:#fff;border-radius:4px;min-width:200px;box-shadow:0 3px 10px 0 rgba(0,0,0,.08);}
+.au-dd.open > .au-dropdown-menu{display:block;}
+.au-dropdown-menu__content{display:flex;flex-direction:column;align-items:stretch;padding:4px 0;}
+.au-dropdown-menu__item{display:flex;align-items:center;gap:8px;width:100%;padding:8px 16px;
+  background:transparent;color:#133f5d;border:none;cursor:pointer;text-align:left;
+  font-family:'Lato',sans-serif;font-size:13px;white-space:nowrap;
+  transition:background 200ms cubic-bezier(0.25,0.46,0.45,0.94);}
+.au-dropdown-menu__item:hover{background:#f2f7fc;}   /* light-brand-15 */
+.au-dropdown-menu__item:active{background:#d1e6f5;}  /* light-brand-25 */
+
+/* ========== COLLAPSE (accordion behavior) — accordion/accordion.component.scss ========== */
+.au-collapsible{overflow:hidden;transition:max-height 450ms cubic-bezier(0.16,0.84,0.44,1);}
+.au-collapsible.collapsed{max-height:0 !important;}
+</style>
+
+<script>
+// dropdown-menu: toggle + klik-luar tutup
+function closeAllDD(){document.querySelectorAll('.au-dd.open').forEach(function(d){d.classList.remove('open');});}
+function toggleDD(t){if(window.event)window.event.stopPropagation();var d=t.closest('.au-dd'),o=d.classList.contains('open');closeAllDD();if(!o)d.classList.add('open');}
+document.addEventListener('click',closeAllDD);
+// collapse
+function toggleCollapse(btn,id){document.getElementById(id).classList.toggle('collapsed');btn.classList.toggle('collapsed');}
+</script>
+
+<!-- MARKUP PATTERN:
+  BUTTON:   <button class="au-btn btn-green">Label</button>
+  DROPDOWN: <div class="au-dd">
+              <button onclick="toggleDD(this)">Trigger ▾</button>
+              <div class="au-dropdown-menu"><div class="au-dropdown-menu__content">
+                <button class="au-dropdown-menu__item">Item</button>
+              </div></div>
+            </div>
+  COLLAPSE: <button onclick="toggleCollapse(this,'box1')">Tutup</button>
+            <div id="box1" class="au-collapsible"> ... </div>
+-->
