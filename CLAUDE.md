@@ -96,7 +96,8 @@ Kalau belum ada: `touch paper-designer/memory/per-machine/{hostname}.md`.
 
 ## Skills tersedia
 
-- **`/senior-uiux-designer`** — main design skill, trigger saat brief masuk
+- **`/senior-uiux-designer`** — main design skill (screen/flow/prototype), trigger saat brief masuk
+- **`/component-explorer`** — bikin KOMPONEN baru dari nol: riset referensi → first draft → review tooling → 5 alternatif dari DS → guideline 9-section → generate Figma. Detail: `paper-designer/component-explorer/pipeline.md`. Trigger: `explore <komponen>`
 - **`/learning-auditor`** — audit learning lintas designer di sprint end
 - **`/read-book`** — extract buku UIUX (PDF) atau artikel (URL/teks) ke `paper-designer/knowledge/`. **Workflow INTERACTIVE** — tampil draft di chat dulu (thesis + framework + calon kartu), diskusi sama user, baru tulis file setelah approve. Auto-trigger saat user paste path `.pdf` / URL artikel / bilang "extract/baca/serap" dari buku/artikel. Lock 2026-05-22.
 

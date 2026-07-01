@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══════════════════════════════════════════════════════════════════
+     COMPONENT EXPLORER — template web buat eksplorasi komponen.
+     2 layer dipisah jelas:
+       • LAYER TOOLING (prefix .expl-*)  = review chrome, DILARANG masuk Figma.
+       • LAYER KOMPONEN (.expl-canvas)   = desain komponen, INI yang di-extract.
+     Placeholder: {{COMPONENT_NAME}}, {{PHASE}}, dan slot alternatif.
+     ══════════════════════════════════════════════════════════════════ -->
+<title>Explorer · {{COMPONENT_NAME}}</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Lato',-apple-system,'Segoe UI',sans-serif; background:#eef1f4; color:#1c2b36; }
+
+  /* ─────────── LAYER TOOLING ─────────── */
+  .expl-topbar { position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:12px;
+    background:#1c2b36; color:#fff; padding:10px 20px; box-shadow:0 2px 12px rgba(0,0,0,.25); }
+  .expl-topbar h1 { font-size:15px; font-weight:700; }
+  .expl-phase { font-size:11px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
+    background:rgba(255,255,255,.14); padding:3px 10px; border-radius:99px; color:#cddbe6; }
+  .expl-topbar .sp { flex:1; }
+  .expl-btn { border:0; border-radius:8px; padding:8px 14px; font:600 13px 'Lato',sans-serif;
+    cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:filter .12s,background .12s; }
+  .expl-btn--ghost { background:rgba(255,255,255,.12); color:#fff; }
+  .expl-btn--ghost:hover { background:rgba(255,255,255,.22); }
+  .expl-btn--ghost.on { background:#7B61FF; }
+  .expl-btn--primary { background:#0A84FF; color:#fff; }
+  .expl-btn--primary:hover { filter:brightness(1.08); }
+
+  .expl-hint { padding:10px 20px; font-size:12px; color:#5c7180; background:#e2e8ee;
+    border-bottom:1px solid #d3dbe2; }
+  .expl-hint b { color:#1c2b36; }
+
+  /* grid alternatif */
+  .expl-grid { display:flex; flex-wrap:wrap; gap:28px; padding:28px; align-items:flex-start; }
+  .expl-alt { background:#fff; border-radius:14px; box-shadow:0 2px 16px rgba(28,43,54,.08);
+    overflow:hidden; width:420px; border:2px solid transparent; transition:border-color .15s; }
+  .expl-alt.selected { border-color:#7B61FF; box-shadow:0 4px 24px rgba(123,97,255,.25); }
+
+  .expl-alt-head { display:flex; align-items:center; gap:8px; padding:10px 14px;
+    background:#f6f8fa; border-bottom:1px solid #e6ebf0; }
+  .expl-alt-label { font-weight:700; font-size:13px; color:#1c2b36; }
+  .expl-alt-tag { font-size:11px; color:#7c8b98; }
+  .expl-alt-head .sp { flex:1; }
+  .expl-alt-act { border:1px solid #d3dbe2; background:#fff; border-radius:7px; padding:5px 9px;
+    font:600 11px 'Lato',sans-serif; cursor:pointer; color:#41525f; display:inline-flex; align-items:center; gap:4px;
+    transition:background .12s,border-color .12s,color .12s; }
+  .expl-alt-act:hover { background:#f0f3f6; border-color:#b9c4cd; }
+  .expl-alt-act.pick.on { background:#7B61FF; border-color:#7B61FF; color:#fff; }
+
+  /* CANVAS = layer komponen. Klik di sini pas mode komen = drop pin. */
+  .expl-canvas { position:relative; padding:24px; min-height:120px; background:#fff; }
+  body.expl-comment .expl-canvas { cursor:crosshair; }
+
+  /* pin komen */
+  .expl-pin { position:absolute; z-index:40; width:26px; height:26px; border-radius:50% 50% 50% 4px;
+    background:#7B61FF; color:#fff; font:700 11px/26px 'Lato',sans-serif; text-align:center;
+    transform:translate(-2px,-28px); box-shadow:0 2px 8px rgba(0,0,0,.4); cursor:pointer; user-select:none; }
+  .expl-pin:hover { filter:brightness(1.1); }
+
+  /* panel komen */
+  .expl-panel { position:fixed; top:0; right:0; height:100vh; width:300px; background:#fff;
+    border-left:1px solid #dbe2e8; box-shadow:-4px 0 20px rgba(28,43,54,.12); z-index:60;
+    display:flex; flex-direction:column; transform:translateX(300px); transition:transform .2s; }
+  .expl-panel.open { transform:none; }
+  .expl-panel-head { padding:14px 16px; border-bottom:1px solid #e6ebf0; display:flex; align-items:center; }
+  .expl-panel-head h2 { font-size:14px; font-weight:700; flex:1; }
+  .expl-panel-close { border:0; background:#eef1f4; border-radius:6px; width:28px; height:28px; cursor:pointer; color:#5c7180; }
+  .expl-list { flex:1; overflow:auto; padding:12px; }
+  .expl-empty { text-align:center; color:#9aa8b4; font-size:13px; padding:32px 12px; line-height:1.6; }
+  .expl-note { background:#f6f8fa; border:1px solid #e6ebf0; border-radius:10px; padding:10px 12px; margin-bottom:10px; }
+  .expl-note-ref { font:700 11px 'Lato',sans-serif; color:#7B61FF; margin-bottom:4px; }
+  .expl-note-text { font-size:13px; line-height:1.5; color:#2b3b47; word-break:break-word; }
+  .expl-note-del { float:right; border:0; background:transparent; color:#b9c4cd; cursor:pointer; font-size:14px; }
+  .expl-note-del:hover { color:#e35273; }
+  .expl-panel-foot { padding:12px 16px; border-top:1px solid #e6ebf0; }
+
+  /* popup input komen */
+  .expl-pop { position:fixed; z-index:70; width:280px; background:#fff; border:1px solid #dbe2e8;
+    border-radius:12px; box-shadow:0 12px 36px rgba(28,43,54,.28); padding:12px; }
+  .expl-pop-ref { font:700 11px 'Lato',sans-serif; color:#7B61FF; margin-bottom:8px; }
+  .expl-pop textarea { width:100%; min-height:70px; resize:vertical; border:1px solid #d3dbe2;
+    border-radius:8px; padding:8px 10px; font:400 13px/1.5 'Lato',sans-serif; outline:none; }
+  .expl-pop textarea:focus { border-color:#7B61FF; }
+  .expl-pop-acts { display:flex; gap:8px; margin-top:8px; justify-content:flex-end; }
+
+  /* toast */
+  .expl-toast { position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(10px);
+    background:#1c2b36; color:#fff; font:600 12px 'Lato',sans-serif; padding:10px 18px; border-radius:99px;
+    box-shadow:0 8px 24px rgba(0,0,0,.35); z-index:80; opacity:0; pointer-events:none; transition:opacity .18s,transform .18s; }
+  .expl-toast.show { opacity:1; transform:translateX(-50%); }
+</style>
+</head>
+<body data-component="{{COMPONENT_NAME}}">
+
+  <!-- ═══════ LAYER TOOLING ═══════ -->
+  <div class="expl-topbar">
+    <h1>🧭 Explorer</h1>
+    <span class="expl-phase">{{PHASE}}</span>
+    <span style="font-size:13px;color:#cddbe6">{{COMPONENT_NAME}}</span>
+    <span class="sp"></span>
+    <button class="expl-btn expl-btn--ghost" id="expl-comment-btn">💬 Komen (C)</button>
+    <button class="expl-btn expl-btn--ghost" id="expl-list-btn">📋 Daftar</button>
+    <button class="expl-btn expl-btn--primary" id="expl-submit-btn">📤 Submit → copy</button>
+  </div>
+
+  <div class="expl-hint">
+    Cara pakai: <b>💬 Komen</b> → klik area di alternatif buat kasih catatan · <b>⭐ Pilih ini</b> di alternatif favoritmu ·
+    <b>📄 Guideline</b> / <b>🎨 Figma</b> = nyalin command, tinggal <b>paste ke chat</b>.
+  </div>
+
+  <!-- ═══════ GRID ALTERNATIF ═══════ -->
+  <div class="expl-grid" id="expl-grid">
+
+    <!-- TEMPLATE 1 ALTERNATIF (duplikat per alternatif; isi .expl-canvas = LAYER KOMPONEN) -->
+    <div class="expl-alt" data-alt="A">
+      <div class="expl-alt-head">
+        <span class="expl-alt-label">Alt A</span>
+        <span class="expl-alt-tag">— nama pendekatan</span>
+        <span class="sp"></span>
+        <button class="expl-alt-act pick" data-act="pick">⭐ Pilih</button>
+        <button class="expl-alt-act" data-act="guideline">📄 Guideline</button>
+        <button class="expl-alt-act" data-act="figma">🎨 Figma</button>
+      </div>
+      <div class="expl-canvas">
+        <!-- ↓↓↓ LAYER KOMPONEN — desain alternatif A ditaruh di sini ↓↓↓ -->
+        <div style="color:#9aa8b4;font-size:13px;text-align:center;padding:20px">component layer · Alt A</div>
+        <!-- ↑↑↑ -->
+      </div>
+    </div>
+
+    <div class="expl-alt" data-alt="B">
+      <div class="expl-alt-head">
+        <span class="expl-alt-label">Alt B</span>
+        <span class="expl-alt-tag">— nama pendekatan</span>
+        <span class="sp"></span>
+        <button class="expl-alt-act pick" data-act="pick">⭐ Pilih</button>
+        <button class="expl-alt-act" data-act="guideline">📄 Guideline</button>
+        <button class="expl-alt-act" data-act="figma">🎨 Figma</button>
+      </div>
+      <div class="expl-canvas">
+        <div style="color:#9aa8b4;font-size:13px;text-align:center;padding:20px">component layer · Alt B</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- panel komen -->
+  <div class="expl-panel" id="expl-panel">
+    <div class="expl-panel-head"><h2>Komen</h2><button class="expl-panel-close" id="expl-panel-close">✕</button></div>
+    <div class="expl-list" id="expl-list"></div>
+    <div class="expl-panel-foot">
+      <button class="expl-btn expl-btn--primary" id="expl-submit-btn2" style="width:100%;justify-content:center">📤 Submit semua komen → copy</button>
+    </div>
+  </div>
+
+<script>
+/* ═══════ REVIEW TOOLING (purpose-built, mirip suxc secara fungsi) ═══════ */
+(function(){
+  var COMPONENT = document.body.getAttribute('data-component') || 'Component';
+  var KEY = 'expl:' + location.pathname;
+  var notes = [];
+  try { notes = JSON.parse(localStorage.getItem(KEY) || '[]'); if(!Array.isArray(notes)) notes = []; } catch(e){ notes = []; }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(notes)); } catch(e){} }
+
+  var commentMode = false;
+  var body = document.body;
+  var panel = document.getElementById('expl-panel');
+  var commentBtn = document.getElementById('expl-comment-btn');
+
+  function toast(msg){
+    var t = document.querySelector('.expl-toast');
+    if(!t){ t = document.createElement('div'); t.className = 'expl-toast'; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._h); t._h = setTimeout(function(){ t.classList.remove('show'); }, 2200);
+  }
+  function copy(text, okMsg){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ toast(okMsg); }, function(){ fallback(); });
+    } else fallback();
+    function fallback(){
+      var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+      ta.select(); try{ document.execCommand('copy'); toast(okMsg); }catch(e){ toast('Gagal copy — copy manual'); } ta.remove();
+    }
+  }
+
+  function setComment(v){
+    commentMode = v; body.classList.toggle('expl-comment', v); commentBtn.classList.toggle('on', v);
+    toast(v ? 'Mode komen ON — klik area alternatif' : 'Mode komen OFF');
+    if(v) setPanel(true);
+  }
+  function setPanel(v){ panel.classList.toggle('open', v); }
+
+  commentBtn.onclick = function(){ setComment(!commentMode); };
+  document.getElementById('expl-list-btn').onclick = function(){ setPanel(!panel.classList.contains('open')); };
+  document.getElementById('expl-panel-close').onclick = function(){ setPanel(false); };
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'c' || e.key === 'C'){ if(document.activeElement.tagName !== 'TEXTAREA') setComment(!commentMode); }
+  });
+
+  // klik canvas → drop pin + popup input
+  document.querySelectorAll('.expl-canvas').forEach(function(canvas){
+    canvas.addEventListener('click', function(e){
+      if(!commentMode) return;
+      if(e.target.closest('.expl-pin')) return;
+      var altEl = canvas.closest('.expl-alt');
+      var alt = altEl.getAttribute('data-alt');
+      var r = canvas.getBoundingClientRect();
+      var x = e.clientX - r.left, y = e.clientY - r.top;
+      var ref = refAt(e.target);
+      openPop(e.clientX, e.clientY, { alt:alt, x:x, y:y, ref:ref });
+    });
+  });
+
+  function refAt(el){
+    var t = (el.innerText || el.textContent || '').replace(/\s+/g,' ').trim();
+    return t ? (t.length > 50 ? t.slice(0,50)+'…' : t) : '';
+  }
+
+  function openPop(cx, cy, ctx){
+    document.querySelectorAll('.expl-pop').forEach(function(p){ p.remove(); });
+    var pop = document.createElement('div'); pop.className = 'expl-pop';
+    pop.style.left = Math.min(cx, window.innerWidth - 296) + 'px';
+    pop.style.top = Math.min(cy, window.innerHeight - 160) + 'px';
+    pop.innerHTML =
+      '<div class="expl-pop-ref">Alt '+ctx.alt+(ctx.ref?' · "'+ctx.ref.replace(/</g,'&lt;')+'"':'')+'</div>'+
+      '<textarea placeholder="Tulis catatan..."></textarea>'+
+      '<div class="expl-pop-acts">'+
+        '<button class="expl-btn expl-btn--ghost" style="background:#eef1f4;color:#5c7180" data-x>Batal</button>'+
+        '<button class="expl-btn expl-btn--primary" data-ok>Simpan</button>'+
+      '</div>';
+    document.body.appendChild(pop);
+    var ta = pop.querySelector('textarea'); ta.focus();
+    pop.querySelector('[data-x]').onclick = function(){ pop.remove(); };
+    pop.querySelector('[data-ok]').onclick = function(){
+      var text = ta.value.trim(); if(!text){ pop.remove(); return; }
+      notes.push({ alt:ctx.alt, x:ctx.x, y:ctx.y, ref:ctx.ref, text:text, ts:Date.now() });
+      save(); render(); pop.remove(); toast('Komen tersimpan');
+    };
+  }
+
+  function render(){
+    document.querySelectorAll('.expl-pin').forEach(function(p){ p.remove(); });
+    notes.forEach(function(n, i){
+      var canvas = document.querySelector('.expl-alt[data-alt="'+n.alt+'"] .expl-canvas');
+      if(canvas){
+        var pin = document.createElement('div'); pin.className = 'expl-pin';
+        pin.style.left = n.x + 'px'; pin.style.top = n.y + 'px'; pin.textContent = i+1;
+        pin.onclick = function(ev){ ev.stopPropagation(); setPanel(true); };
+        canvas.appendChild(pin);
+      }
+    });
+    var list = document.getElementById('expl-list');
+    if(!notes.length){ list.innerHTML = '<div class="expl-empty">Belum ada komen.<br>Nyalain 💬 Komen lalu klik area alternatif.</div>'; return; }
+    list.innerHTML = '';
+    notes.forEach(function(n, i){
+      var el = document.createElement('div'); el.className = 'expl-note';
+      el.innerHTML =
+        '<button class="expl-note-del" title="Hapus">✕</button>'+
+        '<div class="expl-note-ref">#'+(i+1)+' · Alt '+n.alt+(n.ref?' · "'+n.ref.replace(/</g,'&lt;')+'"':'')+'</div>'+
+        '<div class="expl-note-text">'+n.text.replace(/</g,'&lt;')+'</div>';
+      el.querySelector('.expl-note-del').onclick = function(){ notes.splice(i,1); save(); render(); };
+      list.appendChild(el);
+    });
+  }
+
+  // SUBMIT → nyusun command text buat dipaste ke chat
+  function submitComments(){
+    if(!notes.length){ toast('Belum ada komen'); return; }
+    var lines = ['[REVIEW] ' + COMPONENT, ''];
+    notes.forEach(function(n, i){
+      lines.push((i+1)+'. Alt '+n.alt+(n.ref?' ("'+n.ref+'")':'')+': '+n.text);
+    });
+    lines.push('', '(paste ini ke chat buat lanjut diskusi)');
+    copy(lines.join('\n'), '📋 '+notes.length+' komen di-copy — paste ke chat');
+  }
+  document.getElementById('expl-submit-btn').onclick = submitComments;
+  document.getElementById('expl-submit-btn2').onclick = submitComments;
+
+  // ACTION per alternatif → nyalin command
+  document.querySelectorAll('.expl-alt-act').forEach(function(btn){
+    btn.onclick = function(){
+      var altEl = btn.closest('.expl-alt'); var alt = altEl.getAttribute('data-alt');
+      var act = btn.getAttribute('data-act');
+      if(act === 'pick'){
+        document.querySelectorAll('.expl-alt').forEach(function(a){ a.classList.remove('selected'); });
+        document.querySelectorAll('.expl-alt-act.pick').forEach(function(b){ b.classList.remove('on'); });
+        altEl.classList.add('selected'); btn.classList.add('on');
+        copy('pilih: '+COMPONENT+' — Alt '+alt, '⭐ Alt '+alt+' dipilih — command di-copy');
+      } else if(act === 'guideline'){
+        copy('guideline: '+COMPONENT+' — Alt '+alt, '📄 Command guideline di-copy — paste ke chat');
+      } else if(act === 'figma'){
+        copy('figma: '+COMPONENT+' — Alt '+alt, '🎨 Command generate Figma di-copy — paste ke chat');
+      }
+    };
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
