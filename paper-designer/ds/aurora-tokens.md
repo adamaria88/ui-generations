@@ -26,42 +26,56 @@ Source: `/Users/working/aurora/projects/ui/design-tokens/`
 | `--color-surface-dark-platform` | Dark mode platform | dark-brand-60 `#1f2b33` |
 
 ### Border Colors
-| Token | Usage |
-|-------|-------|
-| `--color-border-subtle` | Light dividers, subtle separation |
-| `--color-border-default` | Default borders, input borders |
+| Token | Usage | Resolves To |
+|-------|-------|-------------|
+| `--color-border-subtle` | Light dividers, subtle separation | `#f2f4f5` |
+| `--color-border-default` | Default borders, input borders | `#dde1e5` |
 
 ### Action Colors (Buttons, Links, Interactive)
-| Token | Usage |
-|-------|-------|
-| `--color-action-primary-bg` | Primary button background |
-| `--color-action-primary-hover` | Primary button hover |
-| `--color-action-primary-pressed` | Primary button pressed |
-| `--color-action-primary-fg` | Primary button text (white) |
-| `--color-action-destructive-bg` | Destructive button background |
-| `--color-action-destructive-hover` | Destructive button hover |
-| `--color-action-destructive-pressed` | Destructive button pressed |
-| `--color-action-destructive-fg` | Destructive button text (white) |
-| `--color-action-neutral-bg` | Neutral/secondary button background |
-| `--color-action-neutral-hover` | Neutral button hover |
-| `--color-action-neutral-pressed` | Neutral button pressed |
-| `--color-action-neutral-fg` | Neutral button text |
-| `--color-action-disabled-bg` | Disabled button background |
-| `--color-action-disabled-fg` | Disabled button text |
+> Resolved dari Figma Variables (collection `semantic`), diverifikasi 2026-07-01.
+
+| Token | Usage | Resolves To |
+|-------|-------|-------------|
+| `--color-action-primary-bg` | Primary button background | `#4199d5` |
+| `--color-action-primary-hover` | Primary button hover | `#89bde5` |
+| `--color-action-primary-pressed` | Primary button pressed | `#3385b5` |
+| `--color-action-primary-fg` | Primary button text (white) | `#ffffff` |
+| `--color-action-destructive-bg` | Destructive button background | `#e35273` |
+| `--color-action-destructive-hover` | Destructive button hover | `#ee94a8` |
+| `--color-action-destructive-pressed` | Destructive button pressed | `#b52b55` |
+| `--color-action-destructive-fg` | Destructive button text (white) | `#ffffff` |
+| `--color-action-neutral-bg` | Neutral/secondary button background | `#fdfdfe` |
+| `--color-action-neutral-hover` | Neutral button hover | `#f2f4f5` |
+| `--color-action-neutral-pressed` | Neutral button pressed | `#dde1e5` |
+| `--color-action-neutral-fg` | Neutral button text | `#133f5d` |
+| `--color-action-disabled-bg` | Disabled button background | `#e7eaec` |
+| `--color-action-disabled-fg` | Disabled button text | `#7f97a7` |
 
 ### State Colors
-| State | Text Dark | Text Light | Icon | Background | Border |
-|-------|-----------|------------|------|------------|--------|
-| Success | `--color-state-success-text-dark` | `--color-state-success-text-light` | `--color-state-success-icon` | `--color-state-success-bg` | `--color-state-success-border` |
-| Danger | `--color-state-danger-text-dark` | `--color-state-danger-text-light` | `--color-state-danger-icon` | `--color-state-danger-bg` | `--color-state-danger-border` |
-| Warning | `--color-state-warning-text-dark` | `--color-state-warning-text-light` | `--color-state-warning-icon` | `--color-state-warning-bg` | `--color-state-warning-border` |
-| Caution | `--color-state-caution-text-dark` | `--color-state-caution-text-light` | `--color-state-caution-icon` | `--color-state-caution-bg` | `--color-state-caution-border` |
-| Active | `--color-state-active-text-dark` | `--color-state-active-text-light` | `--color-state-active-icon` | - | `--color-state-active-border` |
+> Resolved dari Figma Variables (collection `semantic`), diverifikasi 2026-07-01.
+> ⚠️ **PENTING: Warning = ORANGE, Caution = YELLOW.** Jangan ketuker.
+
+| State | Text Dark | Text Light / Icon | Background | Border |
+|-------|-----------|-------------------|------------|--------|
+| Success (hijau) | `#356021` | `#97cc56` | `#f7fbf3` | `#d6eabe` |
+| Danger (merah) | `#5c122d` | `#e35273` | `#fdf3f5` | `#f6c7d2` |
+| Warning (oranye) | `#8c2f0c` | `#f37d51` | `#fef6f3` | `#fbd5c7` |
+| Caution (kuning) | `#6e4e00` | `#eab11c` | `#fdf9ef` | `#f8e6b6` |
+| Active/Info (biru) | `#133f5d` | `#4199d5` | `#f2f7fc` | `#c2def2` |
 
 ### Focus
-| Token | Usage |
-|-------|-------|
-| `--color-focus-ring` | Focus ring for interactive elements |
+| Token | Usage | Resolves To |
+|-------|-------|-------------|
+| `--color-focus-ring` | Focus ring for interactive elements | `#89bde5` |
+
+### Shadow / Elevation
+> ⚠️ Belum ada token elevation scale lengkap di Figma Variables. Yang terverifikasi baru shadow button:
+
+| Token | Value (dari Figma Variable `shade/button/color`) |
+|-------|--------|
+| Button shadow | `0 1px 2px #0A0D120D` + inner shadows (`#0A0D120D`, `#FFFFFF1A`, `#0A0D122E`) |
+
+Shadow card/dropdown/dialog **belum keresolve sebagai variable** — kemungkinan disimpan sebagai Effect Style, bukan variable. Perlu dicek terpisah sebelum dipakai (jangan ngarang).
 
 ---
 
