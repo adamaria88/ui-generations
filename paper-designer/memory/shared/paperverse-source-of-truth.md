@@ -29,6 +29,24 @@ Dikunci user 2026-07-01 (designer tim Design System). Ini **mempertegas** [[auro
 - Resolve variable ke hex: `get_variable_defs(nodeId)` **ATAU** dalam plugin `figma.variables.getVariableByIdAsync(id)` + `valuesByMode` (follow `VARIABLE_ALIAS`). Cara plugin bisa enumerate SEMUA variable lokal (`getLocalVariablesAsync('COLOR')`) — paling lengkap.
 - ⚠️ `search_design_system` cuma kasih NAMA token, bukan hex. Buat hex WAJIB resolve via variable API.
 
+## GENERATE KOMPONEN — mekanisme keras (lock 2026-07-01, khusus komponen)
+
+Ini KHUSUS saat generate/registrasi komponen (bukan full-page prototype). Tujuan: 100% match DS, "ngarang nilai" mustahil lolos.
+
+**1. Komponen yang UDAH ADA → WAJIB instance/extract, DILARANG rebuild manual.**
+- **Figma**: pakai `createInstance()` dari komponen Paperverse asli. **DILARANG** bikin frame/lookalike pakai tangan. Instance = 100% match by construction.
+- **HTML/code**: extract nilai via MCP (`get_variable_defs`/`get_design_context`), pakai **verbatim**. DILARANG ngetik hex/ukuran dari ingatan.
+
+**2. Komponen BARU (belum ada) → susun cuma dari potongan existing** (tiap potongan = instance/extract). Yang bener-bener nggak ada → STOP + approval user. 0 elemen invented.
+
+**3. Sebelum setor komponen HTML → WAJIB lolos diff-audit:**
+```
+node paper-designer/tools/component-audit.mjs <file.html>
+```
+Exit 1 (ada hex di luar Aurora / font non-Lato) = **DILARANG setor**, perbaiki dulu. Allowlist warna auto dari `aurora-tokens.md`. Ini gerbang mesin, bukan "inget ngecek".
+
+**4. Batas yang tetap butuh user:** mesin jamin *nilai* 100% match; mesin nggak bisa jamin *pilihan komponen* & *copy* bener. Itu ketutup approval user di gerbang mapping (bawah). Rumus: **instance/extract + diff-audit + 1 approval mapping = 100%.**
+
 ## Gerbang wajib sebelum ngoding (Aurora/Paperverse Component Mapping)
 
 Sebelum nulis kode/build komponen, bikin tabel ini dulu, share ke user, approve BARU eksekusi:
