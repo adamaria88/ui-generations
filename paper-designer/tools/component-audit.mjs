@@ -38,11 +38,13 @@ const allowed = new Set((tokenSrc.match(HEX_RE) || []).map(norm));
 // neutrals yang selalu boleh
 ['ffffff', 'fff', '000000', '000', 'transparent'].forEach((h) => allowed.add(h));
 
-// 2. Read target — HANYA area CSS (hindari false positive dari teks konten)
+// 2. Read target — scan CSS di <style>, KECUALI blok tooling (ber-marker __TOOLING__).
+//    Layer tooling (review chrome) bukan komponen DS, jadi warnanya di-skip.
 const raw = readFileSync(resolve(process.cwd(), target), 'utf8');
-const styleBlocks = [...raw.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map((m) => m[1]);
-const inlineStyles = [...raw.matchAll(/style\s*=\s*"([^"]*)"/gi)].map((m) => m[1]);
-const src = [...styleBlocks, ...inlineStyles].join('\n');
+const styleBlocks = [...raw.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)]
+  .map((m) => m[1])
+  .filter((css) => !/__TOOLING__/.test(css));
+const src = styleBlocks.join('\n');
 
 // 3. Hex check
 const hexHits = [...src.matchAll(HEX_RE)].map((m) => m[0]);

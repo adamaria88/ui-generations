@@ -29,6 +29,21 @@ Dikunci user 2026-07-01 (designer tim Design System). Ini **mempertegas** [[auro
 - Resolve variable ke hex: `get_variable_defs(nodeId)` **ATAU** dalam plugin `figma.variables.getVariableByIdAsync(id)` + `valuesByMode` (follow `VARIABLE_ALIAS`). Cara plugin bisa enumerate SEMUA variable lokal (`getLocalVariablesAsync('COLOR')`) — paling lengkap.
 - ⚠️ `search_design_system` cuma kasih NAMA token, bukan hex. Buat hex WAJIB resolve via variable API.
 
+## Variable Collection yang BOLEH dipakai (lock 2026-07-02)
+
+File Paperverse (`KjmdMheQSYqqJoKyniNMnB`) punya 5 variable collection. **Cuma 2 yang valid buat generate komponen:**
+
+| Collection | Boleh dipakai? | Kenapa |
+|---|---|---|
+| **`semantic`** | ✅ WAJIB pakai | Token warna semantic (action/state/border/text/focus) — ini yang di-develop tim tech ke Aurora |
+| **`primitive_text_and_layout`** | ✅ WAJIB pakai | Text style scale, spacing, radius, stroke — juga di-develop ke Aurora |
+| **`Color`** | ❌ **DILARANG** | Primitive/raw palette (136 var) — cuma referensi internal desainer. **Tim tech TIDAK develop collection ini ke Aurora.** Kalau warna diambil dari sini, hasilnya nggak akan pernah ke-ship sama persis — drift terjamin. |
+| `Specs Layout`, `EightShapes Specs` | ❌ Skip | `hiddenFromPublishing:true` — internal spec-doc annotation, bukan token produksi. |
+
+**Kenapa ini gampang salah:** `Color` collection kelihatan paling lengkap (136 variable, banyak tint/shade) dan namanya paling jelas "Color" — gampang kepilih pas nyari warna. Tapi justru itu jebakannya: kalau bind ke sini, komponen keliatan "match DS" di Figma tapi **tim tech nggak akan pernah develop nilai itu ke Aurora**, jadi shipped version pasti beda.
+
+**Cara cek cepat sebelum bind variable:** panggil `figma.variables.getLocalVariableCollectionsAsync()`, cocokkan `variable.variableCollectionId` ke collection `semantic` atau `primitive_text_and_layout`. Kalau ID-nya masuk `Color` collection → cari padanan semantic-nya, JANGAN pakai langsung.
+
 ## GENERATE KOMPONEN — mekanisme keras (lock 2026-07-01, khusus komponen)
 
 Ini KHUSUS saat generate/registrasi komponen (bukan full-page prototype). Tujuan: 100% match DS, "ngarang nilai" mustahil lolos.

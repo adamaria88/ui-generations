@@ -8,14 +8,13 @@ File Figma Paperverse: `KjmdMheQSYqqJoKyniNMnB` (library `⭐ Paperverse 1.0`).
 
 | Komponen | Status | Catatan |
 |---|---|---|
-| Push Notification (Alt B) | Dibuat sesi 2026-07-01 di page `🔔 Push Notification` | Overlap sama Aurora **Toast** (yg udah punya title/subtitle/icon/closeButton/progressBar/action). Perlu keputusan: jadiin varian Toast atau komponen baru. Belum ada di katalog Aurora. |
-| Notification / Severity Icon | Sub-component, 4 varian | Nested di Push Notification. Belum di Aurora. |
+| **Push Notification / Alt A** (Minimal toast) | ✅ Generated 2026-07-02, page `🔔 Push Notification` (set `8443:1971` + guideline `8445:995`) | Komponen BARU (via /component-explorer). Dirakit 100% dari piece DS: tombol **tertiary** (instance), icon severity (instance invoice/check/alert/shield + x-close), token warna/text/`Shadow Neutral-01`. 4 severity variant + 5 boolean prop. Overlap konsep sama Aurora **Toast** — perlu keputusan tim: jadiin varian Toast atau komponen sendiri. Belum di katalog Aurora → pending dev. |
 
 ## (b) Drift / beda nilai yang ketemu
 
 | Item | Paperverse (design) | Aurora / catatan | Ikut |
 |---|---|---|---|
-| Shadow card/dropdown/dialog | belum keresolve sbg variable | Kemungkinan Effect Style, bukan variable. Button shadow ADA (`shade/button/color`). | Perlu cek Effect Styles sebelum dipakai — jangan ngarang |
+| Shadow card/dropdown/dialog | ✅ RESOLVED 2026-07-01 | Disimpan sbg **Effect Styles** (bukan variable): `Shadow Neutral-01` = kartu, `table/option` = dropdown. Lihat `aurora-tokens.md` Shadow. | — |
 
 ## Catatan penting (bukan drift, tapi gampang salah)
 

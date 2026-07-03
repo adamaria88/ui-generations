@@ -68,14 +68,31 @@ Source: `/Users/working/aurora/projects/ui/design-tokens/`
 |-------|-------|-------------|
 | `--color-focus-ring` | Focus ring for interactive elements | `#89bde5` |
 
-### Shadow / Elevation
-> ⚠️ Belum ada token elevation scale lengkap di Figma Variables. Yang terverifikasi baru shadow button:
+### Button — spec ASLI (dari komponen, extract 2026-07-01)
+> ⚠️ **Radius button = `radius/full` (PILL, 9999)**, BUKAN radius-sm 4px. Tabel radius di atas nyesatin buat button.
 
-| Token | Value (dari Figma Variable `shade/button/color`) |
-|-------|--------|
-| Button shadow | `0 1px 2px #0A0D120D` + inner shadows (`#0A0D120D`, `#FFFFFF1A`, `#0A0D122E`) |
+| Prop | Compact |
+|------|---------|
+| Height | `30px` |
+| Padding | `4px 12px` (spacing/xs · spacing/md) |
+| Radius | `9999px` (pill) |
+| Font | Lato SemiBold `14/22` |
+| Gap icon-text | `4px` (spacings/xs) |
+| **Secondary**: fill / border / text | `#ffffff` / `#eaedef` / `#133f5d` |
+| **Primary**: fill / text | `#4199d5` / `#ffffff` |
 
-Shadow card/dropdown/dialog **belum keresolve sebagai variable** — kemungkinan disimpan sebagai Effect Style, bukan variable. Perlu dicek terpisah sebelum dipakai (jangan ngarang).
+### Shadow / Elevation (Effect Styles)
+> Resolved dari Figma **Effect Styles** (library Paperverse), diverifikasi 2026-07-01.
+
+| Style | Value CSS | Pakai buat |
+|---|---|---|
+| `Shadow Neutral-01` | `0 3px 10px #00000014` | **Kartu / card umum (notif, dll)** |
+| `table/option` | `0 1px 5px #133f5d26` | Dropdown / menu / popover |
+| `shade/button/color` | `0 1px 2px #0a0d120d` + inner (`#0a0d120d`, `#ffffff1a`, `#0a0d122e`) | Button (brand) |
+| `shade/button/white` | `0 1px 2px #0a0d120d` + inner (`#0a0d120d`, `#0a0d120d`, `#0a0d122e`) | Button (white) |
+| `Shadow Blue-01` | `0 -5px 20px #4199d51a` | Glow atas (brand) |
+| `Shadow Blue-02` | `0 5px 20px #4199d51a` | Glow bawah (brand) |
+| `header` | `0 4px 20px #4195d51a` | Nav header |
 
 ---
 

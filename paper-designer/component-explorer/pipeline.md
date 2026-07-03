@@ -2,6 +2,17 @@
 
 Flow reusable buat bikin komponen baru: **riset referensi → review → eksplorasi dari DS → guideline → generate Figma.** Dipanggil per komponen. Tunduk penuh ke [`../memory/shared/paperverse-source-of-truth.md`](../memory/shared/paperverse-source-of-truth.md).
 
+## Prinsip eksplorasi (general — berlaku semua komponen)
+
+- **Control per-alternatif**, bukan global: tiap alternatif punya *variant switch* + *toggle property* sendiri (mis. buat notif = severity + section; buat komponen lain = variant/prop-nya masing-masing).
+- **Alternatif harus beda TREATMENT**, bukan cuma beda layout / hilangin elemen. Eksplor pendekatan visual berbeda.
+- **Preview behaviour** di page eksplor — tunjukin komponen "gimana munculnya/jalannya" beneran (isian behaviour spesifik per komponen).
+- **Flow aksi**: default cuma **⭐ Pilih**. Klik Pilih → baru muncul **🎨 Generate** (komponen + guideline sekaligus).
+- **Chrome ramping** — jangan dobel info (nama komponen/fase udah di hub; topbar draft cukup tombol tooling).
+
+## Cara build ke Figma (Fase 5)
+Ikuti [`figma-build-sop.md`](figma-build-sop.md) — teknik generate via MCP (instance/extract, cek property bawaan sebelum override, auto-layout, variants, boolean prop, verify screenshot).
+
 ## Prinsip pemisahan (WAJIB)
 
 Tiap output web punya 2 layer terpisah:
@@ -17,9 +28,10 @@ Web nggak bisa manggil AI langsung. Tiap action = tombol yang **nyalin command**
 | `explore <komponen>` | mulai flow | Fase 1 |
 | `[REVIEW] ...` | komen review dari tooling | diskusi |
 | `lanjut alternatif` | lanjut ke DS-based | Fase 3 |
-| `pilih: <komponen> — Alt X` | tandai alternatif terpilih | catat pilihan |
-| `guideline: <komponen> — Alt X` | minta guideline | Fase 4 |
-| `figma: <komponen> — Alt X` | generate ke Figma | Fase 5 |
+| `pilih: <komponen> — Alt X` | tandai terpilih → tombol Generate muncul | — |
+| `figma: <komponen> — Alt X` | generate **komponen + guideline** sekaligus ke Figma | Fase 4+5 |
+
+Catatan flow: **Pilih dulu → baru muncul Generate.** Generate = komponen + guideline 9-section sekaligus (nggak ada step guideline kepisah). Tiap alternatif punya control sendiri (switch severity + toggle section).
 
 ---
 
@@ -32,6 +44,20 @@ Web nggak bisa manggil AI langsung. Tiap action = tombol yang **nyalin command**
 3. **First draft** — gabungin referensi yang user pilih jadi 1-2 draft HTML. **JANGAN pakai Aurora/Paperverse dulu** — murni buat lihat **behaviour + layout**. Pakai `explorer-template.html`, isi `.expl-canvas`.
 
 **Output:** draft HTML + review tooling nyala. **Gate:** tunggu user komen (Fase 2).
+
+### Konvensi output & versioning (WAJIB — 1 HUB buat SEMUA komponen)
+
+Cuma ada **1 link** buat semua eksplorasi: `_output/explorer/index.html` (hub, sidebar list komponen + tab versi + changelog). Jangan bikin link/shell baru.
+
+Struktur:
+```
+_output/explorer/
+  index.html              ← THE link (hub). Registry COMPONENTS di dalamnya.
+  <slug>/draft-N.html     ← 1 file per iterasi, per komponen (di-load via iframe)
+```
+
+- **Komponen baru** = bikin folder `_output/explorer/<slug>/` + `draft-1.html`, lalu tambah 1 objek di array `COMPONENTS` (hub). Muncul di sidebar.
+- **Iterasi baru** = bikin `draft-(N+1).html` + tambah 1 versi (paling atas) di `versions` komponen itu. Link & sidebar tetap; history kejaga di changelog.
 
 ⚠️ Fase 1 = eksplorasi bebas, di sini BOLEH nilai non-DS (ini satu-satunya fase yang exempt dari live-pull, karena tujuannya lihat behaviour dulu).
 
