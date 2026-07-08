@@ -80,6 +80,8 @@ def main():
     checks=[]  # (type, node)
     for n in walk(tree.root):
         c=cls(n)
+        if any(x.startswith('suxc') for x in c) or n.attrs.get('id','').startswith('suxc') \
+           or any(any(x.startswith('suxc') for x in cls(p)) for p in iter_parents(n)): continue  # skip overlay komen (tooling review, bukan UI produksi)
         if n.tag=='button' or any('btn' in x for x in c):          checks.append(('button',n))
         if direct_caret(n) and not is_caret(n) and n.tag!='img':    checks.append(('dropdown',n))
         if n.tag in ('input','select','textarea'):                  checks.append(('input',n))
