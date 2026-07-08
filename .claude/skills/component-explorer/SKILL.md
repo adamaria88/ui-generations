@@ -1,6 +1,6 @@
 ---
 name: component-explorer
-description: Flow bikin komponen baru dari nol untuk Paper.id — riset referensi (URL bisa dicoba + behaviour), first draft non-DS buat lihat layout, review via tooling web, 5 alternatif dari Paperverse/Aurora, Component Guideline 9-section, generate ke Figma. Trigger saat user mau explore/bikin komponen baru atau ketik `explore <komponen>`. Beda dari /paper-designer (itu untuk screen/flow/prototype); ini khusus SATU komponen baru dari riset sampai Figma.
+description: Flow bikin komponen baru dari nol untuk Paper.id — riset referensi (URL bisa dicoba + behaviour), first draft non-DS buat lihat layout, review via tooling web, 5 alternatif dari Paperverse/Aurora, playground property interaktif (ala panel Figma), Component Guideline 9-section, generate ke Figma. Trigger saat user mau explore/bikin komponen baru atau ketik `explore <komponen>`. Beda dari /paper-designer (itu untuk screen/flow/prototype); ini khusus SATU komponen baru dari riset sampai Figma.
 ---
 
 # Component Explorer (Paper.id)
@@ -29,9 +29,12 @@ Baca dan ikuti **`paper-designer/component-explorer/pipeline.md`** — 5 fase le
 | `explore <komponen>` | **Fase 1** — cari ≥5 referensi (URL + behaviour + rekomendasi) → best practice → first draft HTML non-DS (pakai explorer-template) |
 | `[REVIEW] ...` | **Fase 2** — diskusi komen, iterasi draft |
 | `lanjut alternatif` | **Fase 3** — mapping gate → live-pull → 5 alternatif HTML dari DS → diff-audit |
-| `pilih: <komponen> — Alt X` | catat alternatif terpilih |
-| `guideline: <komponen> — Alt X` | **Fase 4** — Component Guideline 9-section |
-| `figma: <komponen> — Alt X` | **Fase 5** — generate komponen + guideline ke Figma (100% dari Paperverse) |
+| `pilih: <komponen> — Alt X` | catat alternatif terpilih (non-destruktif — page alternatif tetap ada sbg versi) |
+| `playground: <komponen> — Alt X` | **Fase 3.5** — playground property interaktif (WAJIB, ala panel Figma) buat alt terpilih |
+| `guideline: <komponen> — Alt X` | **Fase 4** — Component Guideline 9-section (comot dari playground) |
+| `figma: <komponen> — Alt X` | **Fase 5** — generate komponen + guideline ke Figma (property model 1:1 dari playground) |
+
+Urutan tombol tooling per alternatif: **⭐ Pilih → 🎛️ Playground → 📄 Guideline → 🎨 Figma**.
 
 ## Intake
 

@@ -59,6 +59,9 @@
   .expl-pin { position:absolute; z-index:40; width:26px; height:26px; border-radius:50% 50% 50% 4px;
     background:#7B61FF; color:#fff; font:700 11px/26px 'Lato',sans-serif; text-align:center;
     transform:translate(-2px,-28px); box-shadow:0 2px 8px rgba(0,0,0,.4); cursor:pointer; user-select:none; }
+  /* seleksi area komen: Shift+drag = kotak · Shift+klik = titik · tanpa Shift = interaksi komponen normal */
+  .expl-sel { position:absolute; z-index:60; border:1.5px dashed #7B61FF; background:rgba(123,97,255,.12); border-radius:4px; pointer-events:none; }
+  .expl-area { position:absolute; z-index:20; border:1.5px solid #7B61FF; background:rgba(123,97,255,.07); border-radius:4px; pointer-events:none; }
   .expl-pin:hover { filter:brightness(1.1); }
 
   /* panel komen */
@@ -98,7 +101,7 @@
 
   <!-- ═══════ LAYER TOOLING ═══════ -->
   <div class="expl-topbar">
-    <span style="font-size:11px;color:#94a3b8">klik 💬 lalu klik area buat komen · ⭐/📄/🎨 = nyalin command</span>
+    <span style="font-size:11px;color:#94a3b8">💬 ON → Shift+drag = komen area · Shift+klik = titik · ⭐/📄/🎨 = nyalin command</span>
     <span class="sp"></span>
     <button class="expl-btn expl-btn--ghost" id="expl-comment-btn">💬 Komen</button>
     <button class="expl-btn expl-btn--ghost" id="expl-list-btn">📋 Daftar</button>
@@ -115,6 +118,7 @@
         <span class="expl-alt-tag">— nama pendekatan</span>
         <span class="sp"></span>
         <button class="expl-alt-act pick" data-act="pick">⭐ Pilih</button>
+        <button class="expl-alt-act" data-act="playground">🎛️ Playground</button>
         <button class="expl-alt-act" data-act="guideline">📄 Guideline</button>
         <button class="expl-alt-act" data-act="figma">🎨 Figma</button>
       </div>
@@ -131,6 +135,7 @@
         <span class="expl-alt-tag">— nama pendekatan</span>
         <span class="sp"></span>
         <button class="expl-alt-act pick" data-act="pick">⭐ Pilih</button>
+        <button class="expl-alt-act" data-act="playground">🎛️ Playground</button>
         <button class="expl-alt-act" data-act="guideline">📄 Guideline</button>
         <button class="expl-alt-act" data-act="figma">🎨 Figma</button>
       </div>
@@ -196,15 +201,24 @@
 
   // klik canvas → drop pin + popup input
   document.querySelectorAll('.expl-canvas').forEach(function(canvas){
-    canvas.addEventListener('click', function(e){
-      if(!commentMode) return;
-      if(e.target.closest('.expl-pin')) return;
-      var altEl = canvas.closest('.expl-alt');
-      var alt = altEl.getAttribute('data-alt');
-      var r = canvas.getBoundingClientRect();
-      var x = e.clientX - r.left, y = e.clientY - r.top;
-      var ref = refAt(e.target);
-      openPop(e.clientX, e.clientY, { alt:alt, x:x, y:y, ref:ref });
+    // klik = pin titik · drag = pilih area kotak (ala Figma region comment)
+    canvas.addEventListener('mousedown', function(e){
+      if(!commentMode || !e.shiftKey) return; if(e.button) return;
+      if(e.target.closest('.expl-pin,.expl-area')) return;
+      e.preventDefault(); e.stopPropagation();
+      var altEl = canvas.closest('.expl-alt'); var alt = altEl.getAttribute('data-alt');
+      var r = canvas.getBoundingClientRect(); var sx = e.clientX - r.left, sy = e.clientY - r.top;
+      var sel = document.createElement('div'); sel.className = 'expl-sel'; canvas.appendChild(sel);
+      var moved = false;
+      function mm(ev){ var x=ev.clientX-r.left,y=ev.clientY-r.top,l=Math.min(x,sx),t=Math.min(y,sy),w=Math.abs(x-sx),h=Math.abs(y-sy); if(w>3||h>3) moved=true; sel.style.left=l+'px'; sel.style.top=t+'px'; sel.style.width=w+'px'; sel.style.height=h+'px'; }
+      function mu(ev){ document.removeEventListener('mousemove',mm); document.removeEventListener('mouseup',mu); sel.remove();
+        var sw=function(ce){ ce.stopPropagation(); ce.preventDefault(); cl(); }; function cl(){ document.removeEventListener('click',sw,true); clearTimeout(tid); } document.addEventListener('click',sw,true); var tid=setTimeout(cl,350);
+        var x=ev.clientX-r.left,y=ev.clientY-r.top,l=Math.min(x,sx),t=Math.min(y,sy),w=Math.abs(x-sx),h=Math.abs(y-sy);
+        var tg=document.elementFromPoint(ev.clientX,ev.clientY)||ev.target; var ref=refAt(tg);
+        if(moved && (w>6||h>6)) openPop(ev.clientX, ev.clientY, { alt:alt, x:l, y:t, w:w, h:h, ref:ref });
+        else openPop(ev.clientX, ev.clientY, { alt:alt, x:sx, y:sy, ref:ref });
+      }
+      document.addEventListener('mousemove',mm); document.addEventListener('mouseup',mu);
     });
   });
 
@@ -230,16 +244,18 @@
     pop.querySelector('[data-x]').onclick = function(){ pop.remove(); };
     pop.querySelector('[data-ok]').onclick = function(){
       var text = ta.value.trim(); if(!text){ pop.remove(); return; }
-      notes.push({ alt:ctx.alt, x:ctx.x, y:ctx.y, ref:ctx.ref, text:text, ts:Date.now() });
+      notes.push({ alt:ctx.alt, x:ctx.x, y:ctx.y, w:ctx.w, h:ctx.h, ref:ctx.ref, text:text, ts:Date.now() });
       save(); render(); pop.remove(); toast('Komen tersimpan');
     };
   }
 
   function render(){
-    document.querySelectorAll('.expl-pin').forEach(function(p){ p.remove(); });
+    document.querySelectorAll('.expl-pin,.expl-area').forEach(function(p){ p.remove(); });
     notes.forEach(function(n, i){
       var canvas = document.querySelector('.expl-alt[data-alt="'+n.alt+'"] .expl-canvas');
       if(canvas){
+        if(n.w && n.h){ var a = document.createElement('div'); a.className = 'expl-area';
+          a.style.left = n.x+'px'; a.style.top = n.y+'px'; a.style.width = n.w+'px'; a.style.height = n.h+'px'; canvas.appendChild(a); }
         var pin = document.createElement('div'); pin.className = 'expl-pin';
         pin.style.left = n.x + 'px'; pin.style.top = n.y + 'px'; pin.textContent = i+1;
         pin.onclick = function(ev){ ev.stopPropagation(); setPanel(true); };
@@ -265,7 +281,7 @@
     if(!notes.length){ toast('Belum ada komen'); return; }
     var lines = ['[REVIEW] ' + COMPONENT, ''];
     notes.forEach(function(n, i){
-      lines.push((i+1)+'. Alt '+n.alt+(n.ref?' ("'+n.ref+'")':'')+': '+n.text);
+      lines.push((i+1)+'. Alt '+n.alt+(n.w?' [area '+Math.round(n.w)+'×'+Math.round(n.h)+']':'')+(n.ref?' ("'+n.ref+'")':'')+': '+n.text);
     });
     lines.push('', '(paste ini ke chat buat lanjut diskusi)');
     copy(lines.join('\n'), '📋 '+notes.length+' komen di-copy — paste ke chat');
@@ -283,6 +299,8 @@
         document.querySelectorAll('.expl-alt-act.pick').forEach(function(b){ b.classList.remove('on'); });
         altEl.classList.add('selected'); btn.classList.add('on');
         copy('pilih: '+COMPONENT+' — Alt '+alt, '⭐ Alt '+alt+' dipilih — command di-copy');
+      } else if(act === 'playground'){
+        copy('playground: '+COMPONENT+' — Alt '+alt, '🎛️ Command playground di-copy — paste ke chat');
       } else if(act === 'guideline'){
         copy('guideline: '+COMPONENT+' — Alt '+alt, '📄 Command guideline di-copy — paste ke chat');
       } else if(act === 'figma'){

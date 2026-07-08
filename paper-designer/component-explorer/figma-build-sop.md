@@ -95,3 +95,19 @@ return { unbound, wrongCollection, pass: unbound.length===0 && wrongCollection.l
 
 ## Gerbang tetap berlaku
 Sebelum "jadi": nilai 100% dari DS (instance/extract) + **poin 11 (Figma Variable/Collection Audit) lolos**. Kalau output HTML → juga `component-audit.mjs`. Komponen baru (nggak ada di DS) → catat ke [`../ds/paperverse-vs-aurora.md`](../ds/paperverse-vs-aurora.md).
+
+---
+
+## Konvensi & gotcha komponen (lock 2026-07-07, dari /component-explorer Radio Button)
+
+### Konvensi property & struktur
+1. **Nama property PENDEK, tanpa prefix "Show".** Toolbar Figma motong nama panjang ("Show Description" ke-truncate). Toggle dinamain **sesuai elemen** (niru DS `_Chips/Chip`: `Head`/`Trail`/`Counter`, bukan "Show Head"). Kalau nama bentrok (mis. INSTANCE_SWAP `Badge` vs boolean visibility `Badge`): buang prop swap/text *named*-nya — nested instance **tetap swappable native**, teks **tetap editable langsung** — lalu pakai nama pendek buat boolean-nya. Cara rename/hapus: `set.editComponentProperty(key,{name})` + `set.deleteComponentProperty(key)` (lepas dulu `componentPropertyReferences` yang nunjuk ke situ).
+2. **Cek DS existing SEBELUM bikin sub-part custom.** `search_design_system` + scan page `❖ COMPONENTS`. Nama bisa beda — cocokin by **fungsi**. Contoh nyata: badge → **`Chip Status`** (`1226:130086`, Type/Color/Size + Head/Trail), jumlah → **`Chips`** (`Number of Chips` 2–7). Custom cuma kalau bener-bener ga ada (→ STOP + approval).
+3. **Real SLOT buat konten variabel.** `addComponentProperty('X','SLOT','')` + frame + `frame.componentPropertyReferences={slotContentId:key}` (frame boleh nested di dalam frame biasa, JANGAN di dalam slot lain, JANGAN GRID). Leading/trailing/thumbnail = **slot** (konten bebas, empty=hilang) lebih fleksibel dari toggle. **Slot SURVIVE `combineAsVariants`** (verified — tiap variant tetap punya slotnya). INSTANCE_SWAP = tukar 1 komponen; BOOLEAN = show/hide cepat.
+4. **Split atomic vs group.** Komponen ber-"jumlah" DIPECAH: **atomic** (unit tunggal, semua property di sini) + **group** (variant `Number of X`, isinya **nested instance** atomic — BUKAN copy). Niru DS `Chips` (group) + `_Chips/Chip` (atomic).
+5. **Teks default GENERIC** (`Title`/`Description`/`Value`, monogram `A`) buat komponen library — biar kebaca sebagai **template**, bukan konten spesifik (jangan "Pro"/"Rp149rb").
+
+### Gotcha teknis
+6. **`createAutoLayout` / `createFrame` sering default fill PUTIH.** Set `fills=[]` di frame kontainer (Body/Row/Trailing) — kalau nggak, muncul **patch putih** di variant bertint (selected/hover). Cek via screenshot.
+7. **Node internal lintas-page → `getNodeByIdAsync` bisa NULL.** Komponen non-published (mis. `_Radio/Options/Radio-Box`) TIDAK bisa `importComponentSetByKeyAsync` (error "not found"). Ambil via **traversal**: import parent set by key → find instance-nya di dalam → `getMainComponentAsync()` → `.parent` (= set internal) → `.children` cari variant → `createInstance()`.
+8. **Page hygiene pasca-build.** Sebelum lapor "jadi": list `page.children` → hapus **stray** (instance tes, `Rectangle` nyasar, leftover build) → pastiin page cuma isi artifact final (komponen + guideline). Verify screenshot page penuh.
