@@ -1,0 +1,79 @@
+/* Paperverse / Aurora — design tokens
+   Sumber: Figma Paperverse 1.0 (KjmdMheQSYqqJoKyniNMnB),
+   collection `semantic` + `primitive_text_and_layout`.
+   JANGAN edit manual — regenerate lewat paper-designer/claude-design/build.mjs */
+
+:root {
+  /* Text */
+  --color-text-primary: #133f5d;
+  --color-text-secondary: #718c9e;
+  --color-text-muted: #a5b6c1;
+  --color-text-inverse: #ffffff;
+
+  /* Surface */
+  --color-surface-light-default: #ffffff;
+  --color-surface-light-raised: #f3f6f9;
+  --color-surface-light-muted: #e7eaec;
+  --color-surface-light-platform: #f8fbfe;
+  --color-surface-dark-default: #263640;
+  --color-surface-dark-raised: #133f5d;
+  --color-surface-dark-muted: #4e6f86;
+  --color-surface-dark-platform: #1f2b33;
+
+  /* Border */
+  --color-border-subtle: #f2f4f5;
+  --color-border-default: #dde1e5;
+
+  /* Action */
+  --color-action-primary-bg: #4199d5;
+  --color-action-primary-hover: #89bde5;
+  --color-action-primary-pressed: #3385b5;
+  --color-action-primary-fg: #ffffff;
+  --color-action-destructive-bg: #e35273;
+  --color-action-destructive-hover: #ee94a8;
+  --color-action-destructive-pressed: #b52b55;
+  --color-action-destructive-fg: #ffffff;
+  --color-action-neutral-bg: #fdfdfe;
+  --color-action-neutral-hover: #f2f4f5;
+  --color-action-neutral-pressed: #dde1e5;
+  --color-action-neutral-fg: #133f5d;
+  --color-action-disabled-bg: #e7eaec;
+  --color-action-disabled-fg: #7f97a7;
+
+  /* Focus */
+  --color-focus-ring: #89bde5;
+
+  /* Input */
+  --color-input-field-default-bg: #ffffff;
+  --color-input-field-default-fg: #c2cdd5;
+
+  /* Spacing */
+  --spacing-2xs: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 28px;
+  --spacing-4xl: 32px;
+  --spacing-5xl: 36px;
+  --spacing-6xl: 40px;
+
+  /* Radius */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Stroke */
+  --stroke-none: 0px;
+  --stroke-xs: 1px;
+  --stroke-md: 1.5px;
+  --stroke-lg: 2px;
+
+  /* Font */
+  --font-family: Lato, sans-serif;
+}

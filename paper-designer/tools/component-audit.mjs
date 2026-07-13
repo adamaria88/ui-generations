@@ -71,10 +71,13 @@ for (const h of [...src.matchAll(HEX_RE)].map((m) => m[0])) {
 }
 
 // ── 2. Font check ──
-const fontDecls = [...src.matchAll(/font-family\s*:\s*([^;}"']+)/gi)].map((m) => m[1].trim());
+// Value berhenti di `;` atau `}` — JANGAN exclude kutip, nanti
+// `font-family: 'Lato', sans-serif` ke-capture kosong dan dianggap font asing.
+const fontDecls = [...src.matchAll(/font-family\s*:\s*([^;}]+)/gi)].map((m) => m[1].trim());
 const badFonts = fontDecls.filter((f) => {
-  const low = f.toLowerCase();
-  return !(low.includes('lato') || low === 'inherit' || low === 'var(--font)');
+  const low = f.toLowerCase().replace(/['"]/g, '');
+  // OK: Lato (dengan/tanpa kutip & fallback stack), inherit, atau var wrapper token font.
+  return !(low.includes('lato') || low === 'inherit' || /var\(--[^)]*font[^)]*\)/.test(low));
 });
 
 // ── 3-5. Numeric scale checks (spacing / radius / stroke) ──

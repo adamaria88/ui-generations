@@ -1,0 +1,451 @@
+<!-- @dsCard group="Foundations" -->
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Colors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Paperverse / Aurora — design tokens
+   Sumber: Figma Paperverse 1.0 (KjmdMheQSYqqJoKyniNMnB),
+   collection `semantic` + `primitive_text_and_layout`.
+   JANGAN edit manual — regenerate lewat paper-designer/claude-design/build.mjs */
+
+:root {
+  /* Text */
+  --color-text-primary: #133f5d;
+  --color-text-secondary: #718c9e;
+  --color-text-muted: #a5b6c1;
+  --color-text-inverse: #ffffff;
+
+  /* Surface */
+  --color-surface-light-default: #ffffff;
+  --color-surface-light-raised: #f3f6f9;
+  --color-surface-light-muted: #e7eaec;
+  --color-surface-light-platform: #f8fbfe;
+  --color-surface-dark-default: #263640;
+  --color-surface-dark-raised: #133f5d;
+  --color-surface-dark-muted: #4e6f86;
+  --color-surface-dark-platform: #1f2b33;
+
+  /* Border */
+  --color-border-subtle: #f2f4f5;
+  --color-border-default: #dde1e5;
+
+  /* Action */
+  --color-action-primary-bg: #4199d5;
+  --color-action-primary-hover: #89bde5;
+  --color-action-primary-pressed: #3385b5;
+  --color-action-primary-fg: #ffffff;
+  --color-action-destructive-bg: #e35273;
+  --color-action-destructive-hover: #ee94a8;
+  --color-action-destructive-pressed: #b52b55;
+  --color-action-destructive-fg: #ffffff;
+  --color-action-neutral-bg: #fdfdfe;
+  --color-action-neutral-hover: #f2f4f5;
+  --color-action-neutral-pressed: #dde1e5;
+  --color-action-neutral-fg: #133f5d;
+  --color-action-disabled-bg: #e7eaec;
+  --color-action-disabled-fg: #7f97a7;
+
+  /* Focus */
+  --color-focus-ring: #89bde5;
+
+  /* Input */
+  --color-input-field-default-bg: #ffffff;
+  --color-input-field-default-fg: #c2cdd5;
+
+  /* Spacing */
+  --spacing-2xs: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 28px;
+  --spacing-4xl: 32px;
+  --spacing-5xl: 36px;
+  --spacing-6xl: 40px;
+
+  /* Radius */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Stroke */
+  --stroke-none: 0px;
+  --stroke-xs: 1px;
+  --stroke-md: 1.5px;
+  --stroke-lg: 2px;
+
+  /* Font */
+  --font-family: Lato, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 32px;
+  font-family: Lato, sans-serif;
+  font-size: 14px; line-height: 22px;
+  color: var(--color-text-primary);
+  background: var(--color-surface-light-default);
+}
+h1 { font-size: 28px; line-height: 36px; font-weight: 700; margin: 0 0 4px; }
+.sub { color: var(--color-text-secondary); margin: 0 0 32px; }
+h2 {
+  font-size: 16px; line-height: 20px; font-weight: 600;
+  margin: 32px 0 12px; padding-bottom: 8px;
+  border-bottom: var(--stroke-xs) solid var(--color-border-default);
+}
+h2:first-of-type { margin-top: 0; }
+table { width: 100%; border-collapse: collapse; }
+td, th {
+  text-align: left; padding: 8px 12px;
+  border-bottom: var(--stroke-xs) solid var(--color-border-subtle);
+  vertical-align: middle;
+}
+th { font-weight: 600; color: var(--color-text-secondary); font-size: 12px; }
+code {
+  font-family: Lato, sans-serif;
+  font-size: 12px; letter-spacing: 0.2px;
+  color: var(--color-text-primary);
+}
+.muted { color: var(--color-text-muted); }
+.secondary { color: var(--color-text-secondary); }
+.swatch {
+  width: 40px; height: 40px; border-radius: var(--radius-sm);
+  border: var(--stroke-xs) solid var(--color-border-default);
+}
+.wrap { overflow-x: auto; }
+
+.states td:first-child { font-weight: 600; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 4px 12px; border-radius: var(--radius-full);
+  font-size: 12px; font-weight: 600;
+  border: var(--stroke-xs) solid;
+}
+.pal { display: flex; gap: 4px; }
+.pal div { width: 48px; height: 40px; border-radius: var(--radius-sm); border: var(--stroke-xs) solid var(--color-border-default); }
+.warn {
+  margin: 0 0 24px; padding: 12px 16px;
+  background: #fef6f3; border: var(--stroke-xs) solid #fbd5c7;
+  border-radius: var(--radius-md); color: #8c2f0c; font-size: 12px; line-height: 18px;
+}
+</style>
+</head>
+<body>
+<h1>Colors</h1>
+<p class="sub">Token warna semantic Paperverse — text, surface, border, action, state.</p>
+
+<p class="warn"><strong>Aturan warna:</strong> teks informasi wajib <em>abu netral</em>. Warna brand (<code>#4199d5</code>) khusus elemen interaktif — button, link, focus. Jangan campur, nanti user ngira teks statis bisa diklik.</p>
+
+<h2>Text</h2>
+<div class="wrap"><table>
+  <tr><th></th><th>Token</th><th>Nilai</th><th>Dipakai buat</th></tr>
+  <tr>
+    <td><div class="swatch" style="background:#133f5d"></div></td>
+    <td><code>--color-text-primary</code></td>
+    <td><code class="secondary">#133f5d</code></td>
+    <td class="secondary">Teks utama, heading</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#718c9e"></div></td>
+    <td><code>--color-text-secondary</code></td>
+    <td><code class="secondary">#718c9e</code></td>
+    <td class="secondary">Teks pendukung</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#a5b6c1"></div></td>
+    <td><code>--color-text-muted</code></td>
+    <td><code class="secondary">#a5b6c1</code></td>
+    <td class="secondary">Teks redup / disabled</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#ffffff"></div></td>
+    <td><code>--color-text-inverse</code></td>
+    <td><code class="secondary">#ffffff</code></td>
+    <td class="secondary">Teks di atas background gelap</td>
+  </tr>
+</table></div>
+
+<h2>Surface</h2>
+<div class="wrap"><table>
+  <tr><th></th><th>Token</th><th>Nilai</th><th>Dipakai buat</th></tr>
+  <tr>
+    <td><div class="swatch" style="background:#ffffff"></div></td>
+    <td><code>--color-surface-light-default</code></td>
+    <td><code class="secondary">#ffffff</code></td>
+    <td class="secondary">Background halaman</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#f3f6f9"></div></td>
+    <td><code>--color-surface-light-raised</code></td>
+    <td><code class="secondary">#f3f6f9</code></td>
+    <td class="secondary">Card, header tabel bertint</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#e7eaec"></div></td>
+    <td><code>--color-surface-light-muted</code></td>
+    <td><code class="secondary">#e7eaec</code></td>
+    <td class="secondary">Background redup</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#f8fbfe"></div></td>
+    <td><code>--color-surface-light-platform</code></td>
+    <td><code class="secondary">#f8fbfe</code></td>
+    <td class="secondary">Background app/platform</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#263640"></div></td>
+    <td><code>--color-surface-dark-default</code></td>
+    <td><code class="secondary">#263640</code></td>
+    <td class="secondary">Dark — default</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#133f5d"></div></td>
+    <td><code>--color-surface-dark-raised</code></td>
+    <td><code class="secondary">#133f5d</code></td>
+    <td class="secondary">Dark — elevated</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#4e6f86"></div></td>
+    <td><code>--color-surface-dark-muted</code></td>
+    <td><code class="secondary">#4e6f86</code></td>
+    <td class="secondary">Dark — redup</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#1f2b33"></div></td>
+    <td><code>--color-surface-dark-platform</code></td>
+    <td><code class="secondary">#1f2b33</code></td>
+    <td class="secondary">Dark — platform</td>
+  </tr>
+</table></div>
+
+<h2>Border</h2>
+<div class="wrap"><table>
+  <tr><th></th><th>Token</th><th>Nilai</th><th>Dipakai buat</th></tr>
+  <tr>
+    <td><div class="swatch" style="background:#f2f4f5"></div></td>
+    <td><code>--color-border-subtle</code></td>
+    <td><code class="secondary">#f2f4f5</code></td>
+    <td class="secondary">Divider halus</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#dde1e5"></div></td>
+    <td><code>--color-border-default</code></td>
+    <td><code class="secondary">#dde1e5</code></td>
+    <td class="secondary">Border default, border input</td>
+  </tr>
+</table></div>
+
+<h2>Action — khusus elemen interaktif</h2>
+<div class="wrap"><table>
+  <tr><th></th><th>Token</th><th>Nilai</th><th>Dipakai buat</th></tr>
+  <tr>
+    <td><div class="swatch" style="background:#4199d5"></div></td>
+    <td><code>--color-action-primary-bg</code></td>
+    <td><code class="secondary">#4199d5</code></td>
+    <td class="secondary">Primary button — fill</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#89bde5"></div></td>
+    <td><code>--color-action-primary-hover</code></td>
+    <td><code class="secondary">#89bde5</code></td>
+    <td class="secondary">Primary — hover</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#3385b5"></div></td>
+    <td><code>--color-action-primary-pressed</code></td>
+    <td><code class="secondary">#3385b5</code></td>
+    <td class="secondary">Primary — pressed</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#ffffff"></div></td>
+    <td><code>--color-action-primary-fg</code></td>
+    <td><code class="secondary">#ffffff</code></td>
+    <td class="secondary">Primary — teks</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#e35273"></div></td>
+    <td><code>--color-action-destructive-bg</code></td>
+    <td><code class="secondary">#e35273</code></td>
+    <td class="secondary">Destructive — fill</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#ee94a8"></div></td>
+    <td><code>--color-action-destructive-hover</code></td>
+    <td><code class="secondary">#ee94a8</code></td>
+    <td class="secondary">Destructive — hover</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#b52b55"></div></td>
+    <td><code>--color-action-destructive-pressed</code></td>
+    <td><code class="secondary">#b52b55</code></td>
+    <td class="secondary">Destructive — pressed</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#ffffff"></div></td>
+    <td><code>--color-action-destructive-fg</code></td>
+    <td><code class="secondary">#ffffff</code></td>
+    <td class="secondary">Destructive — teks</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#fdfdfe"></div></td>
+    <td><code>--color-action-neutral-bg</code></td>
+    <td><code class="secondary">#fdfdfe</code></td>
+    <td class="secondary">Secondary — fill</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#f2f4f5"></div></td>
+    <td><code>--color-action-neutral-hover</code></td>
+    <td><code class="secondary">#f2f4f5</code></td>
+    <td class="secondary">Secondary — hover</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#dde1e5"></div></td>
+    <td><code>--color-action-neutral-pressed</code></td>
+    <td><code class="secondary">#dde1e5</code></td>
+    <td class="secondary">Secondary — pressed</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#133f5d"></div></td>
+    <td><code>--color-action-neutral-fg</code></td>
+    <td><code class="secondary">#133f5d</code></td>
+    <td class="secondary">Secondary — teks</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#e7eaec"></div></td>
+    <td><code>--color-action-disabled-bg</code></td>
+    <td><code class="secondary">#e7eaec</code></td>
+    <td class="secondary">Disabled — fill</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#7f97a7"></div></td>
+    <td><code>--color-action-disabled-fg</code></td>
+    <td><code class="secondary">#7f97a7</code></td>
+    <td class="secondary">Disabled — teks</td>
+  </tr>
+</table></div>
+
+<h2>Input</h2>
+<div class="wrap"><table>
+  <tr><th></th><th>Token</th><th>Nilai</th><th>Dipakai buat</th></tr>
+  <tr>
+    <td><div class="swatch" style="background:#ffffff"></div></td>
+    <td><code>--color-input-field-default-bg</code></td>
+    <td><code class="secondary">#ffffff</code></td>
+    <td class="secondary">Field — background</td>
+  </tr>
+  <tr>
+    <td><div class="swatch" style="background:#c2cdd5"></div></td>
+    <td><code>--color-input-field-default-fg</code></td>
+    <td><code class="secondary">#c2cdd5</code></td>
+    <td class="secondary">Field — placeholder</td>
+  </tr>
+</table></div>
+
+<h2>Focus</h2>
+<div class="wrap"><table>
+  <tr><th></th><th>Token</th><th>Nilai</th><th>Dipakai buat</th></tr>
+  <tr>
+    <td><div class="swatch" style="background:#89bde5"></div></td>
+    <td><code>--color-focus-ring</code></td>
+    <td><code class="secondary">#89bde5</code></td>
+    <td class="secondary">Focus ring</td>
+  </tr>
+</table></div>
+
+<h2>State</h2>
+<p class="secondary" style="margin-top:-4px">Warning = <strong>oranye</strong>. Caution = <strong>kuning</strong>. Sering ketuker — perhatiin.</p>
+<div class="wrap"><table class="states">
+  <tr><th>State</th><th>Contoh</th><th>Teks gelap</th><th>Ikon / teks terang</th><th>Background</th><th>Border</th></tr>
+  <tr>
+    <td>Success</td>
+    <td><span class="chip" style="color:#356021;background:#f7fbf3;border-color:#d6eabe">Success</span></td>
+    <td><code class="secondary">#356021</code></td>
+    <td><code class="secondary">#97cc56</code></td>
+    <td><code class="secondary">#f7fbf3</code></td>
+    <td><code class="secondary">#d6eabe</code></td>
+  </tr>
+  <tr>
+    <td>Danger</td>
+    <td><span class="chip" style="color:#5c122d;background:#fdf3f5;border-color:#f6c7d2">Danger</span></td>
+    <td><code class="secondary">#5c122d</code></td>
+    <td><code class="secondary">#e35273</code></td>
+    <td><code class="secondary">#fdf3f5</code></td>
+    <td><code class="secondary">#f6c7d2</code></td>
+  </tr>
+  <tr>
+    <td>Warning</td>
+    <td><span class="chip" style="color:#8c2f0c;background:#fef6f3;border-color:#fbd5c7">Warning</span></td>
+    <td><code class="secondary">#8c2f0c</code></td>
+    <td><code class="secondary">#f37d51</code></td>
+    <td><code class="secondary">#fef6f3</code></td>
+    <td><code class="secondary">#fbd5c7</code></td>
+  </tr>
+  <tr>
+    <td>Caution</td>
+    <td><span class="chip" style="color:#6e4e00;background:#fdf9ef;border-color:#f8e6b6">Caution</span></td>
+    <td><code class="secondary">#6e4e00</code></td>
+    <td><code class="secondary">#eab11c</code></td>
+    <td><code class="secondary">#fdf9ef</code></td>
+    <td><code class="secondary">#f8e6b6</code></td>
+  </tr>
+  <tr>
+    <td>Active/Info</td>
+    <td><span class="chip" style="color:#133f5d;background:#f2f7fc;border-color:#c2def2">Active/Info</span></td>
+    <td><code class="secondary">#133f5d</code></td>
+    <td><code class="secondary">#4199d5</code></td>
+    <td><code class="secondary">#f2f7fc</code></td>
+    <td><code class="secondary">#c2def2</code></td>
+  </tr>
+</table></div>
+
+<h2>Primitive palette — referensi aja</h2>
+<p class="secondary" style="margin-top:-4px">Jangan dipakai langsung di komponen. Selalu lewat token semantic di atas.</p>
+<div class="wrap"><table>
+  <tr><th>Ramp</th><th>Contoh</th><th>Step</th></tr>
+  <tr>
+    <td>Brand Light</td>
+    <td><div class="pal"><div style="background:#f8fbfe" title="#f8fbfe"></div><div style="background:#4199d5" title="#4199d5"></div><div style="background:#3385b5" title="#3385b5"></div></div></td>
+    <td class="secondary">10 · 50 (primary) · 60</td>
+  </tr>
+  <tr>
+    <td>Brand Dark</td>
+    <td><div class="pal"><div style="background:#f6f8f9" title="#f6f8f9"></div><div style="background:#133f5d" title="#133f5d"></div><div style="background:#1f2b33" title="#1f2b33"></div></div></td>
+    <td class="secondary">10 · 50 (primary) · 60</td>
+  </tr>
+  <tr>
+    <td>Green</td>
+    <td><div class="pal"><div style="background:#fbfdf8" title="#fbfdf8"></div><div style="background:#97cc56" title="#97cc56"></div><div style="background:#6faf35" title="#6faf35"></div></div></td>
+    <td class="secondary">10 · 50 (primary) · 60</td>
+  </tr>
+  <tr>
+    <td>Red</td>
+    <td><div class="pal"><div style="background:#fef8fa" title="#fef8fa"></div><div style="background:#e35273" title="#e35273"></div><div style="background:#b52b55" title="#b52b55"></div></div></td>
+    <td class="secondary">10 · 50 (primary) · 60</td>
+  </tr>
+  <tr>
+    <td>Yellow</td>
+    <td><div class="pal"><div style="background:#fefcf6" title="#fefcf6"></div><div style="background:#eab11c" title="#eab11c"></div><div style="background:#c89d24" title="#c89d24"></div></div></td>
+    <td class="secondary">10 · 50 (primary) · 60</td>
+  </tr>
+  <tr>
+    <td>Orange</td>
+    <td><div class="pal"><div style="background:#fffaf8" title="#fffaf8"></div><div style="background:#f37d51" title="#f37d51"></div><div style="background:#cc5a2e" title="#cc5a2e"></div></div></td>
+    <td class="secondary">10 · 50 (primary) · 60</td>
+  </tr>
+  <tr>
+    <td>Grey</td>
+    <td><div class="pal"><div style="background:#fdfdfe" title="#fdfdfe"></div><div style="background:#c8cfd5" title="#c8cfd5"></div><div style="background:#ced3d7" title="#ced3d7"></div></div></td>
+    <td class="secondary">10 · 50 (primary) · 60</td>
+  </tr>
+</table></div>
+</body>
+</html>
