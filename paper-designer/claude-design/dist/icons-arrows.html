@@ -1,0 +1,240 @@
+<!-- @dsCard group="Icons" -->
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Arrows</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Paperverse / Aurora — design tokens
+   Sumber: Figma Paperverse 1.0 (KjmdMheQSYqqJoKyniNMnB),
+   collection `semantic` + `primitive_text_and_layout`.
+   JANGAN edit manual — regenerate lewat paper-designer/claude-design/build.mjs */
+
+:root {
+  /* Text */
+  --color-text-primary: #133f5d;
+  --color-text-secondary: #718c9e;
+  --color-text-muted: #a5b6c1;
+  --color-text-inverse: #ffffff;
+
+  /* Surface */
+  --color-surface-light-default: #ffffff;
+  --color-surface-light-raised: #f3f6f9;
+  --color-surface-light-muted: #e7eaec;
+  --color-surface-light-platform: #f8fbfe;
+  --color-surface-dark-default: #263640;
+  --color-surface-dark-raised: #133f5d;
+  --color-surface-dark-muted: #4e6f86;
+  --color-surface-dark-platform: #1f2b33;
+
+  /* Border */
+  --color-border-subtle: #f2f4f5;
+  --color-border-default: #dde1e5;
+
+  /* Action */
+  --color-action-primary-bg: #4199d5;
+  --color-action-primary-hover: #89bde5;
+  --color-action-primary-pressed: #3385b5;
+  --color-action-primary-fg: #ffffff;
+  --color-action-destructive-bg: #e35273;
+  --color-action-destructive-hover: #ee94a8;
+  --color-action-destructive-pressed: #b52b55;
+  --color-action-destructive-fg: #ffffff;
+  --color-action-neutral-bg: #fdfdfe;
+  --color-action-neutral-hover: #f2f4f5;
+  --color-action-neutral-pressed: #dde1e5;
+  --color-action-neutral-fg: #133f5d;
+  --color-action-disabled-bg: #e7eaec;
+  --color-action-disabled-fg: #7f97a7;
+
+  /* Focus */
+  --color-focus-ring: #89bde5;
+
+  /* Input */
+  --color-input-field-default-bg: #ffffff;
+  --color-input-field-default-fg: #c2cdd5;
+
+  /* Spacing */
+  --spacing-2xs: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 28px;
+  --spacing-4xl: 32px;
+  --spacing-5xl: 36px;
+  --spacing-6xl: 40px;
+
+  /* Radius */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Stroke */
+  --stroke-none: 0px;
+  --stroke-xs: 1px;
+  --stroke-md: 1.5px;
+  --stroke-lg: 2px;
+
+  /* Font */
+  --font-family: Lato, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 32px;
+  font-family: Lato, sans-serif;
+  font-size: 14px; line-height: 22px;
+  color: var(--color-text-primary);
+  background: var(--color-surface-light-default);
+}
+h1 { font-size: 28px; line-height: 36px; font-weight: 700; margin: 0 0 4px; }
+.sub { color: var(--color-text-secondary); margin: 0 0 32px; }
+h2 {
+  font-size: 16px; line-height: 20px; font-weight: 600;
+  margin: 32px 0 12px; padding-bottom: 8px;
+  border-bottom: var(--stroke-xs) solid var(--color-border-default);
+}
+h2:first-of-type { margin-top: 0; }
+table { width: 100%; border-collapse: collapse; }
+td, th {
+  text-align: left; padding: 8px 12px;
+  border-bottom: var(--stroke-xs) solid var(--color-border-subtle);
+  vertical-align: middle;
+}
+th { font-weight: 600; color: var(--color-text-secondary); font-size: 12px; }
+code {
+  font-family: Lato, sans-serif;
+  font-size: 12px; letter-spacing: 0.2px;
+  color: var(--color-text-primary);
+}
+.muted { color: var(--color-text-muted); }
+.secondary { color: var(--color-text-secondary); }
+.swatch {
+  width: 40px; height: 40px; border-radius: var(--radius-sm);
+  border: var(--stroke-xs) solid var(--color-border-default);
+}
+.wrap { overflow-x: auto; }
+
+.count { color: var(--color-text-secondary); margin: 0 0 16px; }
+.search {
+  width: 100%; max-width: 320px; height: 40px;
+  padding: 8px 12px; margin-bottom: 24px;
+  font-family: Lato, sans-serif; font-size: 14px;
+  color: var(--color-text-primary);
+  background: var(--color-input-field-default-bg);
+  border: var(--stroke-xs) solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+}
+.search::placeholder { color: var(--color-input-field-default-fg); }
+.search:focus { outline: var(--stroke-lg) solid var(--color-focus-ring); outline-offset: 0; }
+.grid {
+  display: grid; gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+.icon {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 16px 8px; border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  background: var(--color-surface-light-default);
+}
+.icon:hover { background: var(--color-surface-light-raised); }
+.icon svg { flex: none; }
+.icon span {
+  font-size: 12px; line-height: 18px; text-align: center;
+  color: var(--color-text-secondary); word-break: break-word;
+}
+.none { color: var(--color-text-muted); display: none; }
+</style>
+</head>
+<body>
+<h1>Arrows</h1>
+<p class="sub">Ikon Paperverse — kategori Arrows.</p>
+
+<p class="count">42 ikon · 24×24 · stroke 1.5px · <code>currentColor</code> (ikutin CSS <code>color</code> induknya)</p>
+<input class="search" type="search" placeholder="Cari ikon…" oninput="filter(this.value)">
+<div class="grid" id="grid">
+  <div class="icon" data-name="arrow-block-down" title="arrow-block-down"><svg viewBox="838 359 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob" opacity="0.1" d="M855.963 367.439C851.125 369.116 845.92 362.288 842.414 367.136C838.908 371.983 844.871 377.77 850.985 376.442C859.004 374.7 860.8 365.761 855.963 367.439Z" fill="currentColor"/>
+<path id="icon" d="M853 373H857L850 380L843 373H847V362.8C847 362.52 847 362.38 847.054 362.273C847.102 362.179 847.179 362.102 847.273 362.054C847.38 362 847.52 362 847.8 362H852.2C852.48 362 852.62 362 852.727 362.054C852.821 362.102 852.898 362.179 852.946 362.273C853 362.38 853 362.52 853 362.8V367.9V369.175" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrow-block-down</span></div>
+  <div class="icon" data-name="arrow-block-left" title="arrow-block-left"><svg viewBox="838 399 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_2" opacity="0.1" d="M855.963 407.439C851.125 409.116 845.92 402.288 842.414 407.136C838.908 411.983 844.871 417.77 850.985 416.442C859.004 414.7 860.8 405.761 855.963 407.439Z" fill="currentColor"/>
+<path id="icon_2" d="M848 414V418L841 411L848 404V408H858.2C858.48 408 858.62 408 858.727 408.054C858.821 408.102 858.898 408.179 858.946 408.273C859 408.38 859 408.52 859 408.8V413.2C859 413.48 859 413.62 858.946 413.727C858.898 413.821 858.821 413.898 858.727 413.946C858.62 414 858.48 414 858.2 414H853.1H851.825" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrow-block-left</span></div>
+  <div class="icon" data-name="arrow-block-right" title="arrow-block-right"><svg viewBox="838 439 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_3" opacity="0.1" d="M855.963 447.439C851.125 449.116 845.92 442.288 842.414 447.136C838.908 451.983 844.871 457.77 850.985 456.442C859.004 454.7 860.8 445.761 855.963 447.439Z" fill="currentColor"/>
+<path id="icon_3" d="M852 448V444L859 451L852 458V454H841.8C841.52 454 841.38 454 841.273 453.946C841.179 453.898 841.102 453.821 841.054 453.727C841 453.62 841 453.48 841 453.2V448.8C841 448.52 841 448.38 841.054 448.273C841.102 448.179 841.179 448.102 841.273 448.054C841.38 448 841.52 448 841.8 448H846.9H848.175" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrow-block-right</span></div>
+  <div class="icon" data-name="arrow-block-up" title="arrow-block-up"><svg viewBox="838 479 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_4" opacity="0.1" d="M855.963 487.439C851.125 489.116 845.92 482.288 842.414 487.136C838.908 491.983 844.871 497.77 850.985 496.442C859.004 494.7 860.8 485.761 855.963 487.439Z" fill="currentColor"/>
+<path id="icon_4" d="M847 489H843L850 482L857 489H853V499.2C853 499.48 853 499.62 852.946 499.727C852.898 499.821 852.821 499.898 852.727 499.946C852.62 500 852.48 500 852.2 500H847.8C847.52 500 847.38 500 847.273 499.946C847.179 499.898 847.102 499.821 847.054 499.727C847 499.62 847 499.48 847 499.2V494.1V492.825" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrow-block-up</span></div>
+  <div class="icon" data-name="arrow-circle-down" title="arrow-circle-down"><svg viewBox="64 198 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_5" opacity="0.1" d="M65.8267 210.229C65.8267 215.799 70.3426 220.315 75.9133 220.315C78.043 220.315 80.7187 219.039 82.3467 217.913C75.2752 215.534 77.5356 203.965 67.0773 205.36C66.2803 206.804 65.8267 208.463 65.8267 210.229Z" fill="currentColor"/>
+<path id="icon_5" d="M86 210C86 215.523 81.5228 220 76 220C70.4772 220 66 215.523 66 210C66 204.477 70.4772 200 76 200C78.8545 200 81.4296 201.196 83.2516 203.114M80 210L76 214L72 210M76 214V206" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrow-circle-down</span></div>
+  <div class="icon" data-name="arrow-circle-down-left" title="arrow-circle-down-left"><svg viewBox="64 238 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_6" opacity="0.1" d="M65.8267 250.229C65.8267 255.799 70.3426 260.315 75.9133 260.315C78.043 260.315 80.7187 259.039 82.3467 257.913C75.2752 255.534 77.5356 243.965 67.0773 245.36C66.2803 246.804 65.8267 248.463 65.8267 250.229Z" fill="currentColor"/>
+<path id="icon_6" d="M86 250C86 255.523 81.5228 260 76 260C70.4772 260 66 255.523 66 250C66 244.477 70.4772 240 76 240C79.0825 240 81.8393 241.395 83.6737 243.588M79.0002 253H73.0002V247M73.0002 253L79.0002 247" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrow-circle-down-left</span></div>
+  <div class="icon" data-name="arrow-circle-down-right" title="arrow-circle-down-right"><svg viewBox="64 278 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_7" opacity="0.1" d="M65.8267 290.229C65.8267 295.799 70.3426 300.315 75.9133 300.315C78.043 300.315 80.7187 299.039 82.3467 297.913C75.2752 295.534 77.5356 283.965 67.0773 285.36C66.2803 286.804 65.8267 288.463 65.8267 290.229Z" fill="currentColor"/>
+<path id="icon_7" d="M86 290C86 295.523 81.5228 300 76 300C70.4772 300 66 295.523 66 290C66 284.477 70.4772 280 76 280C78.9296 280 81.5649 281.26 83.3939 283.267M73.0002 293H79.0002V287M79.0002 293L73.0002 287" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrow-circle-down-right</span></div>
+  <div class="icon" data-name="arrow-circle-left" title="arrow-circle-left"><svg viewBox="64 318 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_8" opacity="0.1" d="M65.8267 330.229C65.8267 335.799 70.3426 340.315 75.9133 340.315C78.043 340.315 80.7187 339.039 82.3467 337.913C75.2752 335.534 77.5356 323.965 67.0773 325.36C66.2803 326.804 65.8267 328.463 65.8267 330.229Z" fill="currentColor"/>
+<path id="icon_8" d="M86 330C86 335.523 81.5228 340 76 340C70.4772 340 66 335.523 66 330C66 324.477 70.4772 320 76 320C78.9452 320 81.593 321.273 83.4231 323.299M76 334L72 330L76 326M72 330H80" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrow-circle-left</span></div>
+  <div class="icon" data-name="arrow-circle-right" title="arrow-circle-right"><svg viewBox="64 358 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_9" opacity="0.1" d="M65.8267 370.229C65.8267 375.799 70.3426 380.315 75.9133 380.315C78.043 380.315 80.7187 379.039 82.3467 377.913C75.2752 375.534 77.5356 363.965 67.0773 365.36C66.2803 366.804 65.8267 368.463 65.8267 370.229Z" fill="currentColor"/>
+<path id="icon_9" d="M86 370C86 375.523 81.5228 380 76 380C70.4772 380 66 375.523 66 370C66 364.477 70.4772 360 76 360C79.0132 360 81.7151 361.333 83.5485 363.441M76 366L80 370L76 374M80 370H72" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrow-circle-right</span></div>
+  <div class="icon" data-name="arrow-circle-up" title="arrow-circle-up"><svg viewBox="64 398 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_10" opacity="0.1" d="M65.8267 410.229C65.8267 415.799 70.3426 420.315 75.9133 420.315C78.043 420.315 80.7187 419.039 82.3467 417.913C75.2752 415.534 77.5356 403.965 67.0773 405.36C66.2803 406.804 65.8267 408.463 65.8267 410.229Z" fill="currentColor"/>
+<path id="icon_10" d="M86 410C86 415.523 81.5228 420 76 420C70.4772 420 66 415.523 66 410C66 404.477 70.4772 400 76 400C79.1405 400 81.9429 401.448 83.7762 403.712M72 410L76 406L80 410M76 406V414" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrow-circle-up</span></div>
+  <div class="icon" data-name="arrow-circle-up-left" title="arrow-circle-up-left"><svg viewBox="64 438 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_11" opacity="0.1" d="M65.8267 450.229C65.8267 455.799 70.3426 460.315 75.9133 460.315C78.043 460.315 80.7187 459.039 82.3467 457.913C75.2752 455.534 77.5356 443.965 67.0773 445.36C66.2803 446.804 65.8267 448.463 65.8267 450.229Z" fill="currentColor"/>
+<path id="icon_11" d="M86 450C86 455.523 81.5228 460 76 460C70.4772 460 66 455.523 66 450C66 444.477 70.4772 440 76 440C78.9433 440 81.5896 441.272 83.4195 443.295M79.0002 447H73.0002V453M73.0002 447L79.0002 453" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrow-circle-up-left</span></div>
+  <div class="icon" data-name="arrow-circle-up-right" title="arrow-circle-up-right"><svg viewBox="64 478 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_12" opacity="0.1" d="M65.8267 490.229C65.8267 495.799 70.3426 500.315 75.9133 500.315C78.043 500.315 80.7187 499.039 82.3467 497.913C75.2752 495.534 77.5356 483.965 67.0773 485.36C66.2803 486.804 65.8267 488.463 65.8267 490.229Z" fill="currentColor"/>
+<path id="icon_12" d="M86 490C86 495.523 81.5228 500 76 500C70.4772 500 66 495.523 66 490C66 484.477 70.4772 480 76 480C78.968 480 81.634 481.293 83.4655 483.347M73.0002 487H79.0002V493M79.0002 487L73.0002 493" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrow-circle-up-right</span></div>
+  <div class="icon" data-name="arrows-down" title="arrows-down"><svg viewBox="66 518 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_13" d="M83 522V533M87 529L83 533L79 529M73 522V538M77 534L73 538L69 534" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrows-down</span></div>
+  <div class="icon" data-name="arrows-left" title="arrows-left"><svg viewBox="66 558 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_14" d="M86 575H70M74 571L70 575L74 579M86 565H75M79 561L75 565L79 569" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrows-left</span></div>
+  <div class="icon" data-name="arrows-right" title="arrows-right"><svg viewBox="66.5 598 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_15" d="M70.5 605H81.5M77.5 601L81.5 605L77.5 609M70.5 615H86.5M82.5 611L86.5 615L82.5 619" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrows-right</span></div>
+  <div class="icon" data-name="arrows-triangle" title="arrows-triangle"><svg viewBox="336.5 200 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_16" d="M349.5 219H353.794C355.659 219 356.592 219 357.122 218.609C357.583 218.268 357.876 217.746 357.926 217.174C357.984 216.519 357.497 215.723 356.525 214.131L355.528 212.5M342.63 210.605L340.475 214.131C339.503 215.723 339.016 216.519 339.074 217.174C339.124 217.746 339.417 218.268 339.878 218.609C340.408 219 341.341 219 343.206 219H345M353.389 209L351.231 205.468C350.328 203.991 349.876 203.252 349.295 203C348.788 202.781 348.212 202.781 347.705 203C347.124 203.252 346.672 203.991 345.769 205.468L344.75 207.137M354.5 205L353.402 209.098L349.304 208M338.5 211.598L342.598 210.5L343.696 214.598M352 222L349 219L352 216" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrows-triangle</span></div>
+  <div class="icon" data-name="arrows-up" title="arrows-up"><svg viewBox="69 638 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_17" d="M76 658V642M80 646L76 642L72 646M86 658V647M90 651L86 647L82 651" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>arrows-up</span></div>
+  <div class="icon" data-name="corner-down-left" title="corner-down-left"><svg viewBox="336.5 238 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_18" d="M356.5 242V243.4C356.5 246.76 356.5 248.44 355.846 249.724C355.271 250.853 354.353 251.771 353.224 252.346C351.94 253 350.26 253 346.9 253H340.5M345.5 258L340.5 253L345.5 248" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>corner-down-left</span></div>
+  <div class="icon" data-name="corner-down-right" title="corner-down-right"><svg viewBox="336.5 278 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_19" d="M340.5 282V283.4C340.5 286.76 340.5 288.44 341.154 289.724C341.729 290.853 342.647 291.771 343.776 292.346C345.06 293 346.74 293 350.1 293H356.5M351.5 298L356.5 293L351.5 288" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>corner-down-right</span></div>
+  <div class="icon" data-name="corner-left-down" title="corner-left-down"><svg viewBox="336.5 318 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_20" d="M357.5 322H354.1C350.74 322 349.06 322 347.776 322.654C346.647 323.229 345.729 324.147 345.154 325.276C344.5 326.56 344.5 328.24 344.5 331.6V338M339.5 333L344.5 338L349.5 333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>corner-left-down</span></div>
+  <div class="icon" data-name="corner-left-up" title="corner-left-up"><svg viewBox="336.5 358 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_21" d="M357.5 378H354.1C350.74 378 349.06 378 347.776 377.346C346.647 376.771 345.729 375.853 345.154 374.724C344.5 373.44 344.5 371.76 344.5 368.4V362M339.5 367L344.5 362L349.5 367" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>corner-left-up</span></div>
+  <div class="icon" data-name="corner-right-down" title="corner-right-down"><svg viewBox="336.5 398 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_22" d="M339.5 402H342.9C346.26 402 347.94 402 349.224 402.654C350.353 403.229 351.271 404.147 351.846 405.276C352.5 406.56 352.5 408.24 352.5 411.6L352.5 418M357.5 413L352.5 418L347.5 413" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>corner-right-down</span></div>
+  <div class="icon" data-name="corner-right-up" title="corner-right-up"><svg viewBox="336.5 438 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_23" d="M339.5 458H342.9C346.26 458 347.94 458 349.224 457.346C350.353 456.771 351.271 455.853 351.846 454.724C352.5 453.44 352.5 451.76 352.5 448.4L352.5 442M357.5 447L352.5 442L347.5 447" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>corner-right-up</span></div>
+  <div class="icon" data-name="corner-up-left" title="corner-up-left"><svg viewBox="336.5 478 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_24" d="M345.5 482L340.5 487L345.5 492M340.5 487H346.9C350.26 487 351.94 487 353.224 487.654C354.353 488.229 355.271 489.147 355.846 490.276C356.5 491.56 356.5 493.24 356.5 496.6V498" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>corner-up-left</span></div>
+  <div class="icon" data-name="corner-up-right" title="corner-up-right"><svg viewBox="336.5 518 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_25" d="M340.5 538V536.6C340.5 533.24 340.5 531.56 341.154 530.276C341.729 529.147 342.647 528.229 343.776 527.654C345.06 527 346.74 527 350.1 527H356.5M351.5 522L356.5 527L351.5 532" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>corner-up-right</span></div>
+  <div class="icon" data-name="expand-01" title="expand-01"><svg viewBox="336.5 558 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_26" d="M350.5 568L357.5 561M357.5 567V561H351.5M346.5 572L339.5 579M339.5 573L339.5 579H345.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>expand-01</span></div>
+  <div class="icon" data-name="expand-02" title="expand-02"><svg viewBox="337 598.5 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_42" d="M340 619.5L358 601.5M340 613.5L340 619.5H346M358 607.5V601.5H352" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>expand-02</span></div>
+  <div class="icon" data-name="expand-04" title="expand-04"><svg viewBox="337 639 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_13" opacity="0.1" d="M341.358 659.633H356.642C357.195 659.633 357.642 659.186 357.642 658.633V655.769C357.642 655.769 357.642 650.122 350.065 651.688C342.242 653.306 340.358 645.859 340.358 643.08V658.633C340.358 659.186 340.805 659.633 341.358 659.633Z" fill="currentColor"/>
+<path id="icon_27" d="M357 653V655.8C357 656.92 357 657.48 356.782 657.908C356.59 658.284 356.284 658.59 355.908 658.782C355.48 659 354.92 659 353.8 659H351M347 643H344.2C343.08 643 342.52 643 342.092 643.218C341.716 643.41 341.41 643.716 341.218 644.092C341 644.52 341 645.08 341 646.2V649M352 648L358 642M358 648V642H352M346 654L340 660M340 654L340 660H346" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>expand-04</span></div>
+  <div class="icon" data-name="expand-06" title="expand-06"><svg viewBox="605 200 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_14" opacity="0.1" d="M622.962 208.795C618.125 210.473 612.92 203.645 609.414 208.492C605.908 213.34 611.871 219.126 617.985 217.798C626.003 216.056 627.8 207.118 622.962 208.795Z" fill="currentColor"/>
+<path id="icon_28" d="M621 208L626 203M626 208V203H621M613 208L608 203M613 203L608 203L608 208M613 216L608 221M608 216L608 221H613M621 216L626 221M621 221H626V216" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>expand-06</span></div>
+  <div class="icon" data-name="flip-backward" title="flip-backward"><svg viewBox="605 240 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_29" d="M608 249H621.5C623.985 249 626 251.015 626 253.5C626 255.985 623.985 258 621.5 258H617M612 253L608 249L612 245" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>flip-backward</span></div>
+  <div class="icon" data-name="flip-forward" title="flip-forward"><svg viewBox="605 280 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_30" d="M626 289H612.5C610.015 289 608 291.015 608 293.5C608 295.985 610.015 298 612.5 298H617M622 293L626 289L622 285" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>flip-forward</span></div>
+  <div class="icon" data-name="infinity" title="infinity"><svg viewBox="605 320 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_31" d="M623.178 328C628.274 328 628.274 336 623.178 336C618.083 336 616.045 328 610.439 328C605.854 328 605.854 336 610.439 336C616.045 336 618.083 328 623.179 328H623.178Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>infinity</span></div>
+  <div class="icon" data-name="refresh-ccw-01" title="refresh-ccw-01"><svg viewBox="605 360 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_15" opacity="0.1" d="M611.038 371.573C615.875 373.251 621.08 366.423 624.586 371.27C628.092 376.118 622.129 381.904 616.015 380.576C607.997 378.834 606.2 369.896 611.038 371.573Z" fill="currentColor"/>
+<path id="icon_32" d="M607 370C607 370 609.005 367.268 610.634 365.638C612.263 364.008 614.514 363 617 363C621.971 363 626 367.029 626 372C626 376.971 621.971 381 617 381C612.897 381 609.435 378.254 608.352 374.5M613 370H607V364" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>refresh-ccw-01</span></div>
+  <div class="icon" data-name="refresh-ccw-02" title="refresh-ccw-02"><svg viewBox="605 400 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_16" opacity="0.1" d="M622.963 411.573C618.125 413.251 612.92 406.423 609.414 411.27C605.908 416.118 611.871 421.904 617.985 420.576C626.004 418.834 627.8 409.896 622.963 411.573Z" fill="currentColor"/>
+<path id="icon_33" d="M607 410C607 410 607.121 409.151 610.636 405.636C614.151 402.121 619.849 402.121 623.364 405.636C624.609 406.881 625.413 408.401 625.776 410M613 410H607V404M627 414C627 414 626.879 414.849 623.364 418.364C619.849 421.879 614.151 421.879 610.636 418.364C609.391 417.119 608.587 415.599 608.224 414M621 414H627V420" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>refresh-ccw-02</span></div>
+  <div class="icon" data-name="refresh-cw-01" title="refresh-cw-01"><svg viewBox="605 440 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_17" opacity="0.1" d="M616.696 458.091C615.019 453.254 621.847 448.049 616.999 444.543C612.151 441.037 606.365 447 607.693 453.113C609.435 461.132 618.373 462.928 616.696 458.091Z" fill="currentColor"/>
+<path id="icon_34" d="M626 450C626 450 623.995 447.268 622.366 445.638C620.737 444.008 618.486 443 616 443C611.029 443 607 447.029 607 452C607 456.971 611.029 461 616 461C620.103 461 623.565 458.254 624.648 454.5M620 450H626V444" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>refresh-cw-01</span></div>
+  <div class="icon" data-name="refresh-cw-02" title="refresh-cw-02"><svg viewBox="605 480 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="blob_18" opacity="0.1" d="M623.091 491.573C618.253 493.251 613.049 486.423 609.543 491.27C606.037 496.118 612 501.904 618.113 500.576C626.132 498.834 627.928 489.896 623.091 491.573Z" fill="currentColor"/>
+<path id="blob_19" opacity="0.1" d="M617.696 498.091C616.018 493.254 622.847 488.049 617.999 484.543C613.151 481.037 607.365 487 608.693 493.113C610.435 501.132 619.373 502.928 617.696 498.091Z" fill="currentColor"/>
+<path id="icon_35" d="M607 494C607 494 607.121 494.849 610.636 498.364C614.151 501.879 619.849 501.879 623.364 498.364C624.609 497.119 625.413 495.599 625.776 494M613 494H607V500M627 490C627 490 626.879 489.151 623.364 485.636C619.849 482.121 614.151 482.121 610.636 485.636C609.391 486.881 608.587 488.401 608.224 490M621 490H627V484" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>refresh-cw-02</span></div>
+  <div class="icon" data-name="reverse-left" title="reverse-left"><svg viewBox="605 520 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_36" d="M609 527H619C622.314 527 625 529.686 625 533C625 536.314 622.314 539 619 539H609M613 531L609 527L613 523" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>reverse-left</span></div>
+  <div class="icon" data-name="reverse-right" title="reverse-right"><svg viewBox="605 560 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_37" d="M625 567H615C611.686 567 609 569.686 609 573C609 576.314 611.686 579 615 579H625M621 571L625 567L621 563" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>reverse-right</span></div>
+  <div class="icon" data-name="switch-horizontal-01" title="switch-horizontal-01"><svg viewBox="838 199 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_38" d="M858 216H842M846 220L842 216L846 212M842 206H858M854 210L858 206L854 202" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>switch-horizontal-01</span></div>
+  <div class="icon" data-name="switch-horizontal-02" title="switch-horizontal-02"><svg viewBox="838 239 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_39" d="M842 256H858M854 260L858 256L854 252M858 246H842M846 250L842 246L846 242" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>switch-horizontal-02</span></div>
+  <div class="icon" data-name="switch-vertical-01" title="switch-vertical-01"><svg viewBox="838 279 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_40" d="M855 283V299M859 295L855 299L851 295M845 299V283M849 287L845 283L841 287" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>switch-vertical-01</span></div>
+  <div class="icon" data-name="switch-vertical-02" title="switch-vertical-02"><svg viewBox="838 319 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path id="icon_41" d="M845 323V339M849 335L845 339L841 335M855 339V323M859 327L855 323L851 327" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>switch-vertical-02</span></div>
+</div>
+<p class="none" id="none">Nggak ada ikon yang cocok.</p>
+<script>
+function filter(q) {
+  q = q.trim().toLowerCase();
+  let hit = 0;
+  for (const el of document.querySelectorAll('.icon')) {
+    const show = !q || el.dataset.name.includes(q);
+    el.style.display = show ? '' : 'none';
+    if (show) hit++;
+  }
+  document.getElementById('none').style.display = hit ? 'none' : 'block';
+}
+</script>
+</body>
+</html>

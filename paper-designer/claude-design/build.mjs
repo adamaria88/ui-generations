@@ -6,11 +6,12 @@
 // Jalanin: node paper-designer/claude-design/build.mjs
 // Output: dist/tokens.css + dist/*.html (siap di-push via DesignSync)
 
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const OUT = join(dirname(fileURLToPath(import.meta.url)), 'dist');
+const HERE = dirname(fileURLToPath(import.meta.url));
+const OUT = join(HERE, 'dist');
 mkdirSync(OUT, { recursive: true });
 
 /* ---------------------------------------------------------------- tokens */
@@ -407,4 +408,77 @@ ${SHADOWS.map(([n, v, use]) => `  <tr>
 
 writeFileSync(join(OUT, 'elevation.html'), page('Foundations', 'Elevation', 'Shadow & kedalaman — dari Effect Style Paperverse.', elevBody));
 
-console.log('OK — dist/: tokens.css, colors.html, typography.html, spacing-radius.html, elevation.html');
+/* ----------------------------------------------------------------- icons */
+// icons.json dihasilkan extract-icons.mjs (potongan SVG asli dari Figma).
+// Kalau belum ada, lewati — foundation tetap bisa di-build sendirian.
+
+let iconFiles = [];
+try {
+  const icons = JSON.parse(readFileSync(join(HERE, 'icons.json'), 'utf8'));
+
+  const iconCss = `
+.count { color: var(--color-text-secondary); margin: 0 0 16px; }
+.search {
+  width: 100%; max-width: 320px; height: 40px;
+  padding: 8px 12px; margin-bottom: 24px;
+  font-family: Lato, sans-serif; font-size: 14px;
+  color: var(--color-text-primary);
+  background: var(--color-input-field-default-bg);
+  border: var(--stroke-xs) solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+}
+.search::placeholder { color: var(--color-input-field-default-fg); }
+.search:focus { outline: var(--stroke-lg) solid var(--color-focus-ring); outline-offset: 0; }
+.grid {
+  display: grid; gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+.icon {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 16px 8px; border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  background: var(--color-surface-light-default);
+}
+.icon:hover { background: var(--color-surface-light-raised); }
+.icon svg { flex: none; }
+.icon span {
+  font-size: 12px; line-height: 18px; text-align: center;
+  color: var(--color-text-secondary); word-break: break-word;
+}
+.none { color: var(--color-text-muted); display: none; }`;
+
+  for (const [label, list] of Object.entries(icons)) {
+    const slug = 'icons-' + label.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '');
+    const body = {
+      css: iconCss,
+      html: `
+<p class="count">${list.length} ikon · 24×24 · stroke 1.5px · <code>currentColor</code> (ikutin CSS <code>color</code> induknya)</p>
+<input class="search" type="search" placeholder="Cari ikon…" oninput="filter(this.value)">
+<div class="grid" id="grid">
+${list.map((i) => `  <div class="icon" data-name="${i.name}" title="${i.name}">${i.svg}<span>${i.name}</span></div>`).join('\n')}
+</div>
+<p class="none" id="none">Nggak ada ikon yang cocok.</p>
+<script>
+function filter(q) {
+  q = q.trim().toLowerCase();
+  let hit = 0;
+  for (const el of document.querySelectorAll('.icon')) {
+    const show = !q || el.dataset.name.includes(q);
+    el.style.display = show ? '' : 'none';
+    if (show) hit++;
+  }
+  document.getElementById('none').style.display = hit ? 'none' : 'block';
+}
+</script>`,
+    };
+    const file = `${slug}.html`;
+    writeFileSync(join(OUT, file), page('Icons', label, `Ikon Paperverse — kategori ${label}.`, body));
+    iconFiles.push({ file, label, count: list.length });
+  }
+} catch (e) {
+  if (e.code !== 'ENOENT') throw e;
+  console.log('(icons.json belum ada — jalanin extract-icons.mjs dulu kalau mau kartu ikon)');
+}
+
+console.log('OK — dist/: tokens.css, colors.html, typography.html, spacing-radius.html, elevation.html'
+  + iconFiles.map((i) => `\n     + ${i.file} (${i.count} ikon)`).join(''));
