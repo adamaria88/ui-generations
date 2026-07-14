@@ -46,6 +46,7 @@ Catatan flow: **⭐ Pilih → 🎛️ Playground (Fase 3.5, WAJIB) → 📄 Guid
 **Trigger:** `explore <komponen>`
 
 1. **Referensi (≥5)** — cari komponen sama di platform lain. Tiap referensi: **URL yang bisa dicoba** + penjelasan **behaviour** + kapan cocok. Kasih **rekomendasi** mana yang pas buat Paper.id.
+   - **WAJIB URL clickable** (lock 2026-07-08): tulis link sebagai markdown `[label](https://url-lengkap)` dengan skema `https://` LENGKAP — JANGAN plain text (`mui.com/...`) yang bikin user mesti copy-paste manual. Berlaku di chat & di changelog draft.
 2. **Best practice** — tarik dari Material / DS lain (HIG, Polaris, Carbon, dll). Cite source.
 3. **First draft** — gabungin referensi yang user pilih jadi 1-2 draft HTML. **JANGAN pakai Aurora/Paperverse dulu** — murni buat lihat **behaviour + layout**. Pakai `explorer-template.html`, isi `.expl-canvas`. **Review tooling (klik = pin titik · drag = pilih area komen) udah standar di template — WAJIB pakai itu, JANGAN bikin tooling komen sendiri dari nol** (biar tiap komponen baru konsisten dapet fitur yang sama).
 
@@ -125,7 +126,15 @@ Bangun **1 playground interaktif** buat alt terpilih — ala **panel Properties 
 Susun Component Guideline pakai [`guideline-template.md`](guideline-template.md) — 9 section:
 1. Preview Design Component · 2. Overview · 3. When to Use · 4. Design Principle · 5. Anatomy & Properties · 6. Behaviour · 7. Variant · 8. Do's & Don'ts · 9. Edge Cases
 
-**Gate:** user review guideline.
+### ⛔ 2 aturan keras guideline (lock 2026-07-13)
+
+**R1 — Guideline SELALU Bahasa INGGRIS** (`.md` + frame Figma). Chat sama user tetap Indonesia santai; yang Inggris cuma artifact guideline-nya. Guideline = dokumen DS yang dibaca lintas tim.
+
+**R2 — Section 8 (Do's & Don'ts) + Section 9 (Edge Cases) WAJIB VISUAL.** Pakai **instance komponen beneran** (bukan tabel teks, bukan screenshot mati), konten pakai **konteks Paper.id** (invoice/supplier/pembayaran/mitra — bukan lorem ipsum). Tiap kasus: caption → komponen live → verdict ✅/⚠️/❌ + alasan. Do's & Don'ts disandingin side-by-side (bener vs salah, komponen sama).
+
+> Kenapa keras: guideline teks-doang nggak kebaca sebagai spec — designer lain tetap nebak. Kasus pinggir (judul kepanjangan, konten kosong, mepet tepi) baru ketahuan rusaknya kalau **dirender beneran**.
+
+**Gate:** user review guideline. **DILARANG lanjut ke Fase 5 kalau R1/R2 belum kepenuhin.**
 
 ## Fase 5 — GENERATE FIGMA
 

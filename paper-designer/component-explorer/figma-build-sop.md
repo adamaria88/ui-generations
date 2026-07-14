@@ -110,4 +110,12 @@ Sebelum "jadi": nilai 100% dari DS (instance/extract) + **poin 11 (Figma Variabl
 ### Gotcha teknis
 6. **`createAutoLayout` / `createFrame` sering default fill PUTIH.** Set `fills=[]` di frame kontainer (Body/Row/Trailing) — kalau nggak, muncul **patch putih** di variant bertint (selected/hover). Cek via screenshot.
 7. **Node internal lintas-page → `getNodeByIdAsync` bisa NULL.** Komponen non-published (mis. `_Radio/Options/Radio-Box`) TIDAK bisa `importComponentSetByKeyAsync` (error "not found"). Ambil via **traversal**: import parent set by key → find instance-nya di dalam → `getMainComponentAsync()` → `.parent` (= set internal) → `.children` cari variant → `createInstance()`.
+9. **Bentuk non-kotak (arrow/segitiga) → pakai `createVector` + `vectorPaths`, JANGAN rotate rectangle.** (ketemu 2026-07-13, Onboarding Spotlight) `node.rotation` muter dari **titik sudut**, bukan tengah → posisi meleset & bentuknya ngambang. Bikin tiap arah sebagai **variant terpisah** dengan path sendiri (mis. Up `M 0 6 L 6 0 L 12 6 Z`, Down `M 0 0 L 6 6 L 12 0 Z`) — nol rotasi, presisi.
+
+10. **Verifikasi elemen putih HARUS di atas latar gelap.** Arrow/ring putih di atas kartu putih = **invisible di screenshot** → gampang lolos padahal rusak. Bikin frame tes berlatar scrim, taro instance di atasnya, screenshot, hapus frame tesnya. Tanpa ini, bug geometri nggak ketahuan.
+
+11. **⚠️ Jebakan nama variable: `semantic/background/White` ADA DI COLLECTION `Color` (terlarang).** Namanya keliatan semantic, tapi bukan. Putih yang bener = **`color/surface/light/default`** (`VariableID:6602:1745`, collection `semantic`). `component/Pop Over` sendiri bind ke yang salah — jangan ikut-ikutan.
+
+12. **Komponen DS dengan `Content Frame` placeholder → SWAP, jangan rebuild.** `component/Pop Over` (`5400:4798`) isinya slot placeholder yang literally nulis "replace this with local component". Cara bener: `popMain.createInstance()` → `findOne(name==='Content Frame')` → `.swapComponent(kontenLo)` → set `layoutSizingHorizontal='FILL'` + padding 0. Hasilnya 100% match by construction.
+
 8. **Page hygiene pasca-build.** Sebelum lapor "jadi": list `page.children` → hapus **stray** (instance tes, `Rectangle` nyasar, leftover build) → pastiin page cuma isi artifact final (komponen + guideline). Verify screenshot page penuh.
