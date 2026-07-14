@@ -66,6 +66,48 @@ _output/explorer/
 - **Komponen baru** = bikin folder `_output/explorer/<slug>/` + `draft-1.html`, lalu tambah 1 objek di array `COMPONENTS` (hub). Muncul di sidebar.
 - **Iterasi baru** = bikin `draft-(N+1).html` + tambah 1 versi (paling atas) di `versions` komponen itu. Link & sidebar tetap; history kejaga di changelog.
 
+### Deep-link per komponen & per versi (hash routing, lock 2026-07-14)
+
+Hub nyimpen state di URL — tiap komponen & versi punya link sendiri, **nol server**:
+
+```
+index.html#/<slug>                  → komponen (platform pertama, versi terbaru)
+index.html#/<slug>/<platform>/v<N>  → komponen + platform + versi PERSIS
+index.html#/<slug>/<platform>/v<N>/raw  → draft full-layar, tanpa chrome hub
+```
+
+Contoh: `index.html#/spotlight/web/v3` · `index.html#/combobox/mobile/v2`
+
+- **⛶ Full-layar** = mode `raw` (Esc buat keluar).
+- Slug/versi ngaco → **fallback + toast peringatan**, bukan diem-diem nampilin yang salah.
+- Back/forward browser jalan; URL selalu cerminan yang lagi dilihat (bisa di-bookmark).
+
+### Halaman SHARE per komponen (lock 2026-07-14)
+
+**Link yang di-share NGGAK nunjuk ke hub.** Hub (`index.html`) nyimpen array `COMPONENTS` = SEMUA komponen; kalau share-nya cuma "mode" di hub, penerima tinggal hapus hash / View Source → kelihatan semua. **Nyembunyiin UI ≠ nutup akses.**
+
+Solusinya: **1 file per komponen**, isinya cuma data komponen itu.
+
+```bash
+node paper-designer/tools/make-share-page.mjs <slug>   # 1 komponen
+node paper-designer/tools/make-share-page.mjs --all    # semua
+```
+
+Output → `_output/explorer/share/<slug>-<token>.html` (token 6 char, deterministik dari slug → link stabil, tapi nggak ketebak).
+
+| Di halaman share | Ada? |
+|---|---|
+| Komponen + semua versinya (tab + changelog) | ✅ |
+| Deep-link versi (`#v2`) | ✅ |
+| Sidebar / daftar komponen / search | ❌ |
+| Jalan balik ke hub | ❌ |
+| **Data komponen lain** | ❌ **nggak ada di file-nya sama sekali** |
+
+- Tombol **🔗 Salin Link** di hub (topbar + per versi di changelog) otomatis ngeluarin link share ini.
+- ⚠️ **WAJIB regenerate tiap nambah versi/komponen** — halaman share = snapshot registry. Lupa regenerate = penerima lihat versi lama.
+- ⚠️ **Bukan access control beneran.** File draft tetap duduk di `_output/explorer/<slug>/draft-N.html` yang path-nya ketebak. Ini nahan orang ngoprek URL secara kasual, BUKAN nahan orang yang niat. Kontrol akses beneran butuh server (login/allowlist).
+- ⚠️ **Link cuma jalan di mesin yang punya file-nya.** `_output/` di-gitignore → buat share ke designer lain butuh hosting (GitHub Pages/Netlify), **belum diputuskan** karena repo `adamaria88/ui-generations` saat ini **PUBLIC**.
+
 ⚠️ Fase 1 = eksplorasi bebas, di sini BOLEH nilai non-DS (ini satu-satunya fase yang exempt dari live-pull, karena tujuannya lihat behaviour dulu).
 
 ## Fase 2 — REVIEW
