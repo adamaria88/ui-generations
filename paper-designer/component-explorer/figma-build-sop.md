@@ -93,6 +93,8 @@ return { unbound, wrongCollection, pass: unbound.length===0 && wrongCollection.l
 
 **Exit criteria:** `unbound` harus kosong (poin 4b/4c — semua yang visible & punya lo WAJIB attach ke variable/style, DILARANG nilai mentah) DAN `wrongCollection` harus kosong (rule Variable Collection — cuma `semantic`/`primitive_text_and_layout`, `Color` collection DILARANG walau namanya meyakinkan). Kalau salah satu nggak kosong → **DILARANG lapor "jadi"**, perbaiki dulu.
 
+> **Gerbang mesin, bukan opsional.** Ini pasangan Fase 5 dari `component-audit.mjs`-nya Fase 3. **WAJIB dijalanin tiap komponen + PASTE hasil `{unbound, wrongCollection, pass}` ke chat** (lihat PRE-FLIGHT Fase 5 di [`pipeline.md`](pipeline.md)). `pass:false` = STOP, DILARANG generate/lapor jadi.
+
 ## Gerbang tetap berlaku
 Sebelum "jadi": nilai 100% dari DS (instance/extract) + **poin 11 (Figma Variable/Collection Audit) lolos**. Kalau output HTML → juga `component-audit.mjs`. Komponen baru (nggak ada di DS) → catat ke [`../ds/paperverse-vs-aurora.md`](../ds/paperverse-vs-aurora.md).
 
