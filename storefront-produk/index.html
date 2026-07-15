@@ -1,0 +1,1536 @@
+<!doctype html>
+<html lang="id">
+<head>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%239B8AFF%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%235E3FE5%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M16%203C9.4%203%204%208.4%204%2015c0%204.5%203.4%209%206.5%2011.5%202.4%201.9%204.5%203%205.5%203%201%200%203.1-1.1%205.5-3C24.6%2024%2028%2019.5%2028%2015c0-6.6-5.4-12-12-12z%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2213%22%20r%3D%224%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Storefront — Produk | Paper.id</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* spacing */
+    --spacing-2xs:2px;--spacing-xs:4px;--spacing-sm:8px;--spacing-md:12px;--spacing-lg:16px;
+    --spacing-xl:20px;--spacing-2xl:24px;--spacing-3xl:28px;--spacing-4xl:32px;--spacing-5xl:36px;--spacing-6xl:40px;
+    /* radius */
+    --radius-none:0;--radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;--radius-full:9999px;
+    /* stroke */
+    --stroke-xs:1px;--stroke-md:1.5px;--stroke-lg:2px;
+    /* typography */
+    --text-body-font-family:'Lato',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --text-heading-font-family:'Lato',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --text-body-size-sm:12px;--text-body-size-md:14px;--text-body-size-lg:20px;
+    --text-body-line-height-sm:18px;
+    --text-body-weight-regular:400;--text-body-weight-medium:500;--text-body-weight-semibold:600;--text-body-weight-bold:700;
+    /* color: text */
+    --color-text-primary:#133f5d;--color-text-secondary:#718c9e;--color-text-muted:#a5b6c1;
+    --color-text-inverse:#ffffff;--color-text-brand:#133f5d;
+    /* color: surface */
+    --color-surface-light-default:#ffffff;--color-surface-light-raised:#f3f6f9;
+    --color-surface-light-muted:#e7eaec;--color-surface-light-platform:#f8fbfe;
+    /* color: action */
+    --color-action-primary-bg:#4199d5;--color-action-primary-hover:#89bde5;
+    --color-action-primary-pressed:#3385b5;--color-action-primary-fg:#ffffff;
+    --color-action-destructive-bg:#e35273;--color-action-destructive-hover:#ee94a8;
+    --color-action-destructive-pressed:#b52b55;--color-action-destructive-fg:#ffffff;
+    --color-action-disabled-bg:#e7eaec;--color-action-disabled-fg:#a5b6c1;
+    /* color: border / grey */
+    --color-border-default:#dbe2e8;--color-light-grey-15:#eef2f5;--color-light-grey-20:#e3e9ee;
+    --color-light-grey-40:#c4d0d9;--color-dark-grey-50:#3c5467;
+    /* color: brand / states */
+    --color-light-brand-15:#e3f0fa;--color-light-brand-25:#c7e1f3;--color-light-brand-40:#7bb8e0;
+    --color-light-brand-50:#4199d5;--color-light-red-50:#e35273;--color-neutral-white:#ffffff;
+    --color-state-success-bg:#eaf6e3;--color-state-success-text-dark:#356021;--color-state-success-border:#c3e3a8;
+    --color-state-warning-bg:#fdf3d9;--color-state-warning-text-dark:#8a6400;--color-state-warning-border:#f3dca0;
+    --color-state-danger-bg:#fce8ec;--color-state-danger-text-dark:#b52b55;--color-state-danger-border:#f3c2cf;
+    --color-state-active-bg:#e3f0fa;--color-state-active-text-dark:#1f6fa8;--color-state-active-border:#a9d3ee;
+    --color-focus-ring:#4199d5;
+    /* animation */
+    --speed-extra-fast:100ms;--speed-fast:200ms;--speed-normal:300ms;--speed-slow:400ms;--speed-extra-slow:500ms;
+    --ease-out-regular:cubic-bezier(.22,1,.36,1);--ease-out-relax:cubic-bezier(.25,.8,.35,1);
+    --ease-out-strong:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:var(--text-body-font-family);
+    font-size:var(--text-body-size-md);
+    color:var(--color-text-primary);
+    background:var(--color-surface-light-platform);
+  }
+  .app-layout{display:flex;height:100vh;overflow:hidden}
+
+  /* ── Zone 3: Main Area ── */
+  .main-area{flex:1;overflow-y:auto;padding:var(--spacing-2xl);background:var(--color-surface-light-platform);min-width:0}
+  .screen{display:none;flex-direction:column;gap:var(--spacing-md)}
+  .screen.active{display:flex}
+
+  /* ── Breadcrumb ── */
+  .breadcrumb{display:flex;align-items:center;gap:var(--spacing-sm);font-size:var(--text-body-size-md);margin-bottom:var(--spacing-xs)}
+  .breadcrumb a{color:var(--color-text-secondary);text-decoration:none;cursor:pointer}
+  .breadcrumb a:hover{color:var(--color-action-primary-bg)}
+  .breadcrumb .sep{color:var(--color-text-muted)}
+  .breadcrumb .current{color:var(--color-text-primary);font-weight:var(--text-body-weight-bold)}
+
+  /* ── Page head ── */
+  .page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--spacing-lg);flex-wrap:wrap}
+  .page-head .page-title{margin-bottom:2px}
+  .page-title{font-family:var(--text-heading-font-family);font-size:22px;line-height:28px;font-weight:var(--text-body-weight-bold);color:var(--color-text-primary)}
+  .page-sub{font-size:var(--text-body-size-sm);color:var(--color-text-secondary);margin-top:2px}
+
+  /* ── Button (Aurora: radius 9999, padding 8 16, weight 500) ── */
+  .btn{display:inline-flex;align-items:center;gap:var(--spacing-sm);padding:8px 16px;
+    border-radius:var(--radius-full);font-family:var(--text-body-font-family);font-size:14px;
+    font-weight:500;line-height:22px;border:none;cursor:pointer;white-space:nowrap;
+    transition:background var(--speed-slow) var(--ease-out-relax),color var(--speed-extra-slow) var(--ease-out-relax)}
+  .btn svg{width:18px;height:18px;flex-shrink:0}
+  .btn--primary{background:var(--color-action-primary-bg);color:var(--color-action-primary-fg);
+    box-shadow:0 0 0 1px rgb(10 13 18 / 18%) inset,0 1px 0 1px rgb(255 255 255 / 10%) inset,0 -2px 0 0 rgb(10 13 18 / 5%) inset,0 1px 2px 0 rgb(10 13 18 / 5%)}
+  .btn--primary:hover{background:var(--color-action-primary-hover)}
+  .btn--primary:active{background:var(--color-action-primary-pressed)}
+  .btn--secondary{background:var(--color-surface-light-default);color:var(--color-dark-grey-50);
+    box-shadow:0 0 0 1px rgb(10 13 18 / 18%) inset,0 1px 0 1px rgb(255 255 255 / 10%) inset,0 -2px 0 0 rgb(10 13 18 / 5%) inset,0 1px 2px 0 rgb(10 13 18 / 5%)}
+  .btn--secondary:hover{background:var(--color-light-grey-15)}
+  .btn--destructive{background:var(--color-action-destructive-bg);color:var(--color-action-destructive-fg)}
+  .btn--destructive:hover{background:var(--color-action-destructive-hover)}
+  /* Aurora tertiary — pill transparent + bg hover, fg light-brand-50 (utility, mis. Unduh) */
+  .btn--tertiary{background:transparent;color:var(--color-light-brand-50);box-shadow:none}
+  .btn--tertiary:hover{background:var(--color-light-brand-15)}
+  .btn--tertiary:active{background:var(--color-light-brand-25)}
+  .btn--tertiary:disabled{background:transparent;color:var(--color-action-disabled-fg);box-shadow:none}
+  /* Aurora tertiary-plain — pure text-link, no padding, no bg, no radius (menu trigger / inline link, mis. Tindakan Lainnya) */
+  .btn--tertiary-plain{background:transparent;color:var(--color-light-brand-50);box-shadow:none;
+    padding:0;border-radius:0}
+  .btn--tertiary-plain:hover,.btn--tertiary-plain:active{background:transparent;box-shadow:none}
+  .btn--tertiary-plain:disabled{background:transparent;color:var(--color-action-disabled-fg)}
+  .btn:disabled{background:var(--color-action-disabled-bg);color:var(--color-action-disabled-fg);cursor:not-allowed;box-shadow:none}
+  .btn:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
+
+  /* ── Action bar (di atas card table, di luar card): menu trigger kiri + primary action kanan ── */
+  .action-bar{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-md);flex-wrap:wrap}
+
+  /* ── Toolbar di dalam table card (search kiri + action impact-table kanan) ── */
+  .tbl-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-md);
+    padding:var(--spacing-md) var(--spacing-lg);background:var(--color-surface-light-default);
+    border-bottom:1px solid var(--color-border-default);flex-wrap:wrap}
+  .search{display:flex;align-items:center;gap:var(--spacing-sm);background:var(--color-surface-light-default);
+    border:1px solid var(--color-light-grey-40);border-radius:var(--radius-full);padding:8px 14px;min-width:280px;flex:0 1 320px}
+  .search input{border:none;outline:none;font-family:inherit;font-size:14px;width:100%;color:var(--color-text-primary);background:transparent}
+  .search svg{width:18px;height:18px;color:var(--color-text-secondary);flex-shrink:0;stroke-width:2}
+
+  /* ── Table (Aurora: wrapper border 1px radius 8, header raised, cell pad 14 16) ── */
+  .table-wrap{background:var(--color-surface-light-default);border:1px solid var(--color-border-default);
+    border-radius:var(--radius-md);overflow:hidden}
+  .table-scroll{overflow-x:auto;overflow-y:visible;scrollbar-width:none;-ms-overflow-style:none}
+  .table-scroll::-webkit-scrollbar{display:none;height:0;width:0}
+  table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;min-width:1680px}
+  /* Label row + filter row = SATU blok bertint cohesive (ikut produksi). Label row TANPA border-bottom supaya merge dengan filter row di bawahnya */
+  thead th{background:var(--color-surface-light-raised);text-align:left;padding:10px 16px 6px;
+    font-weight:var(--text-body-weight-bold);color:var(--color-text-primary);font-size:13px;white-space:nowrap;
+    border-bottom:none}
+  /* num cell: header tetap LEFT-align (konsisten dengan filter di bawahnya). Body baru right-align */
+  tbody td{padding:14px 16px;border-bottom:1px solid var(--color-border-default);
+    color:var(--color-text-primary);font-weight:var(--text-body-weight-regular);vertical-align:middle;
+    background:var(--color-surface-light-default);white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  /* Row clickable: klik row = navigate ke View Detail (locked default semua list page) */
+  tbody tr{cursor:pointer}
+  tbody tr:hover td{background:var(--color-surface-light-platform)}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .muted{color:var(--color-text-secondary)}
+  .att{display:inline-flex;align-items:center;gap:5px}
+  .ic-clip{width:15px;height:15px;flex-shrink:0;color:var(--color-text-secondary)}
+  /* Sort icon SELALU kanan label, lebih besar (16px) + bolder color — match produksi */
+  .th-in{display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+  .sort-ic{width:16px;height:16px;color:var(--color-text-secondary);flex-shrink:0}
+  .th-in:hover .sort-ic{color:var(--color-text-primary)}
+  /* Filter row = lanjutan blok bertint yang sama. Border-bottom hanya di filter row (paling bawah header) */
+  thead tr.filter-row th{padding:0 16px 10px;background:var(--color-surface-light-raised);border-bottom:1px solid var(--color-border-default)}
+  .col-f{width:100%;height:40px;padding:8px 12px;border:1px solid var(--color-light-grey-40);
+    border-radius:var(--radius-sm);font-family:inherit;font-size:13px;color:var(--color-text-primary);
+    background:var(--color-surface-light-default);outline:none;min-width:130px}
+  .col-f::placeholder{color:var(--color-text-muted)}
+  .col-f:focus{border-color:var(--color-action-primary-bg);box-shadow:0 0 0 3px rgb(65 153 213 / 15%)}
+  /* Dropdown chevron: SOLID FILLED triangle dark blue — match produksi (bukan stroke chevron mungil) */
+  select.col-f{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M0 0h10L5 6z' fill='%23133f5d'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:34px;cursor:pointer}
+  select.col-f.is-placeholder{color:var(--color-text-muted)}
+  /* Search icon: lebih besar (18px) & stroke lebih tebal — match produksi */
+  .col-search{position:relative}
+  .col-search .col-f{padding-right:38px}
+  .col-search svg{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--color-text-secondary);pointer-events:none;stroke-width:2}
+  /* sticky columns */
+  .col-chk{width:46px;min-width:46px;text-align:center;padding-left:14px;padding-right:8px}
+  .col-exp{width:40px;min-width:40px;text-align:center;padding-left:4px;padding-right:8px}
+  .col-act{width:56px;min-width:56px;text-align:center}
+  /* Production: HANYA kolom action yang sticky (kanan). Kolom kiri ikut scroll. */
+  .stk-r{position:sticky;right:0;z-index:2}
+  thead .stk-r{z-index:5}
+  .stk-r::before{content:"";position:absolute;top:0;left:0;bottom:-1px;width:6px;transform:translateX(-100%);
+    background:linear-gradient(270deg,rgba(19,63,93,.10),transparent);pointer-events:none}
+  /* Custom checkbox — state default keliatan (border medium-grey), hover biru, checked solid biru ✓ */
+  .chk{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--color-light-grey-40);
+    border-radius:4px;background:var(--color-surface-light-default);cursor:pointer;margin:0;
+    position:relative;flex-shrink:0;transition:border-color var(--speed-fast),background var(--speed-fast);vertical-align:middle}
+  .chk:hover{border-color:var(--color-action-primary-bg)}
+  .chk:checked{background:var(--color-action-primary-bg);border-color:var(--color-action-primary-bg)}
+  .chk:checked::after{content:"";position:absolute;left:5px;top:1.5px;width:4px;height:9px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .chk:indeterminate{background:var(--color-action-primary-bg);border-color:var(--color-action-primary-bg)}
+  .chk:indeterminate::after{content:"";position:absolute;left:3px;top:7px;width:9px;height:2px;background:#fff;border-radius:1px}
+  .chk:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:1px}
+  .exp-btn{background:none;border:none;cursor:pointer;color:var(--color-text-secondary);padding:3px;display:inline-flex}
+  .exp-btn svg{width:16px;height:16px;transition:transform var(--speed-fast) var(--ease-out-regular)}
+  .exp-btn.open svg{transform:rotate(90deg)}
+  .exp-row td{background:var(--color-surface-light-raised);padding:14px 20px;font-size:13px;color:var(--color-text-secondary)}
+
+  /* ── Badge / chip — compact (di dalam tabel) ── */
+  .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:var(--radius-full);
+    font-size:11px;font-weight:600;line-height:1.4;border:1px solid transparent;white-space:nowrap}
+  .badge--success{background:var(--color-state-success-bg);color:var(--color-state-success-text-dark);border-color:var(--color-state-success-border)}
+  .badge--warning{background:var(--color-state-warning-bg);color:var(--color-state-warning-text-dark);border-color:var(--color-state-warning-border)}
+  .badge--danger{background:var(--color-state-danger-bg);color:var(--color-state-danger-text-dark);border-color:var(--color-state-danger-border)}
+  .badge--active{background:var(--color-state-active-bg);color:var(--color-state-active-text-dark);border-color:var(--color-state-active-border)}
+
+  /* ── Row action ── */
+  .row-act{position:relative;display:inline-block}
+  .row-act__btn{background:transparent;border:none;cursor:pointer;padding:6px;border-radius:var(--radius-sm);color:var(--color-text-secondary);display:flex}
+  .row-act__btn:hover{background:var(--color-light-grey-15)}
+  /* Menu di-portal ke <body> waktu open → posisi fixed by JS. Default display:none. */
+  .row-act__menu{position:fixed;background:var(--color-surface-light-default);
+    border:1px solid var(--color-border-default);border-radius:var(--radius-md);
+    box-shadow:0 8px 24px rgb(0 0 0 / 15%);min-width:200px;padding:6px;z-index:9999;display:none}
+  .row-act__menu.open{display:block}
+  .row-act__item{display:flex;align-items:center;gap:12px;padding:10px 14px;font-size:14px;
+    color:var(--color-text-primary);border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;font-weight:400}
+  .row-act__item:hover{background:var(--color-light-grey-15)}
+  .row-act__item svg{width:18px;height:18px;flex-shrink:0;color:var(--color-text-primary)}
+  .row-act__item--danger{color:var(--color-action-destructive-bg)}
+  .row-act__item--danger svg{color:var(--color-action-destructive-bg)}
+  .row-act__sep{height:1px;background:var(--color-border-default);margin:6px 0}
+
+  /* ── Banner (pad 12, radius 8, icon 24) ── */
+  .banner{display:flex;align-items:flex-start;gap:var(--spacing-md);padding:12px;border-radius:var(--radius-md);
+    background:var(--color-state-active-bg);border:1px solid var(--color-state-active-border)}
+  .banner svg{width:24px;height:24px;flex-shrink:0;color:var(--color-light-brand-50)}
+  .banner__body{flex:1;font-size:13px;color:var(--color-text-primary)}
+  .banner__body b{font-weight:700}
+  .banner__body a{color:var(--color-action-primary-bg);font-weight:600;cursor:pointer;text-decoration:none}
+  .banner__close{background:none;border:none;cursor:pointer;color:var(--color-text-secondary);padding:2px;display:flex}
+
+  /* ── Form Page card ── */
+  .form-card{background:var(--color-surface-light-default);border:1px solid var(--color-border-default);
+    border-radius:var(--radius-md);padding:var(--spacing-4xl)}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-xl) var(--spacing-2xl)}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field.full{grid-column:1 / -1}
+  .label{font-size:14px;font-weight:700;color:var(--color-text-primary)}
+  .label .req{color:var(--color-action-destructive-bg);margin-left:2px}
+  .ctrl{min-height:40px;padding:8px 12px;border:1px solid var(--color-light-grey-40);
+    border-radius:var(--radius-sm);font-family:inherit;font-size:14px;color:var(--color-text-primary);
+    background:var(--color-surface-light-default);outline:none;width:100%;transition:border-color var(--speed-fast) var(--ease-out-regular)}
+  .ctrl::placeholder{color:var(--color-text-muted)}
+  .ctrl:focus{border-color:var(--color-action-primary-bg);box-shadow:0 0 0 3px rgb(65 153 213 / 15%)}
+  select.ctrl{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3.5 5.5L7 9l3.5-3.5' stroke='%23718c9e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+  textarea.ctrl{min-height:88px;resize:vertical}
+  .hint{font-size:12px;color:var(--color-text-secondary)}
+  .field--error .ctrl{border-color:var(--color-action-destructive-bg)}
+  .field--error .err{font-size:12px;color:var(--color-action-destructive-bg);display:flex;align-items:center;gap:4px}
+  .err{display:none}
+  .field--error .err{display:flex}
+  .upload{border:1.5px dashed var(--color-light-grey-40);border-radius:var(--radius-md);padding:var(--spacing-xl);
+    text-align:center;color:var(--color-text-secondary);font-size:13px;cursor:pointer;background:var(--color-surface-light-platform)}
+  .upload:hover{border-color:var(--color-action-primary-bg);color:var(--color-action-primary-bg)}
+  .section-title{font-size:14px;font-weight:700;color:var(--color-text-primary);margin:var(--spacing-lg) 0 var(--spacing-sm);grid-column:1 / -1}
+
+  /* ── Form footer sticky bottom-right ── */
+  .form-footer{display:flex;justify-content:flex-end;gap:var(--spacing-md);
+    padding:var(--spacing-lg) 0 0;margin-top:var(--spacing-xl);position:sticky;bottom:0}
+
+  /* ── Empty state ── */
+  .empty{display:none;flex-direction:column;align-items:center;justify-content:center;gap:var(--spacing-md);
+    padding:64px 24px;background:var(--color-surface-light-default);border:1px solid var(--color-border-default);border-radius:var(--radius-md);text-align:center}
+  .empty svg{width:72px;height:72px;color:var(--color-light-grey-40)}
+  .empty h3{font-size:16px;font-weight:700;color:var(--color-text-primary)}
+  .empty p{font-size:13px;color:var(--color-text-secondary);max-width:340px}
+
+  /* ── Dialog (Confirmation Modal: radius 12, shadow) ── */
+  .scrim{position:fixed;inset:0;background:rgb(19 63 93 / 45%);display:none;align-items:center;justify-content:center;z-index:50}
+  .scrim.open{display:flex}
+  .dialog{background:var(--color-surface-light-default);border-radius:var(--radius-lg);
+    box-shadow:0 8px 24px rgb(0 0 0 / 15%);width:420px;max-width:calc(100vw - 32px);padding:var(--spacing-2xl);text-align:center}
+  .dialog__ill{width:64px;height:64px;margin:0 auto var(--spacing-md);color:var(--color-action-destructive-bg)}
+  .dialog h3{font-size:18px;font-weight:700;color:var(--color-text-primary)}
+  .dialog p{font-size:13px;color:var(--color-text-secondary);margin-top:6px}
+  .dialog__actions{display:flex;gap:var(--spacing-md);justify-content:center;margin-top:var(--spacing-xl)}
+
+  /* ── Toast (user decision: width 380, radius 8) ── */
+  .toast{position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-140px);
+    width:380px;max-width:calc(100vw - 40px);padding:12px;border-radius:var(--radius-md);
+    background:linear-gradient(90deg,#133f5d 0%,#0a1d28 100%);color:var(--color-text-inverse);
+    display:flex;align-items:center;gap:var(--spacing-md);box-shadow:0 3px 10px 0 rgb(0 0 0 / 8%);
+    z-index:60;opacity:0;transition:transform var(--speed-slow) var(--ease-out-strong),opacity var(--speed-slow)}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+  .toast svg{width:24px;height:24px;flex-shrink:0}
+  .toast b{font-weight:700;font-size:14px}
+  .toast span{font-size:13px;color:rgba(255,255,255,.85);display:block}
+
+  /* Pagination = 3 grup center sebagai 1 blok (ikut produksi) */
+  .pagination{display:flex;align-items:center;justify-content:center;gap:var(--spacing-2xl);
+    padding:var(--spacing-lg) var(--spacing-lg);font-size:13px;color:var(--color-text-secondary);flex-wrap:wrap}
+  .pg-rows{display:flex;align-items:center;gap:var(--spacing-sm)}
+  .pg-rows select{height:32px;padding:4px 24px 4px 10px;border:1px solid var(--color-light-grey-40);
+    border-radius:var(--radius-sm);font-family:inherit;font-size:13px;color:var(--color-text-primary);
+    background:var(--color-surface-light-default) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3.5 5.5L7 9l3.5-3.5' stroke='%23718c9e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 8px center;appearance:none;outline:none;cursor:pointer}
+  .pg-nav{display:flex;align-items:center;gap:var(--spacing-xs)}
+  /* Chevron prev/next: tanpa border box, plain icon (ikut produksi) */
+  .pg-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;
+    background:transparent;border-radius:var(--radius-sm);cursor:pointer;color:var(--color-text-secondary);padding:0}
+  .pg-btn:hover:not(:disabled){background:var(--color-light-grey-15);color:var(--color-text-primary)}
+  .pg-btn:disabled{color:var(--color-text-muted);cursor:not-allowed;background:transparent}
+  .pg-btn svg{width:18px;height:18px}
+  .pg-pages{display:flex;align-items:center;gap:2px;margin:0 var(--spacing-xs)}
+  .pg-page{min-width:32px;height:32px;padding:0 8px;display:flex;align-items:center;justify-content:center;
+    border:none;background:transparent;border-radius:var(--radius-sm);font-size:13px;color:var(--color-text-primary);cursor:pointer}
+  .pg-page:hover{background:var(--color-light-grey-15)}
+  /* Active page = highlight ringan biru muda dengan teks primary (ikut produksi, BUKAN solid primary+putih) */
+  .pg-page.active{background:var(--color-light-brand-15);color:var(--color-text-primary);font-weight:700}
+  .pg-ell{padding:0 6px;color:var(--color-text-muted);user-select:none}
+
+  /* loading skeleton */
+  .skel{background:linear-gradient(90deg,#eef2f5 25%,#e3e9ee 37%,#eef2f5 63%);background-size:400% 100%;
+    animation:sk 1.4s ease infinite;border-radius:var(--radius-sm);height:14px}
+  @keyframes sk{0%{background-position:100% 50%}100%{background-position:0 50%}}
+</style>
+<style>
+  /* ═════════ STOREFRONT — 3 VARIAN LAYOUT (explore 2026-07-15) ═════════
+     Toggle antar-varian via .suxc-var switcher (review-only, di-skip Figma export).
+     Semua varian = KOMPOSISI Aurora pieces (banner, tertiary-plain, chip-status,
+     form-field surface, dialog, toast) — bukan komponen baru. */
+
+  .sf{display:none}
+  body:not([data-variant]) .sf--a{display:flex}
+  body[data-variant="a"] .sf--a{display:flex}
+  body[data-variant="b"] .sf--b{display:flex}
+
+  /* AURORA: au-banner (komposisi bar bertint brand)
+     Source: aurora/projects/ui/banner/banner.component.scss — pad 12, radius 8, icon 24
+     Varian A: slim bar (benchmark: Linktree "Your Linktree is live") */
+  .sf--a{align-items:center;gap:var(--spacing-md);background:var(--color-light-brand-15);
+    border:1px solid var(--color-light-brand-25);border-radius:var(--radius-md);
+    padding:var(--spacing-md) var(--spacing-lg);flex-wrap:wrap}
+  .sf-store-ic{width:24px;height:24px;color:var(--color-light-brand-50);flex-shrink:0}
+  .sf-live{font-size:14px}
+  .sf-live b{font-weight:700}
+  .sf-url{font-weight:600;color:var(--color-text-primary)}
+  .sf-gap{flex:1}
+  .sf-links{display:flex;align-items:center;gap:var(--spacing-lg);flex-wrap:wrap}
+
+  /* Varian B: compact utility card (benchmark: Stripe payment-link header)
+     Komposisi: card putih (border 1px radius 8) + link-box bg raised */
+  .sf--b{background:var(--color-surface-light-default);border:1px solid var(--color-border-default);
+    border-radius:var(--radius-md);padding:var(--spacing-xl) var(--spacing-2xl);
+    gap:var(--spacing-4xl);align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .sf-main{display:flex;flex-direction:column;gap:var(--spacing-md);min-width:0;flex:1}
+  .sf-title-row{display:flex;align-items:center;gap:var(--spacing-sm)}
+  .sf-title{font-size:16px;font-weight:700}
+  .sf-desc{font-size:12px;line-height:18px;color:var(--color-text-secondary);max-width:560px}
+  /* AURORA: au-form-field surface — kotak display link, radius 4 bg raised
+     Source: aurora/projects/ui/form-field/form-field.component.scss */
+  .link-box{display:flex;align-items:center;gap:var(--spacing-sm);background:var(--color-surface-light-raised);
+    border-radius:var(--radius-sm);padding:var(--spacing-sm) var(--spacing-md);max-width:560px;align-self:stretch}
+  .link-box>svg{width:18px;height:18px;color:var(--color-text-secondary);flex-shrink:0}
+  .link-box .lb-url{flex:1;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .qr-side{display:flex;flex-direction:column;align-items:center;gap:var(--spacing-xs)}
+  /* QR thumbnail — klik = modal QR gede (on-demand, benchmark: Stripe/Wise) */
+  .qr-thumb{width:88px;height:88px;padding:var(--spacing-sm);background:var(--color-surface-light-default);
+    border:1px solid var(--color-light-grey-20);border-radius:var(--radius-sm);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color var(--speed-fast) var(--ease-out-regular)}
+  .qr-thumb:hover{border-color:var(--color-action-primary-bg)}
+  .qr-thumb:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
+  .qr-thumb svg{width:100%;height:100%;color:var(--color-text-primary)}
+
+  /* (Varian C Hero dihapus per keputusan user 2026-07-15 — sisa A & B.
+     Ilustrasi #illshop tetap dipakai di empty state.) */
+  /* Ilustrasi design-ops di kiri card B (inline, self-contained) */
+  .sf-ill{flex-shrink:0;display:flex;align-items:center}
+
+  /* AURORA: au-chip-status success — Source: aurora/projects/ui/chip-status */
+  .chip-st{display:inline-flex;align-items:center;gap:var(--spacing-xs);padding:2px 10px;
+    border-radius:var(--radius-full);font-size:12px;line-height:18px;font-weight:600;
+    background:var(--color-state-success-bg);color:var(--color-state-success-text-dark);
+    border:1px solid var(--color-state-success-border)}
+  .chip-st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+
+  /* AURORA: au-toggle — Source: aurora/projects/ui/toggle/toggle.component.scss L32-53
+     track 28×18 radius full bg border-default → checked primary-bg, knob 14 putih, pad 2 */
+  .tgl{appearance:none;-webkit-appearance:none;width:28px;height:18px;border-radius:var(--radius-full);
+    background:var(--color-border-default);position:relative;cursor:pointer;border:none;flex-shrink:0;
+    transition:background-color var(--speed-fast) var(--ease-out-regular)}
+  .tgl::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:var(--color-neutral-white);transition:transform var(--speed-fast) var(--ease-out-regular)}
+  .tgl:checked{background:var(--color-action-primary-bg)}
+  .tgl:checked::after{transform:translateX(10px)}
+  .tgl:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
+  .tgl-cell{display:flex;align-items:center;gap:var(--spacing-sm);cursor:pointer}
+
+  /* Thumbnail produk 40px (placeholder foto) — komposisi surface raised + icon */
+  .thumb{width:40px;height:40px;border-radius:var(--radius-sm);background:var(--color-surface-light-raised);
+    border:1px solid var(--color-light-grey-20);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .thumb svg{width:20px;height:20px;color:var(--color-text-muted)}
+  .prod-cell{display:flex;align-items:center;gap:var(--spacing-md);min-width:220px}
+  .prod-cell .p-name{font-weight:600}
+
+  /* OVERRIDE: au-dialog → sectioned modal (locked aurora-sectioned-modal-rule 2026-05-20)
+     header + close X + border-bottom | content | actions kanan + border-top */
+  .dlg{background:var(--color-surface-light-default);border-radius:var(--radius-lg);width:420px;
+    max-width:calc(100vw - 48px);box-shadow:0 1px 2px rgba(0,0,0,.05),0 12px 24px rgba(0,0,0,.12);
+    display:flex;flex-direction:column;overflow:hidden;text-align:left}
+  .dlg__head{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-md);
+    padding:var(--spacing-lg) var(--spacing-2xl);border-bottom:1px solid var(--color-light-grey-20)}
+  .dlg__title{font-size:16px;font-weight:700}
+  .dlg__x{width:32px;height:32px;border:none;background:transparent;border-radius:var(--radius-sm);
+    cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--color-text-secondary)}
+  .dlg__x:hover{background:var(--color-light-grey-15);color:var(--color-text-primary)}
+  .dlg__x:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
+  .dlg__body{padding:var(--spacing-2xl);display:flex;flex-direction:column;gap:var(--spacing-lg);align-items:center}
+  .dlg__body .qr-big{width:200px;height:200px;color:var(--color-text-primary)}
+  .dlg__hint{font-size:12px;line-height:18px;color:var(--color-text-secondary);text-align:center;max-width:300px}
+  .dlg__foot{display:flex;justify-content:flex-end;gap:var(--spacing-md);
+    padding:var(--spacing-lg) var(--spacing-2xl);border-top:1px solid var(--color-light-grey-20)}
+
+  /* OVERRIDE: pagination production (locked production-pagination-rule 2026-05-20)
+     justify-end + select borderless — menang atas versi center di blok referensi di atas */
+  .pagination{justify-content:flex-end}
+  .pg-rows select{border:none;background-color:transparent}
+
+  /* Page ini cuma 6 kolom → batalin min-width 1680px warisan tabel 15-kolom;
+     semua kolom muat tanpa horizontal scroll (sticky action tetap jalan kalau sempit) */
+  table{min-width:960px}
+
+  /* ── suxc-var: switcher varian layout (review-tool, prefix suxc- = skip export/audit) ── */
+  .suxc-var{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99990;
+    display:flex;align-items:center;gap:6px;background:#1c1c1e;color:#8e8e93;
+    border-radius:9999px;padding:6px 8px 6px 14px;box-shadow:0 8px 24px rgba(0,0,0,.35);
+    font-family:var(--text-body-font-family);font-size:12px}
+  .suxc-var-lbl{color:#e5e5ea;font-weight:700;margin-right:4px}
+  .suxc-var button{border:none;background:transparent;color:#8e8e93;padding:6px 12px;
+    border-radius:9999px;cursor:pointer;font-family:inherit;font-weight:700;font-size:12px}
+  .suxc-var button:hover{color:#e5e5ea}
+  .suxc-var button.on{background:#4199d5;color:#fff}
+</style>
+<style>[data-states]>[data-state]:not([data-state="default"]){display:none}</style>
+</head>
+<body>
+
+<!-- Shared SVG defs — width/height 0 eksplisit, jangan render.
+     #qrsym: QR placeholder. #illshop: ilustrasi storefront (CUSTOM per request user 2026-07-15 —
+     Aurora belum punya illustration library; palet 100% Aurora primitives). -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<g id="qrsym"><rect x="0" y="0" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="3" width="3" height="3" fill="currentColor"/><rect x="20" y="0" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="23" y="3" width="3" height="3" fill="currentColor"/><rect x="0" y="20" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="23" width="3" height="3" fill="currentColor"/><rect x="12" y="0" width="2" height="2" fill="currentColor"/><rect x="16" y="2" width="2" height="2" fill="currentColor"/><rect x="12" y="5" width="2" height="4" fill="currentColor"/><rect x="16" y="7" width="2" height="2" fill="currentColor"/><rect x="0" y="12" width="2" height="2" fill="currentColor"/><rect x="4" y="12" width="4" height="2" fill="currentColor"/><rect x="10" y="12" width="3" height="3" fill="currentColor"/><rect x="16" y="12" width="2" height="2" fill="currentColor"/><rect x="20" y="12" width="2" height="2" fill="currentColor"/><rect x="25" y="12" width="4" height="2" fill="currentColor"/><rect x="2" y="16" width="2" height="2" fill="currentColor"/><rect x="7" y="16" width="2" height="2" fill="currentColor"/><rect x="12" y="16" width="4" height="2" fill="currentColor"/><rect x="19" y="16" width="3" height="2" fill="currentColor"/><rect x="25" y="16" width="2" height="2" fill="currentColor"/><rect x="12" y="20" width="2" height="4" fill="currentColor"/><rect x="16" y="21" width="3" height="3" fill="currentColor"/><rect x="21" y="20" width="4" height="4" fill="currentColor"/><rect x="27" y="20" width="2" height="2" fill="currentColor"/><rect x="12" y="26" width="3" height="3" fill="currentColor"/><rect x="18" y="26" width="2" height="2" fill="currentColor"/><rect x="22" y="27" width="5" height="2" fill="currentColor"/></g>
+<g id="illshop">
+  <ellipse cx="105" cy="158" rx="88" ry="8" fill="#e3f0fa"/>
+  <rect x="38" y="72" width="104" height="68" rx="4" fill="#ffffff" stroke="#133f5d" stroke-width="2"/>
+  <rect x="30" y="52" width="120" height="14" rx="4" fill="#133f5d"/>
+  <path d="M30 66a15 11 0 0 0 30 0z" fill="#4199d5"/>
+  <path d="M60 66a15 11 0 0 0 30 0z" fill="#c7e1f3"/>
+  <path d="M90 66a15 11 0 0 0 30 0z" fill="#4199d5"/>
+  <path d="M120 66a15 11 0 0 0 30 0z" fill="#c7e1f3"/>
+  <rect x="68" y="82" width="44" height="12" rx="3" fill="#e3f0fa"/>
+  <rect x="56" y="104" width="24" height="36" rx="2" fill="#c7e1f3" stroke="#133f5d" stroke-width="1.5"/>
+  <circle cx="75" cy="122" r="1.5" fill="#133f5d"/>
+  <rect x="92" y="104" width="36" height="20" rx="2" fill="#e3f0fa" stroke="#133f5d" stroke-width="1.5"/>
+  <path d="M92 114h36" stroke="#133f5d" stroke-width="1.5"/>
+  <rect x="152" y="116" width="28" height="24" rx="2" fill="#eab11c" stroke="#133f5d" stroke-width="1.5"/>
+  <path d="M166 116v24" stroke="#133f5d" stroke-width="1.5"/>
+  <rect x="158" y="96" width="20" height="18" rx="2" fill="#f37d51" stroke="#133f5d" stroke-width="1.5"/>
+  <rect x="152" y="40" width="36" height="36" rx="6" fill="#ffffff" stroke="#133f5d" stroke-width="2"/>
+  <rect x="158" y="46" width="8" height="8" fill="#133f5d"/>
+  <rect x="174" y="46" width="6" height="6" fill="#4199d5"/>
+  <rect x="158" y="62" width="6" height="6" fill="#4199d5"/>
+  <rect x="170" y="58" width="10" height="10" fill="#133f5d"/>
+  <rect x="16" y="124" width="16" height="16" rx="2" fill="#c7e1f3" stroke="#133f5d" stroke-width="1.5"/>
+  <ellipse cx="20" cy="116" rx="6" ry="9" fill="#97cc56" transform="rotate(-20 20 116)"/>
+  <ellipse cx="28" cy="114" rx="6" ry="10" fill="#97cc56" transform="rotate(15 28 114)"/>
+  <path d="M24 46l1.6 4.4L30 52l-4.4 1.6L24 58l-1.6-4.4L18 52l4.4-1.6z" fill="#4199d5" opacity="0.5"/>
+  <path d="M196 84l1.2 3.3 3.3 1.2-3.3 1.2-1.2 3.3-1.2-3.3-3.3-1.2 3.3-1.2z" fill="#4199d5" opacity="0.5"/>
+</g>
+</defs></svg>
+
+<div class="app-layout">
+
+<!--
+  ============================================================
+  SIDEMENU COMPONENT — Paper.id (Paperverse 1.0)
+  ============================================================
+  Source of truth untuk sidemenu di semua halaman prototype.
+  Diambil dari Figma Paperverse 1.0 node 7112:4287.
+
+  CARA PAKAI:
+  1. Copy bagian CSS ke dalam <style> halaman
+  2. Copy bagian HTML ke dalam <body> → .app-layout
+  3. Copy bagian JS ke dalam <script> halaman
+  4. Sesuaikan active state sesuai halaman:
+     - Tambah class "expanded" pada .sidemenu__item parent
+     - Tambah class "open" pada .sidemenu__submenu yang sesuai
+     - Tambah class "active" pada .sidemenu__subitem yang aktif
+  ============================================================
+-->
+
+<!-- ======================== CSS ======================== -->
+<!--
+  CATATAN: CSS di bawah membutuhkan design tokens berikut sudah didefinisikan di :root:
+  --spacing-xs, --spacing-sm, --spacing-md, --spacing-lg, --spacing-xl
+  --radius-sm, --radius-md, --radius-full
+  --text-body-font-family, --text-body-size-sm, --text-body-size-md
+  --text-body-line-height-sm
+  --text-body-weight-regular, --text-body-weight-semibold, --text-body-weight-bold
+  --text-heading-font-family
+  --color-neutral-white, --color-light-brand-40, --color-light-brand-50
+  --speed-fast, --ease-out-regular
+-->
+<style>
+/* ── Zone 1: Sidemenu (Fixed, 240px) — gradient bg per Figma Paperverse 1.0 ── */
+.sidemenu {
+  width: 240px;
+  min-width: 240px;
+  height: 100vh;
+  background: linear-gradient(to bottom, #0b2835, #206a9c 76.563%, #257ab4);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex-shrink: 0;
+  position: relative;
+}
+.sidemenu__logo {
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.sidemenu__logo img,
+.sidemenu__logo svg {
+  height: 42px;
+  width: auto;
+}
+/* PaperPlus promo widget — per Figma node 7112:4050 */
+.sidemenu__promo {
+  margin: 0 var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  border: 1px solid #eaedef;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.5) 0%, rgba(153, 153, 153, 0) 48%);
+  flex-shrink: 0;
+}
+.sidemenu__promo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 34px;
+  padding: 0 var(--spacing-sm);
+  font-size: var(--text-body-size-sm);
+  line-height: 18px;
+  color: var(--color-neutral-white);
+}
+.sidemenu__promo-free {
+  font-weight: var(--text-body-weight-semibold);
+  white-space: nowrap;
+}
+.sidemenu__promo-upgrade {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  justify-content: flex-end;
+}
+.sidemenu__promo-upgrade span {
+  white-space: nowrap;
+}
+.sidemenu__promo-logo {
+  height: 8px;
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+.sidemenu__promo-info-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.7;
+  cursor: pointer;
+}
+.sidemenu__promo-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0;
+}
+.sidemenu__promo-meterai {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 34px;
+  padding: 0 var(--spacing-sm);
+  font-size: var(--text-body-size-sm);
+  line-height: 18px;
+  color: var(--color-neutral-white);
+}
+.sidemenu__promo-meterai-label {
+  font-weight: var(--text-body-weight-semibold);
+}
+.sidemenu__promo-meterai-value {
+  font-weight: var(--text-body-weight-regular);
+  text-align: right;
+}
+.sidemenu__promo-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  padding: 0 var(--spacing-sm);
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  font-size: var(--text-body-size-sm);
+  font-weight: var(--text-body-weight-semibold);
+  line-height: 18px;
+  color: var(--color-neutral-white);
+}
+.sidemenu__promo-footer:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+.sidemenu__promo-footer-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+/* Decorative stars at bottom of sidemenu */
+.sidemenu__decor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.15;
+}
+.sidemenu__nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.sidemenu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  height: 44px;
+  padding: 0 var(--spacing-lg);
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  cursor: pointer;
+  font-size: var(--text-body-size-md);
+  font-weight: var(--text-body-weight-regular);
+  transition: background var(--speed-fast) var(--ease-out-regular), color var(--speed-fast) var(--ease-out-regular);
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font-family: var(--text-body-font-family);
+}
+.sidemenu__item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-neutral-white);
+}
+.sidemenu__item.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-neutral-white);
+  font-weight: var(--text-body-weight-semibold);
+}
+.sidemenu__item-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidemenu__item-arrow {
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--speed-fast) var(--ease-out-regular);
+  opacity: 0.5;
+}
+.sidemenu__item.expanded .sidemenu__item-arrow {
+  transform: rotate(90deg);
+}
+.sidemenu__submenu {
+  display: flex;
+  flex-direction: column;
+  max-height: 0;
+  overflow: hidden;
+}
+.sidemenu__submenu.open {
+  max-height: none;
+  overflow: visible;
+}
+.sidemenu__subitem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  height: 40px;
+  flex-shrink: 0;
+  padding: 0 var(--spacing-xl);
+  padding-left: 52px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: var(--text-body-size-md);
+  font-weight: var(--text-body-weight-regular);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font-family: var(--text-body-font-family);
+  transition: background var(--speed-fast) var(--ease-out-regular), color var(--speed-fast) var(--ease-out-regular);
+}
+/* Lainnya submenu: sejajar dengan parent, pakai icon 20px */
+#submenu-lainnya .sidemenu__subitem {
+  padding: 0 var(--spacing-lg);
+  gap: var(--spacing-md);
+}
+.sidemenu__subitem-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidemenu__subitem:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-neutral-white);
+}
+.sidemenu__subitem.active {
+  color: var(--color-light-brand-50);
+  font-weight: var(--text-body-weight-semibold);
+}
+.sidemenu__separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: var(--spacing-sm) var(--spacing-lg);
+}
+</style>
+
+<!-- ======================== HTML ======================== -->
+<aside class="sidemenu">
+  <!-- Logo — White Paper logo matching Figma Paperverse 1.0 -->
+  <div class="sidemenu__logo">
+    <svg width="143" height="50" viewBox="0 0 143 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_589_30073)">
+        <path d="M27.5216 15.8697C26.5957 14.1669 25.249 12.6911 23.6329 11.607C20.979 9.82487 17.5561 9.2685 14.24 10.0802C11.1314 10.8408 8.30344 12.7422 6.28332 15.4441C6.06457 15.7392 5.85136 16.0457 5.64934 16.3522C4.26898 18.4978 3.33755 21.0633 2.95035 23.8105C2.43416 21.8636 1.89547 18.1061 3.7191 14.1613C4.64487 12.1634 6.53588 9.38779 10.3234 7.52604C12.3938 6.50436 14.7225 5.99912 17.068 6.06728C17.977 6.06728 20.3112 6.11268 22.3593 6.53845C23.2739 6.73136 23.734 6.86196 24.1605 6.99243C24.2165 7.00948 24.4354 7.09468 24.716 7.1912C25.6418 7.52604 26.1299 7.65651 26.1804 7.57144L26.7303 6.67464L26.5732 6.60088C26.1412 6.3908 25.698 6.19789 25.2602 6.02188L24.6543 5.78344C24.6149 5.76653 24.542 5.73804 24.4411 5.70409C24.3063 5.65856 24.1885 5.61889 24.1099 5.59625C18.2071 3.75149 13.2861 4.79026 13.2355 4.80157C11.9674 5.07969 8.60076 5.81752 5.50338 8.58739C4.22976 9.72835 3.03458 11.2325 2.13672 12.8274C1.52511 13.9172 0.251357 16.1819 0.0326157 19.2356C-0.191916 22.3744 0.75083 25.7119 2.61368 28.3967C2.84374 36.1273 6.45165 43.6423 12.2704 48.5011L12.6408 48.8133C13.1851 49.2617 13.7574 49.5 14.3017 49.5C14.8459 49.5 15.3117 49.273 15.6259 48.8756C15.9177 48.5011 16.0411 47.9958 15.9625 47.4965C15.8672 46.9232 15.5137 46.3668 14.9414 45.8958L14.571 45.5949C10.6096 42.3255 7.7254 37.4897 6.61998 32.2677C9.08891 33.8683 12.0517 34.7424 15.0031 34.7424H15.1994C18.7569 34.7026 22.2414 33.3802 24.7384 31.1155C27.4766 28.6408 29.0758 25.0364 28.9972 21.4776C28.9749 19.5308 28.4642 17.5895 27.5271 15.8641L27.5216 15.8697ZM23.0158 29.1516C20.9958 31.0473 18.1228 32.1825 15.1489 32.2677C11.8271 32.3528 8.55588 31.1666 6.16 29.0097C6.11498 28.3797 6.09827 27.7325 6.10946 27.0912C6.14315 24.0205 6.80516 21.1882 8.00034 18.9121C9.32463 16.3976 11.412 14.4224 13.735 13.4971C14.7955 13.0715 15.9345 12.8558 17.1242 12.8558C18.8916 12.8558 20.5861 13.3383 22.017 14.2521C23.2514 15.024 24.2951 16.1024 25.0302 17.3568C25.7764 18.634 26.203 20.0927 26.2702 21.5628C26.3713 24.3269 25.1593 27.165 23.0213 29.1629L23.0158 29.1516Z" fill="white"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M37.9943 7.43234L37.8805 7.41421H37.9032L21 0.5L23.9254 4.64252L34.1698 7.19693L24.21 6.03746L22.0302 9.38897L26.0881 9.27424L26.8052 10.5L38 7.43234H37.9943Z" fill="#ACCF23"/>
+        <path d="M60.7879 19.8942C60.3967 19.3738 59.9228 18.9354 59.3608 18.5793C58.7989 18.2232 58.1487 17.9548 57.416 17.774C56.6832 17.5932 55.8898 17.5 55.0302 17.5H46V38.5H49.3444V30.4353H55.0027C56.4132 30.4353 57.6419 30.1888 58.6887 29.7011C59.7356 29.208 60.5509 28.4903 61.1295 27.5261C61.7135 26.5673 62 25.373 62 23.954C62 23.1267 61.8953 22.3761 61.686 21.6913C61.4766 21.0064 61.1736 20.4093 60.7879 19.8942ZM58.4628 24.5347C58.4628 25.4935 58.1543 26.2605 57.5372 26.8412C56.9201 27.4165 56.0275 27.7069 54.8649 27.7069H49.3498V20.2997H54.8649C56.0275 20.2997 56.9201 20.5846 57.5372 21.1488C58.1543 21.7131 58.4628 22.4966 58.4628 23.4937V24.5347Z" fill="white"/>
+        <path d="M70.1695 17.5L62 38.5H65.5485L67.3969 33.7171H77.5746L79.423 38.5H83L74.8305 17.5H70.1581H70.1695ZM68.4353 31.0434L71.7955 22.3432L72.3603 20.1517H72.5998L73.1932 22.3432L76.5534 31.0434H68.4409H68.4353Z" fill="white"/>
+        <path d="M101.788 19.8942C101.397 19.3738 100.923 18.9354 100.361 18.5793C99.7989 18.2232 99.1488 17.9548 98.416 17.774C97.6832 17.5932 96.8898 17.5 96.0303 17.5H87V38.5H90.3443V30.4353H96.0028C97.4132 30.4353 98.6419 30.1888 99.6888 29.7011C100.736 29.208 101.551 28.4903 102.13 27.5261C102.713 26.5673 103 25.373 103 23.954C103 23.1267 102.895 22.3761 102.686 21.6913C102.477 21.0064 102.174 20.4093 101.788 19.8942ZM99.4573 24.5347C99.4573 25.4935 99.1488 26.2605 98.5318 26.8412C97.9147 27.4165 97.0221 27.7069 95.8595 27.7069H90.3443V20.2997H95.8595C97.0221 20.2997 97.9147 20.5846 98.5318 21.1488C99.1488 21.7131 99.4573 22.4966 99.4573 23.4937V24.5347Z" fill="white"/>
+        <path d="M109.517 29.1094H118.31V26.4304H109.517V20.3215H121.941V17.5H106V38.5H122V35.6785H109.511V29.1094H109.517Z" fill="white"/>
+        <path d="M141.895 32.7105C141.895 29.2312 140.122 28.2435 138.91 28.0562V27.9939C139.557 27.7497 142.233 26.6656 142.233 22.4484C142.233 18.7192 139.982 16.5 135.593 16.5H126V38.5H129.518V29.4412H134.696C137.931 29.4412 138.692 31.2291 138.692 35.2647C138.692 36.3432 138.692 37.5465 139.231 38.5H143C142.238 37.6032 141.902 35.2647 141.902 32.7105H141.895ZM135.288 26.5181H129.518V19.6445H135.234C137.061 19.6445 138.72 20.2007 138.72 23.0047C138.72 25.3147 137.507 26.5181 135.288 26.5181Z" fill="white"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_589_30073">
+          <rect width="143" height="50" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- PaperPlus promo widget — per Figma node 7112:4050 -->
+  <div class="sidemenu__promo">
+    <!-- Header: Free | tingkatkan ke PAPER PLUS (i) -->
+    <div class="sidemenu__promo-header">
+      <span class="sidemenu__promo-free">Free</span>
+      <div class="sidemenu__promo-upgrade">
+        <span>tingkatkan ke</span>
+        <svg class="sidemenu__promo-logo" width="56" height="11" viewBox="0 0 56 11" fill="none" role="img" aria-label="PAPER plus"><text x="0" y="9" font-family="Lato, sans-serif" font-size="10" font-weight="800" fill="#ffffff" letter-spacing=".2">PAPER</text><text x="35" y="9" font-family="Lato, sans-serif" font-size="9" font-weight="700" fill="#97cc56">plus</text></svg>
+        <!-- Info icon (i) -->
+        <svg class="sidemenu__promo-info-icon" width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 7.5V11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5.5" r="0.75" fill="currentColor"/></svg>
+      </div>
+    </div>
+    <!-- Separator -->
+    <div class="sidemenu__promo-divider"></div>
+    <!-- E-Meterai row -->
+    <div class="sidemenu__promo-meterai">
+      <span class="sidemenu__promo-meterai-label">E-Meterai</span>
+      <span class="sidemenu__promo-meterai-value">Sisa Kuota: 0</span>
+    </div>
+    <!-- Footer: Buka Paper e-Shop -->
+    <div class="sidemenu__promo-footer">
+      <div class="sidemenu__promo-footer-left">
+        <!-- E-Shop icon -->
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.1042 4.45834H11.517C11.3101 2.7011 9.8119 1.33334 8 1.33334C6.1881 1.33334 4.68987 2.7011 4.48297 4.45834H2.89583C2.60818 4.45834 2.375 4.69152 2.375 4.97918V14.1458C2.375 14.4335 2.60818 14.6667 2.89583 14.6667H13.1042C13.3918 14.6667 13.625 14.4335 13.625 14.1458V4.97918C13.625 4.69152 13.3918 4.45834 13.1042 4.45834ZM8 2.37501C9.23656 2.37501 10.2661 3.27748 10.4651 4.45834H5.53492C5.73388 3.27748 6.76344 2.37501 8 2.37501ZM12.5833 13.625H3.41667V5.50001H4.45833V7.06251C4.45833 7.35017 4.69151 7.58334 4.97917 7.58334C5.26682 7.58334 5.5 7.35017 5.5 7.06251V5.50001H10.5V7.06251C10.5 7.35017 10.7332 7.58334 11.0208 7.58334C11.3085 7.58334 11.5417 7.35017 11.5417 7.06251V5.50001H12.5833V13.625Z" fill="currentColor"/></svg>
+        <span>Buka Paper e-Shop</span>
+      </div>
+      <!-- Chevron right -->
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M4 2.5L6.5 5L4 7.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sidemenu__nav">
+    <!-- Custom icon: compass (Dashboard) -->
+    <button class="sidemenu__item" data-menu="dashboard">
+      <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 21 20" fill="none"><g clip-path="url(#clip0_dash)"><path d="M10.5 18.3333C15.1024 18.3333 18.8333 14.6024 18.8333 10C18.8333 5.39763 15.1024 1.66667 10.5 1.66667C5.89763 1.66667 2.16667 5.39763 2.16667 10C2.16667 14.6024 5.89763 18.3333 10.5 18.3333Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.8496 7.15038L14.008 6.49205L13.3496 7.65038L11.3913 11.0421C11.296 11.2076 11.2484 11.2903 11.1876 11.3617C11.1338 11.4252 11.0717 11.4808 11.003 11.527C10.9259 11.5793 10.8381 11.6159 10.6625 11.6892L7.69968 12.9267C7.3832 13.0589 7.22497 13.125 7.12434 13.0953C7.03706 13.0694 6.9643 12.9966 6.93835 12.9094C6.90868 12.8087 6.97477 12.6505 7.10696 12.334L8.34447 9.37121C8.41776 9.19563 8.4544 9.10784 8.5067 9.0307C8.55297 8.96204 8.60856 8.89993 8.67203 8.84612C8.7434 8.78531 8.82615 8.73776 8.99163 8.64266L12.8496 7.15038Z" fill="currentColor"/></g><defs><clipPath id="clip0_dash"><rect width="20" height="20" fill="white" transform="translate(0.5)"/></clipPath></defs></svg></span>
+      Dashboard
+    </button>
+
+    <!-- Aurora icon: user-client (strokes only) -->
+    <button class="sidemenu__item" data-menu="mitra" onclick="toggleSubmenu('mitra')">
+      <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 8.3C12 8.63 11.97 8.96 11.86 9.26C11.79 9.46 11.7 9.65 11.6 9.83C11.36 10.23 11.02 10.57 10.61 10.8C10.2 11.03 9.74 11.16 9.27 11.16C8.8 11.16 8.34 11.03 7.94 10.8C7.53 10.57 7.19 10.23 6.95 9.83C6.86 9.68 6.78 9.52 6.72 9.36C6.59 9.02 6.52 8.67 6.52 8.3C6.52 7.89 6.62 7.48 6.8 7.1C7.01 6.61 7.37 6.18 7.83 5.89C8.28 5.6 8.82 5.45 9.36 5.47C9.9 5.48 10.43 5.66 10.87 5.98C11.31 6.3 11.64 6.74 11.83 7.25C11.96 7.58 12.03 7.94 12 8.3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.13 17.42V18.53H14.4V16.44C14.4 16.37 14.4 16.31 14.4 16.25C14.38 15.87 14.28 15.5 14.1 15.16C13.99 14.91 13.84 14.68 13.65 14.48C13.33 14.11 12.9 13.84 12.43 13.71C12.18 13.64 11.92 13.6 11.65 13.58H6.85C6.44 13.59 6.02 13.69 5.65 13.89C5.28 14.08 4.95 14.35 4.7 14.69" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.29 10.35C18.29 10.76 18.18 11.17 17.96 11.52C17.78 11.81 17.52 12.05 17.22 12.22C16.91 12.39 16.57 12.48 16.22 12.48C15.88 12.48 15.53 12.39 15.23 12.23C14.93 12.06 14.67 11.82 14.49 11.52C14.28 11.18 14.17 10.79 14.18 10.39C14.18 10.08 14.24 9.78 14.37 9.5C14.52 9.13 14.77 8.81 15.1 8.58C15.43 8.35 15.82 8.23 16.22 8.22C16.64 8.22 17.05 8.35 17.39 8.59C17.73 8.83 17.99 9.16 18.14 9.55C18.24 9.81 18.29 10.08 18.29 10.35Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.4 18.53H20.16V16.97C20.16 16.94 20.16 16.91 20.16 16.88V16.82C20.15 16.53 20.07 16.26 19.94 16C19.85 15.82 19.74 15.65 19.6 15.49C19.37 15.22 19.05 15.02 18.69 14.93C18.5 14.87 18.3 14.84 18.11 14.83H14.4C14.24 14.83 14.08 14.85 13.93 14.89" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      Mitra
+      <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </button>
+
+    <!-- Aurora icon: document-si (strokes only) -->
+    <button class="sidemenu__item" data-menu="penjualan" onclick="toggleSubmenu('penjualan')">
+      <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 2.27V6.4C14 6.96 14 7.24 14.11 7.45C14.2 7.64 14.36 7.8 14.55 7.89C14.76 8 15.04 8 15.6 8H19.73M20 17.2C20 18.88 20 19.72 19.67 20.36C19.39 20.93 18.93 21.39 18.36 21.67C17.72 22 16.88 22 15.2 22H8.8C7.12 22 6.28 22 5.64 21.67C5.07 21.39 4.61 20.93 4.33 20.36C4 19.72 4 18.88 4 17.2V6.8C4 5.12 4 4.28 4.33 3.64C4.61 3.07 5.07 2.61 5.64 2.33C6.28 2 7.12 2 8.8 2H14L20 8V10.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      Penjualan
+      <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </button>
+    <div class="sidemenu__submenu" id="submenu-penjualan">
+      <button class="sidemenu__subitem">Order Penjualan</button>
+      <button class="sidemenu__subitem">Invoice Penjualan</button>
+      <button class="sidemenu__subitem">Kuitansi Penjualan</button>
+      <button class="sidemenu__subitem">Surat Jalan</button>
+      <button class="sidemenu__subitem">BuyerConnect</button>
+      <button class="sidemenu__subitem">Faktur Pajak</button>
+    </div>
+
+    <!-- Aurora icon: cart -->
+    <button class="sidemenu__item" data-menu="pembelian" onclick="toggleSubmenu('pembelian')">
+      <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7.21 12.43H20.18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.45 7.5H21.34L19.88 15.05C19.8 15.47 19.58 15.84 19.25 16.11C18.92 16.38 18.51 16.52 18.09 16.51H9.32C8.9 16.52 8.49 16.38 8.16 16.11C7.83 15.84 7.61 15.47 7.53 15.05L6.32 8.94L5.11 3H2.78" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17.71" cy="20.23" r="1" fill="currentColor"/><circle cx="10.22" cy="20.23" r="1" fill="currentColor"/></svg></span>
+      Pembelian
+      <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </button>
+
+    <!-- Aurora icon: credit-card-01 -->
+    <button class="sidemenu__item" data-menu="pembayaran" onclick="toggleSubmenu('pembayaran')">
+      <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 10H2M21.78 17.91C21.59 18.28 21.28 18.59 20.91 18.78C20.48 19 19.92 19 18.8 19H5.2C4.08 19 3.52 19 3.09 18.78C2.72 18.59 2.41 18.28 2.22 17.91C2 17.48 2 16.92 2 15.8V8.2C2 7.08 2 6.52 2.22 6.09C2.41 5.72 2.72 5.41 3.09 5.22C3.52 5 4.08 5 5.2 5H18.8C19.92 5 20.48 5 20.91 5.22C21.28 5.41 21.59 5.72 21.78 6.09C22 6.52 22 7.08 22 8.2V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      Pembayaran Digital
+      <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </button>
+
+    <!-- Aurora icon: bank -->
+    <button class="sidemenu__item" data-menu="solusi" onclick="toggleSubmenu('solusi')">
+      <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M16.77 8.33H19.98V6.69L11.82 2.76L4.02 6.69V8.33H7.04" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.29 8.35V10.08H18.71V8.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.48 21.24H19.98V18.86H4.02V21.24H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.6 10.31V18.86" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.2 18.86V12.95H13.39V18.86" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.4 10.08V12.62" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.4 18.86V15.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      Solusi Pendanaan
+      <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </button>
+
+    <!-- Aurora icon: cube-01 -->
+    <button class="sidemenu__item" data-menu="produk" onclick="toggleSubmenu('produk')">
+      <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20.5 7.28L12 12M12 12L3.5 7.28M12 12V21.5M21 16.06C21 16.4 21 16.57 20.95 16.73C20.9 16.86 20.83 16.98 20.74 17.09C20.63 17.21 20.48 17.29 20.18 17.46L12.78 21.57C12.49 21.73 12.35 21.8 12.2 21.84C12.07 21.86 11.93 21.86 11.8 21.84C11.65 21.8 11.51 21.73 11.22 21.57L3.82 17.46C3.52 17.29 3.37 17.21 3.26 17.09C3.17 16.98 3.1 16.86 3.05 16.73C3 16.57 3 16.4 3 16.06V7.94C3 7.6 3 7.43 3.05 7.27C3.1 7.14 3.17 7.02 3.26 6.91C3.37 6.79 3.52 6.71 3.82 6.54L11.22 2.43C11.51 2.27 11.65 2.2 11.8 2.16C11.93 2.14 12.07 2.14 12.2 2.16C12.35 2.2 12.49 2.27 12.78 2.43L20.18 6.54C20.48 6.71 20.63 6.79 20.74 6.91C20.83 7.02 20.9 7.14 20.95 7.27C21 7.43 21 7.6 21 7.94V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      Produk & Stok
+      <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </button>
+
+    <div class="sidemenu__separator"></div>
+
+    <!-- Aurora icon: chevron-down-double -->
+    <button class="sidemenu__item" data-menu="lainnya" onclick="toggleSubmenu('lainnya')">
+      <span class="sidemenu__item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 13L12 18L17 13M7 6L12 11L17 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      Lainnya
+      <span class="sidemenu__item-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </button>
+    <div class="sidemenu__submenu" id="submenu-lainnya">
+      <!-- Aurora icon: file-minus-03 -->
+      <button class="sidemenu__subitem"><span class="sidemenu__subitem-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 2.27V6.4C14 6.96 14 7.24 14.11 7.45C14.2 7.64 14.36 7.8 14.55 7.89C14.76 8 15.04 8 15.6 8L19.73 8M14 2.27C13.83 2.19 13.64 2.13 13.46 2.08C13.11 2 12.75 2 12.01 2H8.8C7.12 2 6.28 2 5.64 2.33C5.07 2.61 4.61 3.07 4.33 3.64C4 4.28 4 5.12 4 6.8V17.2C4 18.88 4 19.72 4.33 20.36C4.61 20.93 5.07 21.39 5.64 21.67C6.28 22 7.12 22 8.8 22H15.2C16.88 22 17.72 22 18.36 21.67C18.93 21.39 19.39 20.93 19.67 20.36C20 19.72 20 18.88 20 17.2V13.59M9 15H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Biaya</button>
+      <!-- Aurora icon: billing -->
+      <button class="sidemenu__subitem"><span class="sidemenu__subitem-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 20.4C6.1 20.4 5.3 19.6 5.3 18.7V5.3C5.3 4.4 6 3.6 7 3.6H13.7L18.7 8.6V18.7C18.7 19.6 17.9 20.4 17 20.4H11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 3.6V8.6H18.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.4 17.6H9.1C8.7 17.6 8.5 17.3 8.5 17V13.1C8.5 12.7 8.8 12.5 9.1 12.5H14.9C15.3 12.5 15.5 12.8 15.5 13.1V17C15.5 17.4 15.2 17.6 14.9 17.6H9.4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Billing</button>
+      <!-- Custom icon: Keuangan (briefcase/wallet) -->
+      <button class="sidemenu__subitem"><span class="sidemenu__subitem-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6.66663 17.5V13.125M13.3333 17.5V14.5833V13.125M18.1516 16.59C17.9918 16.9036 17.7369 17.1586 17.4233 17.3183C17.0668 17.5 16.6 17.5 15.6666 17.5H4.33329C3.39987 17.5 2.93316 17.5 2.57664 17.3183C2.26304 17.1586 2.00807 16.9036 1.84828 16.59C1.66663 16.2335 1.66663 15.7668 1.66663 14.8333V8.5C1.66663 7.56658 1.66663 7.09987 1.84828 6.74335C2.00807 6.42975 2.26304 6.17478 2.57664 6.01499C2.93316 5.83333 3.39987 5.83333 4.33329 5.83333H15.6666C16.6 5.83333 17.0668 5.83333 17.4233 6.01499C17.7369 6.17478 17.9918 6.42975 18.1516 6.74335C18.3333 7.09987 18.3333 7.56658 18.3333 8.5V11.6667V13.25M13.3333 10.2083V8.75V5.83333C13.3333 5.05836 13.3333 4.67087 13.2481 4.35295C13.0169 3.49022 12.3431 2.81635 11.4803 2.58519C11.1624 2.5 10.7749 2.5 9.99996 2.5C9.22498 2.5 8.83749 2.5 8.51958 2.58519C7.65685 2.81635 6.98298 3.49022 6.75181 4.35295C6.66663 4.67087 6.66663 5.05836 6.66663 5.83333V10.2083" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Keuangan</button>
+      <!-- Aurora icon: accounting -->
+      <button class="sidemenu__subitem"><span class="sidemenu__subitem-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18.39 9.26V7.65C18.38 6.81 18.04 6 17.43 5.41C16.83 4.81 16.01 4.48 15.16 4.48H8.71C7.87 4.49 7.06 4.82 6.46 5.42C5.86 6.01 5.52 6.81 5.5 7.65V9.26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.51 9.59C5.94 9.59 6.37 9.72 6.74 9.97C7.1 10.21 7.39 10.56 7.56 10.96C7.72 11.37 7.77 11.82 7.68 12.25C7.6 12.68 7.39 13.07 7.07 13.38C6.76 13.69 6.37 13.91 5.94 13.99C5.51 14.08 5.06 14.03 4.66 13.86C4.25 13.7 3.9 13.41 3.66 13.05C3.42 12.68 3.29 12.25 3.29 11.81C3.29 11.22 3.52 10.66 3.94 10.24C4.35 9.83 4.92 9.59 5.51 9.59Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 9.59C18.94 9.6 19.37 9.73 19.74 9.97C20.1 10.22 20.38 10.56 20.55 10.97C20.72 11.38 20.76 11.82 20.67 12.25C20.58 12.68 20.37 13.08 20.06 13.39C19.75 13.7 19.35 13.91 18.92 13.99C18.49 14.08 18.05 14.03 17.64 13.86C17.24 13.7 16.89 13.41 16.65 13.05C16.4 12.68 16.27 12.25 16.27 11.81C16.27 11.52 16.33 11.23 16.44 10.96C16.56 10.69 16.72 10.45 16.93 10.24C17.14 10.03 17.38 9.87 17.65 9.76C17.92 9.65 18.21 9.59 18.5 9.59Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.95 4.96V19.08" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.98 19.08H14.91" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Akunting</button>
+      <!-- Aurora icon: report -->
+      <button class="sidemenu__subitem"><span class="sidemenu__subitem-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8.61 4.17C6.95 4.89 5.57 6.12 4.65 7.67C3.74 9.23 3.34 11.04 3.52 12.83C3.66 14.25 4.16 15.61 4.96 16.79C5.77 17.97 6.86 18.93 8.13 19.58C9.4 20.22 10.81 20.54 12.24 20.5C13.67 20.46 15.06 20.06 16.29 19.34C17.89 18.44 19.14 17.03 19.86 15.34" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.52 11.98C20.51 9.73 19.62 7.57 18.02 5.98C16.43 4.39 14.27 3.49 12.02 3.48V11.98H20.52Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Laporan</button>
+    </div>
+  </nav>
+
+  <!-- Decorative stars/sparkles at bottom (per Figma) -->
+  <div class="sidemenu__decor">
+    <svg width="240" height="80" viewBox="0 0 240 80" fill="none">
+      <path d="M30 20l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6z" fill="#fff"/>
+      <path d="M180 10l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5 1.5-4.5z" fill="#fff"/>
+      <path d="M100 50l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3z" fill="#fff"/>
+      <path d="M210 45l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5 1.5-4.5z" fill="#fff"/>
+      <path d="M60 60l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3z" fill="#fff"/>
+    </svg>
+  </div>
+</aside>
+
+<!-- ======================== JavaScript ======================== -->
+<script>
+var SUBMENU_TRANSITION = 'max-height 500ms cubic-bezier(0.22, 0.61, 0.36, 1)';
+
+function toggleSubmenu(menuId) {
+  var btn = document.querySelector('[data-menu="' + menuId + '"]');
+  var submenu = document.getElementById('submenu-' + menuId);
+  if (!btn || !submenu) return;
+  var isOpen = submenu.classList.contains('open');
+  if (isOpen) {
+    // Close: set current height, then animate to 0
+    submenu.style.overflow = 'hidden';
+    submenu.style.maxHeight = submenu.scrollHeight + 'px';
+    submenu.style.transition = SUBMENU_TRANSITION;
+    requestAnimationFrame(function() {
+      submenu.style.maxHeight = '0';
+    });
+    btn.classList.remove('expanded');
+    submenu.addEventListener('transitionend', function() {
+      submenu.classList.remove('open');
+      submenu.style.cssText = '';
+    }, { once: true });
+  } else {
+    // Open: show first, then animate from 0 to scrollHeight
+    submenu.classList.add('open');
+    btn.classList.add('expanded');
+    submenu.style.overflow = 'hidden';
+    submenu.style.maxHeight = '0';
+    submenu.style.transition = SUBMENU_TRANSITION;
+    requestAnimationFrame(function() {
+      submenu.style.maxHeight = submenu.scrollHeight + 'px';
+    });
+    submenu.addEventListener('transitionend', function() {
+      submenu.style.cssText = '';
+    }, { once: true });
+  }
+}
+</script>
+
+
+<div class="right-panel">
+<!--
+  ============================================================
+  NAVIGATION HEADER COMPONENT — Paper.id (Production-accurate)
+  ============================================================
+  Source of truth untuk navigation header di semua halaman prototype.
+  Diambil dari production screenshot 2026-05-19.
+
+  CARA PAKAI:
+  1. Copy CSS ke dalam <style> halaman
+  2. Copy HTML ke dalam .right-panel (sebelum .main-area)
+  3. Sesuaikan: company name, verified status, company ID, username
+  ============================================================
+-->
+
+<!-- ======================== CSS ======================== -->
+<style>
+/* ── Zone 2+3 Right Panel ── */
+.right-panel { flex: 1; display: flex; flex-direction: column; height: 100vh; min-width: 0; }
+
+/* ── Zone 2: Navigation Header ── */
+.nav-header {
+  background: var(--color-surface-light-default);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  gap: var(--spacing-sm);
+}
+.nav-header__left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nav-header__company-name {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  user-select: none;
+}
+.nav-header__company-name:hover { opacity: 0.8; }
+.nav-header__company-id {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  line-height: 18px;
+}
+.nav-header__right {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.nav-header__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 34px;
+  padding: 0 8px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--text-body-font-family);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  transition: background var(--speed-fast) var(--ease-out-regular);
+}
+.nav-header__btn:hover { background: var(--color-light-grey-15); }
+.nav-header__btn:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
+.nav-header__btn-icon {
+  width: 20px; height: 20px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-header__chevron {
+  width: 14px; height: 14px; color: var(--color-text-secondary); flex-shrink: 0;
+}
+.nav-header__notif { position: relative; padding: 0 8px; }
+.nav-header__notif-badge {
+  position: absolute; top: 2px; right: 2px;
+  min-width: 16px; height: 16px;
+  background: var(--color-light-red-50); color: #fff;
+  font-size: 10px; font-weight: 700; border-radius: var(--radius-full);
+  display: flex; align-items: center; justify-content: center; padding: 0 3px;
+  pointer-events: none;
+}
+.nav-header__avatar {
+  width: 22px; height: 22px; border-radius: var(--radius-full);
+  background: var(--color-light-brand-50); color: #fff;
+  font-size: 9px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.nav-header__divider {
+  width: 1px; height: 20px; background: var(--color-border-default);
+  margin: 0 4px; flex-shrink: 0;
+}
+</style>
+
+<!-- ======================== HTML ======================== -->
+<header class="nav-header">
+  <!-- Left: Company info -->
+  <div class="nav-header__left">
+    <div class="nav-header__company-name">
+      Alpanex Store
+      <!-- Blue verified check icon -->
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 1.33L2.67 3.67V7.33C2.67 11 5.2 14.47 8 15.33C10.8 14.47 13.33 11 13.33 7.33V3.67L8 1.33Z" fill="#4199d5"/>
+        <path d="M6.33 9.47L4.87 8L4 8.87L6.33 11.2L12 5.53L11.13 4.67L6.33 9.47Z" fill="white"/>
+      </svg>
+      <svg class="nav-header__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M3.5 5.5L7 9L10.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="nav-header__company-id">ID Perusahaan: 64FVUL</div>
+  </div>
+
+  <!-- Right: Actions -->
+  <div class="nav-header__right">
+    <!-- Notification bell with badge -->
+    <button class="nav-header__btn nav-header__notif" title="Notifikasi">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 3a6 6 0 00-6 6v4l-2 2.5h16L18 13V9a6 6 0 00-6-6z" stroke="#133f5d" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M9.5 19a2.5 2.5 0 005 0" stroke="#133f5d" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-header__notif-badge">3</span>
+    </button>
+    <div class="nav-header__divider"></div>
+    <!-- ID dropdown -->
+    <button class="nav-header__btn">
+      ID
+      <svg class="nav-header__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5L7 9L10.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <!-- Paper Plus -->
+    <button class="nav-header__btn">
+      <span class="nav-header__btn-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </span>
+      Paper Plus
+      <svg class="nav-header__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5L7 9L10.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <!-- Username with avatar -->
+    <button class="nav-header__btn">
+      <span class="nav-header__avatar">AA</span>
+      Adam aria maqfira
+      <svg class="nav-header__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5L7 9L10.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <!-- Bantuan -->
+    <button class="nav-header__btn">
+      Bantuan
+      <svg class="nav-header__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5L7 9L10.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <!-- Settings gear -->
+    <button class="nav-header__btn" title="Pengaturan">
+      <span class="nav-header__btn-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="#133f5d" stroke-width="1.5"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06A1.65 1.65 0 0015 19.4a1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="#133f5d" stroke-width="1.5"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+</header>
+
+
+<main class="main-area">
+  <section class="screen active">
+
+    <!-- ═══ VARIAN A — Slim Bar ═══ -->
+    <div class="sf sf--a">
+      <svg class="sf-store-ic" viewBox="0 0 24 24" fill="none"><path d="M3 9l1.2-4.2A2 2 0 016.1 3.5h11.8a2 2 0 011.9 1.3L21 9M3 9v0a2.6 2.6 0 005.2 0M3 9h5.2m0 0v0a2.6 2.6 0 005.2 0m-5.2 0h5.2m0 0v0a2.6 2.6 0 005.2 0m-5.2 0H21M5 11.5V19a1.5 1.5 0 001.5 1.5h11A1.5 1.5 0 0019 19v-7.5M9.5 20.5v-5h5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="sf-live">Your storefront is <b>live</b>: <span class="sf-url">paper.id/store/pt-artisindo-jaya-magis</span></span>
+      <button class="btn btn--tertiary-plain" onclick="copyLink()">
+        <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Copy Link
+      </button>
+      <span class="sf-gap"></span>
+      <span class="sf-links">
+        <button class="btn btn--tertiary-plain" onclick="shareWA()">
+          <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><path d="M12 3.5a8.5 8.5 0 00-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1012 3.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 9.3c0 .7.5 1.9 1.7 3 1.2 1.2 2.3 1.7 3 1.7.4 0 .9-.3 1.1-.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Share via WhatsApp
+        </button>
+        <button class="btn btn--tertiary-plain" onclick="previewStore()">
+          <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+          Preview Store
+        </button>
+        <button class="btn btn--tertiary-plain" onclick="editStore()">
+          <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><path d="M17 3l4 4-11 11H6v-4L17 3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Edit Store
+        </button>
+        <button class="btn btn--tertiary-plain" onclick="openQR()">
+          <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z" stroke="currentColor" stroke-width="1.5"/></svg>
+          QR Code
+        </button>
+      </span>
+    </div>
+
+    <!-- ═══ VARIAN B — Compact Utility Card ═══ -->
+    <div class="sf sf--b">
+      <!-- Ilustrasi dari design-ops (17-storefront-qrdoor.svg), di-inline biar file self-contained -->
+      <span class="sf-ill" aria-hidden="true"><svg width="150" height="130" viewBox="0 0 150 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#p17Clip)">
+  <g opacity="0.7">
+    <g filter="url(#p17Blur0)"><path d="M85.0005 104.499C85.0005 104.499 45.6853 118.805 31.5005 104.499C15.3616 88.2226 30.8888 67.5059 41.5005 54.9992C54.0072 40.2592 82.5005 62.4992 82.5005 62.4992L85.0005 104.499Z" fill="#5B8EE6"/></g>
+    <g opacity="0.7" filter="url(#p17Blur1)"><path d="M69 27.5002C69 27.5002 110.258 11.6904 123.5 32.5C135.235 50.9416 115 81.5003 115 81.5003L73 73.9999L69 27.5002Z" fill="#A8D76C"/></g>
+  </g>
+  <g transform="translate(19.35,11.27) scale(0.0538)">
+<path d="M 387.124 352.126 C 396.146 347.846 413.001 341.699 422.95 337.563 C 455.718 323.858 488.577 310.372 521.525 297.107 L 921.867 131.827 L 1046.26 81.5329 C 1054.91 78.0012 1118.46 50.769 1123.27 52.0686 C 1126.39 58.4913 1124.86 254.203 1124.64 277.328 L 1125.66 279.465 C 1130.89 279.265 1177.7 258.958 1188.24 256.017 C 1189.98 280.705 1187.94 305.552 1188.77 329.993 C 1171.16 338.22 1143.26 349.527 1124.78 354.538 C 1126.09 395.703 1125.41 441.273 1125.27 482.609 C 1152.71 470.796 1180.23 459.185 1207.83 447.779 C 1222.13 441.923 1239.79 434.375 1254.27 429.652 C 1254.83 450.791 1255.76 479.908 1254.86 500.92 C 1246.69 506.017 1237.07 509.818 1228.21 513.647 C 1193.79 528.521 1158.73 542.432 1124.64 558.048 L 1125.4 661.317 C 1125.41 669.634 1125.95 698.621 1124.83 706.018 C 1124.51 717.718 1123.84 751.205 1124.83 761.931 C 1126.32 777.232 1125.18 803.037 1125.39 819.067 C 1125.95 860.683 1124.65 903.135 1125.1 944.721 C 1145.91 935.097 1172.38 921.91 1193.02 913.822 L 1193.09 983.736 C 1180.3 990.943 1136.17 1012.41 1123.35 1016.04 C 1122.6 1049.86 1122.41 1098.56 1123.62 1132.23 C 1123.72 1152.15 1124.5 1178.04 1123.51 1197.54 C 1122.62 1226.83 1123.38 1258.42 1123.83 1287.82 C 1161.02 1305.17 1197.3 1319.31 1235.5 1334 C 1256.13 1341.94 1275.74 1351.56 1296.69 1359.2 C 1299.95 1334.9 1301.59 1305.04 1303.49 1280.3 L 1314.89 1137.4 C 1316.61 1116.36 1317.96 1089.99 1320.35 1069.56 C 1341.9 1061.69 1371.25 1056.96 1394.3 1054.03 C 1393.44 1046.01 1388.67 1012.8 1390.92 1007.64 C 1395.07 1005.54 1403.16 1007.46 1407.35 1008.94 C 1426.89 1015.87 1446.26 1022.31 1466.03 1028.59 C 1480.49 990.08 1520.01 973.817 1558.63 973.935 C 1594.45 932.95 1647.88 934.895 1687.03 969.149 C 1718.2 996.433 1730.77 1043.33 1733.07 1082.86 C 1733.26 1086.08 1733.39 1089.3 1733.47 1092.52 C 1764.85 1098.31 1796.29 1103.79 1827.78 1108.95 C 1840.28 1111.03 1863.1 1114.09 1874.75 1117.18 C 1879.2 1160.19 1880.36 1210.96 1882.79 1254.78 L 1896.55 1504.16 C 1898.6 1544.18 1900.15 1604.78 1904.85 1643.71 C 1918.21 1644.8 1947.41 1654.04 1960.67 1658.69 C 1950.41 1665.98 1937.89 1671.19 1926.68 1677.07 C 1901.42 1690.32 1875.42 1701.75 1849.86 1714.3 L 1771.6 1753.18 C 1754.56 1761.77 1722.28 1778.62 1704.71 1783.89 C 1693.31 1787.32 1637.25 1772.76 1621.98 1770.92 C 1594.86 1767.65 1566.6 1762.57 1539.87 1757.22 C 1535.38 1756.18 1532.53 1754.98 1529.65 1751.37 C 1471.73 1778.2 1411.59 1808.71 1353.81 1836.47 L 1198.95 1909.06 L 1112.88 1949.16 C 1092.83 1958.73 1062.89 1974.41 1042.47 1982.07 L 479.478 1770.89 L 354.064 1721.85 C 342.86 1717.46 310.282 1706.23 302.494 1700.98 C 299.892 1693.82 301.025 1626.77 301.065 1614.3 C 324.814 1606.5 364.079 1589.48 388.179 1579.37 L 387.653 1486.74 C 387.629 1461.56 387.123 1436.72 387.308 1411.45 C 388.973 1307.16 387.77 1199.63 388.004 1095.15 C 382.104 1096.57 357.88 1106.46 350.822 1109.16 L 351.01 1040.21 C 363.801 1034.23 373.471 1030.56 386.789 1026.37 C 386.719 1014.38 385.783 965.641 387.775 956.426 C 388.927 934.651 387.701 901.839 387.698 878.794 L 387.017 685.315 L 387.041 606.366 C 387.536 549.696 387.492 493.022 386.909 436.353 C 386.812 410.326 385.827 377.709 387.124 352.126 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 1124.64 277.328 L 1125.66 279.465 C 1130.89 279.265 1177.7 258.958 1188.24 256.017 C 1189.98 280.705 1187.94 305.552 1188.77 329.993 C 1171.16 338.22 1143.26 349.527 1124.78 354.538 C 1126.09 395.703 1125.41 441.273 1125.27 482.609 C 1152.71 470.796 1180.23 459.185 1207.83 447.779 C 1222.13 441.923 1239.79 434.375 1254.27 429.652 C 1254.83 450.791 1255.76 479.908 1254.86 500.92 C 1246.69 506.017 1237.07 509.818 1228.21 513.647 C 1193.79 528.521 1158.73 542.432 1124.64 558.048 L 1125.4 661.317 C 1125.41 669.634 1125.95 698.621 1124.83 706.018 C 1123.43 682.985 1124.23 649.732 1124.12 626.11 L 1124.31 456.766 L 1123.98 341.594 C 1123.92 321.955 1123.2 296.438 1124.64 277.328 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 1904.85 1643.71 C 1918.21 1644.8 1947.41 1654.04 1960.67 1658.69 C 1950.41 1665.98 1937.89 1671.19 1926.68 1677.07 C 1901.42 1690.32 1875.42 1701.75 1849.86 1714.3 L 1771.6 1753.18 C 1754.56 1761.77 1722.28 1778.62 1704.71 1783.89 C 1693.31 1787.32 1637.25 1772.76 1621.98 1770.92 C 1594.86 1767.65 1566.6 1762.57 1539.87 1757.22 C 1535.38 1756.18 1532.53 1754.98 1529.65 1751.37 C 1547.88 1741.66 1573.38 1731.14 1592.97 1721.54 C 1635.86 1730.65 1677.42 1743.18 1720.14 1753 C 1737.26 1747.43 1777.8 1727.93 1794.6 1719.91 L 1905.55 1667.19 C 1905.83 1660.9 1905.1 1650.29 1904.85 1643.71 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 1124.83 761.931 C 1126.32 777.232 1125.18 803.037 1125.39 819.067 C 1125.95 860.683 1124.65 903.135 1125.1 944.721 C 1145.91 935.097 1172.38 921.91 1193.02 913.822 L 1193.09 983.736 C 1180.3 990.943 1136.17 1012.41 1123.35 1016.04 C 1124.89 996.393 1124.1 967.38 1124.06 947.137 L 1124.36 833.963 C 1124.37 811.743 1123.58 783.574 1124.83 761.931 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 386.789 1026.37 C 386.719 1014.38 385.783 965.641 387.775 956.426 C 388.386 1002.28 387.922 1049.2 388.004 1095.15 C 382.104 1096.57 357.88 1106.46 350.822 1109.16 L 351.01 1040.21 C 363.801 1034.23 373.471 1030.56 386.789 1026.37 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 502.711 432.619 C 512.131 423.153 523.976 419.831 536.126 414.547 C 559.03 404.486 582.061 394.713 605.212 385.232 L 882.921 271.553 C 918.393 257.074 960.179 242.482 994.123 226.824 L 993.618 910.808 L 993.992 1149.77 C 993.989 1194.84 995.005 1244.64 993.18 1289.23 L 993.033 1308.11 C 981.773 1315.46 949.747 1328.7 936.187 1334.66 L 831.851 1380.6 L 666.402 1453.24 C 613.236 1477.02 557.095 1503.18 502.901 1524.2 C 502.886 1516.57 502.584 1506.85 502.965 1499.39 L 502.711 432.619 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 502.965 1499.39 C 509.828 1487.86 580.308 1460.62 595.689 1453.96 C 652.151 1429.27 708.859 1405.15 765.804 1381.6 C 792.187 1370.41 974.035 1290.09 993.18 1289.23 L 993.033 1308.11 C 981.773 1315.46 949.747 1328.7 936.187 1334.66 L 831.851 1380.6 L 666.402 1453.24 C 613.236 1477.02 557.095 1503.18 502.901 1524.2 C 502.886 1516.57 502.584 1506.85 502.965 1499.39 z" fill="rgb(230,243,249)" transform="translate(0,0)"></path>
+<path d="M 807.824 354.418 C 840.244 349.869 880.436 362.082 902.381 386.544 C 936.405 424.469 942.49 492.198 940.961 541.172 C 925.592 550.088 880.105 565.607 861.464 573.269 L 661.265 655.705 C 649.952 661.19 578.988 691.714 569.14 693.13 L 567.711 692.044 C 566.337 688.976 565.887 686.635 565.718 683.241 C 561.554 599.636 584.254 513.492 639.493 449.176 C 682.106 399.56 741.466 360.081 807.824 354.418 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 816.613 362.429 C 843.755 360.587 871.959 369.824 891.817 388.327 C 929.795 423.714 931.622 487.615 933.888 536.096 C 892.462 550.497 846.815 571.288 805.824 587.547 C 757.424 606.745 707.453 626.618 659.745 647.377 C 631.029 659.106 602.431 671.122 573.955 683.425 C 573.839 662.704 573.704 640.233 575.93 619.71 C 583.018 555.898 609.583 495.815 652.015 447.629 C 694.422 399.942 751.959 366.159 816.613 362.429 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 755.165 388.832 C 758.051 388.763 756.759 388.304 759.206 389.832 C 760.335 395.558 758.204 402.111 758.085 408.731 C 757.881 420.183 757.803 431.593 757.7 443.042 C 757.404 475.768 757.297 508.496 757.38 541.224 C 757.439 558.45 758.087 576.676 757.611 593.768 C 742.056 586.801 716.383 567.033 701.169 556.206 C 679.028 540.403 656.63 524.964 633.983 509.896 L 628.862 517.932 C 655.107 537.284 682.277 555.37 708.819 574.255 C 717.158 580.189 738.929 594.282 745.472 600.963 L 745.218 603.03 C 742.252 605.942 738.702 606.677 734.675 608.066 C 701.637 620.252 668.429 634.995 635.575 647.75 C 626.534 651.26 595.732 664.664 588.194 665.388 L 586.325 663.537 C 583.766 655.555 585.372 648.062 585.921 639.762 C 588.048 607.636 594.813 580.115 605.935 550.058 C 632.111 478.519 685.86 420.45 755.165 388.832 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 748.868 400.866 C 749.837 406.927 748.942 445.39 748.912 454.137 L 748.754 580.346 C 729.966 565.498 705.255 548.719 685.496 534.782 C 669.169 523.294 654.594 513.209 637.828 502.253 C 662.437 459.369 706.607 425.19 748.868 400.866 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 624.803 526.727 C 660.728 551.073 696.362 575.845 731.698 601.038 C 711.567 608.418 691.577 616.175 671.738 624.305 C 646.051 634.414 618.966 644.613 593.903 655.861 C 594.307 613.341 605.88 564.545 624.803 526.727 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 819.127 373.417 C 912.116 373.27 925.213 454.981 923.739 530.242 C 908.658 539.011 863.956 554.947 845.234 562.499 C 828.509 568.514 782.345 589.337 768.099 592.323 C 767.907 585.029 768.391 577.187 768.578 569.831 C 770.151 507.863 768.016 445.449 769.658 383.526 C 784.502 376.536 803.009 374.462 819.127 373.417 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 886.47 407.506 C 912.327 429.801 915.96 492.68 916.038 524.825 C 904.074 530.951 886.262 537.234 873.306 542.277 C 853.515 550.072 833.769 557.976 814.066 565.99 C 806.889 568.841 799.653 571.54 792.362 574.085 C 811.561 543.43 828.158 511.332 846.758 480.277 C 860.901 456.664 873.749 431.924 886.47 407.506 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 810.549 382.385 C 828.121 379.18 845.933 384.021 861.915 390.786 C 854.459 403.625 848.233 417.49 840.986 430.409 C 826.45 456.324 811.751 482.201 797.11 508.058 C 790.702 518.726 783.466 533.412 777.685 544.564 C 776.929 493.544 777.758 440.19 777.803 389.011 C 789.537 385.495 798.412 383.779 810.549 382.385 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 870.605 394.534 C 874.459 397.08 876.855 399.511 880.21 402.631 C 861.73 439.529 837.975 477.926 817.448 513.798 C 806.322 533.241 794.474 558.065 781.994 575.93 C 779.207 578.123 778.822 578.709 776.13 578.395 C 769.947 568.105 806.756 508.837 814.194 495.589 C 832.749 461.766 851.553 428.08 870.605 394.534 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 726.787 1020.02 C 735.531 1019.31 741.157 1022.95 741.339 1032.37 C 743.244 1131.01 741.36 1230.28 743.479 1328.83 C 730.914 1336.94 708.878 1345.24 694.473 1352.08 C 658.038 1369.38 621.364 1385.4 584.251 1401.21 C 578.029 1399.26 570.139 1396.91 569.363 1389.62 C 568.396 1380.53 568.779 1371.47 568.774 1362.35 L 568.719 1314.08 C 569.154 1245.04 568.918 1175.99 568.012 1106.95 C 555.913 1100.78 550.394 1095.22 545.146 1082.94 C 541.183 1080.89 537.245 1078.78 533.334 1076.63 C 518.756 1068.5 501.385 1056 512.223 1035.91 C 515.245 1030.3 522.434 1028.29 528.296 1026.89 C 539.56 1029.05 548.964 1034.95 559.143 1040.32 C 564.026 1036.99 567.8 1034.51 573.582 1032.99 C 582.69 1030.56 592.398 1032.05 600.36 1037.09 C 611.364 1043.99 615.497 1053.15 618.079 1065.12 C 652.036 1050.8 692.503 1032.6 726.787 1020.02 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 728.727 1028.07 C 729.78 1028.58 732.771 1030.21 732.842 1031.56 C 733.721 1048.29 733.416 1065.16 733.607 1081.93 L 735.173 1323.63 C 718.504 1332.82 697.358 1341.49 679.712 1349.63 C 647.715 1364.39 615.647 1379.13 582.9 1392.14 C 579.335 1390.89 577.172 1389.18 577.111 1385.12 C 576.965 1375.37 577.034 1365.61 577.044 1355.85 L 577.052 1296.5 L 576.608 1107.43 C 597.323 1106.55 610.059 1094.16 616.686 1075.08 L 689.977 1043.75 C 701.508 1038.86 717.292 1031.7 728.727 1028.07 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 724.715 1037.99 C 728.174 1042.76 726.924 1291.95 726.964 1320.94 C 709.719 1330 688.715 1338.78 670.65 1346.69 C 642.313 1358.77 614.178 1371.32 586.258 1384.33 C 584.364 1382.46 584.132 1381.51 584.143 1378.8 C 584.52 1289.45 583.609 1199.74 584.939 1110.42 C 603.413 1103.12 608.961 1101.36 618.41 1083.86 C 625.011 1079.48 651.158 1068.34 659.966 1064.78 C 680.452 1056.5 704.129 1045.23 724.715 1037.99 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 717.83 1049.31 C 719.693 1055.7 718.24 1115.1 718.204 1126.5 L 718.534 1316.31 C 678.492 1335.74 632.23 1352.63 593.451 1372.11 L 592.023 1370.89 C 591.059 1363.44 591.628 1349.42 591.682 1341.29 L 591.916 1288.48 C 592.149 1230.88 591.787 1172.36 592.619 1114.88 C 601.19 1112.02 611.577 1108.88 616.487 1101.06 C 623.013 1090.24 631.315 1086.4 642.476 1081.41 C 667.379 1070.26 693.081 1060.83 717.83 1049.31 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 576.927 1041.16 C 590.043 1039.54 601.538 1044.33 606.776 1057.11 C 609.701 1064.18 609.549 1072.16 606.357 1079.11 C 601.729 1089.33 593.898 1094.2 583.836 1097.81 L 583.431 1097.86 C 562.948 1100.97 557.411 1087.58 552.461 1070.9 C 556.092 1054.95 562.033 1047.96 576.927 1041.16 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 523.021 1037.02 C 534.675 1035.47 542.662 1042.28 552.384 1048.51 C 547.615 1056.26 545.966 1060.2 544.113 1068.77 L 543.622 1070.16 L 541.572 1070.48 C 528.668 1065.2 509.632 1051.77 523.021 1037.02 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 932.502 930.303 C 939.049 931.27 942.489 933.564 942.425 940.699 C 942.251 960.155 941.966 979.684 942.049 999.138 L 942.959 1126.56 L 943.125 1199.51 C 943.176 1210.78 943.88 1232.39 942.562 1242.57 C 941.362 1244.84 938.664 1246.46 936.368 1247.49 C 888.974 1268.72 841.681 1292.31 794.055 1312.88 C 790.343 1313.14 785.412 1311.27 784.997 1307.25 C 783.198 1289.82 783.892 1270.98 783.616 1253.4 C 783.063 1214.32 782.774 1175.22 782.75 1136.13 C 782.376 1095.64 781.542 1055.57 784.004 1015.09 C 785.068 997.596 787.216 991.595 804.286 984.49 C 824.98 975.876 847.348 964.64 868.039 956.894 C 884.358 950.786 916.597 932.968 932.502 930.303 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 930.63 939.007 L 932.944 939.245 C 935.906 944.21 934.766 1208.6 935.247 1239.6 C 918.314 1245.57 903.874 1254.19 887.891 1261.12 C 857.152 1274.43 825.97 1290.71 795.239 1303.24 L 792.976 1302.43 C 790.618 1297.8 791.74 1259.78 791.682 1251.22 L 791.148 1136.45 C 790.959 1106.08 791.038 1075.7 791.385 1045.32 C 791.613 1032.18 791.476 1013.91 793.24 1001.18 C 806.671 990.233 841.669 976.934 859.185 969.441 C 882.888 959.037 906.705 948.891 930.63 939.007 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 923.902 948.88 L 926.37 949.329 C 928.021 954.192 927.004 1008.04 927.033 1015.48 C 927.322 1088.67 926.356 1161.96 927.147 1235.14 C 908.388 1245.62 878.218 1257.37 858.141 1267.32 C 845.176 1273.74 812.305 1290.05 800.692 1293.06 C 797.92 1285.14 799.65 1201.15 799.68 1187.23 L 799.507 1002.77 C 811.45 996.854 827.595 990.587 840.218 985.169 C 868.185 973.241 896.081 961.145 923.902 948.88 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 917.003 961.002 C 919.242 964.881 918.298 1024.97 918.284 1034.36 L 918.659 1230.07 C 881.739 1246.85 844.972 1263.97 808.365 1281.42 L 807.349 1008.89 L 917.003 961.002 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 725.431 681.017 C 727.262 680.823 729.148 680.604 730.991 680.669 C 734.009 680.777 738.459 681.8 740.115 684.591 C 742.14 688.002 743.379 911.465 741.642 931.904 C 734.698 936.281 719.116 942.295 711.117 945.585 L 657.694 967.504 C 634.26 977.356 602.801 993.013 580.214 1001.2 C 575.218 1002.32 572.936 1002.73 568.631 999.336 C 565.132 993.596 566.25 937.313 566.274 926.119 L 566.469 811.05 C 566.454 790.61 566.912 767.596 566.013 747.334 C 570.305 745.096 575.474 742.727 580.015 740.939 C 620.857 724.859 661.054 707.289 701.916 691.256 C 709.88 688.131 717.944 685.081 725.431 681.017 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 731.092 688.943 L 732.177 689.288 C 735.194 694.213 734.029 899.504 734.045 925.074 C 727.83 928.957 721.244 932.084 714.547 935.048 C 669.165 955.134 622.653 972.601 577.339 992.835 L 575.345 992.606 C 574.517 986.57 574.844 973.533 574.827 967.03 L 574.771 917.502 L 574.932 752.101 C 625.051 733.699 679.958 708.822 731.092 688.943 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 723.515 701.852 L 724.52 702.149 C 724.919 702.594 725.319 703.04 725.719 703.486 C 725.866 714.401 725.806 743.473 725.79 752.677 C 725.692 809.938 725.866 866.781 726.01 923.833 C 682.425 937.643 630.311 964.959 585.26 980.995 C 583.892 980.592 584.707 980.949 583.07 979.469 C 582.011 973.902 582.706 925.59 582.698 917.17 L 582.173 759.059 C 626.817 743.299 679.482 720.058 723.515 701.852 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 715.658 713.98 L 716.401 714.561 C 719.138 722.333 717.177 897.201 717.184 917.756 C 674.859 934.204 632.929 951.65 591.43 970.08 C 588.921 966.027 590.11 921.432 590.157 912.03 L 590.457 766.039 L 715.658 713.98 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 931.752 597.058 C 944.481 595.173 942.008 610.297 941.971 618.874 C 941.655 691.268 942.187 763.672 941.982 836.064 C 941.971 840.11 941.477 844.021 940.22 847.868 C 931.999 855.879 811.717 904.707 793.372 912.024 C 789.319 912.042 789.541 912.066 786.051 909.954 C 784.02 907.379 783.949 904.286 783.915 901.088 C 783.057 821.217 785.43 740.621 783.366 660.803 C 794.039 652.945 830.216 639.089 843.689 633.243 C 872.69 620.66 902.105 607.989 931.752 597.058 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 932.119 606.079 C 932.222 606.165 932.347 606.231 932.427 606.339 C 935.484 610.439 933.699 818.977 933.711 843.599 C 888.606 864.03 840.119 883.232 794.357 903.133 C 793.215 902.877 793.945 903.121 792.368 901.963 C 791.485 894.841 792.064 884.101 792.056 876.494 L 791.975 827.407 L 792.139 664.04 C 836.63 645.867 887.255 621.712 932.119 606.079 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 918.825 621.016 C 921.57 620.686 922.202 620.263 924.653 621.301 C 926.851 625.306 925.516 814.206 925.772 840.296 C 890.532 853.242 842.333 875.13 807.255 890.303 L 804.54 890.812 L 802.397 889.326 C 799.992 882.435 800.889 822.44 800.899 810.366 L 801.028 670.84 C 840.059 653.683 879.329 637.074 918.825 621.016 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 915.951 630.051 C 918.205 633.45 917.129 816.207 917.045 834.291 C 882.819 850.364 844.602 863.574 810.393 880.253 C 808.226 878.031 809.065 831.837 809.06 825.161 L 809.274 677.052 C 821.791 669.95 838.621 663.555 852.185 657.938 C 873.675 649.189 894.937 639.89 915.951 630.051 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 764.003 925.235 C 817.235 926.147 803.308 1001.51 763.9 1008.06 C 713.222 1015.84 715.392 933.569 764.003 925.235 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 761.37 935.178 C 799.046 929.327 800.804 984.595 764.75 999.272 C 726.504 1005.77 724.721 951.698 761.37 935.178 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 764.103 946.174 C 788.53 948.453 786.142 977.261 762.951 984.282 C 760.703 983.964 758.493 983.423 756.353 982.665 C 737.687 976.142 746.706 952.269 764.103 946.174 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 763.525 954.629 C 767.644 955.174 767.991 955.3 770.741 958.234 C 773.143 964.755 770.669 971.187 764.596 974.259 C 759.473 974.868 758.378 974.9 755.293 970.62 C 753.696 962.585 757.42 958.8 763.525 954.629 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 531.171 1120.08 C 534.719 1119.78 537.59 1119.67 541.064 1120.72 C 546.789 1122.51 551.515 1126.6 554.118 1132.01 C 561.769 1147.66 553.481 1164.69 538.314 1171.85 C 509.692 1177.18 503.555 1134.8 531.171 1120.08 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 534.425 1127.95 C 553.693 1130.38 553.524 1158.58 534.549 1164.07 C 514.05 1159.61 517.287 1136.94 534.425 1127.95 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 532.936 1138.75 C 537.208 1137.22 541.921 1139.39 543.53 1143.63 C 545.139 1147.88 543.052 1152.63 538.838 1154.32 C 536.043 1155.43 532.863 1154.96 530.52 1153.07 C 528.177 1151.18 527.037 1148.17 527.538 1145.2 C 528.038 1142.23 530.102 1139.77 532.936 1138.75 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 1122.88 1297.25 C 1178.91 1322.19 1238.82 1344.01 1295.93 1367.85 C 1293.56 1402.92 1290.04 1438.72 1287.49 1473.97 C 1284.15 1520.28 1280.69 1569.6 1274.65 1615.51 C 1162.84 1664.09 1053.52 1719.12 942.845 1770.34 C 923.312 1779.38 903.872 1788.62 884.531 1798.06 C 872.856 1803.79 858.036 1811.69 846.288 1816.36 C 804.091 1801.11 762 1785.57 720.017 1769.74 C 670.983 1752.15 622.187 1733.9 573.642 1714.99 C 554.549 1707.19 532.591 1699.44 513.123 1692.12 L 405.322 1651.62 C 383.693 1643.59 339.408 1627.74 319.418 1617.66 C 341.131 1607.61 367.378 1597.62 389.744 1588.57 L 404.171 1597.65 C 425.577 1591.02 476.943 1570.16 499.136 1558.77 C 502.09 1557.25 502.053 1548.41 502.211 1544.51 L 845.003 1393.19 C 894.555 1371.25 957.967 1345.9 1004.78 1321.03 C 1025.2 1330.92 1043.74 1341.77 1064.52 1328.57 C 1080.42 1318.47 1111.05 1312.17 1122.88 1297.25 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 978.597 1368.16 C 989.17 1367.05 1036.91 1388.34 1049.46 1393.38 C 1087.01 1408.64 1124.67 1423.64 1162.43 1438.39 L 1234.29 1466.96 C 1242.27 1470.1 1276.05 1481.54 1277.57 1487.48 C 1271.85 1494.18 1194.03 1529.13 1181.42 1535.19 L 1021.9 1612.76 L 927.454 1658.43 C 910.028 1666.93 893.372 1676.38 875.353 1683.66 L 852.247 1675.55 C 753.848 1640.38 657.091 1598.48 558.005 1564.96 C 554.729 1563.85 547.311 1561.52 545.214 1559.03 C 546.231 1555 552.661 1551.65 556.297 1550.12 C 576.912 1541.45 597.595 1533.18 618.064 1524.15 C 693.853 1490 770.026 1456.7 846.568 1424.28 C 869.428 1414.13 892.173 1403.72 914.797 1393.05 C 935.077 1383.68 956.833 1372.91 978.597 1368.16 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 977.737 1377 C 988.532 1375.39 1039.26 1397.75 1052.42 1402.95 L 1180.86 1453.9 C 1207.39 1464.5 1240.32 1478.47 1267.08 1487.12 C 1254.51 1493.31 1239.89 1499.38 1226.73 1505.75 L 1015.11 1607.83 C 987.456 1620.98 959.873 1634.27 932.359 1647.7 C 916.096 1655.74 891.605 1668.94 875.534 1675.06 C 870.38 1673.63 863.281 1670.89 858.098 1669.03 C 810.336 1651.59 761.214 1631.8 713.686 1613.5 C 663.549 1594.4 613.195 1575.88 562.633 1557.93 C 577.981 1550.01 602.325 1540.05 618.488 1532.99 L 748.296 1477.55 C 789.983 1459.47 831.881 1441.49 873.47 1423.24 C 908.543 1407.85 941.879 1391.08 977.737 1377 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 988.145 1387.05 C 1015.28 1398.6 1043.75 1409.09 1071.27 1419.91 C 1120.78 1438.92 1169.3 1460.61 1219.66 1477.32 C 1224.99 1479.09 1247.74 1484.58 1249.53 1488.98 C 1243.45 1493.51 1228.89 1499.74 1221.24 1503.32 L 1177.4 1524.01 C 1094.56 1564.87 1011.19 1604.66 927.323 1643.37 C 910.405 1651.08 892.924 1660.57 876.465 1667.69 L 688.391 1597.63 C 658.873 1586.72 629.269 1575.77 599.818 1564.66 C 594.576 1562.68 585.138 1561.33 585.205 1554.82 L 587.116 1553.54 C 595.654 1553.79 631.335 1568.48 641.679 1572.29 C 692.38 1590.8 742.897 1609.81 793.222 1629.32 C 818.325 1638.83 851.367 1652.37 876.37 1659.97 C 911.286 1642.16 945.109 1627.92 980.066 1611.01 L 1117.03 1545.79 C 1156.26 1526.63 1195.6 1507.72 1235.06 1489.04 C 1221.82 1485.21 1207.84 1481.37 1194.83 1477.02 C 1200.59 1486.92 1195.27 1490.55 1186.81 1494.9 C 1146.59 1515.61 1105.31 1533.97 1064.49 1553.33 L 874.604 1644.93 C 864.203 1642.96 842.321 1633.26 831.058 1628.95 L 723.066 1587.12 C 703.899 1579.84 684.661 1572.74 665.355 1565.83 C 654.477 1561.89 643.516 1558.07 632.92 1553.46 C 627.939 1551.29 626.734 1544.71 629.768 1540.81 C 632.846 1536.86 641.366 1532.88 645.964 1530.93 C 682.952 1515.25 720.024 1499.87 757.147 1484.52 L 879.474 1432.98 C 898.599 1425.06 917.63 1416.91 936.561 1408.54 C 952.648 1401.31 971.584 1391.69 988.145 1387.05 z" fill="rgb(199,206,212)" transform="translate(0,0)"></path>
+<path d="M 986.923 1396.18 C 1028.65 1411.53 1069.66 1428.47 1111 1444.79 C 1130.54 1452.5 1174.77 1467.01 1189.9 1478.31 C 1191.54 1477.87 1193.15 1477.19 1194.83 1477.02 C 1192.59 1480.58 1190.74 1483.79 1187.01 1485.79 C 1173.66 1492.94 1159.34 1499.51 1145.68 1506.02 L 1060.67 1546.09 C 998.709 1575.37 935.293 1608.32 873.048 1636.27 C 870.797 1635.49 859.199 1631.46 857.601 1630.68 C 837.993 1621.1 639.35 1549.61 636.444 1545.17 C 638.894 1542.2 644.764 1540.12 648.537 1538.69 C 667.516 1549.05 693.284 1557.2 714.074 1565.35 C 754.034 1581.32 794.097 1597.03 834.259 1612.48 C 845.585 1616.89 858.062 1622.02 869.443 1625.94 C 900.845 1612.12 958.923 1585.24 988.158 1569.73 C 1006.41 1560.04 1163.21 1488.7 1168.3 1480.78 L 1168.49 1477.44 C 1156.08 1471.14 1119.24 1458.57 1104.44 1452.78 C 1075.37 1441.28 1046.19 1430.05 1016.91 1419.09 C 1003.58 1414.1 985.126 1406.83 971.79 1402.82 C 977.287 1399.78 981.062 1398.43 986.923 1396.18 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 962.831 1406.94 C 983.947 1417.53 1017.22 1427.59 1039.96 1436.68 C 1078.36 1452.01 1116.97 1466.63 1155.86 1480.7 C 1148.52 1483.77 1141.41 1487.27 1134.29 1490.79 C 1078.67 1518.31 1022.02 1543.66 966.583 1571.54 C 946.507 1581.64 926.19 1591.2 905.694 1600.4 C 893.207 1606.01 880.979 1612.31 868.113 1617.02 L 856.246 1612.58 L 707.729 1554.4 C 691.578 1548.03 675.374 1542.4 659.271 1535.75 C 683.422 1525.09 709.087 1515.21 733.615 1504.94 C 810.469 1473.33 886.882 1440.67 962.831 1406.94 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 889.64 1476.29 C 909.278 1475 925.144 1477.77 942.681 1487.06 C 972.289 1502.75 985.086 1526.83 943.44 1536.61 C 924.353 1538.37 902.432 1533.94 885.488 1524.37 C 875.256 1518.58 856.326 1501.03 865.049 1487.84 C 870.113 1480.18 880.917 1477.64 889.64 1476.29 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 892.69 1485.37 C 911.087 1484.35 949.752 1493.96 959.765 1513.16 C 963.829 1520.95 948.535 1525.52 942.839 1526.96 C 920.355 1528.34 892.68 1522.4 877.01 1505.06 C 864.427 1491.14 881.592 1486.63 892.69 1485.37 z" fill="rgb(230,243,249)" transform="translate(0,0)"></path>
+<path d="M 820.994 1511.26 C 878.588 1504 926.982 1564.01 867.237 1573.35 C 815.25 1578.47 756.231 1523.83 820.994 1511.26 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 825.121 1519.36 C 862.585 1516.11 916.19 1556.73 863.76 1565.04 C 828.082 1566.02 766.629 1527.39 825.121 1519.36 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 973.828 1445.17 C 990.001 1444.31 1005.63 1446.53 1019.99 1454.57 C 1044.13 1468.07 1049.32 1493.05 1016.78 1499.17 C 994.743 1501.52 958.292 1494.78 949.971 1470.11 C 945.32 1456.32 962.862 1448.17 973.828 1445.17 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 975.927 1454.17 C 987.99 1453.29 997.931 1454.41 1009.37 1459.45 C 1015.89 1462.33 1035.29 1473.39 1029.1 1482.94 C 1026.22 1487.38 1018.87 1489.72 1013.83 1490.94 C 1001.93 1491.37 993.947 1490.13 982.717 1486.4 C 963.532 1480.02 943.04 1461.42 975.927 1454.17 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1335.06 1086.62 C 1339.84 1087.61 1344.54 1088.95 1349.25 1090.19 C 1382.13 1098.88 1415.32 1106.17 1448.46 1113.73 C 1448.34 1127.74 1447.62 1141.38 1446.92 1155.37 C 1432.93 1160.52 1427.77 1173.63 1439.45 1184.45 C 1443.48 1188.26 1448.89 1190.29 1454.44 1190.07 C 1470.39 1189.37 1473.64 1168.77 1457.97 1158.41 C 1458.6 1144.48 1459.36 1130.56 1460.26 1116.64 C 1482.46 1122.9 1506.39 1127.91 1529.03 1133.1 C 1564.83 1141.31 1599.69 1150.83 1635.17 1159.86 C 1634.52 1169.03 1633.72 1178.18 1632.76 1187.32 C 1626.52 1190.58 1618.07 1197.1 1618.56 1204.75 C 1620.1 1229.29 1656.84 1232.91 1653.11 1203.22 C 1652.35 1197.18 1648.28 1193.49 1643.66 1189.84 C 1645.1 1180.94 1646.2 1171.1 1647.39 1162.09 C 1679.47 1171.21 1711.8 1179.42 1744.35 1186.7 C 1743.69 1223.23 1740.28 1263.38 1738.59 1300.28 L 1725.12 1575.28 C 1724.52 1628.07 1718.89 1682.95 1718.9 1736.79 C 1682.3 1725.75 1643.17 1716.97 1606 1707.14 L 1378.82 1646.65 C 1360.46 1641.81 1342.07 1637.06 1323.67 1632.4 C 1312.77 1629.64 1301.79 1627.64 1291.05 1624.41 C 1294.23 1600.54 1296.26 1573.69 1298.38 1549.67 L 1312.11 1381.74 L 1325.57 1216.94 L 1331.51 1140.58 C 1332.85 1123.24 1334.83 1103.71 1335.06 1086.62 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1625.61 1315.28 C 1674.71 1318.39 1676.43 1423.75 1626.13 1431.34 C 1572.31 1429.32 1576.69 1324.1 1625.61 1315.28 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 1619.17 1332.77 C 1622.62 1333.48 1622.48 1333.31 1625.33 1335.29 C 1626.79 1340.96 1620.39 1352.34 1617.89 1360.6 C 1603.96 1355.15 1609.55 1339.81 1619.17 1332.77 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1428.24 1283.1 C 1477.18 1281.96 1486.24 1381.11 1433.85 1398.03 C 1389.2 1404.85 1375 1305.19 1428.24 1283.1 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 1423.24 1299.75 C 1426.75 1300.15 1428.61 1299.95 1431.25 1302.24 C 1433.18 1307.14 1426.12 1319.78 1423.66 1327.09 C 1419.07 1326.5 1417.78 1325.94 1415.25 1322.82 C 1413.6 1314.9 1419.06 1306.48 1423.24 1299.75 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1469.85 1445.17 C 1473.32 1444.72 1473.41 1444.85 1476.72 1445.37 C 1479.27 1447.99 1478.53 1446.46 1478.94 1450.14 C 1475.41 1454.63 1475.54 1451.24 1471.47 1455.21 C 1482.96 1481.55 1511.7 1498.36 1539.66 1488.04 C 1552.6 1483.27 1559.52 1478.96 1570.48 1470.65 C 1567.45 1467.49 1564.79 1465.24 1564.41 1461.13 L 1566.51 1459.54 C 1573.36 1458.84 1581.26 1467.17 1587.44 1471.96 C 1588.62 1473.49 1588.3 1473.5 1588.81 1475.61 C 1585.01 1482.15 1576.8 1475.84 1573.81 1478.62 C 1538.45 1511.72 1489.1 1504.48 1465.46 1461.74 C 1463.22 1457.69 1456.39 1454.91 1457.84 1449.62 C 1461.4 1446.73 1465.3 1446.29 1469.85 1445.17 z" fill="rgb(19,63,93)" transform="translate(0,0)"></path>
+<path d="M 1272.95 1625.7 C 1273.13 1630.11 1273.14 1630.93 1274.24 1635.14 C 1279.86 1642.77 1327.55 1651.92 1339.93 1654.91 C 1318.07 1663.96 1295.23 1675.1 1273.28 1684.68 C 1255.1 1693.1 1233.64 1703.57 1215.2 1710.81 C 1212.86 1712.39 1188.08 1723.37 1184.11 1725.2 L 1114.56 1757.59 L 873.041 1868.7 C 885.275 1872.47 897.832 1877.76 910.01 1882.03 C 946.376 1894.77 982.075 1909.33 1018.34 1922.29 L 1316.17 1780.54 C 1375.72 1752.06 1435.39 1724.51 1494.04 1694.25 C 1519.68 1700.75 1545.25 1707.51 1570.75 1714.53 C 1451.9 1772.41 1332.66 1829.48 1213.04 1885.76 C 1169.38 1906.29 1126.2 1927.6 1082.17 1947.34 C 1070.47 1952.59 1055.82 1959.25 1045.08 1966.14 C 1022.3 1960.9 1002 1952.09 980.293 1944.3 C 943.063 1930.94 906.058 1915.14 869.065 1901.71 C 758.057 1861.37 647.634 1819.45 537.831 1775.94 C 463.512 1747 391.255 1719.8 317.269 1688.94 C 317.778 1668.26 318.037 1647.58 318.047 1626.89 C 344.243 1639.93 378.345 1651.34 406.048 1661.78 L 546.556 1714.66 C 645.853 1751.47 746.981 1792.52 846.935 1827.12 C 876.573 1811.05 921.303 1791.15 952.516 1776.34 L 1202.69 1658.24 C 1225.95 1647.12 1250.12 1637.27 1272.95 1625.7 z" fill="rgb(230,243,249)" transform="translate(0,0)"></path>
+<path d="M 1215.2 1710.81 C 1212.53 1702.68 1228.93 1694.58 1234.42 1690.28 C 1243.27 1683.35 1263.32 1676.76 1273.28 1684.68 C 1255.1 1693.1 1233.64 1703.57 1215.2 1710.81 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1351.95 1658.48 C 1385.23 1665.86 1417.86 1674.24 1450.74 1683.2 C 1460.65 1685.91 1471.74 1689.26 1481.78 1691.07 C 1469.17 1697.71 1453.23 1706 1440.18 1711.61 L 1201.8 1825.05 C 1141.13 1853.95 1079 1882.33 1018.83 1912.21 C 987.762 1900.53 956.294 1889.94 925.309 1878.03 C 916.553 1874.67 907.709 1871.49 899.352 1867.2 C 1029.51 1805.79 1163.21 1748.14 1293.02 1686.31 C 1312.58 1677.61 1333.29 1668.78 1351.95 1658.48 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1351.95 1658.48 C 1385.23 1665.86 1417.86 1674.24 1450.74 1683.2 C 1460.65 1685.91 1471.74 1689.26 1481.78 1691.07 C 1469.17 1697.71 1453.23 1706 1440.18 1711.61 C 1438.88 1710.44 1437.57 1709.47 1435.77 1709.29 C 1402 1705.94 1368.71 1699.81 1335.19 1694.64 C 1324.78 1693.03 1299.26 1693.37 1293.02 1686.31 C 1312.58 1677.61 1333.29 1668.78 1351.95 1658.48 z" fill="rgb(230,243,249)" transform="translate(0,0)"></path>
+<path d="M 1856.8 1132.99 C 1857.52 1133.14 1858.14 1133.59 1858.79 1133.93 C 1862.24 1184.41 1864.3 1234.54 1867.08 1285.04 L 1877.29 1462.58 C 1879.3 1504.33 1881.85 1546.05 1884.95 1587.73 C 1886.38 1609.39 1887.47 1637.55 1890.08 1658.6 L 1843.5 1639.25 L 1810.3 1625.18 C 1810.1 1547.21 1805.8 1458.25 1801.9 1380.23 C 1798.99 1309.22 1794.96 1238.25 1789.81 1167.35 C 1801.36 1158.35 1842.82 1138.39 1856.8 1132.99 z" fill="rgb(230,243,249)" transform="translate(0,0)"></path>
+<path d="M 428.274 384.259 C 434.067 386.656 451.192 397.351 457.274 400.974 C 459.039 433.228 457.439 480.566 457.352 513.649 L 457.926 707.202 C 456.988 993.478 457.667 1279.76 459.963 1566.03 L 453.588 1569.06 L 429.826 1578.42 L 428.274 384.259 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1083.76 118.872 C 1085.27 121.567 1084.9 123.86 1084.89 127.196 C 1084.59 251.571 1084.27 376 1084.24 500.372 L 1084.86 1307.79 C 1075.56 1312.66 1066.23 1317.03 1056.75 1321.52 L 1056.2 1321.39 C 1053.06 1317.21 1055.93 1146.9 1056 1128.4 L 1055.98 405.962 C 1056.14 324.577 1054.6 241.065 1056 159.957 C 1064.16 146.218 1075.56 133.054 1083.76 118.872 z" fill="rgb(230,243,249)" transform="translate(0,0)"></path>
+<path d="M 1781.06 1170.8 C 1782.04 1171.24 1782.77 1171.37 1782.79 1172.93 C 1782.88 1183.97 1782.97 1194.96 1783.58 1206 C 1790.1 1315.61 1795.2 1425.3 1798.87 1535.04 C 1799.86 1563.03 1801.63 1591.52 1801.2 1619.6 C 1801.02 1630.88 1794.57 1639 1787.86 1647.93 C 1770.45 1671.1 1754.16 1695.34 1737.31 1718.88 C 1734.02 1723.87 1730.7 1727.81 1726.93 1732.42 C 1729.14 1695.24 1730.09 1658.01 1731.67 1620.81 L 1740.83 1428.32 L 1749.41 1268.95 C 1750.75 1242.61 1752.98 1211.89 1752.97 1185.79 C 1762.79 1181.41 1771.72 1176.11 1781.06 1170.8 z" fill="rgb(230,243,249)" transform="translate(0,0)"></path>
+<path d="M 1046.41 174.682 C 1048.5 182.261 1047.1 238.936 1047.09 249.887 L 1047.19 453.048 L 1046.87 1326.3 L 1031.77 1321.08 C 1027.76 1319.63 1026.81 1320.05 1024.54 1317.28 C 1025.44 1304.94 1024.87 1289.41 1024.86 1276.71 L 1024.83 1206.54 L 1024.45 989.636 L 1024.57 477.969 C 1024.18 415.207 1024.24 352.443 1024.75 289.682 L 1024.68 239.518 C 1024.58 201.299 1024.3 206.153 1046.41 174.682 z" fill="rgb(230,243,249)" transform="translate(0,0)"></path>
+<path d="M 466.397 405.472 C 473.77 410.842 482.02 415.167 490.003 419.613 L 489.739 420.339 C 485.923 431.296 487.128 447.083 487.116 458.915 L 487.096 512.51 L 487.068 686.434 L 486.723 1345.15 L 486.709 1501.02 C 486.636 1510.63 486.884 1549.69 485.614 1555.85 L 483.745 1557.06 L 468.291 1563.1 C 467.482 1464.76 467.352 1366.42 467.9 1268.07 L 467.782 925.078 C 467.92 752.338 464.753 577.994 466.397 405.472 z" fill="rgb(230,243,249)" transform="translate(0,0)"></path>
+<path d="M 401.793 368.271 C 407.68 370.929 413.474 375.1 418.896 378.698 C 420.789 402.014 420.047 432.472 420.016 456.233 L 419.529 587.395 L 419.594 983.128 L 420.892 1399.72 L 421.047 1523.33 C 421.072 1537.34 422.1 1569.02 421.123 1581.98 L 419.617 1583.23 C 414.605 1585.19 409.687 1587.58 404.414 1586.67 C 402.029 1582.42 402.637 1393.32 402.625 1374.19 L 402.735 963.08 L 402.681 513.108 C 402.686 464.933 401.315 416.298 401.793 368.271 z" fill="rgb(230,243,249)" transform="translate(0,0)"></path>
+<path d="M 1107.76 83.7808 C 1109.76 85.854 1108.85 120.772 1108.84 127.588 L 1108.82 207.851 L 1108.88 470.752 L 1107.96 1298.7 L 1092.7 1304.68 C 1091.76 1276.08 1092.59 1241.88 1092.62 1212.98 L 1092.73 1040.12 L 1092.66 540.005 L 1092.87 247.561 L 1092.93 159.625 C 1092.93 143.666 1092.62 126.871 1093.52 110.993 C 1093.99 102.71 1102.9 91.1425 1107.76 83.7808 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1073.93 115.929 L 1074.88 116.14 L 1075.05 117.362 C 1068.2 128.76 1057.65 140.905 1050.31 152.234 C 1047.98 155.838 1026.71 163.502 1021.63 165.498 C 1008.23 170.766 994.863 176.141 981.545 181.622 L 816.899 249.246 L 595.525 340.261 L 511.744 374.995 C 496.901 381.046 478.04 389.179 463.009 394.048 C 458.337 391.701 452.584 388.187 447.945 385.511 C 443.374 382.722 438.82 379.905 434.283 377.061 L 676.668 277.409 C 809.391 224.333 941.813 170.506 1073.93 115.929 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1098.74 76.0603 L 1099.74 77.1066 C 1097.42 84.7478 1091.12 94.527 1086.86 101.279 L 624.667 289.864 L 509.158 336.928 C 481.882 347.849 450.042 359.712 423.91 371.991 L 416.148 366.339 L 406.852 360.244 L 804.181 196.344 C 874.425 166.844 944.996 138.134 1015.88 110.217 C 1042.35 99.6352 1072.8 85.1929 1098.74 76.0603 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1040.83 167.194 C 1040.58 168.603 1022.17 195.707 1019.42 200.268 C 1008.11 204.182 996.802 208.611 985.729 213.166 C 874.093 259.082 761.093 303.033 649.86 349.796 L 561.33 386.337 C 541.484 394.605 515.617 406.099 495.695 412.779 L 482.481 405.448 L 471.665 400.501 L 938.636 209.675 C 972.675 195.867 1006.9 180.463 1040.83 167.194 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1478.91 1046.43 C 1528.23 1062.9 1578 1074.75 1628.58 1086.26 C 1632.19 1101.22 1632.97 1127.09 1633.54 1142.72 L 1622.17 1139.41 C 1572.45 1124.22 1515.56 1113.3 1464.41 1100.23 C 1466.37 1084.35 1473.85 1061.66 1478.91 1046.43 z" fill="rgb(119,144,168)" transform="translate(0,0)"></path>
+<path d="M 1651.31 1089.8 C 1689.15 1098.21 1725.21 1105.58 1763.39 1112.3 C 1792.24 1117.37 1815.51 1122.81 1844.95 1125.6 C 1835.58 1131.21 1822.8 1136.54 1812.67 1141 C 1791.31 1149.97 1771.27 1157.22 1752.62 1171.11 C 1718.64 1163.72 1684.22 1153 1650.12 1146.35 C 1652.23 1129.04 1652.15 1107.16 1651.31 1089.8 z" fill="rgb(119,144,168)" transform="translate(0,0)"></path>
+<path d="M 1010.59 219.389 L 1014.98 219.965 L 1015.93 221.486 L 1016.14 944.575 L 1016.76 1197.03 C 1016.77 1207.56 1017.55 1311.47 1015.78 1315.04 C 1013.08 1313.57 1009.17 1312.04 1009.11 1308.5 C 1008.99 1301.7 1009.02 1294.88 1009.01 1288.08 L 1008.98 1236.18 L 1008.93 1049.75 L 1008.01 409.046 C 1007.99 354.161 1007.95 299.273 1008.04 244.391 C 1008.05 237.069 1006.88 225.269 1010.59 219.389 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1621.12 965.341 C 1689.93 964.601 1709.43 1034.13 1712.42 1090.66 L 1682.78 1084.16 C 1671.21 1081.76 1660.02 1079.47 1648.54 1076.6 C 1638.27 1033.82 1625.06 1000.41 1582.06 981.712 C 1594.98 972.278 1605.32 967.409 1621.12 965.341 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1807.96 1633.2 C 1825.47 1642.68 1858.19 1655.74 1877.38 1663.36 C 1847.87 1677.04 1818.46 1690.93 1789.15 1705.04 C 1773.14 1712.26 1756.77 1720.65 1740.6 1728.09 C 1760.73 1702.74 1778.45 1675.1 1797.65 1649.01 C 1801.39 1643.92 1804.98 1638.78 1807.96 1633.2 z" fill="rgb(230,243,249)" transform="translate(0,0)"></path>
+<path d="M 1403.98 1020.63 C 1416.01 1027.38 1445.16 1035.56 1459.6 1040.05 C 1453.2 1059.91 1451.13 1077.45 1449.47 1097.88 C 1429.62 1092.12 1406.32 1086.69 1386.22 1081.8 C 1375.32 1079.07 1364.69 1076.35 1353.53 1074.96 C 1369.72 1073.51 1387.61 1068.53 1403.69 1065.35 C 1411.32 1063.85 1435.52 1059.88 1438.38 1053.49 L 1437.35 1051.56 C 1428.34 1046.47 1418.21 1050.79 1408.2 1053.46 C 1405.97 1043.59 1405.03 1030.89 1403.98 1020.63 z" fill="rgb(119,144,168)" transform="translate(0,0)"></path>
+<path d="M 1570.22 999.494 C 1601.5 1009.13 1618.13 1043.71 1626.79 1072.48 L 1616.1 1070.01 C 1596.95 1064.83 1577.31 1060.99 1557.95 1056.36 C 1557.65 1031.56 1557.33 1021.06 1570.22 999.494 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 1543.02 997.382 C 1544.57 1000.24 1540.41 1008.35 1539.39 1014.09 C 1537.17 1026.54 1537.11 1037.49 1537.03 1049.97 C 1525.64 1046.38 1513.96 1042.97 1502.5 1039.52 L 1487.82 1035.02 C 1500.2 1014.19 1518.48 999.76 1543.02 997.382 z" fill="rgb(255,255,255)" transform="translate(0,0)"></path>
+<path d="M 362.09 1515.02 C 363.285 1515.04 362.472 1514.97 364.452 1515.67 C 366.358 1523.22 365.095 1568.81 365.138 1580.41 C 336.601 1595.4 304.726 1607.01 275.204 1619.54 C 246.914 1631.55 219.123 1643.77 190.675 1655.59 L 190.276 1655.46 C 189.882 1654.99 189.488 1654.52 189.094 1654.04 C 188.945 1635.2 188.315 1606.9 187.921 1588.85 L 314.295 1535.6 C 326.407 1530.51 351.056 1517.86 362.09 1515.02 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 363.218 1325.86 L 364.193 1326.24 C 365.745 1329.62 365.107 1384.89 365.109 1392.54 C 309.547 1416.64 253.644 1439.96 197.42 1462.48 C 195.578 1459.85 196.71 1404.52 196.635 1395.74 C 214.576 1385.91 239.944 1377.93 259.071 1369.8 C 293.407 1355.19 329.521 1341.72 363.218 1325.86 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 369.821 512.816 C 370.458 516.631 370.169 532.031 370.14 536.418 C 369.941 555.383 369.557 574.347 368.986 593.305 C 323.883 609.581 273.779 628.58 230.487 648.784 C 230.16 622.669 229.997 596.552 229.997 570.435 C 256.968 559.822 283.156 548.835 309.935 537.784 C 330.635 529.241 349.53 523.213 369.821 512.816 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 1303.13 588.979 L 1303.95 589.686 C 1305.98 596.894 1305.02 651.061 1305.1 662.134 C 1300.4 664.542 1295.05 666.521 1290.2 668.703 C 1247.6 687.86 1203.66 704.724 1161.56 724.95 L 1160.75 724.691 C 1158.46 719.589 1158.87 661.377 1158.81 652.2 C 1206.55 631.721 1256.11 610.88 1303.13 588.979 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 1312.67 301.021 L 1314.19 301.131 C 1315.78 303.252 1314.99 365.872 1314.98 374.066 C 1305.26 379.921 1272.59 392.542 1261.09 397.344 C 1233.37 409.077 1205.78 421.121 1178.33 433.472 C 1176.82 431 1177.45 365.526 1177.34 356.971 C 1221.53 339.621 1268.06 319.089 1312.67 301.021 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 316.745 1052.08 C 318.927 1056.44 318.063 1111.41 318.061 1121.03 C 303.601 1128.38 280.733 1137.43 265.239 1143.81 C 236.441 1155.68 208.771 1167.18 180.295 1179.88 C 178.281 1174.36 179.04 1118.85 179.023 1108.15 C 204.249 1095.47 240.893 1083.4 267.333 1071.74 C 274.001 1068.8 311.077 1053.54 316.745 1052.08 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 1419.75 361.021 L 1421.88 361.109 C 1423.52 364.726 1422.8 424.536 1422.81 432.469 C 1418.1 434.728 1412.8 436.472 1407.96 438.522 C 1368.63 455.158 1329.8 472.587 1290.42 489.167 L 1288.82 488.816 C 1287.17 484.943 1287.9 427.227 1287.91 418.509 C 1296.92 412.639 1331.57 398.133 1343.14 393.534 C 1368.85 383.319 1394.39 371.356 1419.75 361.021 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 241.586 1469.96 C 245.042 1471.6 243.97 1485.91 243.985 1489.84 C 244.044 1505.61 244.15 1521.37 244.277 1537.13 C 228.283 1545.72 201.897 1554.98 184.722 1562.61 C 159.659 1573.74 134.331 1584.88 108.801 1594.85 L 107.998 1594.19 C 106.012 1587.38 106.971 1537.89 106.67 1526.69 L 241.586 1469.96 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 362.084 793.857 L 364.151 794.222 C 365.827 798.087 365.25 858.61 365.355 867.195 C 350.283 874.007 330.686 881.269 314.909 887.63 C 289.952 897.699 265.11 908.048 240.386 918.677 L 239.255 918.68 C 237.318 916.403 237.884 853.016 237.791 845.846 C 277.864 826.726 321.547 812.827 362.084 793.857 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 1282.45 969.924 L 1283.23 970.136 C 1285.89 973.202 1285.32 1025.46 1285.65 1033.94 C 1241.69 1051.75 1189.71 1077.32 1145.4 1097.06 L 1143.23 1097.65 C 1140.48 1093.76 1142.26 1040.5 1142.42 1032.79 C 1156.53 1025.09 1185.67 1013.01 1201.12 1006.42 C 1228.45 994.752 1255.56 982.584 1282.45 969.924 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 1341.03 844.96 C 1342.33 845.062 1341.58 844.877 1343.12 845.934 C 1343.36 868.554 1343.07 891.758 1343.01 914.417 C 1303.47 932.95 1261.19 950.649 1222.45 969.509 C 1220.25 966.018 1221.65 912.542 1219.82 900.474 C 1260.13 881.766 1300.54 863.261 1341.03 844.96 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 387.308 1411.45 C 387.123 1436.72 387.629 1461.56 387.653 1486.74 C 385.566 1483.91 387.991 1481.76 385.33 1479 C 375.298 1481.93 356.448 1490.35 345.941 1494.86 C 322.909 1504.78 299.928 1514.82 277 1524.98 C 277.058 1502.31 277.471 1478.6 276.626 1456.02 C 298.084 1446.21 321.969 1437.25 343.94 1428.49 C 357.045 1423.26 374.361 1415.45 387.308 1411.45 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 306.92 639.08 C 326.46 629 366.211 612.916 387.041 606.366 L 387.017 685.315 L 385.697 682.857 C 379.477 681.507 318.935 708.714 306.691 712.565 C 307.152 688.073 307.228 663.575 306.92 639.08 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<path d="M 1123.62 1132.23 L 1201.18 1097.25 C 1200.81 1119.24 1200.83 1141.23 1201.22 1163.22 C 1192.36 1168.49 1133 1195.29 1123.51 1197.54 C 1124.5 1178.04 1123.72 1152.15 1123.62 1132.23 z" fill="rgb(209,229,244)" transform="translate(0,0)"></path>
+<metadata><recraft-signature>{"signed_by": "recraft", "signature_b64": "ETQ16G9yFxdPoTE2SnsqlZS0H1e24OSNgtp3OLKLzNugojfX7iFAEKgSdxL/HB8/tNr2IFqUOCc6Fs8ENB1YAQ==", "signing_algo": "Ed25519", "generation_timestamp": 1784106398, "identifier": "a9ce7c0a-96eb-4839-8c13-fc708a1275c4"}</recraft-signature></metadata>
+  </g>
+</g>
+<defs>
+  <filter id="p17Blur0" x="-2.46924" y="22.9521" width="114.47" height="114.905" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="13.5" result="effect1_foregroundBlur"/></filter>
+  <filter id="p17Blur1" x="42" y="-5.25" width="112.161" height="113.75" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="13.5" result="effect1_foregroundBlur"/></filter>
+  <clipPath id="p17Clip"><rect width="150" height="130" fill="white"/></clipPath>
+</defs>
+</svg></span>
+      <div class="sf-main">
+        <div class="sf-title-row">
+          <span class="sf-title">Your storefront</span>
+          <span class="chip-st">Active</span>
+        </div>
+        <div class="sf-desc">This is the link your customers use to browse your catalogue and submit an order — no Paper.id account needed on their end. You confirm every order before any invoice or payment link goes out.</div>
+        <div class="link-box">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="lb-url">paper.id/store/pt-artisindo-jaya-magis</span>
+          <button class="btn btn--tertiary-plain" onclick="copyLink()">Copy Link</button>
+        </div>
+        <div class="sf-links">
+          <button class="btn btn--tertiary-plain" onclick="shareWA()">
+            <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><path d="M12 3.5a8.5 8.5 0 00-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1012 3.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 9.3c0 .7.5 1.9 1.7 3 1.2 1.2 2.3 1.7 3 1.7.4 0 .9-.3 1.1-.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Share via WhatsApp
+          </button>
+          <button class="btn btn--tertiary-plain" onclick="previewStore()">
+            <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+            Preview Store
+          </button>
+          <button class="btn btn--tertiary-plain" onclick="editStore()">
+            <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><path d="M17 3l4 4-11 11H6v-4L17 3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Edit Store
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action bar di bawah box storefront: 1-satunya primary di page (posisi per request user 2026-07-15) -->
+    <div class="action-bar" style="justify-content:flex-end">
+      <button class="btn btn--primary" onclick="goCreate()">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Create New Product
+      </button>
+    </div>
+
+
+    <!-- States: default (tabel) | empty | loading — switch via widget State overlay -->
+    <div data-states>
+
+      <div data-state="default">
+        <div class="table-wrap" id="tableWrap">
+          <!-- In-card toolbar: search kiri + action impact-table kanan (locked 0i) -->
+          <div class="tbl-toolbar">
+            <div class="search">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <input type="text" placeholder="Search products" aria-label="Search products">
+            </div>
+            <button class="btn btn--tertiary" title="Download table data">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download
+            </button>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th class="col-chk"><input class="chk" id="chkAll" type="checkbox" aria-label="Select all" onclick="toggleAll(this)"></th>
+                  <th><span class="th-in">Product Name<svg class="sort-ic" viewBox="0 0 16 16" fill="none"><path d="M8 2l4 5H4l4-5z" fill="currentColor"/><path d="M8 14l-4-5h8l-4 5z" fill="currentColor"/></svg></span></th>
+                  <th><span class="th-in">Product Code (SKU)<svg class="sort-ic" viewBox="0 0 16 16" fill="none"><path d="M8 2l4 5H4l4-5z" fill="currentColor"/><path d="M8 14l-4-5h8l-4 5z" fill="currentColor"/></svg></span></th>
+                  <th class="num"><span class="th-in">Price (IDR)<svg class="sort-ic" viewBox="0 0 16 16" fill="none"><path d="M8 2l4 5H4l4-5z" fill="currentColor"/><path d="M8 14l-4-5h8l-4 5z" fill="currentColor"/></svg></span></th>
+                  <th>Unit</th>
+                  <th>Status</th>
+                  <th class="col-act stk-r"></th>
+                </tr>
+                <tr class="filter-row">
+                  <th class="col-chk"></th>
+                  <th><span class="col-search"><input class="col-f" type="text" placeholder="Search product" aria-label="Filter product name"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></th>
+                  <th><span class="col-search"><input class="col-f" type="text" placeholder="Search SKU" aria-label="Filter SKU"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></th>
+                  <th><span class="col-search"><input class="col-f" type="text" placeholder="Search price" aria-label="Filter price"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></th>
+                  <th><select class="col-f is-placeholder" aria-label="Filter unit" onchange="this.classList.toggle('is-placeholder',!this.value)"><option value="" selected>Select unit</option><option>KG</option><option>PCS</option><option>SACK</option><option>BOX</option></select></th>
+                  <th><select class="col-f is-placeholder" aria-label="Filter status" onchange="this.classList.toggle('is-placeholder',!this.value)"><option value="" selected>Select status</option><option>Active</option><option>Inactive</option></select></th>
+                  <th class="col-act stk-r"></th>
+                </tr>
+              </thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <div class="pg-rows">
+              <span>Jumlah baris:</span>
+              <select id="pgSize" aria-label="Jumlah baris per halaman" onchange="renderRows()"><option>10</option><option>25</option><option>50</option><option>100</option></select>
+            </div>
+            <div class="pg-nav">
+              <button class="pg-btn" aria-label="Previous" disabled><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></button>
+              <div class="pg-pages"><button class="pg-page active">1</button></div>
+              <button class="pg-btn" aria-label="Next" disabled><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></button>
+            </div>
+            <span id="pgInfo">4 dari 4 Produk</span>
+          </div>
+        </div>
+      </div>
+
+      <div data-state="empty">
+        <div class="table-wrap">
+          <div class="empty" style="display:flex">
+            <svg viewBox="0 0 220 170" style="width:180px;height:139px" aria-hidden="true"><use href="#illshop"/></svg>
+            <h3>No products in your storefront yet</h3>
+            <p>Add your first product so customers can start browsing your catalogue and placing orders.</p>
+            <button class="btn btn--secondary" onclick="goCreate()">Create New Product</button>
+          </div>
+        </div>
+      </div>
+
+      <div data-state="loading">
+        <div class="table-wrap" aria-hidden="true" style="padding:var(--spacing-2xl);display:flex;flex-direction:column;gap:var(--spacing-lg)">
+          <div class="skel" style="height:40px;width:320px;border-radius:var(--radius-full)"></div>
+          <div class="skel" style="height:72px;border-radius:var(--radius-sm)"></div>
+          <div class="skel" style="height:52px;border-radius:var(--radius-sm)"></div>
+          <div class="skel" style="height:52px;border-radius:var(--radius-sm)"></div>
+          <div class="skel" style="height:52px;border-radius:var(--radius-sm)"></div>
+          <div class="skel" style="height:52px;border-radius:var(--radius-sm)"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+</main>
+</div>
+</div>
+
+<!-- QR Modal — OVERRIDE: au-dialog sectioned (locked rule) -->
+<div class="scrim" id="qrScrim">
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="qrTitle">
+    <div class="dlg__head">
+      <span class="dlg__title" id="qrTitle">Storefront QR Code</span>
+      <button class="dlg__x" onclick="closeQR()" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="dlg__body">
+      <svg class="qr-big" viewBox="0 0 29 29" width="200" height="200"><use href="#qrsym"/></svg>
+      <span class="sf-url">paper.id/store/pt-artisindo-jaya-magis</span>
+      <span class="dlg__hint">Print or place this QR at your store &amp; packaging — customers scan it to open your catalogue instantly.</span>
+    </div>
+    <div class="dlg__foot">
+      <button class="btn btn--secondary" onclick="closeQR()">Close</button>
+      <button class="btn btn--primary" onclick="downloadQR()">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download PNG
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast (OVERRIDE: 380px radius 8 — keputusan user 2026-05-19) -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#97cc56"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div><b id="toastTitle">Link copied</b><span id="toastSub">Paste &amp; share it with your customers.</span></div>
+</div>
+
+<!-- Switcher varian layout (review-only) -->
+<div class="suxc-var" role="group" aria-label="Top section layout variant (review)">
+  <span class="suxc-var-lbl">Top layout</span>
+  <button data-v="a" onclick="setVariant('a')">A · Slim Bar</button>
+  <button data-v="b" onclick="setVariant('b')">B · Card</button>
+</div>
+
+<script>
+  // SVG ikon Aurora-style (stroke 1.5, round caps)
+  var IC_EYE = '<svg viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>';
+  var IC_PENCIL = '<svg viewBox="0 0 24 24" fill="none"><path d="M17 3l4 4-11 11H6v-4L17 3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var IC_COPY = '<svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+  var IC_TRASH = '<svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 4h4a1 1 0 011 1v2H9V5a1 1 0 011-1zM6 7l1 13a2 2 0 002 2h6a2 2 0 002-2l1-13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var IC_BOX = '<svg viewBox="0 0 24 24" fill="none"><path d="M20.5 7.28L12 12M12 12L3.5 7.28M12 12V21.5M21 16.06V7.94a1 1 0 00-.49-.86l-8-4.62a1 1 0 00-1.02 0l-8 4.62a1 1 0 00-.49.86v8.12a1 1 0 00.49.86l8 4.62a1 1 0 001.02 0l8-4.62a1 1 0 00.49-.86z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  var ROWACT = '<div class="row-act"><button class="row-act__btn" onclick="rowMenu(this)" aria-label="Actions"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/></svg></button>'
+   + '<div class="row-act__menu">'
+   + '<div class="row-act__item">'+IC_EYE+'View Details</div>'
+   + '<div class="row-act__item">'+IC_PENCIL+'Edit</div>'
+   + '<div class="row-act__item">'+IC_COPY+'Duplicate</div>'
+   + '<div class="row-act__sep"></div>'
+   + '<div class="row-act__item row-act__item--danger" onclick="alert(\'Confirmation Modal delete (mock) — saved entity = destructive, focus on Cancel\')">'+IC_TRASH+'Delete</div>'
+   + '</div></div>';
+
+  var PRODUCTS = [
+    {nama:'Elle N Vire Unsalted Butter', sku:'SKU-006', harga:48000, sat:'KG', aktif:true},
+    {nama:'Anchor Whipping Cream 1L', sku:'SKU-014', harga:92500, sat:'PCS', aktif:true},
+    {nama:'Tepung Cakra Kembar 25kg', sku:'SKU-002', harga:285000, sat:'SACK', aktif:true},
+    {nama:'Dark Chocolate Couverture 1kg', sku:'SKU-021', harga:155000, sat:'PCS', aktif:false}
+  ];
+
+  function rp(n){ return 'Rp '+Number(n).toLocaleString('en-US'); }
+  function rowHTML(d,i){
+    // Row click = navigate View Detail (locked default list page); exclusion via closest()
+    return '<tr onclick="rowClick(event,\''+d.sku+'\')">'
+      + '<td class="col-chk"><input class="chk" type="checkbox" aria-label="Select row" onclick="event.stopPropagation();syncAll()"></td>'
+      + '<td><span class="prod-cell"><span class="thumb">'+IC_BOX+'</span><span class="p-name">'+d.nama+'</span></span></td>'
+      + '<td class="muted">'+d.sku+'</td>'
+      + '<td class="num">'+rp(d.harga)+'</td>'
+      + '<td>'+d.sat+'</td>'
+      + '<td><label class="tgl-cell" onclick="event.stopPropagation()"><input class="tgl" type="checkbox" '+(d.aktif?'checked':'')+' onchange="toggleActive(this,'+i+')" aria-label="Product status"><span>'+(d.aktif?'Active':'Inactive')+'</span></label></td>'
+      + '<td class="col-act stk-r">'+ROWACT+'</td></tr>';
+  }
+  function renderRows(){
+    var tb=document.getElementById('tbody');
+    tb.innerHTML = PRODUCTS.map(rowHTML).join('');
+    var info=document.getElementById('pgInfo');
+    if(info) info.textContent=PRODUCTS.length+' dari '+PRODUCTS.length+' Produk';
+    var ca=document.getElementById('chkAll'); if(ca) ca.checked=false;
+  }
+  function rowClick(event, sku){
+    if(event.target.closest('.col-chk,.row-act,.tgl-cell,input,button,label')) return;
+    fireToast('Opening product details '+sku+'…','Detail page is out of scope for this prototype.');
+  }
+  function toggleActive(el,i){
+    PRODUCTS[i].aktif=el.checked;
+    el.nextElementSibling.textContent = el.checked?'Active':'Inactive';
+    fireToast(el.checked?'Product activated':'Product deactivated', el.checked?'It is visible again on your storefront.':'It is now hidden from your storefront.');
+  }
+  function toggleAll(box){ document.querySelectorAll('#tbody .chk').forEach(function(c){c.checked=box.checked}); }
+  function syncAll(){
+    var all=document.querySelectorAll('#tbody .chk'), on=document.querySelectorAll('#tbody .chk:checked');
+    var ca=document.getElementById('chkAll'); if(ca) ca.checked = all.length>0 && all.length===on.length;
+  }
+  renderRows();
+
+  // ── Aksi storefront (mock — feedback via toast) ──
+  var STORE_URL='https://paper.id/store/pt-artisindo-jaya-magis';
+  function copyLink(){
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(STORE_URL).catch(function(){}); }
+    fireToast('Link copied','Paste & share it with your customers.');
+  }
+  function shareWA(){ fireToast('Opening WhatsApp…','WhatsApp share sheet with your store link (mock).'); }
+  function previewStore(){ fireToast('Opening store preview…','Your storefront opens in a new tab (mock).'); }
+  function editStore(){ fireToast('Opening store editor…','Storefront appearance settings (mock).'); }
+  function goCreate(){ fireToast('Opening Create Product form…','Create form is out of scope for this prototype.'); }
+  function downloadQR(){ fireToast('QR downloaded','File storefront-qr.png saved (mock).'); }
+
+  // ── QR modal (sectioned dialog) ──
+  function openQR(){ closeAllRowMenus(); document.getElementById('qrScrim').classList.add('open'); }
+  function closeQR(){ document.getElementById('qrScrim').classList.remove('open'); }
+  document.getElementById('qrScrim').addEventListener('click',function(e){ if(e.target===this) closeQR(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeQR(); });
+
+  // ── Toast ──
+  function fireToast(title,sub){
+    document.getElementById('toastTitle').textContent=title;
+    document.getElementById('toastSub').textContent=sub||'';
+    var t=document.getElementById('toast'); t.classList.add('show');
+    clearTimeout(window._tt); window._tt=setTimeout(function(){t.classList.remove('show')},3200);
+  }
+
+  // ── Switcher varian layout (review-only) ──
+  function setVariant(v){
+    document.body.setAttribute('data-variant',v);
+    document.querySelectorAll('.suxc-var button').forEach(function(b){ b.classList.toggle('on',b.getAttribute('data-v')===v); });
+    try{ localStorage.setItem('sf-variant',v); }catch(e){}
+  }
+  setVariant((function(){ try{ var v=localStorage.getItem('sf-variant'); return (v==='a'||v==='b')?v:'a'; }catch(e){ return 'a'; } })());
+
+  // Sidemenu active: Storefront diasumsikan di bawah "Produk & Stok" (konfirmasi posisi menu ke user)
+  window.addEventListener('load',function(){
+    var m=document.querySelector('[data-menu="produk"]'); if(m) m.classList.add('active');
+  });
+
+  // Row action menu — portal ke <body> + position:fixed (locked 0g; copy dari referensi expense-management)
+  function closeAllRowMenus(){
+    document.querySelectorAll('.row-act.open').forEach(function(x){ x.classList.remove('open'); });
+    document.querySelectorAll('.row-act__menu.open').forEach(function(m){
+      m.classList.remove('open');
+      var owner=m.__owner; if(owner && m.parentNode!==owner){ owner.appendChild(m); }
+      m.style.top=''; m.style.left='';
+    });
+  }
+  function rowMenu(btn){
+    var ra=btn.closest('.row-act');
+    var menu=ra.querySelector('.row-act__menu') || ra.__menu;
+    var isOpen=menu && menu.classList.contains('open');
+    closeAllRowMenus();
+    if(isOpen) return;
+    if(!menu.__owner){ menu.__owner=menu.parentNode; }
+    if(menu.parentNode!==document.body){ document.body.appendChild(menu); }
+    ra.__menu=menu;
+    ra.classList.add('open');
+    menu.classList.add('open');
+    var br=btn.getBoundingClientRect();
+    var mw=menu.offsetWidth, mh=menu.offsetHeight;
+    var vw=document.documentElement.clientWidth;
+    var vh=document.documentElement.clientHeight;
+    var gap=4, pad=8;
+    var left=br.right-mw;
+    var top=br.bottom+gap;
+    if(left<pad) left=pad;
+    if(left+mw>vw-pad) left=vw-pad-mw;
+    if(top+mh>vh-pad){ top=br.top-gap-mh; if(top<pad) top=pad; }
+    menu.style.left=left+'px';
+    menu.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    if(e.target.closest('.row-act__btn')) return;
+    if(e.target.closest('.row-act__menu')){ setTimeout(closeAllRowMenus,0); return; }
+    closeAllRowMenus();
+  });
+  ['scroll','resize'].forEach(function(ev){ window.addEventListener(ev, closeAllRowMenus, true); });
+</script>
+
+
+</body>
+</html>
