@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<!-- ══════════════════════════════════════════════════════════════════
+     HALAMAN SHARE — Spotlight
+     DIBUAT OTOMATIS oleh paper-designer/tools/make-share-page.mjs
+     JANGAN diedit tangan — nanti ketimpa. Edit registry di hub, lalu regenerate.
+
+     Isinya CUMA komponen ini. Nggak ada sidebar, nggak ada daftar komponen,
+     nggak ada jalan ke hub. Penerima bisa lihat SEMUA VERSI komponen ini,
+     tapi komponen lain nggak ada datanya di file ini.
+     ══════════════════════════════════════════════════════════════════ -->
+<title>Spotlight · Paper.id</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;display:flex;flex-direction:column;background:#0f172a;color:#e5e7eb;overflow:hidden}
+  .bar{display:flex;align-items:center;gap:12px;padding:9px 16px;background:#0f172a;border-bottom:1px solid rgba(255,255,255,.08);flex:none;flex-wrap:wrap}
+  .bar h1{font-size:14px;font-weight:700;color:#fff}
+  .bar .status{font-size:11px;color:#64748b}
+  .plat,.tabs{display:flex;gap:4px;background:rgba(255,255,255,.06);border-radius:10px;padding:4px}
+  .plat button,.tabs button{border:0;background:transparent;color:#94a3b8;font:600 12px 'Inter';padding:6px 13px;border-radius:7px;cursor:pointer;display:flex;align-items:center;gap:5px}
+  .plat button:hover,.tabs button:hover{color:#e2e8f0}
+  .tabs button.on{background:#2563eb;color:#fff}
+  .plat button.on{background:#0b1220;color:#fff}
+  .tabs .star{font-size:9px;color:#fbbf24}
+  .bar .sp{flex:1}
+  .bar-btn{border:1px solid rgba(255,255,255,.16);background:transparent;color:#cbd5e1;font:600 12px 'Inter';padding:7px 11px;border-radius:8px;cursor:pointer}
+  .bar-btn:hover{background:rgba(255,255,255,.10);color:#fff}
+  .bar-btn.on{background:#7c3aed;border-color:#7c3aed;color:#fff}
+  .stage{flex:1;position:relative;background:#f1f5f9;min-height:0}
+  iframe{width:100%;height:100%;border:0;display:block}
+  .log{position:absolute;top:0;right:0;height:100%;width:320px;max-width:88vw;background:#111827;border-left:1px solid rgba(255,255,255,.08);box-shadow:-8px 0 28px rgba(0,0,0,.4);transform:translateX(340px);transition:transform .2s;overflow:auto;z-index:20}
+  .log.open{transform:none}
+  .log h2{font-size:13px;font-weight:700;padding:16px 18px 4px;color:#fff}
+  .log .sub{font-size:11px;color:#6b7280;padding:0 18px 12px}
+  .log-item{padding:12px 18px;border-top:1px solid rgba(255,255,255,.06)}
+  .log-item.cur{background:rgba(37,99,235,.10)}
+  .log-v{font:700 12px 'Inter';color:#93c5fd;margin-bottom:2px;display:flex;align-items:center;gap:6px}
+  .log-v .d{font-weight:500;color:#6b7280;font-size:11px}
+  .log-t{font-size:12px;color:#cbd5e1;margin-bottom:7px}
+  .log ul{margin:0;padding-left:16px}
+  .log li{font-size:12px;line-height:1.5;color:#9ca3af;margin-bottom:3px}
+  .log-open-btn{border:0;background:#2563eb;color:#fff;font:600 11px 'Inter';padding:5px 10px;border-radius:6px;cursor:pointer;margin-top:6px}
+  @media (max-width:520px){ .bar h1{font-size:13px} .bar .status{display:none} }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <h1 id="cmp-title"></h1>
+    <span class="status" id="cmp-status"></span>
+    <div class="plat" id="plat"></div>
+    <div class="tabs" id="tabs"></div>
+    <span class="sp"></span>
+    <button class="bar-btn" id="log-btn">📜 Changelog</button>
+  </div>
+  <div class="stage">
+    <iframe id="frame" title="draft"></iframe>
+    <div class="log" id="log"></div>
+  </div>
+
+<script>
+  /* Data CUMA komponen ini. Komponen lain nggak ada di file ini — bukan disembunyiin,
+     tapi emang nggak dikirim. Hapus karakter di URL nggak akan nemu apa-apa. */
+  var C = {"slug":"spotlight","name":"Spotlight","platforms":[{"key":"web","label":"🖥 Web","phase":"Fase 5 · Figma ✅","versions":[{"v":3,"file":"../spotlight/playground-alt-a.html","date":"2026-07-13","title":"Nama final \"Spotlight\" + hover dots + edge case visual + fix","changes":["NAMA FINAL: **Spotlight** (keputusan user). Kandidat lain: Tour (Ant Design) / Walkthrough / Coachmark. Semua komponen + page direname","Spotlight `8621:253341` · Spotlight Content `8619:915` · Spotlight Dots `8618:277683` · _Spotlight/Dot `8618:646` · _Spotlight/Arrow `8628:1191` · Spotlight Scrim `8622:1053`","LABEL TOMBOL = INGGRIS (keputusan user): Skip · Previous · Next · Done. Komponen library dibikin generik","EDGE CASE VISUAL di guideline Figma (6 kasus, pakai komponen beneran + konten Paper): judul panjang · deskripsi panjang · tanpa gambar · tur 5 step · minimal · target mepet tepi","HOVER DOTS: _Spotlight/Dot sekarang Active × State (4 varian). Dot mati di-hover → #89bde5 (action/primary/hover) · dot aktif di-hover → #3385b5 (pressed)","FIX: arrow lama (kotak diputar 45°) rusak — pivot rotasi Figma dari sudut, bukan tengah. Diganti VECTOR segitiga 4 arah, nol rotasi","FIX: border + bg nyasar di 11 dari 12 varian — swapComponent bawa serta override placeholder Pop Over. Di-strip","FIX: tombol Kembali/Lanjut nggak mentok kanan — Spacer layoutGrow 0 → 1","Referensi web (dicek 2026-07-13): Ant Design Tour (anatomi 1:1, dots di footer) · Atlassian Spotlight (dismiss tiap step, maks 3-4 step)","Audit binding tree-walk LOLOS: unbound=[] · wrongCollection=[]"]},{"v":2,"file":"../spotlight/playground-alt-a.html","date":"2026-07-13","title":"Fase 4-5 · Guideline + Figma (LIVE)","changes":["✅ Komponen LIVE di Figma Paperverse","Kartu = INSTANCE component/Pop Over, Content Frame di-SWAP (cara pakai yang diniatkan DS)","Tombol = INSTANCE Button (Tertiary/Secondary/Primary), Head dimatiin via property bawaan","Scrim = cutout beneran via boolean subtract + ring putih","⚠️ Beda dari playground: Steps pindah ke komponen Dots (kalau digabung = 48 varian, nggak kekelola) · Image jadi BOOLEAN bukan SLOT","Guideline 9-section: _output/explorer/spotlight/guideline-alt-a.md"]},{"v":1,"file":"../spotlight/playground-alt-a.html","date":"2026-07-13","title":"Playground · Alt A (property model)","changes":["Komponen BARU — coachmark / feature walkthrough. Masuk dari SPEC (skip Fase 1-2 riset, brief udah lengkap)","Kartu = component/Pop Over Paperverse (live-pull node 5400:4798) — 281px, radius 4, shadow table/option","Tombol Lanjut/Selesai/Kembali/Lewati = Button Paperverse (pill 30px, radius full)","VARIANT: Jumlah step (2–5) · Step aktif · Arah kartu (auto/atas/bawah/kiri/kanan)","BOOLEAN: Gambar · Deskripsi · Dots · Lewati · Kembali · Arrow · Scrim · Ring","SLOT: Judul · Deskripsi · Gambar (16:9)","Keputusan user: Kembali di KANAN sebelah Lanjut · klik scrim = no-op · Esc = Skip · target ilang = skip step · mobile ditunda","⚠️ DRIFT: lebar default = 320px (keputusan user), Pop Over Paperverse aslinya 281px → wajib dicatat di paperverse-vs-aurora.md pas Fase 5","Jumlah dot NGIKUT property \"Jumlah step\" (1 kontrol, 2 efek) — di Figma jadi VARIANT 2-5, pola sama kayak Number of Chips","⚠️ 4 elemen BARU (belum ada di DS, disetujui user buat dibikin): Scrim (#133f5d @70%) · Ring (2px putih) · Dots (8px) · Arrow (12px)","Lolos component-audit.mjs exit 0"]}]}]};
+
+  var frame=document.getElementById('frame'), tabs=document.getElementById('tabs'),
+      plat=document.getElementById('plat'), log=document.getElementById('log');
+  var curPlatKey=null, curV=null;
+  function curPlat(){ return C.platforms.find(function(p){return p.key===curPlatKey;}); }
+
+  document.getElementById('cmp-title').textContent=C.name;
+
+  function selectPlatform(key,v){
+    curPlatKey=key; var p=curPlat();
+    document.getElementById('cmp-status').textContent=p.phase||'';
+    plat.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.dataset.k===key);});
+    tabs.innerHTML='';
+    p.versions.slice().sort(function(a,b){return a.v-b.v;}).forEach(function(ver){
+      var b=document.createElement('button'); b.dataset.v=ver.v;
+      b.innerHTML='v'+ver.v+(ver.v===p.versions[0].v?' <span class="star">✦</span>':'');
+      b.onclick=function(){ showVersion(ver.v); };
+      tabs.appendChild(b);
+    });
+    var exists=(v!=null)&&p.versions.some(function(x){return x.v===v;});
+    showVersion(exists?v:p.versions[0].v);
+  }
+  function showVersion(v){
+    curV=v; var p=curPlat(), ver=p.versions.find(function(x){return x.v===v;});
+    frame.src=ver.file;
+    tabs.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',+b.dataset.v===v);});
+    renderLog(); syncHash();
+  }
+  function renderLog(){
+    var p=curPlat();
+    log.innerHTML='<h2>Changelog · '+C.name+' '+p.label+'</h2><div class="sub">History iterasi platform ini</div>'+
+      p.versions.map(function(ver){
+        return '<div class="log-item'+(ver.v===curV?' cur':'')+'">'+
+          '<div class="log-v">v'+ver.v+(ver.v===p.versions[0].v?' ✦':'')+' <span class="d">· '+ver.date+'</span></div>'+
+          '<div class="log-t">'+ver.title+'</div>'+
+          '<ul>'+ver.changes.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>'+
+          (ver.v===curV?'':'<button class="log-open-btn" data-v="'+ver.v+'">Lihat v'+ver.v+'</button>')+
+        '</div>';
+      }).join('');
+    log.querySelectorAll('.log-open-btn').forEach(function(b){b.onclick=function(){showVersion(+b.dataset.v);};});
+  }
+  document.getElementById('log-btn').onclick=function(){log.classList.toggle('open');this.classList.toggle('on');};
+
+  /* Deep-link versi: #v3 (+ platform kalau ada: #mobile/v2) */
+  var muteHash=false;
+  function syncHash(){
+    var h='#'+(C.platforms.length>1?curPlatKey+'/':'')+'v'+curV;
+    if(location.hash===h) return;
+    muteHash=true; location.hash=h; setTimeout(function(){muteHash=false;},0);
+  }
+  function applyHash(){
+    var parts=location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);
+    var key=null,v=null;
+    parts.forEach(function(x){
+      if(/^v\d+$/.test(x)) v=parseInt(x.slice(1),10);
+      else if(C.platforms.some(function(p){return p.key===x;})) key=x;
+    });
+    selectPlatform(key||C.platforms[0].key, v);
+  }
+  window.addEventListener('hashchange',function(){ if(!muteHash) applyHash(); });
+
+  if(C.platforms.length>1){
+    C.platforms.forEach(function(p){
+      var b=document.createElement('button'); b.innerHTML=p.label; b.dataset.k=p.key;
+      b.onclick=function(){ selectPlatform(p.key); };
+      plat.appendChild(b);
+    });
+  } else { plat.style.display='none'; }
+
+  applyHash();
+</script>
+</body>
+</html>

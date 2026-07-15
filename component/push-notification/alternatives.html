@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══════════════════════════════════════════════════════════════════
+     FASE 3 — 5 ALTERNATIF (treatment beda, token DS).
+     • Tiap alt punya control sendiri: switch severity + toggle section.
+     • Flow: ⭐ Pilih → 🎨 Generate ke Figma muncul (komponen + guideline).
+     • Action = tertiary (text-link). Progress = timer tipis netral.
+     • Layer TOOLING (.expl-*) di <style __TOOLING__> → di-skip diff-audit.
+     • Layer KOMPONEN (.pn*) → semua warna dari aurora-tokens.md.
+     ══════════════════════════════════════════════════════════════════ -->
+<title>Fase 3 · 5 Alternatif · Push Notification</title>
+
+<style>/*__TOOLING__*/
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#eef1f4;color:#0f172a}
+  .expl-topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;background:#0f172a;color:#fff;padding:9px 18px}
+  .expl-tag{font-size:11px;color:#94a3b8}
+  .expl-topbar .sp{flex:1}
+  .expl-btn{border:0;border-radius:8px;padding:8px 14px;font:600 13px 'Inter',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .expl-btn--ghost{background:rgba(255,255,255,.12);color:#fff}
+  .expl-btn--ghost.on{background:#7c3aed}
+  .expl-btn--primary{background:#2563eb;color:#fff}
+  .expl-grid{display:flex;flex-wrap:wrap;gap:26px;padding:28px;align-items:flex-start}
+  .expl-alt{background:#fff;border-radius:14px;box-shadow:0 2px 16px rgba(28,43,54,.08);overflow:hidden;width:436px;border:2px solid transparent}
+  .expl-alt.selected{border-color:#7c3aed;box-shadow:0 4px 24px rgba(124,58,237,.25)}
+  .expl-alt-head{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f6f8fa;border-bottom:1px solid #e6ebf0}
+  .expl-alt-label{font-weight:700;font-size:13px;color:#0f172a}
+  .expl-alt-tag{font-size:11px;color:#7c8b98}
+  .expl-alt-head .sp{flex:1}
+  .expl-alt-act{border:1px solid #d3dbe2;background:#fff;border-radius:7px;padding:6px 11px;font:600 11px 'Inter',sans-serif;cursor:pointer;color:#41525f}
+  .expl-alt-act:hover{background:#f0f3f6}
+  .expl-alt-act.pick.on{background:#7c3aed;border-color:#7c3aed;color:#fff}
+  .expl-alt-act.gen{background:#2563eb;border-color:#2563eb;color:#fff}
+  /* per-alt control bar */
+  .expl-ctrl{padding:10px 14px;border-bottom:1px solid #eef2f7;display:flex;flex-direction:column;gap:8px;background:#fbfcfd}
+  .seg{display:inline-flex;background:#e8edf1;border-radius:8px;padding:3px;gap:2px;align-self:flex-start}
+  .seg button{border:0;background:transparent;padding:5px 12px;border-radius:6px;font:600 12px 'Inter';cursor:pointer;color:#5c7180}
+  .seg button.on{background:#fff;color:#0f172a;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+  .toggles{display:flex;flex-wrap:wrap;gap:10px}
+  .toggles label{display:inline-flex;align-items:center;gap:5px;font:500 12px 'Inter';color:#41525f;cursor:pointer}
+  .toggles input{appearance:none;width:15px;height:15px;border:1.5px solid #c3ccd4;border-radius:4px;cursor:pointer;position:relative}
+  .toggles input:checked{background:#2563eb;border-color:#2563eb}
+  .toggles input:checked::after{content:'';position:absolute;left:4px;top:1px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .expl-canvas{position:relative;padding:24px;background:#fff;display:flex;justify-content:center}
+  body.expl-comment .expl-canvas{cursor:crosshair}
+  .expl-pin{position:absolute;z-index:40;width:24px;height:24px;border-radius:50% 50% 50% 4px;background:#7c3aed;color:#fff;font:700 10px/24px 'Inter';text-align:center;transform:translate(-2px,-26px);box-shadow:0 2px 8px rgba(0,0,0,.4);cursor:pointer}
+  .expl-sel{position:absolute;z-index:39;border:1.5px dashed #7c3aed;background:rgba(124,58,237,.12);border-radius:4px;pointer-events:none}
+  .expl-area{position:absolute;z-index:38;border:1.5px solid #7c3aed;background:rgba(124,58,237,.10);border-radius:4px;pointer-events:none}
+  .expl-panel{position:fixed;top:0;right:0;height:100vh;width:300px;background:#fff;border-left:1px solid #e2e8f0;box-shadow:-4px 0 20px rgba(15,23,42,.12);z-index:60;display:flex;flex-direction:column;transform:translateX(300px);transition:transform .2s}
+  .expl-panel.open{transform:none}
+  .expl-panel-head{padding:14px 16px;border-bottom:1px solid #eef2f7;display:flex;align-items:center}
+  .expl-panel-head h2{font-size:14px;font-weight:700;flex:1}
+  .expl-panel-close{border:0;background:#f1f5f9;border-radius:6px;width:28px;height:28px;cursor:pointer;color:#64748b}
+  .expl-list{flex:1;overflow:auto;padding:12px}
+  .expl-empty{text-align:center;color:#94a3b8;font-size:13px;padding:32px 12px;line-height:1.6}
+  .expl-note{background:#f8fafc;border:1px solid #eef2f7;border-radius:10px;padding:10px 12px;margin-bottom:10px}
+  .expl-note-ref{font:700 11px 'Inter';color:#7c3aed;margin-bottom:4px}
+  .expl-note-text{font-size:13px;line-height:1.5;color:#334155;word-break:break-word}
+  .expl-note-del{float:right;border:0;background:transparent;color:#cbd5e1;cursor:pointer;font-size:14px}
+  .expl-panel-foot{padding:12px 16px;border-top:1px solid #eef2f7}
+  .expl-pop{position:fixed;z-index:70;width:280px;background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 12px 36px rgba(15,23,42,.28);padding:12px}
+  .expl-pop-ref{font:700 11px 'Inter';color:#7c3aed;margin-bottom:8px}
+  .expl-pop textarea{width:100%;min-height:70px;resize:vertical;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;font:400 13px/1.5 'Inter';outline:none}
+  .expl-pop-acts{display:flex;gap:8px;margin-top:8px;justify-content:flex-end}
+  .expl-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(10px);background:#0f172a;color:#fff;font:600 12px 'Inter';padding:10px 18px;border-radius:99px;box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:80;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+  .expl-toast.show{opacity:1;transform:translateX(-50%)}
+  .pv-demo{margin:0 28px 28px;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px}
+  .pv-title{font:600 13px 'Inter';color:#334155;margin-bottom:10px}
+  .pv-btns{display:flex;flex-wrap:wrap;gap:8px}
+  .pv-btns button{border:1px solid #e2e8f0;background:#f8fafc;color:#334155;border-radius:8px;padding:8px 13px;font:600 13px 'Inter';cursor:pointer}
+  .pv-btns button:hover{background:#f1f5f9}
+  #stack{position:fixed;right:22px;bottom:22px;z-index:45;width:380px;display:flex;flex-direction:column-reverse}
+  #stack .pn{margin-top:-52px;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .3s,margin .35s}
+  #stack .pn:first-child{margin-top:0}
+  #stack:hover .pn{margin-top:12px}
+  #stack .pn.enter{transform:translateY(16px) scale(.96);opacity:0}
+  #stack .pn.leave{transform:translateX(120%);opacity:0}
+</style>
+
+<!-- STYLE KOMPONEN (DS — semua warna dari aurora-tokens.md) -->
+<style>
+  :root{
+    --tP:#133f5d; --tS:#718c9e; --tM:#a5b6c1;
+    --surf:#ffffff; --surfR:#f3f6f9; --surfM:#e7eaec;
+    --border:#dde1e5; --borderSub:#f2f4f5;
+    --brand:#4199d5;
+    --font:'Lato','Segoe UI',sans-serif;
+    --shadow-card:0 3px 10px #00000014;   /* Shadow Neutral-01 */
+  }
+  /* severity → CSS var (icon color + tint) */
+  .info{--ic:#4199d5;--tint:#f2f7fc}
+  .success{--ic:#97cc56;--tint:#f7fbf3}
+  .warning{--ic:#f37d51;--tint:#fef6f3}
+  .danger{--ic:#e35273;--tint:#fdf3f5}
+
+  .pn{position:relative;width:380px;background:var(--surf);border:1px solid var(--borderSub);
+    border-radius:12px;box-shadow:var(--shadow-card);overflow:hidden;
+    display:flex;align-items:flex-start;gap:12px;padding:14px;font-family:var(--font)}
+  .pn-lead{flex:none}
+  .pn-ic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--tint);color:var(--ic)}
+  .pn-ic svg{width:20px;height:20px}
+  .pn-main{flex:1;min-width:0}
+  .pn-title{font:600 14px/22px var(--font);color:var(--tP)}
+  .pn-desc{font:400 14px/20px var(--font);color:var(--tS);margin-top:2px}
+  .pn-time{font:400 12px/18px var(--font);color:var(--tM);white-space:nowrap}
+  .pn-aside{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex:none}
+  .pn-x{width:22px;height:22px;border:0;background:transparent;color:var(--tM);cursor:pointer;border-radius:6px;display:flex;align-items:center;justify-content:center;flex:none}
+  .pn-x:hover{background:var(--surfR);color:var(--tP)}
+  .pn-foot{display:flex;align-items:center;margin-top:12px;min-height:20px}
+  .pn-foot .sp{flex:1}
+  /* action = tertiary (text-link biru, no box) */
+  .pn-b--tertiary{background:transparent;border:0;padding:0;font:600 14px var(--font);color:var(--brand);cursor:pointer}
+  .pn-b--tertiary:hover{text-decoration:underline}
+  /* progress = timer tipis NETRAL */
+  .pn-prog{position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--surfM)}
+  .pn-prog i{display:block;height:100%;width:60%;background:var(--tM)}
+  .pn-thumb{width:44px;height:44px;border-radius:8px;background:var(--surfR);border:1px solid var(--borderSub);flex:none}
+
+  /* ── TREATMENTS ── */
+  /* A toast — compact, action inline */
+  .pn--toast{padding:12px;gap:10px}
+  .pn--toast .pn-ic{width:30px;height:30px;border-radius:7px}
+  .pn--toast .pn-ic svg{width:17px;height:17px}
+  .pn--toast .pn-foot{margin-top:8px}
+  /* B icon-forward — icon jadi hero */
+  .pn--iconfwd .pn-ic{width:46px;height:46px;border-radius:9999px}
+  .pn--iconfwd .pn-ic svg{width:24px;height:24px}
+  /* C left accent rail — strip severity, icon netral */
+  .pn--rail{padding-left:18px}
+  .pn--rail .pn-rail{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--ic)}
+  .pn--rail .pn-ic{background:var(--surfM);color:var(--tM)}
+  /* D soft tint — bg kartu = tint severity */
+  .pn--tint{background:var(--tint);border-color:transparent}
+  .pn--tint .pn-ic{background:var(--surf);color:var(--ic)}
+  /* E rich — default thumbnail + timer (dari toggle) */
+</style>
+</head>
+<body data-component="Push Notification">
+
+  <div class="expl-topbar">
+    <span class="expl-tag">Fase 3 · 5 alternatif · tiap alt ada control sendiri · klik 💬 lalu klik kartu · ⭐ Pilih → 🎨 Generate</span>
+    <span class="sp"></span>
+    <button class="expl-btn expl-btn--ghost" id="expl-comment-btn">💬 Komen</button>
+    <button class="expl-btn expl-btn--ghost" id="expl-list-btn">📋 Daftar</button>
+    <button class="expl-btn expl-btn--primary" id="expl-submit-btn">📤 Submit</button>
+  </div>
+
+  <div class="expl-grid" id="grid">
+    <div class="expl-alt" data-alt="A" data-treat="toast"><div class="expl-alt-head"><span class="expl-alt-label">Alt A</span><span class="expl-alt-tag">— Minimal toast</span><span class="sp"></span><button class="expl-alt-act pick" data-act="pick">⭐ Pilih</button><button class="expl-alt-act gen" data-act="figma" style="display:none">🎨 Generate ke Figma</button></div><div class="expl-ctrl"></div><div class="expl-canvas"><div class="host"></div></div></div>
+    <div class="expl-alt" data-alt="B" data-treat="iconfwd"><div class="expl-alt-head"><span class="expl-alt-label">Alt B</span><span class="expl-alt-tag">— Icon-forward</span><span class="sp"></span><button class="expl-alt-act pick" data-act="pick">⭐ Pilih</button><button class="expl-alt-act gen" data-act="figma" style="display:none">🎨 Generate ke Figma</button></div><div class="expl-ctrl"></div><div class="expl-canvas"><div class="host"></div></div></div>
+    <div class="expl-alt" data-alt="C" data-treat="rail"><div class="expl-alt-head"><span class="expl-alt-label">Alt C</span><span class="expl-alt-tag">— Left accent rail</span><span class="sp"></span><button class="expl-alt-act pick" data-act="pick">⭐ Pilih</button><button class="expl-alt-act gen" data-act="figma" style="display:none">🎨 Generate ke Figma</button></div><div class="expl-ctrl"></div><div class="expl-canvas"><div class="host"></div></div></div>
+    <div class="expl-alt" data-alt="D" data-treat="tint"><div class="expl-alt-head"><span class="expl-alt-label">Alt D</span><span class="expl-alt-tag">— Soft tint</span><span class="sp"></span><button class="expl-alt-act pick" data-act="pick">⭐ Pilih</button><button class="expl-alt-act gen" data-act="figma" style="display:none">🎨 Generate ke Figma</button></div><div class="expl-ctrl"></div><div class="expl-canvas"><div class="host"></div></div></div>
+    <div class="expl-alt" data-alt="E" data-treat="rich"><div class="expl-alt-head"><span class="expl-alt-label">Alt E</span><span class="expl-alt-tag">— Rich (thumbnail + timer)</span><span class="sp"></span><button class="expl-alt-act pick" data-act="pick">⭐ Pilih</button><button class="expl-alt-act gen" data-act="figma" style="display:none">🎨 Generate ke Figma</button></div><div class="expl-ctrl"></div><div class="expl-canvas"><div class="host"></div></div></div>
+  </div>
+
+  <div class="pv-demo">
+    <div class="pv-title">👀 Preview — gimana munculnya (alternatif terpilih: <b id="pv-sel">A</b>) · hover buat pause timer</div>
+    <div class="pv-btns">
+      <button onclick="previewPush('info')">+ Info</button>
+      <button onclick="previewPush('success')">+ Success</button>
+      <button onclick="previewPush('warning')">+ Warning</button>
+      <button onclick="previewPush('danger')">+ Danger</button>
+    </div>
+  </div>
+  <div id="stack"></div>
+
+  <div class="expl-panel" id="expl-panel">
+    <div class="expl-panel-head"><h2>Komen</h2><button class="expl-panel-close" id="expl-panel-close">✕</button></div>
+    <div class="expl-list" id="expl-list"></div>
+    <div class="expl-panel-foot"><button class="expl-btn expl-btn--primary" id="expl-submit-btn2" style="width:100%;justify-content:center">📤 Submit semua → copy</button></div>
+  </div>
+
+<script>
+  var IC={
+    info:'<svg viewBox="0 0 20 20" fill="none"><path d="M5 2.5h6l4 4V17a.5.5 0 0 1-.5.5h-9A.5.5 0 0 1 5 17V3a.5.5 0 0 1 .5-.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M11 2.5V6a.5.5 0 0 0 .5.5H15M7.5 10.5h5M7.5 13.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    success:'<svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M6.7 10l2.1 2.1L13.3 7.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    warning:'<svg viewBox="0 0 20 20" fill="none"><path d="M8.6 3.2L2.3 14a1.6 1.6 0 0 0 1.4 2.4h12.6A1.6 1.6 0 0 0 17.7 14L11.4 3.2a1.6 1.6 0 0 0-2.8 0z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 8v3.4M10 14h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    danger:'<svg viewBox="0 0 20 20" fill="none"><path d="M10 2.5l6 2.2v4.6c0 3.7-2.5 6.3-6 7.7-3.5-1.4-6-4-6-7.7V4.7l6-2.2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7.5 10l1.8 1.8L13 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
+  var IC_X='<svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M14 6L6 14M6 6l8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+  var SEV={
+    info:{title:'Invoice #089 telah dibayar',desc:'PT Maju Bersama melunasi Rp 4.500.000 via BCA.',cta:'Lihat Invoice'},
+    success:{title:'Pembayaran berhasil diterima',desc:'Rp 4.500.000 sudah masuk ke rekening Anda.',cta:'Lihat Bukti'},
+    warning:{title:'Invoice jatuh tempo 3 hari lagi',desc:'INV-0072 belum dibayar. Jatuh tempo 3 Juli.',cta:'Kirim Pengingat'},
+    danger:{title:'Login dari perangkat tidak dikenal',desc:'Akses dari Jakarta, Chrome. Bukan kamu?',cta:'Amankan Akun'}};
+  var TOG=[['icon','Icon'],['timestamp','Waktu'],['action','Action'],['progress','Progress'],['thumbnail','Thumbnail']];
+  // default toggle per treatment
+  var DEF={ toast:{icon:1,action:1,timestamp:0,progress:0,thumbnail:0},
+    iconfwd:{icon:1,action:1,timestamp:1,progress:0,thumbnail:0},
+    rail:{icon:1,action:1,timestamp:1,progress:1,thumbnail:0},
+    tint:{icon:1,action:1,timestamp:1,progress:0,thumbnail:0},
+    rich:{icon:1,action:1,timestamp:1,progress:1,thumbnail:1} };
+
+  var state={}, selectedId='A';
+  function buildCard(treat,sev,tg){
+    var s=SEV[sev];
+    var icon=tg.icon?'<div class="pn-lead"><div class="pn-ic">'+IC[sev]+'</div></div>':'';
+    var thumb=tg.thumbnail?'<div class="pn-thumb"></div>':'';
+    var action=tg.action?'<button class="pn-b--tertiary">'+s.cta+'</button>':'';
+    var time=tg.timestamp?'<span class="pn-time">baru saja</span>':'';
+    var prog=tg.progress?'<div class="pn-prog"><i></i></div>':'';
+    var rail=(treat==='rail')?'<div class="pn-rail"></div>':'';
+    var foot=(action||time)?'<div class="pn-foot">'+action+'<span class="sp"></span>'+time+'</div>':'';
+    var aside='<div class="pn-aside"><button class="pn-x">'+IC_X+'</button>'+thumb+'</div>';
+    return '<div class="pn pn--'+treat+' '+sev+'">'+rail+icon+
+      '<div class="pn-main"><div class="pn-title">'+s.title+'</div><div class="pn-desc">'+s.desc+'</div>'+foot+'</div>'+
+      aside+prog+'</div>';
+  }
+  function renderAlt(id){
+    var alt=document.querySelector('.expl-alt[data-alt="'+id+'"]');
+    var st=state[id];
+    alt.querySelector('.host').innerHTML=buildCard(alt.getAttribute('data-treat'),st.sev,st.tg);
+  }
+  // init controls + card per alt
+  document.querySelectorAll('.expl-alt').forEach(function(alt){
+    var id=alt.getAttribute('data-alt'), treat=alt.getAttribute('data-treat');
+    state[id]={sev:'info',tg:Object.assign({},DEF[treat])};
+    var ctrl=alt.querySelector('.expl-ctrl');
+    var seg='<div class="seg">'+['info','success','warning','danger'].map(function(s){
+      return '<button data-sev="'+s+'"'+(s==='info'?' class="on"':'')+'>'+s.charAt(0).toUpperCase()+s.slice(1)+'</button>';}).join('')+'</div>';
+    var tgs='<div class="toggles">'+TOG.map(function(t){
+      return '<label><input type="checkbox" data-tg="'+t[0]+'"'+(state[id].tg[t[0]]?' checked':'')+'>'+t[1]+'</label>';}).join('')+'</div>';
+    ctrl.innerHTML=seg+tgs;
+    ctrl.querySelectorAll('.seg button').forEach(function(b){b.onclick=function(){
+      state[id].sev=b.getAttribute('data-sev');
+      ctrl.querySelectorAll('.seg button').forEach(function(x){x.classList.toggle('on',x===b);});
+      renderAlt(id);};});
+    ctrl.querySelectorAll('.toggles input').forEach(function(cb){cb.onchange=function(){
+      state[id].tg[cb.getAttribute('data-tg')]=cb.checked?1:0; renderAlt(id);};});
+    renderAlt(id);
+  });
+
+  // ── flow: Pilih → Generate muncul ──
+  document.querySelectorAll('.expl-alt-act.pick').forEach(function(btn){
+    btn.onclick=function(){
+      var alt=btn.closest('.expl-alt'), id=alt.getAttribute('data-alt');
+      document.querySelectorAll('.expl-alt').forEach(function(a){a.classList.remove('selected');});
+      document.querySelectorAll('.expl-alt-act.pick').forEach(function(b){b.classList.remove('on');});
+      document.querySelectorAll('.expl-alt-act.gen').forEach(function(g){g.style.display='none';});
+      alt.classList.add('selected'); btn.classList.add('on');
+      alt.querySelector('.gen').style.display='inline-block';
+      selectedId=id; var pvs=document.getElementById('pv-sel'); if(pvs)pvs.textContent=id;
+      copy('pilih: Push Notification — Alt '+id,'⭐ Alt '+id+' dipilih');
+    };
+  });
+  document.querySelectorAll('.expl-alt-act.gen').forEach(function(btn){
+    btn.onclick=function(){
+      var id=btn.closest('.expl-alt').getAttribute('data-alt');
+      copy('figma: Push Notification — Alt '+id+' (generate komponen + guideline)','🎨 Command Generate di-copy — paste ke chat');
+    };
+  });
+
+  /* ═══ PREVIEW — munculnya (stack + timer + pause on hover) ═══ */
+  var DUR={info:5000,success:5000,warning:8000,danger:8000};
+  var stack=document.getElementById('stack');
+  function pvDismiss(el){el.classList.add('leave');setTimeout(function(){el.remove();},350);}
+  function pvAuto(el,ms){var bar=el.querySelector('.pn-prog i');var rem=ms,tot=ms,ts;
+    function start(){ts=Date.now();el._t=setTimeout(function(){pvDismiss(el);},rem);
+      if(bar){var f=rem/tot;bar.style.transition='none';bar.style.width=(f*100)+'%';void bar.offsetWidth;bar.style.transition='width '+rem+'ms linear';bar.style.width='0%';}}
+    function pause(){clearTimeout(el._t);rem-=Date.now()-ts;if(rem<0)rem=0;if(bar){var w=getComputedStyle(bar).width;bar.style.transition='none';bar.style.width=w;}}
+    el.onmouseenter=pause;el.onmouseleave=start;start();}
+  function previewPush(sev){
+    var st=state[selectedId]||state['A'];
+    var treat=document.querySelector('.expl-alt[data-alt="'+selectedId+'"]').getAttribute('data-treat');
+    var wrap=document.createElement('div');wrap.innerHTML=buildCard(treat,sev,st.tg);
+    var el=wrap.firstElementChild;el.classList.add('enter');
+    el.querySelector('.pn-x').onclick=function(){pvDismiss(el);};
+    stack.appendChild(el);requestAnimationFrame(function(){el.classList.remove('enter');});
+    pvAuto(el,DUR[sev]);
+    var all=stack.querySelectorAll('.pn');if(all.length>4)pvDismiss(all[0]);
+  }
+
+  /* ═══ REVIEW TOOLING ═══ */
+  var COMPONENT=document.body.getAttribute('data-component')||'Component';
+  var KEY='expl:'+location.pathname, notes=[];
+  try{notes=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(notes))notes=[];}catch(e){notes=[];}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(notes));}catch(e){}}
+  var commentMode=false,panel=document.getElementById('expl-panel'),cbtn=document.getElementById('expl-comment-btn');
+  function toast(m){var t=document.querySelector('.expl-toast');if(!t){t=document.createElement('div');t.className='expl-toast';document.body.appendChild(t);}t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show');},2200);}
+  function copy(txt,ok){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast(ok);},fb);}else fb();function fb(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast(ok);}catch(e){toast('Copy manual');}ta.remove();}}
+  function setC(v){commentMode=v;document.body.classList.toggle('expl-comment',v);cbtn.classList.toggle('on',v);toast(v?'Mode komen ON — klik kartu':'Mode komen OFF');if(v)setP(true);}
+  function setP(v){panel.classList.toggle('open',v);}
+  cbtn.onclick=function(){setC(!commentMode);};
+  document.getElementById('expl-list-btn').onclick=function(){setP(!panel.classList.contains('open'));};
+  document.getElementById('expl-panel-close').onclick=function(){setP(false);};
+  document.addEventListener('keydown',function(e){if((e.key==='c'||e.key==='C')&&document.activeElement.tagName!=='TEXTAREA')setC(!commentMode);});
+  document.querySelectorAll('.expl-canvas').forEach(function(canvas){
+    canvas.addEventListener('mousedown',function(e){
+      if(!commentMode)return; if(e.button)return; if(e.target.closest('.expl-pin,.expl-area'))return;
+      e.preventDefault();
+      var altEl=canvas.closest('.expl-alt'), alt=altEl.getAttribute('data-alt');
+      var r=canvas.getBoundingClientRect(), sx=e.clientX-r.left, sy=e.clientY-r.top;
+      var sel=document.createElement('div');sel.className='expl-sel';canvas.appendChild(sel);
+      var moved=false;
+      function mm(ev){var x=ev.clientX-r.left,y=ev.clientY-r.top,l=Math.min(x,sx),t=Math.min(y,sy),w=Math.abs(x-sx),h=Math.abs(y-sy);if(w>3||h>3)moved=true;sel.style.left=l+'px';sel.style.top=t+'px';sel.style.width=w+'px';sel.style.height=h+'px';}
+      function mu(ev){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);sel.remove();
+        var x=ev.clientX-r.left,y=ev.clientY-r.top,l=Math.min(x,sx),t=Math.min(y,sy),w=Math.abs(x-sx),h=Math.abs(y-sy);
+        var tg=document.elementFromPoint(ev.clientX,ev.clientY)||ev.target;var tt=(tg.innerText||tg.textContent||'').replace(/\s+/g,' ').trim();var ref=tt.slice(0,50);
+        if(moved&&(w>6||h>6))openPop(ev.clientX,ev.clientY,{alt:alt,x:l,y:t,w:w,h:h,ref:ref});
+        else openPop(ev.clientX,ev.clientY,{alt:alt,x:sx,y:sy,ref:ref});
+      }
+      document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);
+    });
+  });
+  function openPop(cx,cy,ctx){
+    document.querySelectorAll('.expl-pop').forEach(function(p){p.remove();});
+    var pop=document.createElement('div');pop.className='expl-pop';
+    pop.style.left=Math.min(cx,window.innerWidth-296)+'px';pop.style.top=Math.min(cy,window.innerHeight-160)+'px';
+    pop.innerHTML='<div class="expl-pop-ref">Alt '+ctx.alt+(ctx.ref?' · "'+ctx.ref.replace(/</g,'&lt;')+'"':'')+'</div><textarea placeholder="Catatan..."></textarea><div class="expl-pop-acts"><button class="expl-btn expl-btn--ghost" style="background:#f1f5f9;color:#64748b" data-x>Batal</button><button class="expl-btn expl-btn--primary" data-ok>Simpan</button></div>';
+    document.body.appendChild(pop);var ta=pop.querySelector('textarea');ta.focus();
+    pop.querySelector('[data-x]').onclick=function(){pop.remove();};
+    pop.querySelector('[data-ok]').onclick=function(){var v=ta.value.trim();if(!v){pop.remove();return;}notes.push({alt:ctx.alt,x:ctx.x,y:ctx.y,w:ctx.w,h:ctx.h,ref:ctx.ref,text:v});save();render();pop.remove();toast('Komen tersimpan');};
+  }
+  function render(){
+    document.querySelectorAll('.expl-pin,.expl-area').forEach(function(p){p.remove();});
+    notes.forEach(function(n,i){var canvas=document.querySelector('.expl-alt[data-alt="'+n.alt+'"] .expl-canvas');if(canvas){if(n.w&&n.h){var a=document.createElement('div');a.className='expl-area';a.style.left=n.x+'px';a.style.top=n.y+'px';a.style.width=n.w+'px';a.style.height=n.h+'px';canvas.appendChild(a);}var pin=document.createElement('div');pin.className='expl-pin';pin.style.left=n.x+'px';pin.style.top=n.y+'px';pin.textContent=i+1;pin.onclick=function(ev){ev.stopPropagation();setP(true);};canvas.appendChild(pin);}});
+    var list=document.getElementById('expl-list');
+    if(!notes.length){list.innerHTML='<div class="expl-empty">Belum ada komen.<br>Nyalain 💬 lalu klik kartu.</div>';return;}
+    list.innerHTML='';notes.forEach(function(n,i){var el=document.createElement('div');el.className='expl-note';el.innerHTML='<button class="expl-note-del">✕</button><div class="expl-note-ref">#'+(i+1)+' · Alt '+n.alt+(n.ref?' · "'+n.ref.replace(/</g,'&lt;')+'"':'')+'</div><div class="expl-note-text">'+n.text.replace(/</g,'&lt;')+'</div>';el.querySelector('.expl-note-del').onclick=function(){notes.splice(i,1);save();render();};list.appendChild(el);});
+  }
+  function submit(){if(!notes.length){toast('Belum ada komen');return;}var L=['[REVIEW] '+COMPONENT+' (Fase 3 · alternatif)',''];notes.forEach(function(n,i){L.push((i+1)+'. Alt '+n.alt+(n.w?' [area '+Math.round(n.w)+'×'+Math.round(n.h)+']':'')+(n.ref?' ("'+n.ref+'")':'')+': '+n.text);});L.push('','(paste ke chat buat lanjut)');copy(L.join('\n'),'📋 '+notes.length+' komen di-copy');}
+  document.getElementById('expl-submit-btn').onclick=submit;document.getElementById('expl-submit-btn2').onclick=submit;
+  render();
+</script>
+</body>
+</html>

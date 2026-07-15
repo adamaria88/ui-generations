@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playground · Onboarding Spotlight — Alt A</title>
+
+<!-- ═══════ STYLE #1 · TOOLING (di-skip audit) ═══════ -->
+<style>
+  /* __TOOLING__ */
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Lato',-apple-system,'Segoe UI',sans-serif; background:#eef1f4; color:#1c2b36; }
+  .expl-topbar { position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:12px;
+    background:#1c2b36; color:#fff; padding:10px 20px; box-shadow:0 2px 12px rgba(0,0,0,.25); }
+  .expl-topbar .ttl { font-size:14px; font-weight:700; }
+  .expl-topbar .sp { flex:1; }
+  .expl-btn { border:0; border-radius:8px; padding:8px 14px; font:600 13px 'Lato',sans-serif; cursor:pointer;
+    display:inline-flex; align-items:center; gap:6px; transition:filter .12s,background .12s; }
+  .expl-btn--ghost { background:rgba(255,255,255,.12); color:#fff; }
+  .expl-btn--ghost:hover { background:rgba(255,255,255,.22); }
+  .expl-btn--ghost.on { background:#7B61FF; }
+  .expl-btn--primary { background:#0A84FF; color:#fff; }
+  .expl-hint { padding:10px 20px; font-size:12px; color:#5c7180; background:#e2e8ee; border-bottom:1px solid #d3dbe2; }
+  .expl-hint b { color:#1c2b36; }
+
+  .pg { display:flex; align-items:flex-start; min-height:calc(100vh - 90px); }
+  .pg-panel { width:300px; flex:none; background:#fff; border-right:1px solid #e2e8ee; padding:18px 16px; align-self:stretch; overflow-y:auto; max-height:calc(100vh - 90px); }
+  .pg-panel h3 { font-size:11px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:#8494a0; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+  .pg-grp { margin-bottom:20px; }
+  .pg-seg { display:flex; background:#eef1f4; border-radius:8px; padding:3px; }
+  .pg-seg button { flex:1; border:0; background:transparent; color:#5c7180; font:700 12px 'Lato',sans-serif; padding:6px 0; border-radius:6px; cursor:pointer; }
+  .pg-seg button.on { background:#fff; color:#1c2b36; box-shadow:0 1px 2px rgba(0,0,0,.14); }
+  .pg-seg--wrap { flex-wrap:wrap; }
+  .pg-seg--wrap button { flex:1 0 44%; }
+  .pg-row { display:flex; align-items:center; gap:8px; padding:8px 2px; border-bottom:1px solid #f1f4f7; }
+  .pg-row:last-child { border-bottom:0; }
+  .pg-row .lbl { font-size:13px; font-weight:600; color:#2b3b47; }
+  .pg-row .tag, .pg-legend .tag, .pg-panel h3 .tag { font-size:9px; font-weight:800; letter-spacing:.03em; text-transform:uppercase; padding:2px 6px; border-radius:5px; }
+  .tag-variant { background:#e0eaff; color:#3b5bdb; }
+  .tag-bool    { background:#e6f4ea; color:#1e7e34; }
+  .tag-slot    { background:#eae6ff; color:#6b4dff; }
+  .tag-swap    { background:#e0f2f1; color:#0d9488; }
+  .tag-new     { background:#ffe8e0; color:#c2410c; }
+  .pg-row .sp { flex:1; }
+  .sw { width:38px; height:22px; border-radius:99px; background:#cbd5e0; position:relative; cursor:pointer; transition:background .15s; flex:none; }
+  .sw::after { content:''; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:#fff; transition:transform .15s; box-shadow:0 1px 2px rgba(0,0,0,.3); }
+  .sw.on { background:#0A84FF; }
+  .sw.on::after { transform:translateX(16px); }
+  .pg-range { width:100%; }
+  .pg-val { font:700 12px 'Lato',sans-serif; color:#0A84FF; }
+  .pg-legend { font-size:11px; line-height:1.7; color:#7c8b98; }
+  .pg-legend b { color:#2b3b47; }
+  .pg-warn { font-size:11px; line-height:1.6; color:#8a5a2b; background:#fff6e8; border:1px solid #f3ddb8; border-radius:8px; padding:8px 10px; }
+
+  .pg-stagewrap { flex:1; min-width:0; padding:28px; }
+  .pg-note { font-size:12px; color:#8494a0; margin-bottom:16px; max-width:520px; line-height:1.5; }
+  .pg-note b { color:#41525f; }
+
+  .expl-canvas { position:relative; }
+  body.expl-comment .expl-canvas { cursor:crosshair; }
+  .expl-pin { position:absolute; z-index:140; width:26px; height:26px; border-radius:50% 50% 50% 4px; background:#7B61FF; color:#fff;
+    font:700 11px/26px 'Lato',sans-serif; text-align:center; transform:translate(-2px,-28px); box-shadow:0 2px 8px rgba(0,0,0,.4); cursor:pointer; }
+  .expl-sel { position:absolute; z-index:139; border:1.5px dashed #7B61FF; background:rgba(123,97,255,.12); border-radius:4px; pointer-events:none; }
+  .expl-area { position:absolute; z-index:138; border:1.5px solid #7B61FF; background:rgba(123,97,255,.10); border-radius:4px; pointer-events:none; }
+  .expl-pop { position:fixed; z-index:170; width:280px; background:#fff; border:1px solid #dbe2e8; border-radius:12px; box-shadow:0 12px 36px rgba(28,43,54,.28); padding:12px; }
+  .expl-pop-ref { font:700 11px 'Lato',sans-serif; color:#7B61FF; margin-bottom:8px; }
+  .expl-pop textarea { width:100%; min-height:70px; border:1px solid #d3dbe2; border-radius:8px; padding:8px 10px; font:400 13px/1.5 'Lato',sans-serif; outline:none; }
+  .expl-pop-acts { display:flex; gap:8px; margin-top:8px; justify-content:flex-end; }
+  .expl-toast { position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(10px); background:#1c2b36; color:#fff;
+    font:600 12px 'Lato',sans-serif; padding:10px 18px; border-radius:99px; box-shadow:0 8px 24px rgba(0,0,0,.35); z-index:180; opacity:0; pointer-events:none; transition:opacity .18s,transform .18s; }
+  .expl-toast.show { opacity:1; transform:translateX(-50%); }
+</style>
+
+<!-- ═══════ STYLE #2 · KOMPONEN (DIAUDIT — token semantic + Lato) ═══════ -->
+<style>
+  .cmp { font-family:'Lato',sans-serif; color:#133f5d; }
+
+  /* ── MOCK PAGE (konteks: mirip List Invoice Pembelian) ───────────────── */
+  .mp { position:relative; background:#ffffff; border:1px solid #dde1e5; border-radius:8px; padding:20px; overflow:hidden; }
+  .mp-h { font:700 22px/28px 'Lato',sans-serif; color:#133f5d; margin-bottom:16px; }
+  .mp-tabs { display:flex; gap:24px; border-bottom:1px solid #dde1e5; margin-bottom:16px; }
+  .mp-tab { padding:8px 0 12px; font:600 14px/22px 'Lato',sans-serif; color:#718c9e; }
+  .mp-tab.on { color:#4199d5; box-shadow:inset 0 -2px 0 0 #4199d5; }
+  .mp-bar { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+  .mp-search { flex:1; max-width:320px; height:40px; display:flex; align-items:center; padding:8px 12px;
+    border:1px solid #dde1e5; border-radius:9999px; color:#c2cdd5; font:400 14px/22px 'Lato',sans-serif; background:#ffffff; }
+  .mp-sp { flex:1; }
+  .mp-link { font:600 14px/22px 'Lato',sans-serif; color:#4199d5; padding:4px 8px; }
+  .mp-tbl { width:100%; border-collapse:collapse; }
+  .mp-tbl th { background:#f3f6f9; font:700 14px/22px 'Lato',sans-serif; color:#133f5d; text-align:left; padding:8px 12px; border-bottom:1px solid #dde1e5; }
+  .mp-tbl td { font:400 14px/22px 'Lato',sans-serif; color:#133f5d; padding:12px; border-bottom:1px solid #dde1e5; }
+  .mp-badge { display:inline-block; padding:2px 8px; border-radius:9999px; font:600 12px/18px 'Lato',sans-serif; }
+  .mp-badge--unpaid { background:#fef6f3; color:#8c2f0c; border:1px solid #fbd5c7; }
+  .mp-badge--paid { background:#f7fbf3; color:#356021; border:1px solid #d6eabe; }
+
+  /* ── SPOTLIGHT (KOMPONEN BARU #1) ───────────────────────────────────────
+     Cutout dibikin dari box-shadow spread gede → scrim nutup semua KECUALI
+     area target. Warna scrim = --color-text-primary (#133f5d) @70%.
+     Ring = stroke 2px putih (biar nggak ketuker sama elemen interaktif). */
+  .cmp-ring { position:absolute; z-index:100; border-radius:4px; pointer-events:none;
+    transition:top .3s, left .3s, width .3s, height .3s; }
+  .cmp-ring.has-scrim { box-shadow:0 0 0 9999px rgba(19,63,93,.7); }
+  .cmp-ring.has-ring { outline:2px solid #ffffff; outline-offset:4px; }
+
+  /* ── KARTU / POPOVER (dari component/Pop Over Paperverse) ────────────── */
+  .cmp-card { position:absolute; z-index:110; background:#ffffff; border-radius:4px; padding:4px;
+    box-shadow:0 1px 5px #133f5d26; transition:top .3s, left .3s; }
+  .cmp-card-in { padding:12px 16px; display:flex; flex-direction:column; gap:12px; }
+
+  /* Arrow (KOMPONEN BARU #2) — kotak diputar 45°, bukan border-triangle */
+  .cmp-arrow { position:absolute; width:12px; height:12px; background:#ffffff; transform:rotate(45deg); }
+  .cmp-arrow--top { top:-4px; }
+  .cmp-arrow--bottom { bottom:-4px; }
+  .cmp-arrow--left { left:-4px; }
+  .cmp-arrow--right { right:-4px; }
+
+  /* Gambar (SLOT, opsional) */
+  .cmp-img { width:100%; aspect-ratio:16/9; border-radius:4px; background:#f2f7fc; border:1px solid #dde1e5;
+    display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .cmp-img span { font:400 12px/18px 'Lato',sans-serif; color:#4199d5; }
+
+  .cmp-txt { display:flex; flex-direction:column; gap:4px; }
+  .cmp-title { font:700 16px/20px 'Lato',sans-serif; color:#133f5d; }
+  .cmp-sub { font:400 14px/22px 'Lato',sans-serif; color:#718c9e; }
+
+  /* Dots (KOMPONEN BARU #3) */
+  .cmp-dots { display:flex; gap:8px; align-items:center; }
+  .cmp-dot { width:8px; height:8px; border-radius:9999px; background:#dde1e5; border:0; padding:0; cursor:pointer;
+    transition:background .15s; }
+  .cmp-dot:hover { background:#89bde5; }
+  .cmp-dot.on { background:#4199d5; }
+
+  /* Footer — Button Paperverse (pill 30px, radius full) */
+  .cmp-foot { display:flex; align-items:center; gap:8px; }
+  .cmp-foot .sp { flex:1; }
+  .cmp-btn { height:30px; display:inline-flex; align-items:center; gap:4px; padding:4px 12px; border-radius:9999px;
+    font:600 14px/22px 'Lato',sans-serif; cursor:pointer; transition:background .15s, border-color .15s; }
+  .cmp-btn--primary { background:#4199d5; color:#ffffff; border:0; }
+  .cmp-btn--primary:hover { background:#89bde5; }
+  .cmp-btn--primary:active { background:#3385b5; }
+  .cmp-btn--secondary { background:#ffffff; color:#133f5d; border:1px solid #eaedef; }
+  .cmp-btn--secondary:hover { background:#f2f4f5; }
+  .cmp-btn--secondary:active { background:#dde1e5; }
+  .cmp-btn--link { background:transparent; color:#4199d5; border:0; padding:4px 8px; }
+  .cmp-btn--link:hover { color:#3385b5; }
+
+  .cmp-done { padding:12px 16px; border:1px solid #dde1e5; border-radius:8px; background:#f3f6f9;
+    font:400 14px/22px 'Lato',sans-serif; color:#718c9e; display:inline-block; }
+</style>
+</head>
+<body data-component="Onboarding Spotlight">
+
+  <div class="expl-topbar">
+    <span class="ttl">🎛️ Onboarding Spotlight · Playground · Alt A</span>
+    <span class="sp"></span>
+    <button class="expl-btn expl-btn--ghost" id="expl-comment-btn">💬 Komen</button>
+    <button class="expl-btn expl-btn--primary" id="expl-submit-btn">📤 Submit</button>
+  </div>
+  <div class="expl-hint">🎛️ <b>Panel kiri = properties komponen</b> (ala Figma). Tiap kontrol dianotasi tipe property Figma-nya (<span class="tag tag-variant" style="font-size:9px">VARIANT</span> <span class="tag tag-bool" style="font-size:9px">BOOLEAN</span> <span class="tag tag-slot" style="font-size:9px">SLOT</span>). Klik <b>Lanjut / dot / Kembali</b> di kartu buat lihat spotlight pindah.</div>
+
+  <div class="pg">
+    <aside class="pg-panel">
+
+      <div class="pg-grp">
+        <h3>Jumlah step <span class="tag tag-variant">variant</span></h3>
+        <div class="pg-seg" id="seg-count">
+          <button data-c="2">2</button><button data-c="3" class="on">3</button><button data-c="4">4</button><button data-c="5">5</button>
+        </div>
+      </div>
+
+      <div class="pg-grp">
+        <h3>Step aktif <span class="tag tag-variant">variant</span></h3>
+        <div class="pg-seg pg-seg--wrap" id="seg-step"></div>
+        <div class="pg-legend" style="margin-top:8px">
+          Step pertama → <b>Kembali disembunyiin</b>.<br>Step terakhir → tombol jadi <b>Selesai</b>.
+        </div>
+      </div>
+
+      <div class="pg-grp">
+        <h3>Arah kartu <span class="tag tag-variant">variant</span></h3>
+        <div class="pg-seg pg-seg--wrap" id="seg-place">
+          <button data-p="auto" class="on">Auto</button><button data-p="bottom">Bawah</button>
+          <button data-p="top">Atas</button><button data-p="right">Kanan</button><button data-p="left">Kiri</button>
+        </div>
+      </div>
+
+      <div class="pg-grp">
+        <h3>Lebar kartu</h3>
+        <input type="range" class="pg-range" id="rng-w" min="281" max="320" step="1" value="320">
+        <div style="display:flex;justify-content:space-between;margin-top:4px">
+          <span class="pg-legend">281 = lebar Pop Over DS</span><span class="pg-val" id="val-w">320px</span>
+        </div>
+      </div>
+
+      <div class="pg-grp">
+        <h3>Isi kartu (show / hide)</h3>
+        <div class="pg-row"><span class="lbl">Gambar</span><span class="tag tag-bool">bool</span><span class="tag tag-slot">slot</span><span class="sp"></span><span class="sw on" data-t="img"></span></div>
+        <div class="pg-row"><span class="lbl">Deskripsi</span><span class="tag tag-bool">bool</span><span class="tag tag-slot">slot</span><span class="sp"></span><span class="sw on" data-t="sub"></span></div>
+        <div class="pg-row"><span class="lbl">Dot indicator</span><span class="tag tag-bool">bool</span><span class="sp"></span><span class="sw on" data-t="dots"></span></div>
+        <div class="pg-row"><span class="lbl">Lewati</span><span class="tag tag-bool">bool</span><span class="sp"></span><span class="sw on" data-t="skip"></span></div>
+        <div class="pg-row"><span class="lbl">Kembali</span><span class="tag tag-bool">bool</span><span class="sp"></span><span class="sw on" data-t="back"></span></div>
+        <div class="pg-row"><span class="lbl">Arrow / pointer</span><span class="tag tag-bool">bool</span><span class="sp"></span><span class="sw on" data-t="arrow"></span></div>
+      </div>
+
+      <div class="pg-grp">
+        <h3>Overlay</h3>
+        <div class="pg-row"><span class="lbl">Scrim (dim)</span><span class="tag tag-bool">bool</span><span class="sp"></span><span class="sw on" data-t="scrim"></span></div>
+        <div class="pg-row"><span class="lbl">Ring spotlight</span><span class="tag tag-bool">bool</span><span class="sp"></span><span class="sw on" data-t="ring"></span></div>
+      </div>
+
+      <div class="pg-grp">
+        <h3>State</h3>
+        <div class="pg-seg" id="seg-state">
+          <button data-s="live" class="on">Aktif</button><button data-s="dismissed">Dismissed</button>
+        </div>
+      </div>
+
+      <div class="pg-grp">
+        <h3>Mapping ke Figma</h3>
+        <div class="pg-legend">
+          <span class="tag tag-variant">variant</span> pilihan diskret → variant set.<br>
+          <span class="tag tag-bool">bool</span> show/hide → BOOLEAN property.<br>
+          <span class="tag tag-slot">slot</span> konten bebas → <b>createSlot()</b>.
+        </div>
+      </div>
+
+      <div class="pg-grp">
+        <h3>Komponen baru <span class="tag tag-new">baru</span></h3>
+        <div class="pg-warn">
+          4 elemen ini <b>belum ada di Paperverse</b> — nilai di bawah usulan gue, belum resmi:<br>
+          • <b>Scrim</b> — #133f5d @ 70%<br>
+          • <b>Ring</b> — stroke 2px putih, offset 4px<br>
+          • <b>Dots</b> — 8px, aktif #4199d5 / mati #dde1e5<br>
+          • <b>Arrow</b> — 12px, putih
+        </div>
+      </div>
+    </aside>
+
+    <div class="pg-stagewrap">
+      <div class="pg-note">Preview <b>Onboarding Spotlight</b> — Alt A. Kartu pakai <b>component/Pop Over</b> Paperverse (281px, radius 4, shadow <code>table/option</code>), tombol pakai <b>Button</b> Paperverse (pill 30px). Klik dot / Lanjut / Kembali buat lihat spotlight-nya pindah target.</div>
+      <div class="expl-canvas">
+        <div class="cmp" id="stage"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ═══════ PLAYGROUND ENGINE ═══════ */
+(function(){
+  var state = { count:3, step:1, place:'auto', w:320,
+                img:true, sub:true, dots:true, skip:true, back:true, arrow:true,
+                scrim:true, ring:true, dismissed:false };
+
+  /* Konten tiap step — target = elemen di mock page (SLOT: judul/deskripsi/gambar) */
+  var STEPS = [
+    { target:'t-tab',    title:'Shared Invoice, tab baru.', sub:'Invoice dari supplier yang juga pakai Paper otomatis nongol di sini.' },
+    { target:'t-status', title:'Status pembayaran real-time.', sub:'Termasuk kuitansi pembayaran, rekonsiliasi jadi lebih cepat dan transparan.' },
+    { target:'t-unduh',  title:'Unduh sekali klik.', sub:'Semua invoice yang kepilih bisa lo tarik jadi satu file.' },
+    { target:'t-search', title:'Cari lebih cepat.', sub:'Ketik nomor invoice atau nama supplier, hasilnya nyaring langsung.' },
+    { target:'t-row',    title:'Klik baris buat lihat detail.', sub:'Nggak perlu buka menu titik tiga dulu.' }
+  ];
+
+  var stage = document.getElementById('stage');
+
+  function mockPage(){
+    return ''
+    + '<div class="mp" id="mp">'
+    +   '<div class="mp-h">Invoice Pembelian</div>'
+    +   '<div class="mp-tabs">'
+    +     '<div class="mp-tab">My Invoice</div>'
+    +     '<div class="mp-tab on" id="t-tab">Shared Invoice</div>'
+    +   '</div>'
+    +   '<div class="mp-bar">'
+    +     '<div class="mp-search" id="t-search">Cari</div>'
+    +     '<div class="mp-sp"></div>'
+    +     '<div class="mp-link">Atur Kolom</div>'
+    +     '<div class="mp-link" id="t-unduh">Unduh</div>'
+    +   '</div>'
+    +   '<table class="mp-tbl">'
+    +     '<thead><tr><th>No. Invoice</th><th>Supplier</th><th id="t-status">Status Pembayaran</th><th>Jumlah</th></tr></thead>'
+    +     '<tbody>'
+    +       '<tr id="t-row"><td>INV/2026/55</td><td>PT JFI - Cabang Krian</td><td><span class="mp-badge mp-badge--unpaid">Unpaid</span></td><td>Rp20.000.000,00</td></tr>'
+    +       '<tr><td>INV/2026/56</td><td>PT Abadi Nan Jaya</td><td><span class="mp-badge mp-badge--unpaid">Unpaid</span></td><td>Rp12.500.000,00</td></tr>'
+    +       '<tr><td>INV/2026/57</td><td>PT Sumber Kehidupan</td><td><span class="mp-badge mp-badge--paid">Paid</span></td><td>Rp8.750.000,00</td></tr>'
+    +     '</tbody>'
+    +   '</table>'
+    + '</div>';
+  }
+
+  function card(){
+    var isLast = state.step === state.count;
+    var isFirst = state.step === 1;
+    var s = STEPS[(state.step-1) % STEPS.length];
+    var h = '<div class="cmp-card" id="card" style="width:'+state.w+'px">';
+    if(state.arrow) h += '<div class="cmp-arrow" id="arrow"></div>';
+    h += '<div class="cmp-card-in">';
+    if(state.img) h += '<div class="cmp-img"><span>Gambar / ilustrasi (16:9)</span></div>';
+    h += '<div class="cmp-txt"><div class="cmp-title">'+s.title+'</div>';
+    if(state.sub) h += '<div class="cmp-sub">'+s.sub+'</div>';
+    h += '</div>';
+    if(state.dots){
+      h += '<div class="cmp-dots">';
+      for(var i=1;i<=state.count;i++) h += '<button class="cmp-dot'+(i===state.step?' on':'')+'" data-go="'+i+'" aria-label="Step '+i+'"></button>';
+      h += '</div>';
+    }
+    h += '<div class="cmp-foot">';
+    if(state.skip) h += '<button class="cmp-btn cmp-btn--link" data-act="skip">Lewati</button>';
+    h += '<span class="sp"></span>';
+    if(state.back && !isFirst) h += '<button class="cmp-btn cmp-btn--secondary" data-act="back">Kembali</button>';
+    h += '<button class="cmp-btn cmp-btn--primary" data-act="next">'+(isLast?'Selesai':'Lanjut ›')+'</button>';
+    h += '</div></div></div>';
+    return h;
+  }
+
+  function render(){
+    if(state.dismissed){
+      stage.innerHTML = mockPage() + '<div style="margin-top:16px"><span class="cmp-done">Tur ditutup — halaman balik normal &amp; bisa diklik lagi.</span></div>';
+      return;
+    }
+    var ringCls = 'cmp-ring' + (state.scrim?' has-scrim':'') + (state.ring?' has-ring':'');
+    stage.innerHTML = mockPage() + '<div class="'+ringCls+'" id="ring"></div>' + card();
+    position();
+    wire();
+  }
+
+  /* Tempel ring ke target + posisikan kartu sesuai placement */
+  function position(){
+    var s = STEPS[(state.step-1) % STEPS.length];
+    var tgt = document.getElementById(s.target);
+    var ring = document.getElementById('ring');
+    var cd = document.getElementById('card');
+    if(!tgt || !ring || !cd) return;
+
+    var cr = stage.getBoundingClientRect(), tr = tgt.getBoundingClientRect();
+    var t = { x:tr.left-cr.left, y:tr.top-cr.top, w:tr.width, h:tr.height };
+    ring.style.left=t.x+'px'; ring.style.top=t.y+'px'; ring.style.width=t.w+'px'; ring.style.height=t.h+'px';
+
+    var GAP = 16;
+    var cw = cd.offsetWidth, ch = cd.offsetHeight, sw = stage.offsetWidth;
+    var place = state.place;
+    if(place==='auto'){
+      /* auto = bawah kalau muat, kalau mepet bawah → atas; kalau target sempit di kanan → kiri */
+      place = (t.y + t.h + GAP + ch < stage.offsetHeight + 240) ? 'bottom' : 'top';
+      if(t.x + t.w + GAP + cw < sw && t.w < 200) place = 'right';
+    }
+
+    var x, y, ar = document.getElementById('arrow');
+    if(place==='bottom'){ x = t.x + t.w/2 - cw/2; y = t.y + t.h + GAP; }
+    else if(place==='top'){ x = t.x + t.w/2 - cw/2; y = t.y - ch - GAP; }
+    else if(place==='right'){ x = t.x + t.w + GAP; y = t.y + t.h/2 - ch/2; }
+    else { x = t.x - cw - GAP; y = t.y + t.h/2 - ch/2; }
+
+    x = Math.max(0, Math.min(x, sw - cw));
+    y = Math.max(0, y);
+    cd.style.left = x+'px'; cd.style.top = y+'px';
+
+    if(ar){
+      ar.className = 'cmp-arrow';
+      var cx = t.x + t.w/2 - x, cy = t.y + t.h/2 - y;
+      if(place==='bottom'){ ar.classList.add('cmp-arrow--top'); ar.style.left = Math.max(12, Math.min(cx-6, cw-24))+'px'; ar.style.top=''; }
+      else if(place==='top'){ ar.classList.add('cmp-arrow--bottom'); ar.style.left = Math.max(12, Math.min(cx-6, cw-24))+'px'; ar.style.top=''; }
+      else if(place==='right'){ ar.classList.add('cmp-arrow--left'); ar.style.top = Math.max(12, Math.min(cy-6, ch-24))+'px'; ar.style.left=''; }
+      else { ar.classList.add('cmp-arrow--right'); ar.style.top = Math.max(12, Math.min(cy-6, ch-24))+'px'; ar.style.left=''; }
+    }
+  }
+
+  /* Interaksi di dalam komponen — hormati mode komen */
+  function wire(){
+    var cd = document.getElementById('card');
+    if(!cd) return;
+    cd.addEventListener('click', function(e){
+      if(document.body.classList.contains('expl-comment')) return;
+      var dot = e.target.closest('[data-go]');
+      if(dot){ state.step = +dot.getAttribute('data-go'); syncStep(); render(); return; }
+      var b = e.target.closest('[data-act]');
+      if(!b) return;
+      var act = b.getAttribute('data-act');
+      if(act==='skip'){ state.dismissed = true; setSeg('seg-state','data-s','dismissed'); render(); }
+      else if(act==='back'){ state.step = Math.max(1, state.step-1); syncStep(); render(); }
+      else if(act==='next'){
+        if(state.step >= state.count){ state.dismissed = true; setSeg('seg-state','data-s','dismissed'); render(); }
+        else { state.step++; syncStep(); render(); }
+      }
+    });
+  }
+
+  /* Klik scrim = NO-OP (keputusan user: tur nggak boleh ke-dismiss nggak sengaja) */
+
+  function buildStepSeg(){
+    var seg = document.getElementById('seg-step'); seg.innerHTML='';
+    for(var i=1;i<=state.count;i++){
+      var b=document.createElement('button'); b.setAttribute('data-st',i); b.textContent=i;
+      if(i===state.step) b.className='on'; seg.appendChild(b);
+    }
+  }
+  function syncStep(){ setSeg('seg-step','data-st',state.step); }
+  function setSeg(id, attr, val){
+    var seg=document.getElementById(id); if(!seg) return;
+    seg.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.getAttribute(attr)==String(val)); });
+  }
+
+  document.getElementById('seg-count').addEventListener('click', function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    state.count=+b.getAttribute('data-c');
+    if(state.step>state.count) state.step=state.count;
+    setSeg('seg-count','data-c',state.count); buildStepSeg(); state.dismissed=false; setSeg('seg-state','data-s','live'); render();
+  });
+  document.getElementById('seg-step').addEventListener('click', function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    state.step=+b.getAttribute('data-st'); syncStep(); state.dismissed=false; setSeg('seg-state','data-s','live'); render();
+  });
+  document.getElementById('seg-place').addEventListener('click', function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    state.place=b.getAttribute('data-p'); setSeg('seg-place','data-p',state.place); render();
+  });
+  document.getElementById('seg-state').addEventListener('click', function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    state.dismissed=b.getAttribute('data-s')==='dismissed'; setSeg('seg-state','data-s',b.getAttribute('data-s')); render();
+  });
+  document.getElementById('rng-w').addEventListener('input', function(){
+    state.w=+this.value; document.getElementById('val-w').textContent=state.w+'px'; render();
+  });
+  document.querySelectorAll('.sw[data-t]').forEach(function(sw){
+    sw.addEventListener('click', function(){
+      var t=sw.getAttribute('data-t'); state[t]=!state[t]; sw.classList.toggle('on', state[t]); render();
+    });
+  });
+  window.addEventListener('resize', position);
+
+  buildStepSeg();
+  render();
+})();
+
+/* ═══════ REVIEW TOOLING (komen) — standar, jangan diubah ═══════ */
+(function(){
+  var COMPONENT = document.body.getAttribute('data-component') || 'Component';
+  var KEY='expl:'+location.pathname, notes=[];
+  try{ notes=JSON.parse(localStorage.getItem(KEY)||'[]'); if(!Array.isArray(notes)) notes=[]; }catch(e){ notes=[]; }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(notes)); }catch(e){} }
+  var commentMode=false, body=document.body, commentBtn=document.getElementById('expl-comment-btn');
+  function toast(m){ var t=document.querySelector('.expl-toast'); if(!t){t=document.createElement('div');t.className='expl-toast';document.body.appendChild(t);} t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('show');},2200); }
+  function copy(txt,ok){ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast(ok);},fb);}else fb(); function fb(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast(ok);}catch(e){}ta.remove();} }
+  function setComment(v){ commentMode=v; body.classList.toggle('expl-comment',v); commentBtn.classList.toggle('on',v); toast(v?'Mode komen ON — klik area komponen':'Mode komen OFF'); }
+  commentBtn.onclick=function(){ setComment(!commentMode); };
+  document.addEventListener('keydown',function(e){ if((e.key==='c'||e.key==='C')&&document.activeElement.tagName!=='TEXTAREA') setComment(!commentMode); });
+  document.querySelectorAll('.expl-canvas').forEach(function(canvas){
+    canvas.addEventListener('mousedown',function(e){
+      if(!commentMode||e.button) return; if(e.target.closest('.expl-pin,.expl-area')) return; e.preventDefault();
+      var r=canvas.getBoundingClientRect(), sx=e.clientX-r.left, sy=e.clientY-r.top;
+      var sel=document.createElement('div'); sel.className='expl-sel'; canvas.appendChild(sel); var moved=false;
+      function mm(ev){var x=ev.clientX-r.left,y=ev.clientY-r.top,l=Math.min(x,sx),t=Math.min(y,sy),w=Math.abs(x-sx),h=Math.abs(y-sy);if(w>3||h>3)moved=true;sel.style.left=l+'px';sel.style.top=t+'px';sel.style.width=w+'px';sel.style.height=h+'px';}
+      function mu(ev){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);sel.remove();var x=ev.clientX-r.left,y=ev.clientY-r.top,l=Math.min(x,sx),t=Math.min(y,sy),w=Math.abs(x-sx),h=Math.abs(y-sy);openPop(ev.clientX,ev.clientY,{x:(moved&&w>6?l:sx),y:(moved&&h>6?t:sy),w:(moved&&w>6?w:0),h:(moved&&h>6?h:0)});}
+      document.addEventListener('mousemove',mm); document.addEventListener('mouseup',mu);
+    });
+  });
+  function openPop(cx,cy,ctx){
+    document.querySelectorAll('.expl-pop').forEach(function(p){p.remove();});
+    var pop=document.createElement('div'); pop.className='expl-pop';
+    pop.style.left=Math.min(cx,window.innerWidth-296)+'px'; pop.style.top=Math.min(cy,window.innerHeight-160)+'px';
+    pop.innerHTML='<div class="expl-pop-ref">Komen</div><textarea placeholder="Tulis catatan..."></textarea><div class="expl-pop-acts"><button class="expl-btn expl-btn--ghost" style="background:#eef1f4;color:#5c7180" data-x>Batal</button><button class="expl-btn expl-btn--primary" data-ok>Simpan</button></div>';
+    document.body.appendChild(pop); var ta=pop.querySelector('textarea'); ta.focus();
+    pop.querySelector('[data-x]').onclick=function(){pop.remove();};
+    pop.querySelector('[data-ok]').onclick=function(){var t=ta.value.trim(); if(!t){pop.remove();return;} notes.push({x:ctx.x,y:ctx.y,w:ctx.w,h:ctx.h,text:t}); save(); paint(); pop.remove(); toast('Komen tersimpan');};
+  }
+  function paint(){
+    document.querySelectorAll('.expl-pin,.expl-area').forEach(function(p){p.remove();});
+    var canvas=document.querySelector('.expl-canvas');
+    notes.forEach(function(n,i){ if(n.w&&n.h){var a=document.createElement('div');a.className='expl-area';a.style.left=n.x+'px';a.style.top=n.y+'px';a.style.width=n.w+'px';a.style.height=n.h+'px';canvas.appendChild(a);} var pin=document.createElement('div');pin.className='expl-pin';pin.style.left=n.x+'px';pin.style.top=n.y+'px';pin.textContent=i+1;canvas.appendChild(pin); });
+  }
+  document.getElementById('expl-submit-btn').onclick=function(){
+    if(!notes.length){ toast('Belum ada komen'); return; }
+    var lines=['[REVIEW] '+COMPONENT+' (playground)','']; notes.forEach(function(n,i){lines.push((i+1)+'. '+(n.w?'[area] ':'')+n.text);}); lines.push('','(paste ke chat)');
+    copy(lines.join('\n'),'📋 '+notes.length+' komen di-copy');
+  };
+  paint();
+})();
+</script>
+</body>
+</html>
