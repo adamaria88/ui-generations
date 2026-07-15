@@ -303,6 +303,9 @@
   @keyframes sk{0%{background-position:100% 50%}100%{background-position:0 50%}}
 </style>
 <style>
+  /* Token tambahan: green primary dari primitive palette ds-core (buat gradient brand) */
+  :root{--color-light-green-50:#97cc56}
+
   /* ═════════ STOREFRONT — 3 VARIAN LAYOUT (explore 2026-07-15) ═════════
      Toggle antar-varian via .suxc-var switcher (review-only, di-skip Figma export).
      Semua varian = KOMPOSISI Aurora pieces (banner, tertiary-plain, chip-status,
@@ -335,12 +338,25 @@
   .sf-title-row{display:flex;align-items:center;gap:var(--spacing-sm)}
   .sf-title{font-size:16px;font-weight:700}
   .sf-desc{font-size:12px;line-height:18px;color:var(--color-text-secondary);max-width:560px}
-  /* AURORA: au-form-field surface — kotak display link, radius 4 bg raised
-     Source: aurora/projects/ui/form-field/form-field.component.scss */
-  .link-box{display:flex;align-items:center;gap:var(--spacing-sm);background:var(--color-surface-light-raised);
-    border-radius:var(--radius-sm);padding:var(--spacing-sm) var(--spacing-md);max-width:560px;align-self:stretch}
-  .link-box>svg{width:18px;height:18px;color:var(--color-text-secondary);flex-shrink:0}
-  .link-box .lb-url{flex:1;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* Link pill "wrapped" — komposisi Aurora: gradient brand Paper.id (biru #4199d5 → hijau #97cc56,
+     dua-duanya primitive palette ds-core) sebagai bungkus 1.5px, isi pill putih radius full.
+     OVERRIDE: shadow-sm 2-layer DS token (paper-designer-thinking.md, locked 2026-05-22) */
+  .link-pill{display:flex;max-width:560px;align-self:stretch;padding:var(--stroke-md);
+    border-radius:var(--radius-full);
+    background:linear-gradient(90deg,var(--color-light-brand-50),var(--color-light-green-50));
+    box-shadow:0 1px 2px rgba(0,0,0,.05),0 1px 3px rgba(0,0,0,.10)}
+  .link-pill__in{flex:1;display:flex;align-items:center;gap:var(--spacing-sm);min-width:0;
+    background:var(--color-surface-light-default);border-radius:var(--radius-full);
+    padding:var(--spacing-xs) var(--spacing-lg) var(--spacing-xs) var(--spacing-xs)}
+  .link-pill__ic{width:32px;height:32px;border-radius:var(--radius-full);background:var(--color-light-brand-15);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .link-pill__ic svg{width:16px;height:16px;color:var(--color-light-brand-50)}
+  .link-pill__url{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    font-size:14px;color:var(--color-text-secondary);text-decoration:none;cursor:pointer;
+    transition:color var(--speed-fast) var(--ease-out-regular)}
+  .link-pill__url b{color:var(--color-text-primary);font-weight:700}
+  .link-pill__url:hover b{color:var(--color-light-brand-50);text-decoration:underline}
+  .link-pill__url:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px;border-radius:var(--radius-sm)}
   /* (QR thumbnail & modal dihapus total per keputusan user 2026-07-15) */
 
   /* (Varian C Hero dihapus per keputusan user 2026-07-15 — sisa A & B.
@@ -1227,10 +1243,12 @@ function toggleSubmenu(menuId) {
           <span class="chip-st">Active</span>
         </div>
         <div class="sf-desc">This is the link your customers use to browse your catalogue and submit an order — no Paper.id account needed on their end. You confirm every order before any invoice or payment link goes out.</div>
-        <div class="link-box">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="lb-url">paper.id/store/pt-artisindo-jaya-magis</span>
-          <button class="btn btn--tertiary-plain" onclick="copyLink()">Copy Link</button>
+        <div class="link-pill">
+          <span class="link-pill__in">
+            <span class="link-pill__ic"><svg viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <a class="link-pill__url" onclick="previewStore()" title="Open your storefront" tabindex="0">paper.id/store/<b>pt-artisindo-jaya-magis</b></a>
+            <button class="btn btn--tertiary-plain" onclick="copyLink()">Copy Link</button>
+          </span>
         </div>
         <div class="sf-links">
           <button class="btn btn--tertiary-plain" onclick="shareWA()">
