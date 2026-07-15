@@ -330,7 +330,7 @@
      Komposisi: card putih (border 1px radius 8) + link-box bg raised */
   .sf--b{background:var(--color-surface-light-default);border:1px solid var(--color-border-default);
     border-radius:var(--radius-md);padding:var(--spacing-xl) var(--spacing-2xl);
-    gap:var(--spacing-4xl);align-items:center;justify-content:space-between;flex-wrap:wrap}
+    gap:var(--spacing-lg);align-items:center;flex-wrap:wrap}
   .sf-main{display:flex;flex-direction:column;gap:var(--spacing-md);min-width:0;flex:1}
   .sf-title-row{display:flex;align-items:center;gap:var(--spacing-sm)}
   .sf-title{font-size:16px;font-weight:700}
@@ -341,20 +341,13 @@
     border-radius:var(--radius-sm);padding:var(--spacing-sm) var(--spacing-md);max-width:560px;align-self:stretch}
   .link-box>svg{width:18px;height:18px;color:var(--color-text-secondary);flex-shrink:0}
   .link-box .lb-url{flex:1;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .qr-side{display:flex;flex-direction:column;align-items:center;gap:var(--spacing-xs)}
-  /* QR thumbnail — klik = modal QR gede (on-demand, benchmark: Stripe/Wise) */
-  .qr-thumb{width:88px;height:88px;padding:var(--spacing-sm);background:var(--color-surface-light-default);
-    border:1px solid var(--color-light-grey-20);border-radius:var(--radius-sm);cursor:pointer;
-    display:flex;align-items:center;justify-content:center;
-    transition:border-color var(--speed-fast) var(--ease-out-regular)}
-  .qr-thumb:hover{border-color:var(--color-action-primary-bg)}
-  .qr-thumb:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
-  .qr-thumb svg{width:100%;height:100%;color:var(--color-text-primary)}
+  /* (QR thumbnail & modal dihapus total per keputusan user 2026-07-15) */
 
   /* (Varian C Hero dihapus per keputusan user 2026-07-15 — sisa A & B.
      Ilustrasi #illshop tetap dipakai di empty state.) */
-  /* Ilustrasi design-ops di kiri card B (inline, self-contained) */
+  /* Ilustrasi design-ops di kiri card B (inline, self-contained) — digedein dari 150×130 asli */
   .sf-ill{flex-shrink:0;display:flex;align-items:center}
+  .sf-ill svg{width:200px;height:174px}
 
   /* AURORA: au-chip-status success — Source: aurora/projects/ui/chip-status */
   .chip-st{display:inline-flex;align-items:center;gap:var(--spacing-xs);padding:2px 10px;
@@ -425,10 +418,9 @@
 <body>
 
 <!-- Shared SVG defs — width/height 0 eksplisit, jangan render.
-     #qrsym: QR placeholder. #illshop: ilustrasi storefront (CUSTOM per request user 2026-07-15 —
+     #illshop: ilustrasi storefront buat empty state (CUSTOM per request user 2026-07-15 —
      Aurora belum punya illustration library; palet 100% Aurora primitives). -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-<g id="qrsym"><rect x="0" y="0" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="3" width="3" height="3" fill="currentColor"/><rect x="20" y="0" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="23" y="3" width="3" height="3" fill="currentColor"/><rect x="0" y="20" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="23" width="3" height="3" fill="currentColor"/><rect x="12" y="0" width="2" height="2" fill="currentColor"/><rect x="16" y="2" width="2" height="2" fill="currentColor"/><rect x="12" y="5" width="2" height="4" fill="currentColor"/><rect x="16" y="7" width="2" height="2" fill="currentColor"/><rect x="0" y="12" width="2" height="2" fill="currentColor"/><rect x="4" y="12" width="4" height="2" fill="currentColor"/><rect x="10" y="12" width="3" height="3" fill="currentColor"/><rect x="16" y="12" width="2" height="2" fill="currentColor"/><rect x="20" y="12" width="2" height="2" fill="currentColor"/><rect x="25" y="12" width="4" height="2" fill="currentColor"/><rect x="2" y="16" width="2" height="2" fill="currentColor"/><rect x="7" y="16" width="2" height="2" fill="currentColor"/><rect x="12" y="16" width="4" height="2" fill="currentColor"/><rect x="19" y="16" width="3" height="2" fill="currentColor"/><rect x="25" y="16" width="2" height="2" fill="currentColor"/><rect x="12" y="20" width="2" height="4" fill="currentColor"/><rect x="16" y="21" width="3" height="3" fill="currentColor"/><rect x="21" y="20" width="4" height="4" fill="currentColor"/><rect x="27" y="20" width="2" height="2" fill="currentColor"/><rect x="12" y="26" width="3" height="3" fill="currentColor"/><rect x="18" y="26" width="2" height="2" fill="currentColor"/><rect x="22" y="27" width="5" height="2" fill="currentColor"/></g>
 <g id="illshop">
   <ellipse cx="105" cy="158" rx="88" ry="8" fill="#e3f0fa"/>
   <rect x="38" y="72" width="104" height="68" rx="4" fill="#ffffff" stroke="#133f5d" stroke-width="2"/>
@@ -1111,10 +1103,6 @@ function toggleSubmenu(menuId) {
           <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><path d="M17 3l4 4-11 11H6v-4L17 3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Edit Store
         </button>
-        <button class="btn btn--tertiary-plain" onclick="openQR()">
-          <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z" stroke="currentColor" stroke-width="1.5"/></svg>
-          QR Code
-        </button>
       </span>
     </div>
 
@@ -1355,29 +1343,7 @@ function toggleSubmenu(menuId) {
 </div>
 </div>
 
-<!-- QR Modal — OVERRIDE: au-dialog sectioned (locked rule) -->
-<div class="scrim" id="qrScrim">
-  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="qrTitle">
-    <div class="dlg__head">
-      <span class="dlg__title" id="qrTitle">Storefront QR Code</span>
-      <button class="dlg__x" onclick="closeQR()" aria-label="Close">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </button>
-    </div>
-    <div class="dlg__body">
-      <svg class="qr-big" viewBox="0 0 29 29" width="200" height="200"><use href="#qrsym"/></svg>
-      <span class="sf-url">paper.id/store/pt-artisindo-jaya-magis</span>
-      <span class="dlg__hint">Print or place this QR at your store &amp; packaging — customers scan it to open your catalogue instantly.</span>
-    </div>
-    <div class="dlg__foot">
-      <button class="btn btn--secondary" onclick="closeQR()">Close</button>
-      <button class="btn btn--primary" onclick="downloadQR()">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Download PNG
-      </button>
-    </div>
-  </div>
-</div>
+<!-- (QR modal dihapus — QR dibuang total dari desain per keputusan user 2026-07-15) -->
 
 <!-- Toast (OVERRIDE: 380px radius 8 — keputusan user 2026-05-19) -->
 <div class="toast" id="toast">
@@ -1461,13 +1427,6 @@ function toggleSubmenu(menuId) {
   function previewStore(){ fireToast('Opening store preview…','Your storefront opens in a new tab (mock).'); }
   function editStore(){ fireToast('Opening store editor…','Storefront appearance settings (mock).'); }
   function goCreate(){ fireToast('Opening Create Product form…','Create form is out of scope for this prototype.'); }
-  function downloadQR(){ fireToast('QR downloaded','File storefront-qr.png saved (mock).'); }
-
-  // ── QR modal (sectioned dialog) ──
-  function openQR(){ closeAllRowMenus(); document.getElementById('qrScrim').classList.add('open'); }
-  function closeQR(){ document.getElementById('qrScrim').classList.remove('open'); }
-  document.getElementById('qrScrim').addEventListener('click',function(e){ if(e.target===this) closeQR(); });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeQR(); });
 
   // ── Toast ──
   function fireToast(title,sub){
