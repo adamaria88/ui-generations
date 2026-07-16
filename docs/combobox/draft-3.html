@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══════════════════════════════════════════════════════════════════
+     DRAFT 3 (Fase 1) — Combobox MOBILE + simulasi KEYBOARD
+     3 pola dibandingin dengan keyboard on-screen yang beneran naik:
+       • A · Full-screen search  — keyboard naik, list tetap lega
+       • B · Bottom sheet         — keyboard naik, sheet keangkat di atasnya
+       • C · Inline popover (NEW) — dropdown nempel field, keyboard makan list
+     ⚠️ NON-DS: warna/font generik. Tujuan = bandingin EXPERIENCE keyboard.
+       • .phone*/.kbd*/.expl-* = LAYER TOOLING/PRESENTASI (DILARANG ke Figma)
+       • .cbx-*               = LAYER KOMPONEN
+     ══════════════════════════════════════════════════════════════════ -->
+<title>Draft 3 · Combobox Mobile + Keyboard · Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  /* ═══ NEUTRAL MINIMAL — token chrome ═══ */
+  :root{--app-bg:#F4F4F2;--bar-bg:#EDECE6;--surface:#FCFCFB;--canvas:#FFFFFF;--bd:rgba(0,0,0,.08);--bd-strong:rgba(0,0,0,.16);--tx:#1F2328;--tx-mut:#6E6E68;--tx-dim:#A3A39B;--accent:#1F2328;--accent-tx:#fff;--item-on:#EAEAE6;--item-hover:#EDEDE9;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 6px 22px rgba(0,0,0,.12)}
+  body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:var(--app-bg);color:var(--tx);min-height:100vh}
+
+  /* ─── LAYER TOOLING ─── */
+  .expl-topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;
+    background:var(--bar-bg);color:var(--tx);padding:10px 20px;border-bottom:1px solid var(--bd-strong)}
+  .expl-topbar .sp{flex:1}
+  .expl-crumb{font-size:12px;font-weight:700;color:var(--tx-dim);letter-spacing:.02em}
+  .expl-btn{border:0;border-radius:8px;padding:8px 14px;font:600 13px 'Inter',sans-serif;cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;transition:filter .12s,background .12s}
+  .expl-btn svg{width:15px;height:15px}
+  .expl-btn--ghost{background:transparent;border:1px solid var(--bd-strong);color:var(--tx-mut)}
+  .expl-btn--ghost:hover{background:var(--item-hover);color:var(--tx)}
+  .expl-btn--ghost.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
+  .expl-btn--primary{background:var(--accent);color:var(--accent-tx)}
+  .expl-btn--primary:hover{background:#33383E}
+  .expl-hint{padding:10px 20px;font-size:12px;color:var(--tx-mut);background:var(--app-bg);border-bottom:1px solid var(--bd)}
+  .expl-hint b{color:var(--tx)}
+  .expl-head{padding:26px 28px 4px}
+  .expl-head h1{font-size:30px;font-weight:800;letter-spacing:-.01em;line-height:1.12;color:var(--tx)}
+  .expl-head p{font-size:14px;color:var(--tx-mut);margin-top:7px}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:30px 20px 150px;display:flex;flex-wrap:wrap;gap:34px;justify-content:center}
+  .col{display:flex;flex-direction:column;align-items:center}
+  .sec-title{font-size:14px;font-weight:700;color:var(--tx);margin:0 0 4px;display:flex;align-items:center;gap:8px}
+  .sec-tag{font:600 10px 'Inter';color:#7c3aed;background:#f3e8ff;border-radius:99px;padding:2px 8px}
+  .sec-tag.warn{color:#b45309;background:#fef3c7}
+  .sec-sub{font-size:12px;color:var(--tx-mut);line-height:1.5;margin-bottom:14px;max-width:320px;text-align:center;min-height:52px}
+
+  /* ─── PHONE FRAME ─── */
+  .phone{position:relative;width:340px;height:724px;background:#fff;border-radius:38px;
+    box-shadow:0 10px 40px rgba(15,23,42,.22),0 0 0 11px #0f172a,0 0 0 12px #1e293b;overflow:hidden}
+  .phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:26px;background:#0f172a;border-radius:0 0 16px 16px;z-index:60}
+  .phone-status{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font:700 12px 'Inter';color:#0f172a;z-index:55}
+  .phone-screen{position:absolute;inset:0;padding-top:34px;overflow:hidden}
+
+  .m-appbar{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #eef2f7}
+  .m-appbar .back{color:#334155}
+  .m-appbar h1{font-size:16px;font-weight:700}
+  .m-form{padding:16px}
+  .m-flabel{font-size:13px;font-weight:600;color:#334155;margin-bottom:6px;display:block}
+  .m-field-ghost{height:44px;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;margin-bottom:16px;
+    display:flex;align-items:center;padding:0 12px;color:#94a3b8;font-size:14px}
+
+  /* ─── LAYER KOMPONEN ─── */
+  .cbx-trigger{display:flex;align-items:center;gap:8px;width:100%;min-height:46px;padding:0 12px;
+    background:#fff;border:1.5px solid #cbd5e1;border-radius:10px;cursor:pointer;transition:border-color .12s}
+  .cbx-trigger.focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.14)}
+  .cbx-trigger .val{flex:1;font:400 15px 'Inter';color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cbx-trigger .val.ph{color:#94a3b8}
+  .cbx-trigger input{flex:1;border:0;outline:none;background:transparent;font:400 15px 'Inter';color:#0f172a;min-width:0}
+  .cbx-trigger .chev{color:#64748b;flex:none}.cbx-trigger .ic{color:#94a3b8;flex:none}
+
+  .cbx-opt{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;border-bottom:1px solid #f1f5f9}
+  .cbx-opt:active{background:#f1f5f9}
+  .cbx-opt .av{width:34px;height:34px;border-radius:9px;background:#e0e7ff;color:#4338ca;font:700 12px 'Inter';display:flex;align-items:center;justify-content:center;flex:none}
+  .cbx-opt .txt{flex:1;min-width:0}
+  .cbx-opt .nm{font-size:14px;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cbx-opt.selected .nm{font-weight:700}
+  .cbx-opt .sub{font-size:11px;color:#94a3b8;margin-top:1px}
+  .cbx-opt .tick{color:#2563eb;opacity:0;flex:none}.cbx-opt.selected .tick{opacity:1}
+  .cbx-hl{background:#fde68a;border-radius:2px}
+  .cbx-empty{padding:30px 16px;text-align:center;color:#94a3b8;font-size:13px}
+
+  /* A · full-screen */
+  .cbx-fs{position:absolute;inset:0;background:#fff;z-index:30;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1)}
+  .cbx-fs.open{transform:none}
+  .cbx-fs-bar{display:flex;align-items:center;gap:10px;padding:10px 12px 10px 8px;border-bottom:1px solid #eef2f7}
+  .cbx-fs-back{width:40px;height:40px;border:0;background:transparent;color:#334155;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+  .cbx-fs-input{flex:1;height:40px;border:0;outline:none;font:400 16px 'Inter';color:#0f172a;background:transparent}
+  .cbx-fs-list{flex:1;overflow:auto}
+
+  /* B · bottom sheet */
+  .cbx-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.42);z-index:29;opacity:0;pointer-events:none;transition:opacity .25s}
+  .cbx-backdrop.open{opacity:1;pointer-events:auto}
+  .cbx-sheet{position:absolute;left:0;right:0;bottom:0;z-index:31;background:#fff;border-radius:22px 22px 0 0;max-height:78%;display:flex;flex-direction:column;transform:translateY(105%);transition:transform .28s cubic-bezier(.4,0,.2,1),bottom .25s,max-height .25s;box-shadow:0 -8px 30px rgba(15,23,42,.2)}
+  .cbx-sheet.open{transform:none}
+  .cbx-sheet.lift{bottom:250px;max-height:calc(100% - 250px)}
+  .cbx-grip{width:38px;height:4px;border-radius:99px;background:#cbd5e1;margin:10px auto 4px}
+  .cbx-sheet-head{padding:4px 16px 10px;text-align:center;position:relative}
+  .cbx-sheet-title{font-size:16px;font-weight:700}
+  .cbx-sheet-x{position:absolute;right:12px;top:0;width:32px;height:32px;border:0;background:#f1f5f9;border-radius:99px;color:#64748b;cursor:pointer}
+  .cbx-sheet-search{margin:0 16px 6px;display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;background:#f1f5f9;border-radius:11px}
+  .cbx-sheet-search input{flex:1;border:0;outline:none;background:transparent;font:400 15px 'Inter';color:#0f172a}
+  .cbx-sheet-list{flex:1;overflow:auto;padding-bottom:6px}
+
+  /* C · inline popover */
+  .cbx-inline{position:relative}
+  .cbx-pop{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:28;background:#fff;border:1px solid #e2e8f0;border-radius:11px;box-shadow:0 12px 30px rgba(15,23,42,.18);overflow:auto;display:none}
+  .cbx-inline.open .cbx-pop{display:block}
+  .cbx-pop-hint{padding:7px 12px;font-size:11px;color:#b45309;background:#fef3c7;border-bottom:1px solid #fde68a;text-align:center}
+
+  /* ─── KEYBOARD SIM ─── */
+  .kbd{position:absolute;left:0;right:0;bottom:0;height:250px;background:#d1d5db;z-index:50;padding:9px 4px 8px;
+    display:flex;flex-direction:column;gap:10px;transform:translateY(100%);transition:transform .25s cubic-bezier(.4,0,.2,1)}
+  .kbd.up{transform:none}
+  .kbd-row{display:flex;gap:5px;justify-content:center}
+  .key{width:29px;height:41px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;
+    font:400 17px 'Inter';color:#0f172a;box-shadow:0 1px 0 rgba(0,0,0,.3);cursor:pointer;user-select:none}
+  .key:active{background:#e5e7eb;transform:translateY(1px)}
+  .key.wide{width:42px;background:#a3adba;font-size:0}
+  .key.wide svg{stroke:#1f2937}
+  .key.k123{width:52px;font-size:14px;background:#a3adba}
+  .key.space{width:150px}
+  .key.ret{width:74px;font-size:14px;background:#2563eb;color:#fff}
+  .kbd-space-row{display:flex;gap:5px;justify-content:center}
+
+  /* switcher pola — default OFF (desktop 3-up buat compare) */
+  .pola-switch{display:none;position:sticky;top:0;z-index:45;gap:6px;padding:10px 12px;
+    background:var(--bar-bg);border-bottom:1px solid var(--bd);justify-content:center}
+  .pola-switch button{flex:1;max-width:150px;border:1px solid var(--bd-strong);background:var(--item-on);
+    color:var(--tx-mut);font:700 12px 'Inter';padding:9px 6px;border-radius:9px;cursor:pointer}
+  .pola-switch button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
+
+  /* ═══ REAL MOBILE: dibuka di HP → frame + keyboard PALSU ilang, pakai keyboard ASLI ═══ */
+  @media (max-width:680px){
+    .pola-switch{display:flex}      /* HP: switcher ON, 1 pola aja */
+    .col{display:none}
+    .col.active{display:flex}
+    .wrap{padding:16px 10px 48px;gap:22px}
+    .sec-sub{max-width:none;min-height:auto}
+    .phone{width:100%;max-width:440px;height:auto;min-height:300px;border-radius:20px;
+      box-shadow:0 2px 14px rgba(15,23,42,.12),0 0 0 1px #e2e8f0;overflow:visible}
+    .phone-notch{display:none}
+    .phone-status{position:static;padding-top:6px}
+    .phone-screen{position:static;padding-top:0;overflow:visible;border-radius:20px}
+    .kbd{display:none!important}                 /* keyboard palsu OFF — pakai asli */
+    .cbx-fs{position:fixed;z-index:9999}
+    .cbx-backdrop{position:fixed;z-index:9998}
+    .cbx-sheet{position:fixed;z-index:9999;max-height:80vh}
+    .cbx-fs-list{padding-bottom:42vh}
+    .cbx-sheet-list{padding-bottom:34vh}
+    .cbx-pop{max-height:44vh}                     /* C: dibatasi biar kerasa kejepit keyboard asli */
+    input{font-size:16px!important}               /* cegah auto-zoom iOS */
+  }
+</style>
+</head>
+<body data-component="Combobox Mobile+KB">
+
+  <!-- ikon line mono (Neutral Minimal) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <g id="t-chat" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a7.5 7.5 0 01-10.9 6.7L4 20l1.8-5.1A7.5 7.5 0 1121 11.5z"/></g>
+    <g id="t-list" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></g>
+    <g id="t-send" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></g>
+  </defs></svg>
+
+  <!-- ═══════ LAYER TOOLING ═══════ -->
+  <div class="expl-topbar">
+    <span class="expl-crumb">Component Explorer · Draft</span>
+    <span class="sp"></span>
+    <button class="expl-btn expl-btn--ghost" id="expl-comment-btn"><svg viewBox="0 0 24 24"><use href="#t-chat"/></svg> Komen</button>
+    <button class="expl-btn expl-btn--ghost" id="expl-list-btn"><svg viewBox="0 0 24 24"><use href="#t-list"/></svg> Daftar</button>
+    <button class="expl-btn expl-btn--primary" id="expl-submit-btn"><svg viewBox="0 0 24 24"><use href="#t-send"/></svg> Submit</button>
+  </div>
+  <div class="expl-hint">
+    <b>Bandingin experience pas keyboard naik.</b> Tap field "Pilih Mitra" → keyboard on-screen bakal muncul (bisa diketik juga).
+    Perhatiin <b>berapa banyak daftar yang masih keliatan</b> di tiap pola.
+  </div>
+
+  <header class="expl-head">
+    <h1>Combobox</h1>
+    <p>Explore · bandingin alternatif</p>
+  </header>
+
+  <!-- switcher pola (cuma muncul di HP / layar sempit) -->
+  <div class="pola-switch" id="pola-switch">
+    <button data-pola="A" class="on">A · Full-screen</button>
+    <button data-pola="B">B · Sheet</button>
+    <button data-pola="C">C · Popover</button>
+  </div>
+
+  <div class="wrap">
+
+    <!-- ═══ A · FULL-SCREEN ═══ -->
+    <div class="col" data-pola="A">
+      <div class="sec-title">A — Full-screen search <span class="sec-tag">input-first</span></div>
+      <div class="sec-sub">Tap → halaman search penuh. Keyboard naik, list tetap dapet <b>ruang paling lega</b> di atasnya.</div>
+      <div class="expl-canvas">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-status"><span>9:41</span><span>▲ ▮▮ 100%</span></div>
+          <div class="phone-screen" id="scrA">
+            <div class="m-appbar"><span class="back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg></span><h1>Buat Invoice</h1></div>
+            <div class="m-form">
+              <span class="m-flabel">Pilih Mitra</span>
+              <div class="cbx-trigger" id="trigA"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg></span><span class="val ph" id="valA">Cari &amp; pilih mitra</span><span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+              <span class="m-flabel">Tanggal</span><div class="m-field-ghost">05/07/2026</div>
+            </div>
+            <div class="cbx-fs" id="fsA">
+              <div class="cbx-fs-bar">
+                <button class="cbx-fs-back" id="backA"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg></button>
+                <input class="cbx-fs-input" id="inA" type="text" placeholder="Cari mitra..." readonly>
+              </div>
+              <div class="cbx-fs-list" id="listA"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ B · BOTTOM SHEET ═══ -->
+    <div class="col" data-pola="B">
+      <div class="sec-title">B — Bottom sheet <span class="sec-tag">select-trigger</span></div>
+      <div class="sec-sub">Tap → sheet naik. Pas keyboard muncul, sheet <b>keangkat di atas keyboard</b> — search + beberapa item keliatan.</div>
+      <div class="expl-canvas">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-status"><span>9:41</span><span>▲ ▮▮ 100%</span></div>
+          <div class="phone-screen" id="scrB">
+            <div class="m-appbar"><span class="back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg></span><h1>Buat Invoice</h1></div>
+            <div class="m-form">
+              <span class="m-flabel">Pilih Mitra</span>
+              <div class="cbx-trigger" id="trigB"><span class="val ph" id="valB">Pilih mitra</span><span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+              <span class="m-flabel">Tanggal</span><div class="m-field-ghost">05/07/2026</div>
+            </div>
+            <div class="cbx-backdrop" id="bdB"></div>
+            <div class="cbx-sheet" id="sheetB">
+              <div class="cbx-grip"></div>
+              <div class="cbx-sheet-head"><div class="cbx-sheet-title">Pilih Mitra</div><button class="cbx-sheet-x" id="xB">✕</button></div>
+              <div class="cbx-sheet-search"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg><input id="inB" type="text" placeholder="Cari mitra..." readonly></div>
+              <div class="cbx-sheet-list" id="listB"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ C · INLINE POPOVER (NEW) ═══ -->
+    <div class="col" data-pola="C">
+      <div class="sec-title">C — Inline popover <span class="sec-tag warn">rawan ketutup</span></div>
+      <div class="sec-sub">Persis desktop: dropdown nempel di bawah field. Tapi di HP <b>keyboard makan hampir semua listnya</b> — cuma sisa 1–2 item.</div>
+      <div class="expl-canvas">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-status"><span>9:41</span><span>▲ ▮▮ 100%</span></div>
+          <div class="phone-screen" id="scrC">
+            <div class="m-appbar"><span class="back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg></span><h1>Buat Invoice</h1></div>
+            <div class="m-form">
+              <span class="m-flabel">Nomor Invoice</span><div class="m-field-ghost">INV-2026-0142</div>
+              <span class="m-flabel">Pilih Mitra</span>
+              <div class="cbx-inline" id="cbxC">
+                <div class="cbx-trigger" id="trigC"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg></span><input id="inC" type="text" placeholder="Cari &amp; pilih mitra" readonly><span class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+                <div class="cbx-pop" id="popC"><div class="cbx-pop-hint">⚠︎ ketutup keyboard — cuma sedikit yang keliatan</div><div id="listC"></div></div>
+              </div>
+              <span class="m-flabel">Tanggal</span><div class="m-field-ghost">05/07/2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- panel komen -->
+  <div class="expl-panel" id="expl-panel" style="position:fixed;top:0;right:0;height:100vh;width:300px;background:var(--surface);border-left:1px solid var(--bd-strong);box-shadow:var(--shadow-md);z-index:70;display:flex;flex-direction:column;transform:translateX(300px);transition:transform .2s">
+    <div style="padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center"><h2 style="font-size:14px;font-weight:700;flex:1">Komen</h2><button class="expl-panel-close" id="expl-panel-close" style="border:0;background:var(--item-on);border-radius:6px;width:28px;height:28px;cursor:pointer;color:var(--tx-mut)">✕</button></div>
+    <div style="flex:1;overflow:auto;padding:12px" id="expl-list"></div>
+    <div style="padding:12px 16px;border-top:1px solid var(--bd)"><button class="expl-btn expl-btn--primary" id="expl-submit-btn2" style="width:100%;justify-content:center">📤 Submit semua komen → copy</button></div>
+  </div>
+
+<style>
+  .expl-panel.open{transform:none!important}
+  body.expl-comment .expl-canvas{cursor:crosshair}
+  .expl-pin{position:absolute;z-index:65;width:26px;height:26px;border-radius:50% 50% 50% 4px;background:var(--accent);color:var(--accent-tx);font:700 11px/26px 'Inter';text-align:center;transform:translate(-2px,-28px);box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:pointer;user-select:none}
+  .expl-sel{position:absolute;z-index:64;border:1.5px dashed var(--accent);background:rgba(31,35,40,.10);border-radius:4px;pointer-events:none}
+  .expl-area{position:absolute;z-index:20;border:1.5px solid var(--accent);background:rgba(31,35,40,.06);border-radius:4px;pointer-events:none}
+  .expl-note{background:var(--app-bg);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+  .expl-note-ref{font:700 11px 'Inter';color:var(--tx-mut);margin-bottom:4px}
+  .expl-note-text{font-size:13px;line-height:1.5;color:var(--tx);word-break:break-word}
+  .expl-note-del{float:right;border:0;background:transparent;color:var(--tx-dim);cursor:pointer;font-size:14px}
+  .expl-empty{text-align:center;color:var(--tx-dim);font-size:13px;padding:32px 12px;line-height:1.6}
+  .expl-pop2{position:fixed;z-index:80;width:280px;background:var(--surface);border:1px solid var(--bd-strong);border-radius:12px;box-shadow:var(--shadow-md);padding:12px}
+  .expl-pop2 textarea{width:100%;min-height:70px;resize:vertical;border:1px solid var(--bd-strong);border-radius:8px;padding:8px 10px;font:400 13px/1.5 'Inter';outline:none;color:var(--tx);background:var(--canvas)}
+  .expl-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(10px);background:var(--accent);color:var(--accent-tx);font:600 12px 'Inter';padding:10px 18px;border-radius:99px;box-shadow:var(--shadow-md);z-index:90;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+  .expl-toast.show{opacity:1;transform:translateX(-50%)}
+  .expl-canvas{position:relative}
+</style>
+
+<script>
+var DATA=[
+  {id:1,name:'PT Sinar Abadi Sentosa',sub:'Supplier · Jakarta'},
+  {id:2,name:'CV Maju Bersama',sub:'Distributor · Bandung'},
+  {id:3,name:'Toko Berkah Jaya',sub:'Retail · Surabaya'},
+  {id:4,name:'PT Mitra Global Nusantara',sub:'Supplier · Medan'},
+  {id:5,name:'UD Cahaya Makmur',sub:'Grosir · Semarang'},
+  {id:6,name:'PT Anugerah Teknik',sub:'Vendor · Bekasi'},
+  {id:7,name:'CV Sumber Rezeki',sub:'Distributor · Yogyakarta'},
+  {id:8,name:'Toko Sahabat Tani',sub:'Retail · Malang'},
+  {id:9,name:'PT Bahtera Nusa',sub:'Supplier · Denpasar'},
+  {id:10,name:'CV Karya Mandiri',sub:'Vendor · Solo'},
+];
+function initials(n){return n.replace(/^(PT|CV|UD|Toko)\s+/i,'').split(' ').slice(0,2).map(function(w){return w[0];}).join('').toUpperCase();}
+function esc(s){return s.replace(/</g,'&lt;');}
+function hl(t,q){if(!q)return esc(t);var i=t.toLowerCase().indexOf(q.toLowerCase());if(i<0)return esc(t);return esc(t.slice(0,i))+'<span class="cbx-hl">'+esc(t.slice(i,i+q.length))+'</span>'+esc(t.slice(i+q.length));}
+function optHTML(d,q,sel){return '<div class="cbx-opt'+(sel&&sel.id===d.id?' selected':'')+'" data-id="'+d.id+'"><span class="av">'+initials(d.name)+'</span><span class="txt"><div class="nm">'+hl(d.name,q)+'</div><div class="sub">'+esc(d.sub)+'</div></span><svg class="tick" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div>';}
+
+/* Dibuka di HP? → keyboard palsu OFF, input editable pakai keyboard asli */
+var MQ_MOBILE=matchMedia('(max-width:680px)'); var IS_MOBILE=MQ_MOBILE.matches;
+function mobileWire(input,render){ input.addEventListener('input',render); if(IS_MOBILE) input.removeAttribute('readonly'); }
+/* resize-safe: pas lebar layar lewat 680px, sinkronin mode keyboard (asli vs simulasi) */
+MQ_MOBILE.addEventListener('change',function(e){ IS_MOBILE=e.matches;
+  ['inA','inB','inC'].forEach(function(id){var el=document.getElementById(id); if(el){ e.matches?el.removeAttribute('readonly'):el.setAttribute('readonly','readonly'); }}); });
+
+/* switcher pola (di HP tampil 1 pola full-layar, gampang dicoba satu-satu) */
+(function(){
+  var btns=document.querySelectorAll('#pola-switch button'), cols=document.querySelectorAll('.col[data-pola]');
+  function show(p){ cols.forEach(function(c){c.classList.toggle('active',c.dataset.pola===p);});
+    btns.forEach(function(b){b.classList.toggle('on',b.dataset.pola===p);}); }
+  btns.forEach(function(b){b.onclick=function(){show(b.dataset.pola);};});
+  show('A'); // default; di desktop .col tetap kebuka semua (switcher disembunyiin CSS)
+})();
+
+/* ─── KEYBOARD BUILDER ─── */
+var ROWS=[['q','w','e','r','t','y','u','i','o','p'],['a','s','d','f','g','h','j','k','l'],['z','x','c','v','b','n','m']];
+var BKSP='<svg width="22" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><path d="m15 9-4 4m0-4 4 4"/></svg>';
+var SHIFT='<svg width="20" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 4 12h4v6h8v-6h4z"/></svg>';
+function makeKbd(screen, onType){
+  var kbd=document.createElement('div'); kbd.className='kbd';
+  ROWS.forEach(function(row,ri){
+    var r=document.createElement('div'); r.className='kbd-row';
+    if(ri===2){var sh=document.createElement('div');sh.className='key wide';sh.innerHTML=SHIFT;r.appendChild(sh);}
+    row.forEach(function(ch){var k=document.createElement('div');k.className='key';k.textContent=ch;k.onmousedown=function(e){e.preventDefault();onType(ch);};r.appendChild(k);});
+    if(ri===2){var bk=document.createElement('div');bk.className='key wide';bk.innerHTML=BKSP;bk.onmousedown=function(e){e.preventDefault();onType('\b');};r.appendChild(bk);}
+    kbd.appendChild(r);
+  });
+  var sr=document.createElement('div'); sr.className='kbd-space-row';
+  var k123=document.createElement('div');k123.className='key k123';k123.textContent='123';
+  var space=document.createElement('div');space.className='key space';space.onmousedown=function(e){e.preventDefault();onType(' ');};
+  var ret=document.createElement('div');ret.className='key ret';ret.textContent='cari';
+  sr.appendChild(k123);sr.appendChild(space);sr.appendChild(ret);
+  kbd.appendChild(sr);
+  screen.appendChild(kbd);
+  return {up:function(){kbd.classList.add('up');},down:function(){kbd.classList.remove('up');}};
+}
+function typer(input,onChange){return function(ch){if(ch==='\b')input.value=input.value.slice(0,-1);else input.value+=ch;onChange();};}
+
+/* ─── A · full-screen ─── */
+(function(){
+  var trig=document.getElementById('trigA'),fs=document.getElementById('fsA'),input=document.getElementById('inA'),
+      list=document.getElementById('listA'),val=document.getElementById('valA'),back=document.getElementById('backA'),scr=document.getElementById('scrA');
+  var chosen=null;
+  function render(){var q=input.value.trim();var f=DATA.filter(function(d){return d.name.toLowerCase().indexOf(q.toLowerCase())>=0;});
+    list.innerHTML=f.length?f.map(function(d){return optHTML(d,q,chosen);}).join(''):'<div class="cbx-empty">"'+esc(q)+'" tidak ditemukan</div>';
+    list.querySelectorAll('.cbx-opt').forEach(function(el){el.onclick=function(){var d=DATA.find(function(x){return x.id==el.dataset.id;});chosen=d;val.textContent=d.name;val.classList.remove('ph');close();};});}
+  var kb=makeKbd(scr,typer(input,render)); mobileWire(input,render);
+  function open(){fs.classList.add('open');render();setTimeout(function(){kb.up();if(IS_MOBILE)input.focus();},240);}
+  function close(){fs.classList.remove('open');kb.down();}
+  trig.onclick=open;back.onclick=close;
+})();
+
+/* ─── B · bottom sheet ─── */
+(function(){
+  var trig=document.getElementById('trigB'),sheet=document.getElementById('sheetB'),bd=document.getElementById('bdB'),
+      input=document.getElementById('inB'),list=document.getElementById('listB'),val=document.getElementById('valB'),x=document.getElementById('xB'),scr=document.getElementById('scrB');
+  var chosen=null;
+  function render(){var q=input.value.trim();var f=DATA.filter(function(d){return d.name.toLowerCase().indexOf(q.toLowerCase())>=0;});
+    list.innerHTML=f.length?f.map(function(d){return optHTML(d,q,chosen);}).join(''):'<div class="cbx-empty">"'+esc(q)+'" tidak ditemukan</div>';
+    list.querySelectorAll('.cbx-opt').forEach(function(el){el.onclick=function(){var d=DATA.find(function(y){return y.id==el.dataset.id;});chosen=d;val.textContent=d.name;val.classList.remove('ph');close();};});}
+  var kb=makeKbd(scr,typer(input,render)); mobileWire(input,render);
+  function open(){bd.classList.add('open');sheet.classList.add('open');input.value='';render();
+    setTimeout(function(){sheet.classList.add('lift');kb.up();if(IS_MOBILE)input.focus();},260);}
+  function close(){bd.classList.remove('open');sheet.classList.remove('open','lift');kb.down();}
+  trig.onclick=open;bd.onclick=close;x.onclick=close;
+})();
+
+/* ─── C · inline popover ─── */
+(function(){
+  var cbx=document.getElementById('cbxC'),trig=document.getElementById('trigC'),input=document.getElementById('inC'),
+      list=document.getElementById('listC'),pop=document.getElementById('popC'),scr=document.getElementById('scrC');
+  var chosen=null;
+  function render(){var q=input.value.trim();var f=DATA.filter(function(d){return d.name.toLowerCase().indexOf(q.toLowerCase())>=0;});
+    list.innerHTML=f.length?f.map(function(d){return optHTML(d,q,chosen);}).join(''):'<div class="cbx-empty">"'+esc(q)+'" tidak ditemukan</div>';
+    list.querySelectorAll('.cbx-opt').forEach(function(el){el.onclick=function(){var d=DATA.find(function(y){return y.id==el.dataset.id;});chosen=d;input.value=d.name;close();};});}
+  var kb=makeKbd(scr,typer(input,render)); mobileWire(input,render);
+  // popover dibatasi tinggi = ruang antara field & keyboard (simulasi ketutup di desktop)
+  function sizePop(){
+    if(IS_MOBILE) return; // di HP: dibatasi CSS (44vh) + keyboard asli yg motong
+    var scrRect=scr.getBoundingClientRect(), popRect=pop.getBoundingClientRect();
+    var kbdTop=scrRect.bottom-250; // keyboard tingginya 250
+    var avail=kbdTop-popRect.top-8;
+    pop.style.maxHeight=Math.max(96,avail)+'px';
+  }
+  function open(){cbx.classList.add('open');trig.classList.add('focus');input.value='';render();
+    setTimeout(function(){kb.up();sizePop();if(IS_MOBILE)input.focus();},60);}
+  function close(){cbx.classList.remove('open');trig.classList.remove('focus');kb.down();}
+  trig.onclick=function(){cbx.classList.contains('open')?close():open();};
+  document.addEventListener('click',function(e){if(!cbx.contains(e.target)&&!e.target.closest('.kbd'))close();});
+})();
+
+/* ─── REVIEW TOOLING ─── */
+(function(){
+  var COMPONENT=document.body.getAttribute('data-component')||'Component';
+  var KEY='expl:'+location.pathname,notes=[];
+  try{notes=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(notes))notes=[];}catch(e){notes=[];}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(notes));}catch(e){}}
+  var commentMode=false,body=document.body,panel=document.getElementById('expl-panel'),commentBtn=document.getElementById('expl-comment-btn');
+  function toast(m){var t=document.querySelector('.expl-toast');if(!t){t=document.createElement('div');t.className='expl-toast';document.body.appendChild(t);}t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show');},2200);}
+  function copy(text,ok){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){toast(ok);},fb);}else fb();function fb(){var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast(ok);}catch(e){toast('Gagal copy');}ta.remove();}}
+  function setComment(v){commentMode=v;body.classList.toggle('expl-comment',v);commentBtn.classList.toggle('on',v);toast(v?'Mode komen ON — klik area demo':'Mode komen OFF');if(v)setPanel(true);}
+  function setPanel(v){panel.classList.toggle('open',v);}
+  commentBtn.onclick=function(){setComment(!commentMode);};
+  document.getElementById('expl-list-btn').onclick=function(){setPanel(!panel.classList.contains('open'));};
+  document.getElementById('expl-panel-close').onclick=function(){setPanel(false);};
+  document.addEventListener('keydown',function(e){if((e.key==='c'||e.key==='C')&&document.activeElement.tagName!=='TEXTAREA'&&document.activeElement.tagName!=='INPUT')setComment(!commentMode);});
+  document.querySelectorAll('.expl-canvas').forEach(function(canvas){
+    canvas.addEventListener('mousedown',function(e){
+      if(!commentMode||!e.shiftKey)return; if(e.button)return; if(e.target.closest('.expl-pin,.expl-area'))return;
+      e.preventDefault();e.stopPropagation();
+      var col=canvas.closest('.col');var alt=col&&col.querySelector('.sec-title')?col.querySelector('.sec-title').textContent.trim().slice(0,5):'?';
+      var r=canvas.getBoundingClientRect();var sx=e.clientX-r.left,sy=e.clientY-r.top;
+      var sel=document.createElement('div');sel.className='expl-sel';canvas.appendChild(sel);
+      var moved=false;
+      function mm(ev){var x=ev.clientX-r.left,y=ev.clientY-r.top,l=Math.min(x,sx),t=Math.min(y,sy),w=Math.abs(x-sx),h=Math.abs(y-sy);if(w>3||h>3)moved=true;sel.style.left=l+'px';sel.style.top=t+'px';sel.style.width=w+'px';sel.style.height=h+'px';}
+      function mu(ev){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);sel.remove();
+        var sw=function(ce){ce.stopPropagation();ce.preventDefault();cl();};function cl(){document.removeEventListener('click',sw,true);clearTimeout(tid);}document.addEventListener('click',sw,true);var tid=setTimeout(cl,350);
+        var x=ev.clientX-r.left,y=ev.clientY-r.top,l=Math.min(x,sx),t=Math.min(y,sy),w=Math.abs(x-sx),h=Math.abs(y-sy);
+        var tg=document.elementFromPoint(ev.clientX,ev.clientY)||ev.target;var tt=(tg.innerText||tg.textContent||'').replace(/\s+/g,' ').trim();var ref=tt?(tt.length>40?tt.slice(0,40)+'…':tt):'';
+        if(moved&&(w>6||h>6))openPop(ev.clientX,ev.clientY,{alt:alt,x:l,y:t,w:w,h:h,ref:ref});
+        else openPop(ev.clientX,ev.clientY,{alt:alt,x:sx,y:sy,ref:ref});
+      }
+      document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);
+    });
+  });
+  function openPop(cx,cy,ctx){
+    document.querySelectorAll('.expl-pop2').forEach(function(p){p.remove();});
+    var pop=document.createElement('div');pop.className='expl-pop2';
+    pop.style.left=Math.min(cx,window.innerWidth-296)+'px';pop.style.top=Math.min(cy,window.innerHeight-170)+'px';
+    pop.innerHTML='<div style="font:700 11px Inter;color:var(--tx-mut);margin-bottom:8px">'+esc(ctx.alt)+(ctx.ref?' · "'+esc(ctx.ref)+'"':'')+'</div><textarea placeholder="Tulis catatan..."></textarea><div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end"><button class="expl-btn expl-btn--ghost" style="background:var(--item-on);color:var(--tx-mut);border-color:transparent" data-x>Batal</button><button class="expl-btn expl-btn--primary" data-ok>Simpan</button></div>';
+    document.body.appendChild(pop);var ta=pop.querySelector('textarea');ta.focus();
+    pop.querySelector('[data-x]').onclick=function(){pop.remove();};
+    pop.querySelector('[data-ok]').onclick=function(){var text=ta.value.trim();if(!text){pop.remove();return;}notes.push({alt:ctx.alt,x:ctx.x,y:ctx.y,w:ctx.w,h:ctx.h,ref:ctx.ref,text:text});save();render();pop.remove();toast('Komen tersimpan');};
+  }
+  function render(){
+    document.querySelectorAll('.expl-pin,.expl-area').forEach(function(p){p.remove();});
+    var canvases=document.querySelectorAll('.expl-canvas');
+    notes.forEach(function(n,i){
+      var canvas=Array.prototype.find.call(canvases,function(c){var col=c.closest('.col');return col&&col.querySelector('.sec-title')&&col.querySelector('.sec-title').textContent.trim().slice(0,5)===n.alt;})||canvases[0];
+      if(canvas){
+        if(n.w&&n.h){var a=document.createElement('div');a.className='expl-area';a.style.left=n.x+'px';a.style.top=n.y+'px';a.style.width=n.w+'px';a.style.height=n.h+'px';canvas.appendChild(a);}
+        var pin=document.createElement('div');pin.className='expl-pin';pin.style.left=n.x+'px';pin.style.top=n.y+'px';pin.textContent=i+1;pin.onclick=function(ev){ev.stopPropagation();setPanel(true);};canvas.appendChild(pin);}
+    });
+    var list=document.getElementById('expl-list');
+    if(!notes.length){list.innerHTML='<div class="expl-empty">Belum ada komen.<br>Nyalain 💬 Komen lalu klik area demo.</div>';return;}
+    list.innerHTML='';
+    notes.forEach(function(n,i){var el=document.createElement('div');el.className='expl-note';el.innerHTML='<button class="expl-note-del">✕</button><div class="expl-note-ref">#'+(i+1)+' · '+esc(n.alt)+(n.ref?' · "'+esc(n.ref)+'"':'')+'</div><div class="expl-note-text">'+esc(n.text)+'</div>';el.querySelector('.expl-note-del').onclick=function(){notes.splice(i,1);save();render();};list.appendChild(el);});
+  }
+  function submit(){if(!notes.length){toast('Belum ada komen');return;}var lines=['[REVIEW] '+COMPONENT,''];notes.forEach(function(n,i){lines.push((i+1)+'. '+n.alt+(n.w?' [area '+Math.round(n.w)+'×'+Math.round(n.h)+']':'')+(n.ref?' ("'+n.ref+'")':'')+': '+n.text);});lines.push('','(paste ini ke chat buat lanjut diskusi)');copy(lines.join('\n'),'📋 '+notes.length+' komen di-copy — paste ke chat');}
+  document.getElementById('expl-submit-btn').onclick=submit;
+  document.getElementById('expl-submit-btn2').onclick=submit;
+  render();
+})();
+</script>
+</body>
+</html>

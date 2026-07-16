@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<!-- ══════════════════════════════════════════════════════════════════
+     HALAMAN SHARE — Coachmark
+     DIBUAT OTOMATIS oleh paper-designer/tools/make-share-page.mjs
+     JANGAN diedit tangan — nanti ketimpa. Edit registry di hub, lalu regenerate.
+
+     Isinya CUMA komponen ini. Nggak ada sidebar, nggak ada daftar komponen,
+     nggak ada jalan ke hub. Penerima bisa lihat SEMUA VERSI komponen ini,
+     tapi komponen lain nggak ada datanya di file ini.
+     ══════════════════════════════════════════════════════════════════ -->
+<title>Coachmark · Paper.id</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  :root{--app-bg:#F4F4F2;--bar-bg:#EDECE6;--surface:#FCFCFB;--canvas:#F4F4F2;--bd:rgba(0,0,0,.08);--bd-strong:rgba(0,0,0,.16);--tx:#1F2328;--tx-mut:#6E6E68;--tx-dim:#A3A39B;--accent:#1F2328;--accent-tx:#fff;--item-on:#EAEAE6;--item-hover:#EDEDE9;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 6px 22px rgba(0,0,0,.12)}
+  body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;display:flex;flex-direction:column;background:var(--app-bg);color:var(--tx);overflow:hidden}
+  .bar{display:flex;align-items:center;gap:12px;padding:9px 16px;background:var(--bar-bg);border-bottom:1px solid var(--bd-strong);flex:none;flex-wrap:wrap}
+  .bar h1{font-size:14px;font-weight:800;color:var(--tx)}
+  .bar .status{font-size:11px;color:var(--tx-dim)}
+  .plat,.tabs{display:flex;gap:4px;background:var(--item-on);border-radius:10px;padding:4px}
+  .plat button,.tabs button{border:0;background:transparent;color:var(--tx-mut);font:600 12px 'Lato';padding:6px 13px;border-radius:7px;cursor:pointer;display:flex;align-items:center;gap:5px}
+  .plat button svg,.bar-btn svg{width:14px;height:14px}
+  .plat button:hover,.tabs button:hover{color:var(--tx)}
+  .tabs button.on{background:var(--accent);color:var(--accent-tx)}
+  .plat button.on{background:var(--surface);color:var(--tx);box-shadow:var(--shadow-sm)}
+  .tabs .star{font-size:9px;color:var(--tx-mut)}
+  .tabs button.on .star{color:var(--accent-tx)}
+  .bar .sp{flex:1}
+  .bar-btn{border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);font:600 12px 'Lato';padding:7px 11px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .bar-btn:hover{background:var(--item-hover);color:var(--tx)}
+  .bar-btn.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
+  .stage{flex:1;position:relative;background:var(--canvas);min-height:0}
+  iframe{width:100%;height:100%;border:0;display:block}
+  .log{position:absolute;top:0;right:0;height:100%;width:320px;max-width:88vw;background:var(--surface);border-left:1px solid var(--bd);box-shadow:var(--shadow-md);transform:translateX(340px);transition:transform .2s;overflow:auto;z-index:20}
+  .log.open{transform:none}
+  .log h2{font-size:13px;font-weight:700;padding:16px 18px 4px;color:var(--tx)}
+  .log .sub{font-size:11px;color:var(--tx-dim);padding:0 18px 12px}
+  .log-item{padding:12px 18px;border-top:1px solid var(--bd)}
+  .log-item.cur{background:var(--item-on)}
+  .log-v{font:700 12px 'Lato';color:var(--tx);margin-bottom:2px;display:flex;align-items:center;gap:6px}
+  .log-v .d{font-weight:500;color:var(--tx-dim);font-size:11px}
+  .log-t{font-size:12px;color:var(--tx-mut);margin-bottom:7px}
+  .log ul{margin:0;padding-left:16px}
+  .log li{font-size:12px;line-height:1.5;color:var(--tx-mut);margin-bottom:3px}
+  .log-open-btn{border:0;background:var(--accent);color:var(--accent-tx);font:600 11px 'Lato';padding:5px 10px;border-radius:6px;cursor:pointer;margin-top:6px}
+  @media (max-width:520px){ .bar h1{font-size:13px} .bar .status{display:none} }
+</style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <g id="s-list" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></g>
+    <g id="s-monitor" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></g>
+    <g id="s-phone" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></g>
+  </defs></svg>
+  <div class="bar">
+    <h1 id="cmp-title"></h1>
+    <span class="status" id="cmp-status"></span>
+    <div class="plat" id="plat"></div>
+    <div class="tabs" id="tabs"></div>
+    <span class="sp"></span>
+    <button class="bar-btn" id="log-btn"><svg viewBox="0 0 24 24"><use href="#s-list"/></svg> Changelog</button>
+  </div>
+  <div class="stage">
+    <iframe id="frame" title="draft"></iframe>
+    <div class="log" id="log"></div>
+  </div>
+
+<script>
+  /* Data CUMA komponen ini. Komponen lain nggak ada di file ini — bukan disembunyiin,
+     tapi emang nggak dikirim. Hapus karakter di URL nggak akan nemu apa-apa. */
+  var C = {"slug":"coachmark","name":"Coachmark","platforms":[{"key":"web","label":"🖥 Web","phase":"Explore · revisi nav+close","versions":[{"v":6,"file":"../coachmark/explore-close-c.html","date":"2026-07-15","title":"Close B vs C (toned) — banding 2 alternatif","changes":["Banding **Alt B** (circle di kartu) vs **Alt C** (X di scrim) dalam 1 versi — toggle Gaya close","Dua-duanya DIKALEMIN: B = circle abu tipis + ikon muted · C = X putih polos di scrim (buang circle+shadow yang bikin keliatan tombol)","Kontrol **Emphasis** 3 level (Kalem 45% · Sedang 65% default · Jelas 85%) — berlaku buat DUA gaya","Prinsip: close tur = exit sekunder, harus ketemu kalau dicari tapi nggak nyaingin Next","Nav toggle + step tetep bisa dimainin. Audit lolos · DOM test 12 cek lolos","⚠️ Cek aksesibilitas: Kalem (45%) jangan sampai susah dilihat. Pilih gaya + level yang pas"]},{"v":5,"file":"../coachmark/explore-nav-close.html","date":"2026-07-15","title":"Adjust · dots di footer + nav jadi 2 toggle + close B kalem","changes":["1. DOTS SEJAJAR TOMBOL — pindah ke dalam footer (sesama navigasi), bukan row terpisah di atas","2. CLOSE = **Alt B** (circle X pojok) jadi default + DIKALEMIN: ikon muted #a5b6c1, circle #f3f6f9 tipis, ikon 16px. Selector tetep ada buat banding","3. NAVIGASI = **2 toggle varian** (Dots / Counter) — bukan auto by jumlah step. Biar Figma cukup 2 varian, nggak meledak. Panduan ≤5/≥6 jadi guideline, bukan behaviour","Audit lolos exit 0 · DOM test: 23 cek lolos","⚠️ EXPLORE — nunggu user oke, baru playground property final + Figma"]},{"v":4,"file":"../coachmark/explore-nav-close.html","date":"2026-07-15","title":"Explore · nav 2 jenis + gaya close (rename → Coachmark)","changes":["RENAME: Spotlight → **Coachmark** (keputusan user). Web dulu; Figma nyusul abis pilihan final","NAV 2 JENIS auto-switch by jumlah step:","  • ≤5 step → **dots + Next** (dots jumpable, nggak butuh Back)","  • ≥6 step → **counter \"1/7\" + Back + Next** (dots nggak kebaca di atas 5)","SKIP diganti → 5 gaya CLOSE buat dipilih: A ikon X pojok · B X circle button · C X di scrim · D X footer-kiri · E tombol \"Skip tour\"","Konten pakai konteks Paper.id (Invoice Pembelian, supplier). Nilai 100% DS, audit lolos exit 0","Diverifikasi DOM (jsdom): 24 cek nav+close lolos","⚠️ EXPLORE — belum final. Nunggu user pilih gaya close + oke 2 nav, baru dirapihin jadi playground property + Figma"]},{"v":3,"file":"../coachmark/playground-alt-a.html","date":"2026-07-13","title":"Nama final \"Spotlight\" + hover dots + edge case visual + fix","changes":["NAMA FINAL: **Spotlight** (keputusan user). Kandidat lain: Tour (Ant Design) / Walkthrough / Coachmark. Semua komponen + page direname","Spotlight `8621:253341` · Spotlight Content `8619:915` · Spotlight Dots `8618:277683` · _Spotlight/Dot `8618:646` · _Spotlight/Arrow `8628:1191` · Spotlight Scrim `8622:1053`","LABEL TOMBOL = INGGRIS (keputusan user): Skip · Previous · Next · Done. Komponen library dibikin generik","EDGE CASE VISUAL di guideline Figma (6 kasus, pakai komponen beneran + konten Paper): judul panjang · deskripsi panjang · tanpa gambar · tur 5 step · minimal · target mepet tepi","HOVER DOTS: _Spotlight/Dot sekarang Active × State (4 varian). Dot mati di-hover → #89bde5 (action/primary/hover) · dot aktif di-hover → #3385b5 (pressed)","FIX: arrow lama (kotak diputar 45°) rusak — pivot rotasi Figma dari sudut, bukan tengah. Diganti VECTOR segitiga 4 arah, nol rotasi","FIX: border + bg nyasar di 11 dari 12 varian — swapComponent bawa serta override placeholder Pop Over. Di-strip","FIX: tombol Kembali/Lanjut nggak mentok kanan — Spacer layoutGrow 0 → 1","Referensi web (dicek 2026-07-13): Ant Design Tour (anatomi 1:1, dots di footer) · Atlassian Spotlight (dismiss tiap step, maks 3-4 step)","Audit binding tree-walk LOLOS: unbound=[] · wrongCollection=[]"]},{"v":2,"file":"../coachmark/playground-alt-a.html","date":"2026-07-13","title":"Fase 4-5 · Guideline + Figma (LIVE)","changes":["✅ Komponen LIVE di Figma Paperverse","Kartu = INSTANCE component/Pop Over, Content Frame di-SWAP (cara pakai yang diniatkan DS)","Tombol = INSTANCE Button (Tertiary/Secondary/Primary), Head dimatiin via property bawaan","Scrim = cutout beneran via boolean subtract + ring putih","⚠️ Beda dari playground: Steps pindah ke komponen Dots (kalau digabung = 48 varian, nggak kekelola) · Image jadi BOOLEAN bukan SLOT","Guideline 9-section: _output/explorer/coachmark/guideline-alt-a.md"]},{"v":1,"file":"../coachmark/playground-alt-a.html","date":"2026-07-13","title":"Playground · Alt A (property model)","changes":["Komponen BARU — coachmark / feature walkthrough. Masuk dari SPEC (skip Fase 1-2 riset, brief udah lengkap)","Kartu = component/Pop Over Paperverse (live-pull node 5400:4798) — 281px, radius 4, shadow table/option","Tombol Lanjut/Selesai/Kembali/Lewati = Button Paperverse (pill 30px, radius full)","VARIANT: Jumlah step (2–5) · Step aktif · Arah kartu (auto/atas/bawah/kiri/kanan)","BOOLEAN: Gambar · Deskripsi · Dots · Lewati · Kembali · Arrow · Scrim · Ring","SLOT: Judul · Deskripsi · Gambar (16:9)","Keputusan user: Kembali di KANAN sebelah Lanjut · klik scrim = no-op · Esc = Skip · target ilang = skip step · mobile ditunda","⚠️ DRIFT: lebar default = 320px (keputusan user), Pop Over Paperverse aslinya 281px → wajib dicatat di paperverse-vs-aurora.md pas Fase 5","Jumlah dot NGIKUT property \"Jumlah step\" (1 kontrol, 2 efek) — di Figma jadi VARIANT 2-5, pola sama kayak Number of Chips","⚠️ 4 elemen BARU (belum ada di DS, disetujui user buat dibikin): Scrim (#133f5d @70%) · Ring (2px putih) · Dots (8px) · Arrow (12px)","Lolos component-audit.mjs exit 0"]}]}]};
+
+  var frame=document.getElementById('frame'), tabs=document.getElementById('tabs'),
+      plat=document.getElementById('plat'), log=document.getElementById('log');
+  var curPlatKey=null, curV=null;
+  function curPlat(){ return C.platforms.find(function(p){return p.key===curPlatKey;}); }
+
+  document.getElementById('cmp-title').textContent=C.name;
+
+  function selectPlatform(key,v){
+    curPlatKey=key; var p=curPlat();
+    document.getElementById('cmp-status').textContent=p.phase||'';
+    plat.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.dataset.k===key);});
+    tabs.innerHTML='';
+    p.versions.slice().sort(function(a,b){return a.v-b.v;}).forEach(function(ver){
+      var b=document.createElement('button'); b.dataset.v=ver.v;
+      b.innerHTML='v'+ver.v+(ver.v===p.versions[0].v?' <span class="star">✦</span>':'');
+      b.onclick=function(){ showVersion(ver.v); };
+      tabs.appendChild(b);
+    });
+    var exists=(v!=null)&&p.versions.some(function(x){return x.v===v;});
+    showVersion(exists?v:p.versions[0].v);
+  }
+  function showVersion(v){
+    curV=v; var p=curPlat(), ver=p.versions.find(function(x){return x.v===v;});
+    frame.src=ver.file;
+    tabs.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',+b.dataset.v===v);});
+    renderLog(); syncHash();
+  }
+  function renderLog(){
+    var p=curPlat();
+    log.innerHTML='<h2>Changelog · '+C.name+' '+p.label.replace(/[🖥📱💻🌐📲🖥️]/g,'').trim()+'</h2><div class="sub">History iterasi platform ini</div>'+
+      p.versions.map(function(ver){
+        return '<div class="log-item'+(ver.v===curV?' cur':'')+'">'+
+          '<div class="log-v">v'+ver.v+(ver.v===p.versions[0].v?' ✦':'')+' <span class="d">· '+ver.date+'</span></div>'+
+          '<div class="log-t">'+ver.title+'</div>'+
+          '<ul>'+ver.changes.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>'+
+          (ver.v===curV?'':'<button class="log-open-btn" data-v="'+ver.v+'">Lihat v'+ver.v+'</button>')+
+        '</div>';
+      }).join('');
+    log.querySelectorAll('.log-open-btn').forEach(function(b){b.onclick=function(){showVersion(+b.dataset.v);};});
+  }
+  document.getElementById('log-btn').onclick=function(){log.classList.toggle('open');this.classList.toggle('on');};
+
+  /* Deep-link versi: #v3 (+ platform kalau ada: #mobile/v2) */
+  var muteHash=false;
+  function syncHash(){
+    var h='#'+(C.platforms.length>1?curPlatKey+'/':'')+'v'+curV;
+    if(location.hash===h) return;
+    muteHash=true; location.hash=h; setTimeout(function(){muteHash=false;},0);
+  }
+  function applyHash(){
+    var parts=location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);
+    var key=null,v=null;
+    parts.forEach(function(x){
+      if(/^v\d+$/.test(x)) v=parseInt(x.slice(1),10);
+      else if(C.platforms.some(function(p){return p.key===x;})) key=x;
+    });
+    selectPlatform(key||C.platforms[0].key, v);
+  }
+  window.addEventListener('hashchange',function(){ if(!muteHash) applyHash(); });
+
+  if(C.platforms.length>1){
+    C.platforms.forEach(function(p){
+      var b=document.createElement('button');
+      var pic=p.key==='mobile'?'#s-phone':'#s-monitor';
+      b.innerHTML='<svg viewBox="0 0 24 24"><use href="'+pic+'"/></svg>'+p.label.replace(/[🖥📱💻🌐📲🖥️]/g,'').trim();
+      b.dataset.k=p.key;
+      b.onclick=function(){ selectPlatform(p.key); };
+      plat.appendChild(b);
+    });
+  } else { plat.style.display='none'; }
+
+  applyHash();
+</script>
+</body>
+</html>

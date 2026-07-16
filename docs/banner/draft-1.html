@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══════════════════════════════════════════════════════════════════
+     BANNER · draft-1 (Fase 1 — NON-DS, buat lihat behaviour+layout)
+     Versi BARU (tidak berbasis Banner Paperverse existing — riset fresh).
+       • LAYER TOOLING (.expl-*)  = review chrome, DILARANG masuk Figma.
+       • LAYER KOMPONEN (.expl-canvas) = 2 pola banner (draft).
+     ⚠️ Warna/font GENERIK — belum Aurora/Paperverse. Fokus: behaviour & susunan.
+     Pola A = Inline compact (1 baris) · Pola B = Prominent block (judul+body+aksi).
+     Tone: info · success · warning · critical. Dismiss interaktif (+ Reset).
+     ══════════════════════════════════════════════════════════════════ -->
+<title>Explorer · Banner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  /* ═══ NEUTRAL MINIMAL — token chrome (identik dgn hub + playground) ═══ */
+  :root{--app-bg:#F4F4F2;--bar-bg:#EDECE6;--surface:#FCFCFB;--canvas:#FFFFFF;--bd:rgba(0,0,0,.08);--bd-strong:rgba(0,0,0,.16);--tx:#1F2328;--tx-mut:#6E6E68;--tx-dim:#A3A39B;--accent:#1F2328;--accent-tx:#fff;--item-on:#EAEAE6;--item-hover:#EDEDE9;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 6px 22px rgba(0,0,0,.12)}
+  body { font-family:'Lato',-apple-system,'Segoe UI',Roboto,sans-serif; background:var(--app-bg); color:var(--tx); }
+
+  /* ─────────── LAYER TOOLING ─────────── */
+  .expl-topbar { position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:12px;
+    background:var(--bar-bg); color:var(--tx); padding:10px 20px; border-bottom:1px solid var(--bd-strong); }
+  .expl-crumb { font-size:12px; font-weight:700; color:var(--tx-dim); letter-spacing:.02em; }
+  .expl-topbar .sp { flex:1; }
+  .expl-btn { border:0; border-radius:8px; padding:8px 14px; font:600 13px 'Lato',sans-serif;
+    cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:filter .12s,background .12s; }
+  .expl-btn svg { width:15px; height:15px; }
+  .expl-btn--ghost { background:transparent; border:1px solid var(--bd-strong); color:var(--tx-mut); }
+  .expl-btn--ghost:hover { background:var(--item-hover); color:var(--tx); }
+  .expl-btn--ghost.on { background:var(--accent); border-color:var(--accent); color:var(--accent-tx); }
+  .expl-btn--primary { background:var(--accent); color:var(--accent-tx); }
+  .expl-btn--primary:hover { background:#33383E; }
+  .expl-hint { padding:10px 20px; font-size:12px; color:var(--tx-mut); background:var(--app-bg); border-bottom:1px solid var(--bd); }
+  .expl-hint b { color:var(--tx); }
+  .expl-head { padding:26px 28px 4px; }
+  .expl-head h1 { font-size:30px; font-weight:800; letter-spacing:-.01em; line-height:1.12; color:var(--tx); }
+  .expl-head p { font-size:14px; color:var(--tx-mut); margin-top:7px; }
+
+  .expl-grid { display:flex; flex-wrap:wrap; gap:28px; padding:28px; align-items:flex-start; }
+  .expl-alt { background:var(--surface); border-radius:14px; box-shadow:var(--shadow-sm); overflow:hidden; width:520px; max-width:100%; border:2px solid transparent; }
+  .expl-alt-head { display:flex; align-items:center; gap:8px; padding:10px 14px; background:var(--app-bg); border-bottom:1px solid var(--bd); }
+  .expl-alt-label { font-weight:700; font-size:13px; color:var(--tx); }
+  .expl-alt-tag { font-size:11px; color:var(--tx-dim); }
+  .expl-alt-head .sp { flex:1; }
+  .expl-reset { border:1px solid var(--bd-strong); background:var(--surface); border-radius:7px; padding:4px 10px; font:600 11px 'Lato',sans-serif; cursor:pointer; color:var(--tx-mut); }
+  .expl-reset:hover { background:var(--item-hover); color:var(--tx); }
+  .expl-canvas { position:relative; padding:22px; min-height:120px; background:var(--canvas); }
+  body.expl-comment .expl-canvas { cursor:crosshair; }
+  .expl-pin { position:absolute; z-index:40; width:26px; height:26px; border-radius:50% 50% 50% 4px; background:var(--accent); color:var(--accent-tx);
+    font:700 11px/26px 'Lato',sans-serif; text-align:center; transform:translate(-2px,-28px); box-shadow:0 2px 8px rgba(0,0,0,.3); cursor:pointer; user-select:none; }
+  .expl-sel { position:absolute; z-index:39; border:1.5px dashed var(--accent); background:rgba(31,35,40,.12); border-radius:4px; pointer-events:none; }
+  .expl-area { position:absolute; z-index:38; border:1.5px solid var(--accent); background:rgba(31,35,40,.10); border-radius:4px; pointer-events:none; }
+  .expl-panel { position:fixed; top:0; right:0; height:100vh; width:300px; background:var(--surface); border-left:1px solid var(--bd-strong); box-shadow:var(--shadow-md); z-index:60; display:flex; flex-direction:column; transform:translateX(300px); transition:transform .2s; }
+  .expl-panel.open { transform:none; }
+  .expl-panel-head { padding:14px 16px; border-bottom:1px solid var(--bd); display:flex; align-items:center; }
+  .expl-panel-head h2 { font-size:14px; font-weight:700; flex:1; }
+  .expl-panel-close { border:0; background:var(--item-on); border-radius:6px; width:28px; height:28px; cursor:pointer; color:var(--tx-mut); }
+  .expl-list { flex:1; overflow:auto; padding:12px; }
+  .expl-empty { text-align:center; color:var(--tx-dim); font-size:13px; padding:32px 12px; line-height:1.6; }
+  .expl-note { background:var(--app-bg); border:1px solid var(--bd); border-radius:10px; padding:10px 12px; margin-bottom:10px; }
+  .expl-note-ref { font:700 11px 'Lato',sans-serif; color:var(--tx-mut); margin-bottom:4px; }
+  .expl-note-text { font-size:13px; line-height:1.5; color:var(--tx); word-break:break-word; }
+  .expl-note-del { float:right; border:0; background:transparent; color:var(--tx-dim); cursor:pointer; font-size:14px; }
+  .expl-note-del:hover { color:#B42318; }
+  .expl-panel-foot { padding:12px 16px; border-top:1px solid var(--bd); }
+  .expl-pop { position:fixed; z-index:70; width:280px; background:var(--surface); border:1px solid var(--bd-strong); border-radius:12px; box-shadow:var(--shadow-md); padding:12px; }
+  .expl-pop-ref { font:700 11px 'Lato',sans-serif; color:var(--tx-mut); margin-bottom:8px; }
+  .expl-pop textarea { width:100%; min-height:70px; resize:vertical; border:1px solid var(--bd-strong); border-radius:8px; padding:8px 10px; font:400 13px/1.5 'Lato',sans-serif; outline:none; color:var(--tx); background:var(--canvas); }
+  .expl-pop-acts { display:flex; gap:8px; margin-top:8px; justify-content:flex-end; }
+  .expl-toast { position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(10px); background:var(--accent); color:var(--accent-tx); font:600 12px 'Lato',sans-serif; padding:10px 18px; border-radius:99px; box-shadow:var(--shadow-md); z-index:80; opacity:0; pointer-events:none; transition:opacity .18s,transform .18s; }
+  .expl-toast.show { opacity:1; transform:translateX(-50%); }
+
+  /* ═════════════════ LAYER KOMPONEN (draft, NON-DS) ═════════════════ */
+  .stack { display:flex; flex-direction:column; gap:12px; }
+  .tone-lbl { font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#b0bcc6; margin:6px 0 -4px; }
+
+  /* tone tokens (GENERIK) */
+  .t-info    { --c:#2563eb; --bg:#eff6ff; --bd:#bfdbfe; }
+  .t-success { --c:#16a34a; --bg:#f0fdf4; --bd:#bbf7d0; }
+  .t-warning { --c:#d97706; --bg:#fffbeb; --bd:#fde68a; }
+  .t-critical{ --c:#dc2626; --bg:#fef2f2; --bd:#fecaca; }
+
+  .bnr-ic { flex:none; width:20px; height:20px; color:var(--c); display:flex; align-items:center; justify-content:center; }
+  .bnr-ic svg { width:20px; height:20px; }
+  .bnr-x { flex:none; border:0; background:transparent; color:#8a97a3; width:24px; height:24px; border-radius:6px; cursor:pointer; font-size:18px; line-height:1; }
+  .bnr-x:hover { background:rgba(0,0,0,.06); color:#41525f; }
+  .b-link { color:var(--c); font-weight:700; font-size:13px; text-decoration:none; cursor:pointer; white-space:nowrap; }
+  .b-link:hover { text-decoration:underline; }
+  .b-btn { border:1px solid #d3dbe2; background:#fff; border-radius:8px; padding:7px 12px; font:600 13px -apple-system,sans-serif; cursor:pointer; color:#33414c; }
+  .b-btn:hover { background:#f5f7f9; }
+  .b-btn--primary { background:var(--c); border-color:var(--c); color:#fff; }
+  .b-btn--primary:hover { filter:brightness(1.06); }
+
+  /* ── Pola A · Inline compact (1 baris) ── */
+  .bnrA { display:flex; align-items:center; gap:10px; padding:11px 12px; border-radius:10px; background:var(--bg); border:1px solid var(--bd); }
+  .bnrA-msg { flex:1; font-size:13px; line-height:1.45; color:#28323b; }
+  .bnrA-msg b { color:#1c2b36; }
+  .bnrA-acts { display:flex; align-items:center; gap:14px; }
+
+  /* ── Pola B · Prominent block (judul + body + aksi) ── */
+  .bnrB { display:flex; align-items:flex-start; gap:12px; padding:14px 14px; border-radius:12px; background:var(--bg); border:1px solid var(--bd); border-left:4px solid var(--c); }
+  .bnrB-body { flex:1; min-width:0; }
+  .bnrB-title { font-size:14px; font-weight:700; color:#1c2b36; }
+  .bnrB-desc { font-size:13px; line-height:1.5; color:#4a5763; margin-top:3px; }
+  .bnrB-acts { display:flex; gap:8px; margin-top:12px; }
+  .bnr-ic--top { margin-top:1px; }
+
+  .is-gone { display:none !important; }
+  @media (max-width:560px){ .expl-alt{ width:100%; } .expl-grid{ padding:16px; } .bnrA{ flex-wrap:wrap; } }
+</style>
+</head>
+<body data-component="Banner">
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <g id="t-chat" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a7.5 7.5 0 01-10.9 6.7L4 20l1.8-5.1A7.5 7.5 0 1121 11.5z"/></g>
+    <g id="t-list" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></g>
+    <g id="t-send" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></g>
+  </defs></svg>
+
+  <div class="expl-topbar">
+    <span class="expl-crumb">Component Explorer · Draft</span>
+    <span style="font-size:11px;color:var(--tx-mut)">klik Komen lalu klik/drag area buat komen · dismiss ✕ interaktif (pakai Reset buat balikin) · draft NON-DS</span>
+    <span class="sp"></span>
+    <button class="expl-btn expl-btn--ghost" id="expl-comment-btn"><svg viewBox="0 0 24 24"><use href="#t-chat"/></svg> Komen</button>
+    <button class="expl-btn expl-btn--ghost" id="expl-list-btn"><svg viewBox="0 0 24 24"><use href="#t-list"/></svg> Daftar</button>
+    <button class="expl-btn expl-btn--primary" id="expl-submit-btn"><svg viewBox="0 0 24 24"><use href="#t-send"/></svg> Submit</button>
+  </div>
+  <div class="expl-hint"><b>Draft Fase 1 — belum pakai DS, versi BARU (bukan dari Banner Paperverse).</b> Yang direview: <b>behaviour</b> (dismiss, action, tone) &amp; <b>susunan</b> 2 pola. Nilai DS nyusul di Fase 3.</div>
+
+  <header class="expl-head">
+    <h1>Banner</h1>
+    <p>Explore · bandingin 2 pola banner (draft NON-DS)</p>
+  </header>
+
+  <div class="expl-grid" id="expl-grid">
+
+    <!-- ───── Pola A · Inline compact ───── -->
+    <div class="expl-alt" data-alt="A">
+      <div class="expl-alt-head">
+        <span class="expl-alt-label">Pola A · Inline compact</span>
+        <span class="expl-alt-tag">— 1 baris: icon + pesan + link + ✕</span>
+        <span class="sp"></span>
+        <button class="expl-reset" data-reset="A">↺ Reset</button>
+      </div>
+      <div class="expl-canvas">
+        <div class="stack" data-pola="A">
+          <div class="bnrA t-info">
+            <span class="bnr-ic" data-ic="info"></span>
+            <span class="bnrA-msg"><b>Verifikasi email</b> buat aktifin semua fitur akun.</span>
+            <span class="bnrA-acts"><a class="b-link">Verifikasi</a></span>
+            <button class="bnr-x" title="Tutup">×</button>
+          </div>
+          <div class="bnrA t-success">
+            <span class="bnr-ic" data-ic="success"></span>
+            <span class="bnrA-msg"><b>Invoice terkirim</b> ke pelanggan.</span>
+            <span class="bnrA-acts"><a class="b-link">Lihat</a></span>
+            <button class="bnr-x" title="Tutup">×</button>
+          </div>
+          <div class="bnrA t-warning">
+            <span class="bnr-ic" data-ic="warning"></span>
+            <span class="bnrA-msg"><b>Langganan berakhir 3 hari lagi.</b> Perpanjang biar fitur tetap aktif.</span>
+            <span class="bnrA-acts"><a class="b-link">Perpanjang</a></span>
+            <button class="bnr-x" title="Tutup">×</button>
+          </div>
+          <div class="bnrA t-critical">
+            <span class="bnr-ic" data-ic="critical"></span>
+            <span class="bnrA-msg"><b>Pembayaran gagal.</b> Update metode bayar lo.</span>
+            <span class="bnrA-acts"><a class="b-link">Perbaiki</a></span>
+            <button class="bnr-x" title="Tutup">×</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── Pola B · Prominent block ───── -->
+    <div class="expl-alt" data-alt="B">
+      <div class="expl-alt-head">
+        <span class="expl-alt-label">Pola B · Prominent block</span>
+        <span class="expl-alt-tag">— icon + judul + body + tombol aksi + ✕</span>
+        <span class="sp"></span>
+        <button class="expl-reset" data-reset="B">↺ Reset</button>
+      </div>
+      <div class="expl-canvas">
+        <div class="stack" data-pola="B">
+          <div class="tone-lbl">Warning · dengan 2 aksi</div>
+          <div class="bnrB t-warning">
+            <span class="bnr-ic bnr-ic--top" data-ic="warning"></span>
+            <div class="bnrB-body">
+              <div class="bnrB-title">Langganan hampir habis</div>
+              <div class="bnrB-desc">Paket Pro lo berakhir 3 hari lagi. Perpanjang sekarang biar invoice &amp; laporan tetap jalan tanpa putus.</div>
+              <div class="bnrB-acts"><button class="b-btn b-btn--primary">Perpanjang</button><button class="b-btn">Ingatkan nanti</button></div>
+            </div>
+            <button class="bnr-x" title="Tutup">×</button>
+          </div>
+
+          <div class="tone-lbl">Critical · non-dismissible (tanpa ✕)</div>
+          <div class="bnrB t-critical">
+            <span class="bnr-ic bnr-ic--top" data-ic="critical"></span>
+            <div class="bnrB-body">
+              <div class="bnrB-title">Akun dibekukan</div>
+              <div class="bnrB-desc">Ada tunggakan yang belum dibayar. Selesaikan pembayaran buat buka blokir akun.</div>
+              <div class="bnrB-acts"><button class="b-btn b-btn--primary">Bayar sekarang</button></div>
+            </div>
+          </div>
+
+          <div class="tone-lbl">Info · tanpa aksi</div>
+          <div class="bnrB t-info">
+            <span class="bnr-ic bnr-ic--top" data-ic="info"></span>
+            <div class="bnrB-body">
+              <div class="bnrB-title">Fitur baru: Multi-currency</div>
+              <div class="bnrB-desc">Sekarang lo bisa bikin invoice dalam mata uang asing. Cek di pengaturan invoice.</div>
+            </div>
+            <button class="bnr-x" title="Tutup">×</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="expl-panel" id="expl-panel">
+    <div class="expl-panel-head"><h2>Komen</h2><button class="expl-panel-close" id="expl-panel-close">✕</button></div>
+    <div class="expl-list" id="expl-list"></div>
+    <div class="expl-panel-foot"><button class="expl-btn expl-btn--primary" id="expl-submit-btn2" style="width:100%;justify-content:center">📤 Submit semua komen → copy</button></div>
+  </div>
+
+<script>
+/* ═══════ ICON (inline SVG per tone, stroke) ═══════ */
+(function(){
+  var ICONS={
+    info:'<circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r="0.6" fill="currentColor"/>',
+    success:'<circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.4 2.4 4.6-5"/>',
+    warning:'<path d="M12 3l9 16H3z"/><line x1="12" y1="10" x2="12" y2="14"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/>',
+    critical:'<circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16" r="0.6" fill="currentColor"/>'
+  };
+  document.querySelectorAll('.bnr-ic[data-ic]').forEach(function(el){
+    el.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+ICONS[el.getAttribute('data-ic')]+'</svg>';
+  });
+  /* dismiss + reset */
+  function bind(){ document.querySelectorAll('.bnr-x').forEach(function(x){ x.onclick=function(e){ if(document.body.classList.contains('expl-comment')) return; e.stopPropagation(); x.closest('.bnrA,.bnrB').classList.add('is-gone'); }; }); }
+  bind();
+  document.querySelectorAll('.expl-reset').forEach(function(r){ r.onclick=function(){ var p=r.getAttribute('data-reset'); document.querySelectorAll('.stack[data-pola="'+p+'"] .is-gone').forEach(function(n){ n.classList.remove('is-gone'); }); }; });
+})();
+
+/* ═══════ REVIEW TOOLING (standar template) ═══════ */
+(function(){
+  var COMPONENT=document.body.getAttribute('data-component')||'Component';
+  var KEY='expl:'+location.pathname, notes=[];
+  try{ notes=JSON.parse(localStorage.getItem(KEY)||'[]'); if(!Array.isArray(notes)) notes=[]; }catch(e){ notes=[]; }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(notes)); }catch(e){} }
+  var commentMode=false, body=document.body, panel=document.getElementById('expl-panel'), commentBtn=document.getElementById('expl-comment-btn');
+  function toast(m){ var t=document.querySelector('.expl-toast'); if(!t){t=document.createElement('div');t.className='expl-toast';document.body.appendChild(t);} t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('show');},2200); }
+  function copy(txt,ok){ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast(ok);},fb);}else fb(); function fb(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast(ok);}catch(e){}ta.remove();} }
+  function setComment(v){ commentMode=v; body.classList.toggle('expl-comment',v); commentBtn.classList.toggle('on',v); toast(v?'Mode komen ON — klik area pola':'Mode komen OFF'); if(v) setPanel(true); }
+  function setPanel(v){ panel.classList.toggle('open',v); }
+  commentBtn.onclick=function(){ setComment(!commentMode); };
+  document.getElementById('expl-list-btn').onclick=function(){ setPanel(!panel.classList.contains('open')); };
+  document.getElementById('expl-panel-close').onclick=function(){ setPanel(false); };
+  document.addEventListener('keydown',function(e){ if((e.key==='c'||e.key==='C')&&document.activeElement.tagName!=='TEXTAREA') setComment(!commentMode); });
+  document.querySelectorAll('.expl-canvas').forEach(function(canvas){
+    canvas.addEventListener('mousedown',function(e){
+      if(!commentMode||e.button) return; if(e.target.closest('.expl-pin,.expl-area')) return; e.preventDefault();
+      var altEl=canvas.closest('.expl-alt'), alt=altEl.getAttribute('data-alt');
+      var r=canvas.getBoundingClientRect(), sx=e.clientX-r.left, sy=e.clientY-r.top;
+      var sel=document.createElement('div'); sel.className='expl-sel'; canvas.appendChild(sel); var moved=false;
+      function mm(ev){var x=ev.clientX-r.left,y=ev.clientY-r.top,l=Math.min(x,sx),t=Math.min(y,sy),w=Math.abs(x-sx),h=Math.abs(y-sy);if(w>3||h>3)moved=true;sel.style.left=l+'px';sel.style.top=t+'px';sel.style.width=w+'px';sel.style.height=h+'px';}
+      function mu(ev){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);sel.remove();var x=ev.clientX-r.left,y=ev.clientY-r.top,l=Math.min(x,sx),t=Math.min(y,sy),w=Math.abs(x-sx),h=Math.abs(y-sy);var tg=document.elementFromPoint(ev.clientX,ev.clientY)||ev.target;var ref=refAt(tg);if(moved&&(w>6||h>6))openPop(ev.clientX,ev.clientY,{alt:alt,x:l,y:t,w:w,h:h,ref:ref});else openPop(ev.clientX,ev.clientY,{alt:alt,x:sx,y:sy,ref:ref});}
+      document.addEventListener('mousemove',mm); document.addEventListener('mouseup',mu);
+    });
+  });
+  function refAt(el){ var t=(el.innerText||el.textContent||'').replace(/\s+/g,' ').trim(); return t?(t.length>50?t.slice(0,50)+'…':t):''; }
+  function openPop(cx,cy,ctx){
+    document.querySelectorAll('.expl-pop').forEach(function(p){p.remove();});
+    var pop=document.createElement('div'); pop.className='expl-pop';
+    pop.style.left=Math.min(cx,window.innerWidth-296)+'px'; pop.style.top=Math.min(cy,window.innerHeight-160)+'px';
+    pop.innerHTML='<div class="expl-pop-ref">Pola '+ctx.alt+(ctx.ref?' · "'+ctx.ref.replace(/</g,'&lt;')+'"':'')+'</div><textarea placeholder="Tulis catatan..."></textarea><div class="expl-pop-acts"><button class="expl-btn expl-btn--ghost" style="background:var(--item-on);color:var(--tx-mut);border-color:transparent" data-x>Batal</button><button class="expl-btn expl-btn--primary" data-ok>Simpan</button></div>';
+    document.body.appendChild(pop); var ta=pop.querySelector('textarea'); ta.focus();
+    pop.querySelector('[data-x]').onclick=function(){pop.remove();};
+    pop.querySelector('[data-ok]').onclick=function(){var t=ta.value.trim();if(!t){pop.remove();return;} notes.push({alt:ctx.alt,x:ctx.x,y:ctx.y,w:ctx.w,h:ctx.h,ref:ctx.ref,text:t}); save(); render(); pop.remove(); toast('Komen tersimpan');};
+  }
+  function render(){
+    document.querySelectorAll('.expl-pin,.expl-area').forEach(function(p){p.remove();});
+    notes.forEach(function(n,i){ var canvas=document.querySelector('.expl-alt[data-alt="'+n.alt+'"] .expl-canvas'); if(canvas){ if(n.w&&n.h){var a=document.createElement('div');a.className='expl-area';a.style.left=n.x+'px';a.style.top=n.y+'px';a.style.width=n.w+'px';a.style.height=n.h+'px';canvas.appendChild(a);} var pin=document.createElement('div');pin.className='expl-pin';pin.style.left=n.x+'px';pin.style.top=n.y+'px';pin.textContent=i+1;pin.onclick=function(ev){ev.stopPropagation();setPanel(true);};canvas.appendChild(pin);} });
+    var list=document.getElementById('expl-list');
+    if(!notes.length){ list.innerHTML='<div class="expl-empty">Belum ada komen.<br>Nyalain 💬 Komen lalu klik area pola.</div>'; return; }
+    list.innerHTML='';
+    notes.forEach(function(n,i){ var el=document.createElement('div'); el.className='expl-note'; el.innerHTML='<button class="expl-note-del" title="Hapus">✕</button><div class="expl-note-ref">#'+(i+1)+' · Pola '+n.alt+(n.ref?' · "'+n.ref.replace(/</g,'&lt;')+'"':'')+'</div><div class="expl-note-text">'+n.text.replace(/</g,'&lt;')+'</div>'; el.querySelector('.expl-note-del').onclick=function(){ notes.splice(i,1); save(); render(); }; list.appendChild(el); });
+  }
+  function submit(){ if(!notes.length){ toast('Belum ada komen'); return; } var lines=['[REVIEW] '+COMPONENT,'']; notes.forEach(function(n,i){lines.push((i+1)+'. Pola '+n.alt+(n.w?' [area]':'')+(n.ref?' ("'+n.ref+'")':'')+': '+n.text);}); lines.push('','(paste ke chat)'); copy(lines.join('\n'),'📋 '+notes.length+' komen di-copy'); }
+  document.getElementById('expl-submit-btn').onclick=submit; document.getElementById('expl-submit-btn2').onclick=submit;
+  render();
+})();
+</script>
+</body>
+</html>
