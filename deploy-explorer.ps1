@@ -1,72 +1,93 @@
 # ═══════════════════════════════════════════════════════════════════
 #  deploy-explorer.ps1
-#  Deploy folder _output/explorer/ ke GitHub Pages (branch gh-pages).
+#  Deploy _output/explorer/ ke GitHub Pages, folder `component/`.
 #
-#  Kenapa perlu script ini:
-#    _output/ sengaja di-gitignore (output disposable, bukan sumber
-#    kebenaran). Jadi explorer di-publish lewat branch terpisah
-#    'gh-pages' yg isinya CUMA snapshot explorer di root — repo utama
-#    tetap bersih.
+#  Cara pakai:  buka PowerShell di root repo  ->  .\deploy-explorer.ps1
+#  URL hasil:   https://adamaria88.github.io/ui-generations/component/
 #
-#  Cara pakai:  buka PowerShell di root repo, jalanin:  .\deploy-explorer.ps1
-#  Update:      tiap habis nambah/ubah draft, jalanin lagi. Beres.
+#  SOP lengkap: paper-designer/memory/shared/publish-gh-pages-workflow.md
 #
-#  Sekali doang (first time): enable Pages di
-#    https://github.com/adamaria88/ui-generations/settings/pages
-#    Source = Deploy from a branch · Branch = gh-pages · folder = / (root) · Save
+#  ── YANG PERLU LO TAU ──────────────────────────────────────────────
+#  * Pages UDAH nyala (source: branch `gh-pages`, path `/`).
+#    JANGAN setup ulang. JANGAN buka Settings > Pages (itu admin-only
+#    dan emang GAK PERLU). Akses `write` udah cukup buat update.
+#  * `_output/` sengaja gitignored (output disposable). Publish lewat
+#    branch `gh-pages` yang isinya snapshot per-prototype.
+#  * Branch `gh-pages` isinya BANYAK prototype (component/,
+#    storefront-produk/, dst). Script ini CUMA nyentuh `component/` —
+#    prototype lain aman.
 #
-#  URL hasil:  https://adamaria88.github.io/ui-generations/component/
+#  ── RIWAYAT (kenapa ditulis ulang 2026-07-16) ──────────────────────
+#  Versi lama script ini `git init` + orphan + `git push -f`, isinya
+#  cuma component/. Efeknya: tiap dijalanin, SEMUA prototype lain di
+#  gh-pages (mis. storefront-produk) KEHAPUS dari live. Sekarang pakai
+#  git worktree: nambah commit normal di atas gh-pages, no force-push,
+#  working tree lo gak kesentuh.
 # ═══════════════════════════════════════════════════════════════════
 
 $ErrorActionPreference = "Stop"
 
-$RepoRoot = $PSScriptRoot
-$Src      = Join-Path $RepoRoot "_output\explorer"
-$RemoteUrl = "https://github.com/adamaria88/ui-generations.git"
+$RepoRoot  = $PSScriptRoot
+$Src       = Join-Path $RepoRoot "_output\explorer"
+$SubDir    = "component"
 $PagesUrl  = "https://adamaria88.github.io/ui-generations/component/"
-$SubDir    = "component"   # explorer ditaruh di subfolder ini
+$WT        = Join-Path $env:TEMP "ui-explorer-ghp-wt"
 
 if (-not (Test-Path (Join-Path $Src "index.html"))) {
     Write-Host "[X] Ga nemu _output/explorer/index.html. Jalanin dari root repo." -ForegroundColor Red
     exit 1
 }
 
-# staging area disposable
-$Stage = Join-Path $env:TEMP "ui-explorer-gh-pages"
-if (Test-Path $Stage) { Remove-Item -Recurse -Force $Stage }
-New-Item -ItemType Directory -Force $Stage | Out-Null
+Set-Location $RepoRoot
 
-Write-Host "[1/4] Copy snapshot explorer ke /$SubDir ..." -ForegroundColor Cyan
-$Dest = Join-Path $Stage $SubDir
-New-Item -ItemType Directory -Force $Dest | Out-Null
-Copy-Item (Join-Path $Src "*") $Dest -Recurse -Force
-# .nojekyll di ROOT branch = matiin Jekyll biar folder/file apa adanya di-serve
-New-Item -ItemType File (Join-Path $Stage ".nojekyll") -Force | Out-Null
-# redirect kecil di root -> /component (biar buka root ga 404)
-@"
-<!doctype html><meta charset=utf-8>
-<meta http-equiv="refresh" content="0; url=./$SubDir/">
-<title>Redirect</title><a href="./$SubDir/">component explorer &rarr;</a>
-"@ | Set-Content -Encoding utf8 (Join-Path $Stage "index.html")
+# ── [1/5] Refresh halaman share (snapshot registry — wajib, biar link share gak basi)
+Write-Host "[1/5] Regenerate halaman share..." -ForegroundColor Cyan
+node (Join-Path $RepoRoot "paper-designer\tools\make-share-page.mjs") --all
+if (-not $?) { Write-Host "[X] make-share-page gagal." -ForegroundColor Red; exit 1 }
 
-Push-Location $Stage
+# ── [2/5] Worktree bersih dari origin/gh-pages (working tree lo GAK kesentuh)
+Write-Host "[2/5] Siapin worktree gh-pages..." -ForegroundColor Cyan
+git fetch -q origin gh-pages
+if (Test-Path $WT) { git worktree remove --force $WT 2>$null; Remove-Item -Recurse -Force $WT -ErrorAction SilentlyContinue }
+git worktree prune
+git worktree add --quiet $WT origin/gh-pages --detach
+if (-not $?) { Write-Host "[X] Gagal bikin worktree." -ForegroundColor Red; exit 1 }
+
 try {
-    Write-Host "[2/4] Init repo snapshot..." -ForegroundColor Cyan
-    git init -q
-    git checkout -q -b gh-pages
-    git add -A
-    git -c user.name="Paper Designer" -c user.email="design.paper.id@gmail.com" `
-        commit -q -m "deploy: component explorer hub ($(Get-Date -Format 'yyyy-MM-dd HH:mm'))"
+    # ── [3/5] Mirror _output/explorer -> component/ (cuma folder ini)
+    Write-Host "[3/5] Copy snapshot explorer ke /$SubDir ..." -ForegroundColor Cyan
+    $Dest = Join-Path $WT $SubDir
+    if (-not (Test-Path $Dest)) { New-Item -ItemType Directory -Force $Dest | Out-Null }
+    # dikosongin dulu biar file yg udah dihapus/di-rename di lokal ikut ilang di live
+    Remove-Item -Recurse -Force (Join-Path $Dest "*") -ErrorAction SilentlyContinue
+    Copy-Item (Join-Path $Src "*") $Dest -Recurse -Force
+    # file preview internal, jangan ikut ke publik
+    Remove-Item (Join-Path $Dest "_style-preview.html") -Force -ErrorAction SilentlyContinue
 
-    Write-Host "[3/4] Push ke origin/gh-pages (force)..." -ForegroundColor Cyan
-    git remote add origin $RemoteUrl
-    git push -f origin gh-pages
-
-    Write-Host "[4/4] Selesai!" -ForegroundColor Green
-    Write-Host ""
-    Write-Host "  URL public : $PagesUrl" -ForegroundColor Yellow
-    Write-Host "  (first time: enable Pages dulu di Settings > Pages > branch gh-pages)" -ForegroundColor DarkGray
+    # ── [4/5] Commit + push (normal, BUKAN force)
+    Write-Host "[4/5] Commit + push ke gh-pages..." -ForegroundColor Cyan
+    Push-Location $WT
+    try {
+        git add -A
+        $changed = git status --porcelain
+        if ([string]::IsNullOrWhiteSpace($changed)) {
+            Write-Host "    (gak ada perubahan - live udah paling baru)" -ForegroundColor DarkGray
+        } else {
+            $stamp = Get-Date -Format 'yyyy-MM-dd HH:mm'
+            git commit -q -m "update: component explorer ($stamp)"
+            git push origin HEAD:gh-pages
+            if (-not $?) { throw "push gagal - pastiin akun git lo collaborator di repo ini" }
+        }
+    } finally { Pop-Location }
 }
 finally {
-    Pop-Location
+    # ── [5/5] Bersihin worktree
+    Write-Host "[5/5] Bersihin worktree..." -ForegroundColor Cyan
+    git worktree remove --force $WT 2>$null
+    git worktree prune
 }
+
+Write-Host ""
+Write-Host "  Selesai. Build Pages ~30-90 detik." -ForegroundColor Green
+Write-Host "  URL public : $PagesUrl" -ForegroundColor Yellow
+Write-Host ""
