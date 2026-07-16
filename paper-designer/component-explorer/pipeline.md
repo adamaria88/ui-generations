@@ -171,12 +171,15 @@ Diskusi: bagian mana yang dipertahanin, dibuang, digabung. Iterasi draft kalau p
 Bangun **1 playground interaktif** buat alt terpilih — ala **panel Properties Figma**. Pakai [`playground-template.html`](playground-template.html). Tujuannya: matangin **model property** komponen SEBELUM guideline & Figma, jadi playground = **satu sumber** yang nyuapin anatomy guideline (section 5) DAN property Figma (Fase 5). Nyambungin behavior yang sering meleset kalau di-spec belakangan.
 
 **Isi wajib tiap playground (kontrak):**
-1. **Panel properties (kiri)** — kontrol live:
+
+> **Layout: panel properties WAJIB di KANAN, stage komponen di kiri** (ala panel Properties Figma — lock preferensi user). Di template: `.pg { flex-direction:row-reverse }` + `.pg-panel { border-left }`.
+
+1. **Panel properties (kanan)** — kontrol live:
    - **Variant / Count** (kalau ada, mis. jumlah kartu 2–5 → pola DS `Number of Chips`).
    - **Toggle section (BOOLEAN)** — tiap bagian opsional show/hide.
    - **State** — default / hover / selected / disabled / error (yang relevan aja).
 2. **Anotasi mapping Figma** — tiap kontrol dikasih tag `VARIANT` / `BOOLEAN` / `SLOT` / `SWAP`. Playground = spec property langsung. (Slot = konten bebas mis. leading/trailing; Swap = tukar ke komponen existing mis. badge → Chip Status.)
-3. **Stage komponen (kanan)** — live, 100% token DS (semantic + Lato), **wajib lolos** `component-audit.mjs`.
+3. **Stage komponen (kiri)** — live, 100% token DS (semantic + Lato), **wajib lolos** `component-audit.mjs`.
 4. **Review tooling** (💬 komen) — standar dari template.
 5. **A11y state lengkap (WCAG AA — WAJIB, bukan add-on) — platform-aware:**
    - **Web/pointer:** **hover + focus-visible** (focus ring/outline, bukan cuma hover) + **reachable via keyboard** (tab order + Enter/Space).

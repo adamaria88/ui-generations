@@ -66,48 +66,59 @@ function page(c) {
      tapi komponen lain nggak ada datanya di file ini.
      ══════════════════════════════════════════════════════════════════ -->
 <title>${esc(c.name)} · Paper.id</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;display:flex;flex-direction:column;background:#0f172a;color:#e5e7eb;overflow:hidden}
-  .bar{display:flex;align-items:center;gap:12px;padding:9px 16px;background:#0f172a;border-bottom:1px solid rgba(255,255,255,.08);flex:none;flex-wrap:wrap}
-  .bar h1{font-size:14px;font-weight:700;color:#fff}
-  .bar .status{font-size:11px;color:#64748b}
-  .plat,.tabs{display:flex;gap:4px;background:rgba(255,255,255,.06);border-radius:10px;padding:4px}
-  .plat button,.tabs button{border:0;background:transparent;color:#94a3b8;font:600 12px 'Inter';padding:6px 13px;border-radius:7px;cursor:pointer;display:flex;align-items:center;gap:5px}
-  .plat button:hover,.tabs button:hover{color:#e2e8f0}
-  .tabs button.on{background:#2563eb;color:#fff}
-  .plat button.on{background:#0b1220;color:#fff}
-  .tabs .star{font-size:9px;color:#fbbf24}
+  :root{--app-bg:#F4F4F2;--bar-bg:#EDECE6;--surface:#FCFCFB;--canvas:#F4F4F2;--bd:rgba(0,0,0,.08);--bd-strong:rgba(0,0,0,.16);--tx:#1F2328;--tx-mut:#6E6E68;--tx-dim:#A3A39B;--accent:#1F2328;--accent-tx:#fff;--item-on:#EAEAE6;--item-hover:#EDEDE9;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 6px 22px rgba(0,0,0,.12)}
+  body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;display:flex;flex-direction:column;background:var(--app-bg);color:var(--tx);overflow:hidden}
+  .bar{display:flex;align-items:center;gap:12px;padding:9px 16px;background:var(--bar-bg);border-bottom:1px solid var(--bd-strong);flex:none;flex-wrap:wrap}
+  .bar h1{font-size:14px;font-weight:800;color:var(--tx)}
+  .bar .status{font-size:11px;color:var(--tx-dim)}
+  .plat,.tabs{display:flex;gap:4px;background:var(--item-on);border-radius:10px;padding:4px}
+  .plat button,.tabs button{border:0;background:transparent;color:var(--tx-mut);font:600 12px 'Lato';padding:6px 13px;border-radius:7px;cursor:pointer;display:flex;align-items:center;gap:5px}
+  .plat button svg,.bar-btn svg{width:14px;height:14px}
+  .plat button:hover,.tabs button:hover{color:var(--tx)}
+  .tabs button.on{background:var(--accent);color:var(--accent-tx)}
+  .plat button.on{background:var(--surface);color:var(--tx);box-shadow:var(--shadow-sm)}
+  .tabs .star{font-size:9px;color:var(--tx-mut)}
+  .tabs button.on .star{color:var(--accent-tx)}
   .bar .sp{flex:1}
-  .bar-btn{border:1px solid rgba(255,255,255,.16);background:transparent;color:#cbd5e1;font:600 12px 'Inter';padding:7px 11px;border-radius:8px;cursor:pointer}
-  .bar-btn:hover{background:rgba(255,255,255,.10);color:#fff}
-  .bar-btn.on{background:#7c3aed;border-color:#7c3aed;color:#fff}
-  .stage{flex:1;position:relative;background:#f1f5f9;min-height:0}
+  .bar-btn{border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);font:600 12px 'Lato';padding:7px 11px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .bar-btn:hover{background:var(--item-hover);color:var(--tx)}
+  .bar-btn.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
+  .stage{flex:1;position:relative;background:var(--canvas);min-height:0}
   iframe{width:100%;height:100%;border:0;display:block}
-  .log{position:absolute;top:0;right:0;height:100%;width:320px;max-width:88vw;background:#111827;border-left:1px solid rgba(255,255,255,.08);box-shadow:-8px 0 28px rgba(0,0,0,.4);transform:translateX(340px);transition:transform .2s;overflow:auto;z-index:20}
+  .log{position:absolute;top:0;right:0;height:100%;width:320px;max-width:88vw;background:var(--surface);border-left:1px solid var(--bd);box-shadow:var(--shadow-md);transform:translateX(340px);transition:transform .2s;overflow:auto;z-index:20}
   .log.open{transform:none}
-  .log h2{font-size:13px;font-weight:700;padding:16px 18px 4px;color:#fff}
-  .log .sub{font-size:11px;color:#6b7280;padding:0 18px 12px}
-  .log-item{padding:12px 18px;border-top:1px solid rgba(255,255,255,.06)}
-  .log-item.cur{background:rgba(37,99,235,.10)}
-  .log-v{font:700 12px 'Inter';color:#93c5fd;margin-bottom:2px;display:flex;align-items:center;gap:6px}
-  .log-v .d{font-weight:500;color:#6b7280;font-size:11px}
-  .log-t{font-size:12px;color:#cbd5e1;margin-bottom:7px}
+  .log h2{font-size:13px;font-weight:700;padding:16px 18px 4px;color:var(--tx)}
+  .log .sub{font-size:11px;color:var(--tx-dim);padding:0 18px 12px}
+  .log-item{padding:12px 18px;border-top:1px solid var(--bd)}
+  .log-item.cur{background:var(--item-on)}
+  .log-v{font:700 12px 'Lato';color:var(--tx);margin-bottom:2px;display:flex;align-items:center;gap:6px}
+  .log-v .d{font-weight:500;color:var(--tx-dim);font-size:11px}
+  .log-t{font-size:12px;color:var(--tx-mut);margin-bottom:7px}
   .log ul{margin:0;padding-left:16px}
-  .log li{font-size:12px;line-height:1.5;color:#9ca3af;margin-bottom:3px}
-  .log-open-btn{border:0;background:#2563eb;color:#fff;font:600 11px 'Inter';padding:5px 10px;border-radius:6px;cursor:pointer;margin-top:6px}
+  .log li{font-size:12px;line-height:1.5;color:var(--tx-mut);margin-bottom:3px}
+  .log-open-btn{border:0;background:var(--accent);color:var(--accent-tx);font:600 11px 'Lato';padding:5px 10px;border-radius:6px;cursor:pointer;margin-top:6px}
   @media (max-width:520px){ .bar h1{font-size:13px} .bar .status{display:none} }
 </style>
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <g id="s-list" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></g>
+    <g id="s-monitor" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></g>
+    <g id="s-phone" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></g>
+  </defs></svg>
   <div class="bar">
     <h1 id="cmp-title"></h1>
     <span class="status" id="cmp-status"></span>
     <div class="plat" id="plat"></div>
     <div class="tabs" id="tabs"></div>
     <span class="sp"></span>
-    <button class="bar-btn" id="log-btn">📜 Changelog</button>
+    <button class="bar-btn" id="log-btn"><svg viewBox="0 0 24 24"><use href="#s-list"/></svg> Changelog</button>
   </div>
   <div class="stage">
     <iframe id="frame" title="draft"></iframe>
@@ -148,7 +159,7 @@ function page(c) {
   }
   function renderLog(){
     var p=curPlat();
-    log.innerHTML='<h2>Changelog · '+C.name+' '+p.label+'</h2><div class="sub">History iterasi platform ini</div>'+
+    log.innerHTML='<h2>Changelog · '+C.name+' '+p.label.replace(/[🖥📱💻🌐📲🖥️]/g,'').trim()+'</h2><div class="sub">History iterasi platform ini</div>'+
       p.versions.map(function(ver){
         return '<div class="log-item'+(ver.v===curV?' cur':'')+'">'+
           '<div class="log-v">v'+ver.v+(ver.v===p.versions[0].v?' ✦':'')+' <span class="d">· '+ver.date+'</span></div>'+
@@ -181,7 +192,10 @@ function page(c) {
 
   if(C.platforms.length>1){
     C.platforms.forEach(function(p){
-      var b=document.createElement('button'); b.innerHTML=p.label; b.dataset.k=p.key;
+      var b=document.createElement('button');
+      var pic=p.key==='mobile'?'#s-phone':'#s-monitor';
+      b.innerHTML='<svg viewBox="0 0 24 24"><use href="'+pic+'"/></svg>'+p.label.replace(/[🖥📱💻🌐📲🖥️]/g,'').trim();
+      b.dataset.k=p.key;
       b.onclick=function(){ selectPlatform(p.key); };
       plat.appendChild(b);
     });
