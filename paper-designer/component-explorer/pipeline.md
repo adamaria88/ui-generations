@@ -127,22 +127,17 @@ Output → `_output/explorer/share/<slug>-<token>.html` (token 6 char, determini
 - ⚠️ **WAJIB regenerate tiap nambah versi/komponen** — halaman share = snapshot registry. Lupa regenerate = penerima lihat versi lama.
 - ⚠️ **Bukan access control beneran.** File draft tetap duduk di `_output/explorer/<slug>/draft-N.html` yang path-nya ketebak. Ini nahan orang ngoprek URL secara kasual, BUKAN nahan orang yang niat. Kontrol akses beneran butuh server (login/allowlist).
 
-### Deploy ke live — GitHub Pages (lock 2026-07-16)
+### Deploy ke live — IKUTI SOP, JANGAN reka ulang
 
-Dulu gantung; **sekarang diputusin: pakai GitHub Pages, dan sadar eksplorasi jadi PUBLIK** (repo `adamaria88/ui-generations` PUBLIC → siapa aja bisa buka + ke-index Google). Kalau ada eksplorasi yang nggak boleh publik, JANGAN taruh di explorer.
+⛔ **WAJIB baca dulu:** [`../memory/shared/publish-gh-pages-workflow.md`](../memory/shared/publish-gh-pages-workflow.md). Itu **satu-satunya** SOP publish. JANGAN bikin mekanisme sendiri.
 
-- **URL live:** `https://adamaria88.github.io/ui-generations/component/` (root `/ui-generations/` auto-redirect ke situ).
-- **Sumber:** folder **`docs/component/`** (di-track git) = **snapshot** dari `_output/explorer/` (yang tetap gitignored). Pages source = branch + folder `/docs`.
-- ⚠️ **`docs/` nggak auto-sync.** Tiap ada versi/komponen baru, WAJIB redeploy:
+Ringkas (detail di SOP):
+- **Pages UDAH nyala** (source = branch **`gh-pages`**, path `/`). **JANGAN setup ulang, JANGAN buka Settings** — Settings itu admin-only dan emang nggak perlu.
+- **Akses `write` (collaborator biasa) UDAH CUKUP** buat update. Nggak butuh admin.
+- Publish = **push konten ke branch `gh-pages`**, struktur `<folder>/`. Explorer ada di **`component/`** → live di `https://adamaria88.github.io/ui-generations/component/`.
+- **Explorer nggak perlu strip overlay.** Aturan strip di SOP itu buat overlay prototype (`data-suxc` / `KOMEN OVERLAY ala Figma`). Review tooling explorer (`.expl-*`) memang sengaja ikut ke versi live — itu gunanya.
 
-```bash
-node paper-designer/tools/make-share-page.mjs --all        # refresh halaman share dulu
-cp -r _output/explorer/. docs/component/                    # snapshot ulang
-rm -f docs/component/_style-preview.html
-git add docs && git commit -m "redeploy explorer" && git push
-```
-
-- `docs/.nojekyll` WAJIB ada — tanpa itu Jekyll bikin file/folder ber-awalan `_` nggak ke-serve.
+> **Kenapa peringatan ini keras:** 2026-07-16 sesi ini reka-ulang cara publish dari nol (bikin `docs/` di feature branch + nyuruh user buka Settings > Pages), padahal Pages udah nyala & akses `write` udah cukup. Persis kejadian yang bikin SOP itu ditulis. Baca SOP-nya, jangan nebak.
 
 ⚠️ Fase 1 = eksplorasi bebas, di sini BOLEH nilai non-DS (ini satu-satunya fase yang exempt dari live-pull, karena tujuannya lihat behaviour dulu).
 
