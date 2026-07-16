@@ -36,6 +36,7 @@ Baca file ini hanya kalau konteks butuh — JANGAN auto-load:
 - Style Learner agent docs → `paper-designer/memory/shared/style-learner-agent.md`
 - Showcase audit status → `paper-designer/memory/shared/showcase-audit-status.md`
 - **Figma → HTML mirror method (SOP)** → `paper-designer/memory/shared/figma-mirror-method.md` — WAJIB baca saat user share link Figma + minta direproduksi jadi HTML. Baca dari node tree + copas aset, JANGAN eyeball.
+- **Publish ke link publik (SOP GitHub Pages)** → `paper-designer/memory/shared/publish-gh-pages-workflow.md` — WAJIB baca saat user minta publish/deploy/share prototype jadi URL publik, di laptop manapun. Jangan re-derive dari nol / sarankan setup Settings ulang — cek status Pages dulu.
 
 ## Knowledge Library — Buku UIUX + Artikel (LAZY, opt-in trigger)
 
