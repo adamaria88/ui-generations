@@ -202,6 +202,20 @@
 
 ---
 
+### Override: `au-chip-status--light-yellow-50` (amber/yellow variant TIDAK ADA di Aurora)
+
+- **Aurora spec:** `aurora/projects/ui/chip-status/chip-status.component.scss` — variant yang tersedia: `light-blue-50`, `light-blue-30`, `light-green-50`, `dark-blue-45`, `light-red-50`, `light-orange-50`. **Tidak ada yellow/amber variant.**
+- **Override jadi:** Custom class `.au-chip-status--light-yellow-50` dengan:
+  - `border-color: var(--color-light-yellow-50, #eab11c)` (amber)
+  - `color: var(--color-light-yellow-50, #eab11c)` (amber)
+  - Tetap outline (bukan inverse), base class `.au-chip-status--compact`
+- **Alasan:** Figma Bulk Upload (`w3Tv03Zm8qMAcXAfDkxmff`, frame `82:37889`) status "Creating" pakai chip amber/golden — berbeda warna dari orange (`light-orange-50` = `#f37d51`) yang lebih salmon. Figma variable `New/Brand/Color/Orange: #f3a632` menunjukkan amber intentional. Aurora tidak punya yellow chip → custom dengan token Aurora primitif `--color-light-yellow-50` yang sudah ada di `design-tokens/color-primitive.css`.
+- **Approved by:** user (design.paper.id) on 2026-06-17
+- **Class CSS di output:** `.au-chip-status--light-yellow-50` di `_output/learning/bulk-upload/index.html`
+- **TODO follow-up:** Usulkan `au-chip-status--light-yellow-50` variant ke maintainer Aurora DS.
+
+---
+
 ### Override: Rich-text toolbar icons (formatting icons TIDAK ADA di Aurora)
 
 - **Aurora spec:** `aurora/projects/ui/icons/assets/` (846 ikon) — **TIDAK ada** Bold / Italic / Underline / ordered-list / unordered-list / format-selector. Aurora icon set ga cover formatting/editor icons.
