@@ -15,65 +15,74 @@
        • STYLE #2 KOMPONEN = kartu, DIAUDIT component-audit.mjs (token semantic + Lato)
      ══════════════════════════════════════════════════════════════════ -->
 <title>Explorer · Radio Button — Playground</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 
 <!-- ═══════ STYLE #1 · TOOLING (di-skip audit) ═══════ -->
 <style>
   /* __TOOLING__ */
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:'Lato',-apple-system,'Segoe UI',sans-serif; background:#eef1f4; color:#1c2b36; }
+  :root{--app-bg:#F4F4F2;--bar-bg:#EDECE6;--surface:#FCFCFB;--canvas:#FFFFFF;--bd:rgba(0,0,0,.08);--bd-strong:rgba(0,0,0,.16);--tx:#1F2328;--tx-mut:#6E6E68;--tx-dim:#A3A39B;--accent:#1F2328;--accent-tx:#fff;--item-on:#EAEAE6;--item-hover:#EDEDE9;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 6px 22px rgba(0,0,0,.12)}
+  body { font-family:'Lato',-apple-system,'Segoe UI',sans-serif; background:var(--app-bg); color:var(--tx); }
   .expl-topbar { position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:12px;
-    background:#1c2b36; color:#fff; padding:10px 20px; box-shadow:0 2px 12px rgba(0,0,0,.25); }
-  .expl-topbar .ttl { font-size:14px; font-weight:700; }
+    background:var(--bar-bg); color:var(--tx); padding:10px 20px; border-bottom:1px solid var(--bd-strong); }
+  .expl-crumb { font-size:12px; font-weight:700; color:var(--tx-dim); letter-spacing:.02em; }
   .expl-topbar .sp { flex:1; }
   .expl-btn { border:0; border-radius:8px; padding:8px 14px; font:600 13px 'Lato',sans-serif; cursor:pointer;
     display:inline-flex; align-items:center; gap:6px; transition:filter .12s,background .12s; }
-  .expl-btn--ghost { background:rgba(255,255,255,.12); color:#fff; }
-  .expl-btn--ghost:hover { background:rgba(255,255,255,.22); }
-  .expl-btn--ghost.on { background:#7B61FF; }
-  .expl-btn--primary { background:#0A84FF; color:#fff; }
-  .expl-hint { padding:10px 20px; font-size:12px; color:#5c7180; background:#e2e8ee; border-bottom:1px solid #d3dbe2; }
-  .expl-hint b { color:#1c2b36; }
+  .expl-btn svg { width:15px; height:15px; }
+  .expl-btn--ghost { background:transparent; border:1px solid var(--bd-strong); color:var(--tx-mut); }
+  .expl-btn--ghost:hover { background:var(--item-hover); color:var(--tx); }
+  .expl-btn--ghost.on { background:var(--accent); border-color:var(--accent); color:var(--accent-tx); }
+  .expl-btn--primary { background:var(--accent); color:var(--accent-tx); }
+  .expl-btn--primary:hover { background:#33383E; }
+  .expl-hint { padding:10px 20px; font-size:12px; color:var(--tx-mut); background:var(--app-bg); border-bottom:1px solid var(--bd); }
+  .expl-hint b { color:var(--tx); }
+  .expl-head { padding:26px 28px 4px; }
+  .expl-head h1 { font-size:30px; font-weight:800; letter-spacing:-.01em; line-height:1.12; color:var(--tx); }
+  .expl-head p { font-size:14px; color:var(--tx-mut); margin-top:7px; }
 
-  /* layout playground */
-  .pg { display:flex; align-items:flex-start; gap:0; min-height:calc(100vh - 90px); }
-  .pg-panel { width:288px; flex:none; background:#fff; border-right:1px solid #e2e8ee; padding:18px 16px; align-self:stretch; }
-  .pg-panel h3 { font-size:11px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:#8494a0; margin-bottom:10px; }
+  /* layout playground — panel di KANAN (ala Figma) */
+  .pg { display:flex; flex-direction:row-reverse; align-items:flex-start; gap:0; min-height:calc(100vh - 90px); }
+  .pg-panel { width:288px; flex:none; background:var(--surface); border-left:1px solid var(--bd-strong); padding:18px 16px; align-self:stretch; }
+  .pg-panel h3 { font-size:11px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--tx-dim); margin-bottom:10px; }
   .pg-grp { margin-bottom:20px; }
-  .pg-seg { display:flex; background:#eef1f4; border-radius:8px; padding:3px; }
-  .pg-seg button { flex:1; border:0; background:transparent; color:#5c7180; font:700 12px 'Lato',sans-serif; padding:6px 0; border-radius:6px; cursor:pointer; }
-  .pg-seg button.on { background:#fff; color:#1c2b36; box-shadow:0 1px 2px rgba(0,0,0,.14); }
-  .pg-row { display:flex; align-items:center; gap:8px; padding:8px 2px; border-bottom:1px solid #f1f4f7; }
+  .pg-seg { display:flex; background:var(--item-on); border-radius:8px; padding:3px; }
+  .pg-seg button { flex:1; border:0; background:transparent; color:var(--tx-mut); font:700 12px 'Lato',sans-serif; padding:6px 0; border-radius:6px; cursor:pointer; }
+  .pg-seg button.on { background:var(--surface); color:var(--tx); box-shadow:var(--shadow-sm); }
+  .pg-row { display:flex; align-items:center; gap:8px; padding:8px 2px; border-bottom:1px solid var(--bd); }
   .pg-row:last-child { border-bottom:0; }
-  .pg-row .lbl { font-size:13px; font-weight:600; color:#2b3b47; }
+  .pg-row .lbl { font-size:13px; font-weight:600; color:var(--tx); }
   .pg-row .tag { font-size:9px; font-weight:800; letter-spacing:.03em; text-transform:uppercase; padding:2px 6px; border-radius:5px; }
   .tag-slot { background:#eae6ff; color:#6b4dff; }
   .tag-swap { background:#e0f2f1; color:#0d9488; }
   .pg-row .sp { flex:1; }
-  .sw { width:38px; height:22px; border-radius:99px; background:#cbd5e0; position:relative; cursor:pointer; transition:background .15s; flex:none; }
+  .sw { width:38px; height:22px; border-radius:99px; background:#cbccc7; position:relative; cursor:pointer; transition:background .15s; flex:none; }
   .sw::after { content:''; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:#fff; transition:transform .15s; box-shadow:0 1px 2px rgba(0,0,0,.3); }
-  .sw.on { background:#0A84FF; }
+  .sw.on { background:var(--accent); }
   .sw.on::after { transform:translateX(16px); }
-  .pg-legend { font-size:11px; line-height:1.6; color:#7c8b98; margin-top:4px; }
-  .pg-legend b { color:#2b3b47; }
+  .pg-legend { font-size:11px; line-height:1.6; color:var(--tx-mut); margin-top:4px; }
+  .pg-legend b { color:var(--tx); }
   .pg-legend .tag { font-size:9px; }
 
   .pg-stagewrap { flex:1; min-width:0; padding:28px; }
-  .pg-note { font-size:12px; color:#8494a0; margin-bottom:16px; max-width:420px; line-height:1.5; }
-  .pg-note b { color:#41525f; }
+  .pg-note { font-size:12px; color:var(--tx-dim); margin-bottom:16px; max-width:420px; line-height:1.5; }
+  .pg-note b { color:var(--tx-mut); }
 
   /* review chrome */
   .expl-canvas { position:relative; }
   body.expl-comment .expl-canvas { cursor:crosshair; }
-  .expl-pin { position:absolute; z-index:40; width:26px; height:26px; border-radius:50% 50% 50% 4px; background:#7B61FF; color:#fff;
-    font:700 11px/26px 'Lato',sans-serif; text-align:center; transform:translate(-2px,-28px); box-shadow:0 2px 8px rgba(0,0,0,.4); cursor:pointer; }
-  .expl-sel { position:absolute; z-index:39; border:1.5px dashed #7B61FF; background:rgba(123,97,255,.12); border-radius:4px; pointer-events:none; }
-  .expl-area { position:absolute; z-index:38; border:1.5px solid #7B61FF; background:rgba(123,97,255,.10); border-radius:4px; pointer-events:none; }
-  .expl-pop { position:fixed; z-index:70; width:280px; background:#fff; border:1px solid #dbe2e8; border-radius:12px; box-shadow:0 12px 36px rgba(28,43,54,.28); padding:12px; }
-  .expl-pop-ref { font:700 11px 'Lato',sans-serif; color:#7B61FF; margin-bottom:8px; }
-  .expl-pop textarea { width:100%; min-height:70px; border:1px solid #d3dbe2; border-radius:8px; padding:8px 10px; font:400 13px/1.5 'Lato',sans-serif; outline:none; }
+  .expl-pin { position:absolute; z-index:40; width:26px; height:26px; border-radius:50% 50% 50% 4px; background:var(--accent); color:var(--accent-tx);
+    font:700 11px/26px 'Lato',sans-serif; text-align:center; transform:translate(-2px,-28px); box-shadow:0 2px 8px rgba(0,0,0,.3); cursor:pointer; }
+  .expl-sel { position:absolute; z-index:39; border:1.5px dashed var(--accent); background:rgba(31,35,40,.10); border-radius:4px; pointer-events:none; }
+  .expl-area { position:absolute; z-index:38; border:1.5px solid var(--accent); background:rgba(31,35,40,.08); border-radius:4px; pointer-events:none; }
+  .expl-pop { position:fixed; z-index:70; width:280px; background:var(--surface); border:1px solid var(--bd-strong); border-radius:12px; box-shadow:var(--shadow-md); padding:12px; }
+  .expl-pop-ref { font:700 11px 'Lato',sans-serif; color:var(--tx-mut); margin-bottom:8px; }
+  .expl-pop textarea { width:100%; min-height:70px; border:1px solid var(--bd-strong); border-radius:8px; padding:8px 10px; font:400 13px/1.5 'Lato',sans-serif; outline:none; color:var(--tx); background:var(--canvas); }
   .expl-pop-acts { display:flex; gap:8px; margin-top:8px; justify-content:flex-end; }
-  .expl-toast { position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(10px); background:#1c2b36; color:#fff;
-    font:600 12px 'Lato',sans-serif; padding:10px 18px; border-radius:99px; box-shadow:0 8px 24px rgba(0,0,0,.35); z-index:80; opacity:0; pointer-events:none; transition:opacity .18s,transform .18s; }
+  .expl-toast { position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(10px); background:var(--accent); color:var(--accent-tx);
+    font:600 12px 'Lato',sans-serif; padding:10px 18px; border-radius:99px; box-shadow:var(--shadow-md); z-index:80; opacity:0; pointer-events:none; transition:opacity .18s,transform .18s; }
   .expl-toast.show { opacity:1; transform:translateX(-50%); }
 </style>
 
@@ -112,13 +121,23 @@
 </head>
 <body data-component="Radio Button">
 
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <g id="t-chat" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a7.5 7.5 0 01-10.9 6.7L4 20l1.8-5.1A7.5 7.5 0 1121 11.5z"/></g>
+    <g id="t-send" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></g>
+  </defs></svg>
+
   <div class="expl-topbar">
-    <span class="ttl">🔘 Radio Button · Playground property</span>
+    <span class="expl-crumb">Component Explorer · Playground</span>
     <span class="sp"></span>
-    <button class="expl-btn expl-btn--ghost" id="expl-comment-btn">💬 Komen</button>
-    <button class="expl-btn expl-btn--primary" id="expl-submit-btn">📤 Submit</button>
+    <button class="expl-btn expl-btn--ghost" id="expl-comment-btn"><svg viewBox="0 0 24 24"><use href="#t-chat"/></svg> Komen</button>
+    <button class="expl-btn expl-btn--primary" id="expl-submit-btn"><svg viewBox="0 0 24 24"><use href="#t-send"/></svg> Submit</button>
   </div>
-  <div class="expl-hint">🎛️ <b>Panel kiri = properties komponen</b> (mirip Figma). Atur jumlah kartu + nyalain/matiin section. <b>Hover</b> kartu buat lihat hover state. Tag <span class="tag tag-slot" style="font-size:9px">SLOT</span>/<span class="tag tag-swap" style="font-size:9px">SWAP</span> = usulan bagian yang jadi slot / instance-swap.</div>
+  <div class="expl-hint">🎛️ <b>Panel properties komponen</b> (mirip Figma). Atur jumlah kartu + nyalain/matiin section. <b>Hover</b> kartu buat lihat hover state. Tag <span class="tag tag-slot" style="font-size:9px">SLOT</span>/<span class="tag tag-swap" style="font-size:9px">SWAP</span> = usulan bagian yang jadi slot / instance-swap.</div>
+
+  <header class="expl-head">
+    <h1>Radio Button</h1>
+    <p>Playground · Selection Block — atur properti di panel kanan</p>
+  </header>
 
   <div class="pg">
     <!-- ═══ PANEL PROPERTIES (tooling) ═══ -->
@@ -251,7 +270,7 @@
     document.querySelectorAll('.expl-pop').forEach(function(p){p.remove();});
     var pop=document.createElement('div'); pop.className='expl-pop';
     pop.style.left=Math.min(cx,window.innerWidth-296)+'px'; pop.style.top=Math.min(cy,window.innerHeight-160)+'px';
-    pop.innerHTML='<div class="expl-pop-ref">Komen</div><textarea placeholder="Tulis catatan..."></textarea><div class="expl-pop-acts"><button class="expl-btn expl-btn--ghost" style="background:#eef1f4;color:#5c7180" data-x>Batal</button><button class="expl-btn expl-btn--primary" data-ok>Simpan</button></div>';
+    pop.innerHTML='<div class="expl-pop-ref">Komen</div><textarea placeholder="Tulis catatan..."></textarea><div class="expl-pop-acts"><button class="expl-btn expl-btn--ghost" style="background:var(--item-on);color:var(--tx-mut);border-color:transparent" data-x>Batal</button><button class="expl-btn expl-btn--primary" data-ok>Simpan</button></div>';
     document.body.appendChild(pop); var ta=pop.querySelector('textarea'); ta.focus();
     pop.querySelector('[data-x]').onclick=function(){pop.remove();};
     pop.querySelector('[data-ok]').onclick=function(){var t=ta.value.trim(); if(!t){pop.remove();return;} notes.push({x:ctx.x,y:ctx.y,w:ctx.w,h:ctx.h,text:t}); save(); render(); pop.remove(); toast('Komen tersimpan');};

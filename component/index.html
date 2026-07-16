@@ -14,114 +14,147 @@
      Responsive: sidebar jadi drawer di layar sempit.
      ══════════════════════════════════════════════════════════════════ -->
 <title>Component Explorer · Paper.id</title>
+<!-- Font DS Paper.id = Lato (pola sama kayak prototype lain, mis. tagih-invoice) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;display:flex;background:#0f172a;color:#e5e7eb;overflow:hidden}
+  /* ═══ NEUTRAL MINIMAL — token chrome (dipakai identik di 3 surface explorer) ═══ */
+  :root{
+    --app-bg:#F4F4F2; --side-bg:#E7E6E0; --bar-bg:#EDECE6; --surface:#FCFCFB; --canvas:#F4F4F2;
+    --bd:rgba(0,0,0,.08); --bd-strong:rgba(0,0,0,.16);
+    --tx:#1F2328; --tx-mut:#6E6E68; --tx-dim:#A3A39B;
+    --accent:#1F2328; --accent-tx:#fff;
+    --item-on:#EAEAE6; --item-hover:#EDEDE9;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.05); --shadow-md:0 6px 22px rgba(0,0,0,.10);
+    --warn-bg:#FBF3E4; --warn-bd:#E9D6AE; --warn-tx:#7A4B00;
+  }
+  body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;display:flex;background:var(--app-bg);color:var(--tx);overflow:hidden}
 
   /* ─── SIDEBAR ─── */
-  .side{width:248px;flex:none;background:#0b1220;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;z-index:40;transition:transform .22s cubic-bezier(.4,0,.2,1)}
+  .side{width:248px;flex:none;background:var(--side-bg);border-right:1px solid var(--bd-strong);display:flex;flex-direction:column;z-index:40;transition:transform .22s cubic-bezier(.4,0,.2,1)}
   .side-h{padding:16px 16px 12px}
   .side-h .logo{font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px}
-  .side-h .tag{font-size:11px;color:#64748b;margin-top:2px}
-  .side-search{margin:0 12px 10px;display:flex;align-items:center;gap:8px;background:#111827;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:7px 10px}
-  .side-search input{flex:1;border:0;background:transparent;color:#e5e7eb;font:400 12px 'Inter';outline:none}
-  .side-search input::placeholder{color:#475569}
-  .side-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#475569;padding:6px 18px}
+  .side-h .logo svg{width:18px;height:18px;flex:none}
+  .side-h .tag{font-size:11px;color:var(--tx-dim);margin-top:2px}
+  .side-search{margin:0 12px 10px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--bd);border-radius:8px;padding:7px 10px}
+  .side-search svg{width:14px;height:14px;color:var(--tx-dim);flex:none}
+  .side-search input{flex:1;border:0;background:transparent;color:var(--tx);font:400 12px 'Lato';outline:none}
+  .side-search input::placeholder{color:var(--tx-dim)}
+  .side-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx-dim);padding:6px 18px}
   .side-list{flex:1;overflow:auto;padding:0 8px 12px}
   .cmp-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:9px;cursor:pointer;margin-bottom:2px;transition:background .12s}
-  .cmp-item:hover{background:rgba(255,255,255,.05)}
-  .cmp-item.on{background:#1e293b}
-  .cmp-dot{width:7px;height:7px;border-radius:50%;background:#334155;flex:none}
-  .cmp-item.on .cmp-dot{background:#3b82f6}
-  .cmp-nm{flex:1;font-size:13px;font-weight:600;color:#cbd5e1}
-  .cmp-item.on .cmp-nm{color:#fff}
-  .cmp-plat{font-size:12px;letter-spacing:1px;flex:none;opacity:.8}
-  .side-empty{padding:20px 18px;font-size:12px;color:#475569;line-height:1.6}
-  .side-foot{padding:12px 16px;border-top:1px solid rgba(255,255,255,.07);font-size:11px;color:#475569}
+  .cmp-item:hover{background:var(--item-hover)}
+  .cmp-item.on{background:var(--item-on)}
+  .cmp-dot{width:7px;height:7px;border-radius:50%;background:var(--tx-dim);flex:none}
+  .cmp-item.on .cmp-dot{background:var(--accent)}
+  .cmp-nm{flex:1;font-size:13px;font-weight:600;color:var(--tx-mut)}
+  .cmp-item.on .cmp-nm{color:var(--tx)}
+  .cmp-plat{font-size:12px;letter-spacing:1px;flex:none;opacity:.7;color:var(--tx-dim)}
+  .side-empty{padding:20px 18px;font-size:12px;color:var(--tx-dim);line-height:1.6}
+  .side-foot{padding:12px 16px;border-top:1px solid var(--bd);font-size:11px;color:var(--tx-dim)}
 
   /* ─── MAIN ─── */
   .main{flex:1;display:flex;flex-direction:column;min-width:0}
-  .bar{display:flex;align-items:center;gap:12px;padding:9px 16px;background:#0f172a;border-bottom:1px solid rgba(255,255,255,.08);flex:none;flex-wrap:wrap}
-  .hamb{display:none;border:1px solid rgba(255,255,255,.16);background:transparent;color:#cbd5e1;border-radius:8px;width:36px;height:34px;cursor:pointer;font-size:16px;flex:none}
-  .bar h1{font-size:14px;font-weight:700;color:#fff}
-  .bar .status{font-size:11px;color:#64748b}
+  .bar{display:flex;align-items:center;gap:12px;padding:9px 16px;background:var(--bar-bg);border-bottom:1px solid var(--bd-strong);flex:none;flex-wrap:wrap}
+  .hamb{display:none;border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);border-radius:8px;width:36px;height:34px;cursor:pointer;flex:none}
+  .hamb svg{width:16px;height:16px}
+  .bar h1{font-size:14px;font-weight:800;color:var(--tx)}
+  .bar .status{font-size:11px;color:var(--tx-dim)}
   /* platform toggle */
-  .plat{display:flex;gap:3px;background:rgba(255,255,255,.06);border-radius:9px;padding:3px}
-  .plat button{border:0;background:transparent;color:#94a3b8;font:600 12px 'Inter';padding:6px 12px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .12s,color .12s}
-  .plat button:hover{color:#e2e8f0}
-  .plat button.on{background:#0b1220;color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.4)}
-  .tabs{display:flex;gap:4px;background:rgba(255,255,255,.06);border-radius:10px;padding:4px}
-  .tabs button{border:0;background:transparent;color:#94a3b8;font:600 12px 'Inter';padding:6px 13px;border-radius:7px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .12s,color .12s}
-  .tabs button:hover{color:#e2e8f0}
-  .tabs button.on{background:#2563eb;color:#fff}
-  .tabs .star{font-size:9px;color:#fbbf24}
+  .plat{display:flex;gap:3px;background:var(--item-on);border-radius:9px;padding:3px}
+  .plat button{border:0;background:transparent;color:var(--tx-mut);font:600 12px 'Lato';padding:6px 12px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .12s,color .12s}
+  .plat button svg{width:13px;height:13px}
+  .plat button:hover{color:var(--tx)}
+  .plat button.on{background:var(--surface);color:var(--tx);box-shadow:var(--shadow-sm)}
+  .tabs{display:flex;gap:4px;background:var(--item-on);border-radius:10px;padding:4px}
+  .tabs button{border:0;background:transparent;color:var(--tx-mut);font:600 12px 'Lato';padding:6px 13px;border-radius:7px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .12s,color .12s}
+  .tabs button:hover{color:var(--tx)}
+  .tabs button.on{background:var(--accent);color:var(--accent-tx)}
+  .tabs .star{font-size:9px;color:var(--tx-mut)}
+  .tabs button.on .star{color:var(--accent-tx)}
   .bar .sp{flex:1}
-  .bar-btn{border:1px solid rgba(255,255,255,.16);background:transparent;color:#cbd5e1;font:600 12px 'Inter';padding:7px 11px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px}
-  .bar-btn:hover{background:rgba(255,255,255,.10);color:#fff}
-  .bar-btn.on{background:#7c3aed;border-color:#7c3aed;color:#fff}
+  .bar-btn{border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);font:600 12px 'Lato';padding:7px 11px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .bar-btn svg{width:15px;height:15px}
+  .bar-btn:hover{background:var(--item-hover);color:var(--tx)}
+  .bar-btn.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
+  /* main action = primary (1 aja di topbar) */
+  .bar-btn--primary{background:var(--accent);border-color:var(--accent);color:var(--accent-tx);padding:7px 14px;font-weight:700}
+  .bar-btn--primary:hover{background:#33383E;color:var(--accent-tx)}
+  /* tombol icon-only + menu "Aksi lain" (⋯) — topbar dirampingin */
+  .bar-btn.ico-only{width:34px;height:34px;padding:0;justify-content:center;gap:0}
+  .more-wrap{position:relative;display:flex}
+  .more-menu{position:absolute;top:calc(100% + 7px);right:0;min-width:174px;background:var(--surface);
+    border:1px solid var(--bd-strong);border-radius:11px;box-shadow:var(--shadow-md);padding:5px;z-index:80;display:none}
+  .more-menu.open{display:block}
+  .more-item{width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;
+    color:var(--tx);font:600 12.5px 'Lato';padding:9px 11px;border-radius:7px;cursor:pointer;text-align:left}
+  .more-item svg{width:15px;height:15px;color:var(--tx-mut);flex:none}
+  .more-item:hover{background:var(--item-hover)}
 
-  .stage{flex:1;position:relative;background:#f1f5f9}
+  .stage{flex:1;position:relative;background:var(--canvas)}
   iframe{width:100%;height:100%;border:0;display:block}
-  .stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:14px}
+  .stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--tx-dim);font-size:14px}
 
   /* changelog */
-  .log{position:absolute;top:0;right:0;height:100%;width:320px;max-width:88vw;background:#111827;border-left:1px solid rgba(255,255,255,.08);box-shadow:-8px 0 28px rgba(0,0,0,.4);transform:translateX(340px);transition:transform .2s;overflow:auto;z-index:20}
+  .log{position:absolute;top:0;right:0;height:100%;width:320px;max-width:88vw;background:var(--surface);border-left:1px solid var(--bd);box-shadow:var(--shadow-md);transform:translateX(340px);transition:transform .2s;overflow:auto;z-index:20}
   .log.open{transform:none}
-  .log h2{font-size:13px;font-weight:700;padding:16px 18px 4px;color:#fff}
-  .log .sub{font-size:11px;color:#6b7280;padding:0 18px 12px}
-  .log-item{padding:12px 18px;border-top:1px solid rgba(255,255,255,.06)}
-  .log-item.cur{background:rgba(37,99,235,.10)}
-  .log-v{font:700 12px 'Inter';color:#93c5fd;margin-bottom:2px;display:flex;align-items:center;gap:6px}
-  .log-v .d{font-weight:500;color:#6b7280;font-size:11px}
-  .log-t{font-size:12px;color:#cbd5e1;margin-bottom:7px}
+  .log h2{font-size:13px;font-weight:700;padding:16px 18px 4px;color:var(--tx)}
+  .log .sub{font-size:11px;color:var(--tx-dim);padding:0 18px 12px}
+  .log-item{padding:12px 18px;border-top:1px solid var(--bd)}
+  .log-item.cur{background:var(--item-on)}
+  .log-v{font:700 12px 'Lato';color:var(--tx);margin-bottom:2px;display:flex;align-items:center;gap:6px}
+  .log-v .d{font-weight:500;color:var(--tx-dim);font-size:11px}
+  .log-t{font-size:12px;color:var(--tx-mut);margin-bottom:7px}
   .log ul{margin:0;padding-left:16px}
-  .log li{font-size:12px;line-height:1.5;color:#9ca3af;margin-bottom:3px}
-  .log-open-btn{border:0;background:#2563eb;color:#fff;font:600 11px 'Inter';padding:5px 10px;border-radius:6px;cursor:pointer;margin-top:6px}
+  .log li{font-size:12px;line-height:1.5;color:var(--tx-mut);margin-bottom:3px}
+  .log-open-btn{border:0;background:var(--accent);color:var(--accent-tx);font:600 11px 'Lato';padding:5px 10px;border-radius:6px;cursor:pointer;margin-top:6px}
 
   /* QR popover */
-  .scrim{position:fixed;inset:0;background:rgba(2,6,23,.6);z-index:60;display:none;align-items:center;justify-content:center;padding:20px}
+  .scrim{position:fixed;inset:0;background:rgba(20,22,26,.42);z-index:60;display:none;align-items:center;justify-content:center;padding:20px}
   .scrim.open{display:flex}
-  .qr{background:#fff;color:#0f172a;border-radius:16px;padding:22px;width:320px;max-width:92vw;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .qr{background:var(--surface);color:var(--tx);border-radius:16px;padding:22px;width:320px;max-width:92vw;text-align:center;box-shadow:var(--shadow-md)}
   .qr h3{font-size:15px;font-weight:800;margin-bottom:4px}
-  .qr p{font-size:12px;color:#64748b;line-height:1.5;margin-bottom:14px}
-  .qr .qrimg{width:190px;height:190px;margin:0 auto 14px;border-radius:10px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .qr p{font-size:12px;color:var(--tx-mut);line-height:1.5;margin-bottom:14px}
+  .qr .qrimg{width:190px;height:190px;margin:0 auto 14px;border-radius:10px;background:var(--app-bg);display:flex;align-items:center;justify-content:center;overflow:hidden}
   .qr .qrimg img{width:100%;height:100%}
-  .qr .url{font:600 11px 'Inter';color:#334155;background:#f1f5f9;border-radius:8px;padding:9px 10px;word-break:break-all;margin-bottom:12px;line-height:1.5}
+  .qr .url{font:600 11px 'Lato';color:var(--tx-mut);background:var(--app-bg);border-radius:8px;padding:9px 10px;word-break:break-all;margin-bottom:12px;line-height:1.5}
   .qr .qr-acts{display:flex;gap:8px}
-  .qr .qr-acts button{flex:1;border:0;border-radius:9px;padding:10px;font:700 12px 'Inter';cursor:pointer}
-  .qr-copy{background:#2563eb;color:#fff}
-  .qr-close{background:#e2e8f0;color:#334155}
-  .qr .hint{font-size:11px;color:#94a3b8;margin-top:10px}
+  .qr .qr-acts button{flex:1;border:0;border-radius:9px;padding:10px;font:700 12px 'Lato';cursor:pointer}
+  .qr-copy{background:var(--accent);color:var(--accent-tx)}
+  .qr-close{background:var(--item-on);color:var(--tx)}
+  .qr .hint{font-size:11px;color:var(--tx-dim);margin-top:10px}
 
-  .drawer-scrim{position:fixed;inset:0;background:rgba(2,6,23,.5);z-index:35;display:none}
+  .drawer-scrim{position:fixed;inset:0;background:rgba(20,22,26,.32);z-index:35;display:none}
   .drawer-scrim.open{display:block}
 
   /* ─── SHARE / ROUTING ─── */
   /* toast konfirmasi + peringatan route ngaco */
   .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);z-index:90;
-    background:#111827;border:1px solid rgba(255,255,255,.12);color:#e5e7eb;font:600 12px 'Inter';
-    padding:10px 16px;border-radius:99px;box-shadow:0 10px 30px rgba(0,0,0,.5);opacity:0;pointer-events:none;
+    background:var(--accent);border:1px solid rgba(255,255,255,.10);color:#fff;font:600 12px 'Lato';
+    padding:10px 16px;border-radius:99px;box-shadow:var(--shadow-md);opacity:0;pointer-events:none;
     transition:opacity .18s,transform .18s;max-width:90vw;text-align:center}
   .toast.show{opacity:1;transform:translateX(-50%)}
-  .toast.warn{background:#78350f;border-color:#b45309;color:#fef3c7}
+  .toast.warn{background:var(--warn-bg);border-color:var(--warn-bd);color:var(--warn-tx)}
   /* tombol copy link per-versi di changelog */
   .log-acts{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
-  .log-copy-btn{border:1px solid rgba(255,255,255,.16);background:transparent;color:#cbd5e1;
-    font:600 11px 'Inter';padding:5px 9px;border-radius:6px;cursor:pointer}
-  .log-copy-btn:hover{background:rgba(255,255,255,.10);color:#fff}
+  .log-copy-btn{border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);
+    font:600 11px 'Lato';padding:5px 9px;border-radius:6px;cursor:pointer}
+  .log-copy-btn:hover{background:var(--item-hover);color:var(--tx)}
   /* mode RAW — draft full-layar, chrome hub disembunyiin */
   body.raw .side,body.raw .bar,body.raw .drawer-scrim,body.raw .log{display:none}
   .raw-exit{display:none;position:fixed;top:12px;right:12px;z-index:70;border:0;border-radius:99px;
-    background:rgba(15,23,42,.86);color:#fff;font:600 12px 'Inter';padding:8px 14px;cursor:pointer;
-    box-shadow:0 4px 16px rgba(0,0,0,.4)}
-  .raw-exit:hover{background:#1e293b}
+    background:var(--accent);color:#fff;font:600 12px 'Lato';padding:8px 14px;cursor:pointer;
+    box-shadow:var(--shadow-md)}
+  .raw-exit:hover{filter:brightness(1.4)}
   body.raw .raw-exit{display:block}
 
   /* ─── RESPONSIVE ─── */
   @media (max-width:820px){
     .hamb{display:flex;align-items:center;justify-content:center}
-    .side{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%);box-shadow:8px 0 28px rgba(0,0,0,.5)}
+    .side{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%);box-shadow:var(--shadow-md)}
     .side.open{transform:none}
     .bar{gap:10px}
     .bar .status{display:none}
@@ -135,15 +168,27 @@
 </style>
 </head>
 <body>
+  <!-- ikon line mono (Neutral Minimal) — ganti emoji chrome -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <g id="i-compass" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></g>
+    <g id="i-search" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-3.8-3.8"/></g>
+    <g id="i-menu" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></g>
+    <g id="i-monitor" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></g>
+    <g id="i-phone" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></g>
+    <g id="i-link" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 14.5l5-5"/><path d="M8 12l-2 2a3 3 0 004 4l2-2"/><path d="M16 12l2-2a3 3 0 00-4-4l-2 2"/></g>
+    <g id="i-expand" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></g>
+    <g id="i-list" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></g>
+    <g id="i-more" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></g>
+  </defs></svg>
   <div class="drawer-scrim" id="drawer-scrim"></div>
 
   <!-- ─── SIDEBAR ─── -->
   <aside class="side" id="side">
     <div class="side-h">
-      <div class="logo">🧭 Component Explorer</div>
+      <div class="logo"><svg viewBox="0 0 24 24"><use href="#i-compass"/></svg> Component Explorer</div>
       <div class="tag">Paper.id · eksplorasi komponen</div>
     </div>
-    <div class="side-search"><span style="color:#475569">🔍</span><input id="side-search" placeholder="Cari komponen..."></div>
+    <div class="side-search"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg><input id="side-search" placeholder="Cari komponen..."></div>
     <div class="side-lbl">Komponen</div>
     <div class="side-list" id="side-list"></div>
     <div class="side-foot" id="side-foot"></div>
@@ -152,16 +197,21 @@
   <!-- ─── MAIN ─── -->
   <main class="main">
     <div class="bar">
-      <button class="hamb" id="hamb">☰</button>
+      <button class="hamb" id="hamb"><svg viewBox="0 0 24 24"><use href="#i-menu"/></svg></button>
       <h1 id="cmp-title">—</h1>
       <span class="status" id="cmp-status"></span>
       <div class="plat" id="plat"></div>
       <div class="tabs" id="tabs"></div>
       <span class="sp"></span>
-      <button class="bar-btn" id="link-btn" title="Salin link ke versi yang lagi dibuka">🔗 <span class="lbl">Salin Link</span></button>
-      <button class="bar-btn" id="raw-btn" title="Buka draft full-layar tanpa chrome hub">⛶ <span class="lbl">Full-layar</span></button>
-      <button class="bar-btn" id="qr-btn">📱 <span class="lbl">Buka di HP</span></button>
-      <button class="bar-btn" id="log-btn">📜 <span class="lbl">Changelog</span></button>
+      <button class="bar-btn ico-only" id="log-btn" title="Changelog"><svg viewBox="0 0 24 24"><use href="#i-list"/></svg></button>
+      <button class="bar-btn bar-btn--primary" id="link-btn" title="Salin link share ke versi ini"><svg viewBox="0 0 24 24"><use href="#i-link"/></svg> Salin Link</button>
+      <div class="more-wrap">
+        <button class="bar-btn ico-only" id="more-btn" title="Aksi lain"><svg viewBox="0 0 24 24"><use href="#i-more"/></svg></button>
+        <div class="more-menu" id="more-menu">
+          <button class="more-item" id="raw-btn" title="Buka draft full-layar tanpa chrome hub"><svg viewBox="0 0 24 24"><use href="#i-expand"/></svg> Full-layar</button>
+          <button class="more-item" id="qr-btn"><svg viewBox="0 0 24 24"><use href="#i-phone"/></svg> Buka di HP</button>
+        </div>
+      </div>
     </div>
     <div class="stage">
       <iframe id="frame" title="draft"></iframe>
@@ -176,7 +226,7 @@
   <!-- QR modal -->
   <div class="scrim" id="qr-scrim">
     <div class="qr">
-      <h3>📱 Buka di HP</h3>
+      <h3 style="display:flex;align-items:center;justify-content:center;gap:7px"><svg viewBox="0 0 24 24" style="width:17px;height:17px"><use href="#i-phone"/></svg>Buka di HP</h3>
       <p>Scan QR ini pakai kamera HP, atau ketik URL-nya. Draft mobile bakal tampil <b>full-layar</b> pake keyboard &amp; sentuhan asli.</p>
       <div class="qrimg" id="qr-img">…</div>
       <div class="url" id="qr-url"></div>
@@ -195,11 +245,33 @@
      ══════════════════════════════════════════════════════════════════ */
   var COMPONENTS = [
     {
-      slug:'spotlight', name:'Spotlight',
+      slug:'coachmark', name:'Coachmark',
       platforms:[
-        { key:'web', label:'🖥 Web', phase:'Fase 5 · Figma ✅',
+        { key:'web', label:'🖥 Web', phase:'Explore · revisi nav+close',
           versions:[
-            { v:3, file:'spotlight/playground-alt-a.html', date:'2026-07-13', title:'Nama final "Spotlight" + hover dots + edge case visual + fix',
+            { v:6, file:'coachmark/explore-close-c.html', date:'2026-07-15', title:'Close B vs C (toned) — banding 2 alternatif',
+              changes:['Banding **Alt B** (circle di kartu) vs **Alt C** (X di scrim) dalam 1 versi — toggle Gaya close',
+                'Dua-duanya DIKALEMIN: B = circle abu tipis + ikon muted · C = X putih polos di scrim (buang circle+shadow yang bikin keliatan tombol)',
+                'Kontrol **Emphasis** 3 level (Kalem 45% · Sedang 65% default · Jelas 85%) — berlaku buat DUA gaya',
+                'Prinsip: close tur = exit sekunder, harus ketemu kalau dicari tapi nggak nyaingin Next',
+                'Nav toggle + step tetep bisa dimainin. Audit lolos · DOM test 12 cek lolos',
+                '⚠️ Cek aksesibilitas: Kalem (45%) jangan sampai susah dilihat. Pilih gaya + level yang pas'] },
+            { v:5, file:'coachmark/explore-nav-close.html', date:'2026-07-15', title:'Adjust · dots di footer + nav jadi 2 toggle + close B kalem',
+              changes:['1. DOTS SEJAJAR TOMBOL — pindah ke dalam footer (sesama navigasi), bukan row terpisah di atas',
+                '2. CLOSE = **Alt B** (circle X pojok) jadi default + DIKALEMIN: ikon muted #a5b6c1, circle #f3f6f9 tipis, ikon 16px. Selector tetep ada buat banding',
+                '3. NAVIGASI = **2 toggle varian** (Dots / Counter) — bukan auto by jumlah step. Biar Figma cukup 2 varian, nggak meledak. Panduan ≤5/≥6 jadi guideline, bukan behaviour',
+                'Audit lolos exit 0 · DOM test: 23 cek lolos',
+                '⚠️ EXPLORE — nunggu user oke, baru playground property final + Figma'] },
+            { v:4, file:'coachmark/explore-nav-close.html', date:'2026-07-15', title:'Explore · nav 2 jenis + gaya close (rename → Coachmark)',
+              changes:['RENAME: Spotlight → **Coachmark** (keputusan user). Web dulu; Figma nyusul abis pilihan final',
+                'NAV 2 JENIS auto-switch by jumlah step:',
+                '  • ≤5 step → **dots + Next** (dots jumpable, nggak butuh Back)',
+                '  • ≥6 step → **counter "1/7" + Back + Next** (dots nggak kebaca di atas 5)',
+                'SKIP diganti → 5 gaya CLOSE buat dipilih: A ikon X pojok · B X circle button · C X di scrim · D X footer-kiri · E tombol "Skip tour"',
+                'Konten pakai konteks Paper.id (Invoice Pembelian, supplier). Nilai 100% DS, audit lolos exit 0',
+                'Diverifikasi DOM (jsdom): 24 cek nav+close lolos',
+                '⚠️ EXPLORE — belum final. Nunggu user pilih gaya close + oke 2 nav, baru dirapihin jadi playground property + Figma'] },
+            { v:3, file:'coachmark/playground-alt-a.html', date:'2026-07-13', title:'Nama final "Spotlight" + hover dots + edge case visual + fix',
               changes:['NAMA FINAL: **Spotlight** (keputusan user). Kandidat lain: Tour (Ant Design) / Walkthrough / Coachmark. Semua komponen + page direname',
                 'Spotlight `8621:253341` · Spotlight Content `8619:915` · Spotlight Dots `8618:277683` · _Spotlight/Dot `8618:646` · _Spotlight/Arrow `8628:1191` · Spotlight Scrim `8622:1053`',
                 'LABEL TOMBOL = INGGRIS (keputusan user): Skip · Previous · Next · Done. Komponen library dibikin generik',
@@ -210,14 +282,14 @@
                 'FIX: tombol Kembali/Lanjut nggak mentok kanan — Spacer layoutGrow 0 → 1',
                 'Referensi web (dicek 2026-07-13): Ant Design Tour (anatomi 1:1, dots di footer) · Atlassian Spotlight (dismiss tiap step, maks 3-4 step)',
                 'Audit binding tree-walk LOLOS: unbound=[] · wrongCollection=[]'] },
-            { v:2, file:'spotlight/playground-alt-a.html', date:'2026-07-13', title:'Fase 4-5 · Guideline + Figma (LIVE)',
+            { v:2, file:'coachmark/playground-alt-a.html', date:'2026-07-13', title:'Fase 4-5 · Guideline + Figma (LIVE)',
               changes:['✅ Komponen LIVE di Figma Paperverse',
                 'Kartu = INSTANCE component/Pop Over, Content Frame di-SWAP (cara pakai yang diniatkan DS)',
                 'Tombol = INSTANCE Button (Tertiary/Secondary/Primary), Head dimatiin via property bawaan',
                 'Scrim = cutout beneran via boolean subtract + ring putih',
                 '⚠️ Beda dari playground: Steps pindah ke komponen Dots (kalau digabung = 48 varian, nggak kekelola) · Image jadi BOOLEAN bukan SLOT',
-                'Guideline 9-section: _output/explorer/spotlight/guideline-alt-a.md'] },
-            { v:1, file:'spotlight/playground-alt-a.html', date:'2026-07-13', title:'Playground · Alt A (property model)',
+                'Guideline 9-section: _output/explorer/coachmark/guideline-alt-a.md'] },
+            { v:1, file:'coachmark/playground-alt-a.html', date:'2026-07-13', title:'Playground · Alt A (property model)',
               changes:['Komponen BARU — coachmark / feature walkthrough. Masuk dari SPEC (skip Fase 1-2 riset, brief udah lengkap)',
                 'Kartu = component/Pop Over Paperverse (live-pull node 5400:4798) — 281px, radius 4, shadow table/option',
                 'Tombol Lanjut/Selesai/Kembali/Lewati = Button Paperverse (pill 30px, radius full)',
@@ -361,7 +433,9 @@
     plat.innerHTML='';
     if(c.platforms.length>1){
       c.platforms.forEach(function(p){
-        var b=document.createElement('button'); b.innerHTML=p.label;
+        var b=document.createElement('button');
+        var pic=p.key==='mobile'?'#i-phone':'#i-monitor';
+        b.innerHTML='<svg viewBox="0 0 24 24"><use href="'+pic+'"/></svg>'+p.label.replace(/[🖥📱💻🌐📲🖥️]/g,'').trim();
         b.onclick=function(){ selectPlatform(p.key); };
         b.dataset.k=p.key; plat.appendChild(b);
       });
@@ -399,7 +473,7 @@
 
   function renderLog(){
     var c=curComp(), p=curPlat(); if(!c||!p){log.innerHTML='';return;}
-    log.innerHTML='<h2>Changelog · '+c.name+' '+p.label+'</h2><div class="sub">History iterasi platform ini</div>'+
+    log.innerHTML='<h2>Changelog · '+c.name+' '+p.label.replace(/[🖥📱💻🌐📲🖥️]/g,'').trim()+'</h2><div class="sub">History iterasi platform ini</div>'+
       p.versions.map(function(ver){
         return '<div class="log-item'+(ver.v===curV?' cur':'')+'">'+
           '<div class="log-v">v'+ver.v+(ver.v===p.versions[0].v?' ✦':'')+' <span class="d">· '+ver.date+'</span></div>'+
@@ -407,7 +481,7 @@
           '<ul>'+ver.changes.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>'+
           '<div class="log-acts">'+
             (ver.v===curV?'':'<button class="log-open-btn" data-v="'+ver.v+'">Lihat v'+ver.v+'</button>')+
-            '<button class="log-copy-btn" data-copy="'+ver.v+'">🔗 Salin link v'+ver.v+'</button>'+
+            '<button class="log-copy-btn" data-copy="'+ver.v+'"><svg viewBox="0 0 24 24" style="width:13px;height:13px;vertical-align:-2px"><use href="#i-link"/></svg> Salin link v'+ver.v+'</button>'+
           '</div>'+
         '</div>';
       }).join('');
@@ -425,6 +499,12 @@
   function closeDrawer(){ side.classList.remove('open'); drawerScrim.classList.remove('open'); }
   document.getElementById('hamb').onclick=openDrawer;
   drawerScrim.onclick=closeDrawer;
+
+  /* ── menu "Aksi lain" (⋯) — rampingin topbar ── */
+  var moreBtn=document.getElementById('more-btn'), moreMenu=document.getElementById('more-menu');
+  moreBtn.onclick=function(e){ e.stopPropagation(); moreMenu.classList.toggle('open'); };
+  document.addEventListener('click',function(e){ if(!moreBtn.contains(e.target) && !moreMenu.contains(e.target)) moreMenu.classList.remove('open'); });
+  moreMenu.querySelectorAll('.more-item').forEach(function(b){ b.addEventListener('click',function(){ moreMenu.classList.remove('open'); }); });
 
   /* ─── QR / Buka di HP ─── */
   function draftAbsUrl(){
@@ -444,7 +524,7 @@
     img.innerHTML='…';
     var qsrc='https://api.qrserver.com/v1/create-qr-code/?size=190x190&margin=0&data='+encodeURIComponent(url);
     var im=new Image(); im.onload=function(){img.innerHTML='';img.appendChild(im);};
-    im.onerror=function(){img.innerHTML='<span style="font-size:11px;color:#94a3b8;padding:10px">QR butuh internet.<br>Pakai URL di bawah.</span>';};
+    im.onerror=function(){img.innerHTML='<span style="font-size:11px;color:var(--tx-dim);padding:10px">QR butuh internet.<br>Pakai URL di bawah.</span>';};
     im.src=qsrc;
     qrScrim.classList.add('open');
   };
@@ -550,7 +630,7 @@
      Halaman share nggak punya data komponen lain sama sekali → nggak ada yang
      bisa digali. Bikin/refresh: node paper-designer/tools/make-share-page.mjs --all
      ─────────────────────────────────────────────────────────────────── */
-  var SHARE_TOKEN={"spotlight":"0c0f6b","segmented-button":"8fa2c0","multi-select":"e464b7","combobox":"f6d310","push-notification":"fb0763","banner":"643ded","radio-button":"8c4287"};  // slug → token (disuntik generator; kosong = share page belum dibuat)
+  var SHARE_TOKEN={"coachmark":"8267b1","segmented-button":"8fa2c0","multi-select":"e464b7","combobox":"f6d310","push-notification":"fb0763","banner":"643ded","radio-button":"8c4287"};  // slug → token (disuntik generator; kosong = share page belum dibuat)
   function shareUrl(slug,platKey,v){
     var tok=SHARE_TOKEN[slug]; if(!tok) return null;
     var c=comp(slug);

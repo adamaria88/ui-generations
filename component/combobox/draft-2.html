@@ -13,29 +13,39 @@
        • .cbx-*           = LAYER KOMPONEN (combobox mobile)
      ══════════════════════════════════════════════════════════════════ -->
 <title>Draft 2 · Combobox Mobile · Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#f1f5f9;color:#0f172a;min-height:100vh}
+  /* ═══ NEUTRAL MINIMAL — token chrome ═══ */
+  :root{--app-bg:#F4F4F2;--bar-bg:#EDECE6;--surface:#FCFCFB;--canvas:#FFFFFF;--bd:rgba(0,0,0,.08);--bd-strong:rgba(0,0,0,.16);--tx:#1F2328;--tx-mut:#6E6E68;--tx-dim:#A3A39B;--accent:#1F2328;--accent-tx:#fff;--item-on:#EAEAE6;--item-hover:#EDEDE9;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 6px 22px rgba(0,0,0,.12)}
+  body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:var(--app-bg);color:var(--tx);min-height:100vh}
 
   /* ─── LAYER TOOLING ─── */
   .expl-topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;
-    background:#0f172a;color:#fff;padding:10px 20px;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+    background:var(--bar-bg);color:var(--tx);padding:10px 20px;border-bottom:1px solid var(--bd-strong)}
   .expl-topbar .sp{flex:1}
+  .expl-crumb{font-size:12px;font-weight:700;color:var(--tx-dim);letter-spacing:.02em}
   .expl-btn{border:0;border-radius:8px;padding:8px 14px;font:600 13px 'Inter',sans-serif;cursor:pointer;
     display:inline-flex;align-items:center;gap:6px;transition:filter .12s,background .12s}
-  .expl-btn--ghost{background:rgba(255,255,255,.12);color:#fff}
-  .expl-btn--ghost:hover{background:rgba(255,255,255,.22)}
-  .expl-btn--ghost.on{background:#7c3aed}
-  .expl-btn--primary{background:#2563eb;color:#fff}
-  .expl-btn--primary:hover{filter:brightness(1.08)}
-  .expl-hint{padding:10px 20px;font-size:12px;color:#64748b;background:#e2e8f0;border-bottom:1px solid #cbd5e1}
-  .expl-hint b{color:#0f172a}
+  .expl-btn svg{width:15px;height:15px}
+  .expl-btn--ghost{background:transparent;border:1px solid var(--bd-strong);color:var(--tx-mut)}
+  .expl-btn--ghost:hover{background:var(--item-hover);color:var(--tx)}
+  .expl-btn--ghost.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
+  .expl-btn--primary{background:var(--accent);color:var(--accent-tx)}
+  .expl-btn--primary:hover{background:#33383E}
+  .expl-hint{padding:10px 20px;font-size:12px;color:var(--tx-mut);background:var(--app-bg);border-bottom:1px solid var(--bd)}
+  .expl-hint b{color:var(--tx)}
+  .expl-head{padding:26px 28px 4px}
+  .expl-head h1{font-size:30px;font-weight:800;letter-spacing:-.01em;line-height:1.12;color:var(--tx)}
+  .expl-head p{font-size:14px;color:var(--tx-mut);margin-top:7px}
 
   .wrap{max-width:960px;margin:0 auto;padding:30px 20px 140px;display:flex;flex-wrap:wrap;gap:40px;justify-content:center}
   .col{display:flex;flex-direction:column;align-items:center}
-  .sec-title{font-size:14px;font-weight:700;color:#0f172a;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+  .sec-title{font-size:14px;font-weight:700;color:var(--tx);margin:0 0 4px;display:flex;align-items:center;gap:8px}
   .sec-tag{font:600 10px 'Inter';color:#7c3aed;background:#f3e8ff;border-radius:99px;padding:2px 8px}
-  .sec-sub{font-size:12px;color:#64748b;line-height:1.5;margin-bottom:16px;max-width:320px;text-align:center}
+  .sec-sub{font-size:12px;color:var(--tx-mut);line-height:1.5;margin-bottom:16px;max-width:320px;text-align:center}
 
   /* ─── PHONE FRAME (presentasi) ─── */
   .phone{position:relative;width:340px;height:720px;background:#fff;border-radius:38px;
@@ -108,10 +118,10 @@
 
   /* switcher pola — default OFF (desktop 2-up buat compare) */
   .pola-switch{display:none;position:sticky;top:0;z-index:45;gap:6px;padding:10px 12px;
-    background:#0f172a;border-bottom:1px solid rgba(255,255,255,.1);justify-content:center}
-  .pola-switch button{flex:1;max-width:180px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);
-    color:#cbd5e1;font:700 12px 'Inter';padding:9px 6px;border-radius:9px;cursor:pointer}
-  .pola-switch button.on{background:#7c3aed;border-color:#7c3aed;color:#fff}
+    background:var(--bar-bg);border-bottom:1px solid var(--bd);justify-content:center}
+  .pola-switch button{flex:1;max-width:180px;border:1px solid var(--bd-strong);background:var(--item-on);
+    color:var(--tx-mut);font:700 12px 'Inter';padding:9px 6px;border-radius:9px;cursor:pointer}
+  .pola-switch button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
 
   /* ═══ REAL MOBILE: dibuka di HP → frame ilang, overlay full-layar, keyboard asli ═══ */
   @media (max-width:680px){
@@ -137,18 +147,30 @@
 </head>
 <body data-component="Combobox Mobile">
 
+  <!-- ikon line mono (Neutral Minimal) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <g id="t-chat" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a7.5 7.5 0 01-10.9 6.7L4 20l1.8-5.1A7.5 7.5 0 1121 11.5z"/></g>
+    <g id="t-list" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></g>
+    <g id="t-send" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></g>
+  </defs></svg>
+
   <!-- ═══════ LAYER TOOLING ═══════ -->
   <div class="expl-topbar">
-    <span style="font-size:11px;color:#94a3b8">💬 Komen ON → tahan SHIFT + drag = komen area · Shift+klik = titik · tanpa Shift = klik komponen · mobile</span>
+    <span class="expl-crumb">Component Explorer · Draft</span>
     <span class="sp"></span>
-    <button class="expl-btn expl-btn--ghost" id="expl-comment-btn">💬 Komen</button>
-    <button class="expl-btn expl-btn--ghost" id="expl-list-btn">📋 Daftar</button>
-    <button class="expl-btn expl-btn--primary" id="expl-submit-btn">📤 Submit</button>
+    <button class="expl-btn expl-btn--ghost" id="expl-comment-btn"><svg viewBox="0 0 24 24"><use href="#t-chat"/></svg> Komen</button>
+    <button class="expl-btn expl-btn--ghost" id="expl-list-btn"><svg viewBox="0 0 24 24"><use href="#t-list"/></svg> Daftar</button>
+    <button class="expl-btn expl-btn--primary" id="expl-submit-btn"><svg viewBox="0 0 24 24"><use href="#t-send"/></svg> Submit</button>
   </div>
   <div class="expl-hint">
     <b>Di mobile, combobox ganti bentuk.</b> Popover mungil susah dipencet &amp; ketutup keyboard. Jadi:
     <b>Pola A → full-screen search</b>, <b>Pola B → bottom sheet</b>. Tap field "Pilih Mitra" di tiap HP buat nyoba.
   </div>
+
+  <header class="expl-head">
+    <h1>Combobox</h1>
+    <p>Explore · bandingin alternatif</p>
+  </header>
 
   <!-- switcher pola (cuma muncul di HP / layar sempit) -->
   <div class="pola-switch" id="pola-switch">
@@ -240,26 +262,26 @@
   </div>
 
   <!-- panel komen -->
-  <div class="expl-panel" id="expl-panel" style="position:fixed;top:0;right:0;height:100vh;width:300px;background:#fff;border-left:1px solid #dbe2e8;box-shadow:-4px 0 20px rgba(28,43,54,.12);z-index:60;display:flex;flex-direction:column;transform:translateX(300px);transition:transform .2s">
-    <div style="padding:14px 16px;border-bottom:1px solid #e6ebf0;display:flex;align-items:center"><h2 style="font-size:14px;font-weight:700;flex:1">Komen</h2><button class="expl-panel-close" id="expl-panel-close" style="border:0;background:#eef1f4;border-radius:6px;width:28px;height:28px;cursor:pointer;color:#5c7180">✕</button></div>
+  <div class="expl-panel" id="expl-panel" style="position:fixed;top:0;right:0;height:100vh;width:300px;background:var(--surface);border-left:1px solid var(--bd-strong);box-shadow:var(--shadow-md);z-index:60;display:flex;flex-direction:column;transform:translateX(300px);transition:transform .2s">
+    <div style="padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center"><h2 style="font-size:14px;font-weight:700;flex:1">Komen</h2><button class="expl-panel-close" id="expl-panel-close" style="border:0;background:var(--item-on);border-radius:6px;width:28px;height:28px;cursor:pointer;color:var(--tx-mut)">✕</button></div>
     <div style="flex:1;overflow:auto;padding:12px" id="expl-list"></div>
-    <div style="padding:12px 16px;border-top:1px solid #e6ebf0"><button class="expl-btn expl-btn--primary" id="expl-submit-btn2" style="width:100%;justify-content:center">📤 Submit semua komen → copy</button></div>
+    <div style="padding:12px 16px;border-top:1px solid var(--bd)"><button class="expl-btn expl-btn--primary" id="expl-submit-btn2" style="width:100%;justify-content:center">📤 Submit semua komen → copy</button></div>
   </div>
 
 <style>
   .expl-panel.open{transform:none!important}
   body.expl-comment .expl-canvas{cursor:crosshair}
-  .expl-pin{position:absolute;z-index:45;width:26px;height:26px;border-radius:50% 50% 50% 4px;background:#7c3aed;color:#fff;font:700 11px/26px 'Inter';text-align:center;transform:translate(-2px,-28px);box-shadow:0 2px 8px rgba(0,0,0,.4);cursor:pointer;user-select:none}
-  .expl-sel{position:absolute;z-index:44;border:1.5px dashed #7c3aed;background:rgba(124,58,237,.12);border-radius:4px;pointer-events:none}
-  .expl-area{position:absolute;z-index:20;border:1.5px solid #7c3aed;background:rgba(124,58,237,.07);border-radius:4px;pointer-events:none}
-  .expl-note{background:#f6f8fa;border:1px solid #e6ebf0;border-radius:10px;padding:10px 12px;margin-bottom:10px}
-  .expl-note-ref{font:700 11px 'Inter';color:#7c3aed;margin-bottom:4px}
-  .expl-note-text{font-size:13px;line-height:1.5;color:#2b3b47;word-break:break-word}
-  .expl-note-del{float:right;border:0;background:transparent;color:#b9c4cd;cursor:pointer;font-size:14px}
-  .expl-empty{text-align:center;color:#9aa8b4;font-size:13px;padding:32px 12px;line-height:1.6}
-  .expl-pop2{position:fixed;z-index:70;width:280px;background:#fff;border:1px solid #dbe2e8;border-radius:12px;box-shadow:0 12px 36px rgba(28,43,54,.28);padding:12px}
-  .expl-pop2 textarea{width:100%;min-height:70px;resize:vertical;border:1px solid #d3dbe2;border-radius:8px;padding:8px 10px;font:400 13px/1.5 'Inter';outline:none}
-  .expl-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(10px);background:#0f172a;color:#fff;font:600 12px 'Inter';padding:10px 18px;border-radius:99px;box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:80;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+  .expl-pin{position:absolute;z-index:45;width:26px;height:26px;border-radius:50% 50% 50% 4px;background:var(--accent);color:var(--accent-tx);font:700 11px/26px 'Inter';text-align:center;transform:translate(-2px,-28px);box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:pointer;user-select:none}
+  .expl-sel{position:absolute;z-index:44;border:1.5px dashed var(--accent);background:rgba(31,35,40,.10);border-radius:4px;pointer-events:none}
+  .expl-area{position:absolute;z-index:20;border:1.5px solid var(--accent);background:rgba(31,35,40,.06);border-radius:4px;pointer-events:none}
+  .expl-note{background:var(--app-bg);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+  .expl-note-ref{font:700 11px 'Inter';color:var(--tx-mut);margin-bottom:4px}
+  .expl-note-text{font-size:13px;line-height:1.5;color:var(--tx);word-break:break-word}
+  .expl-note-del{float:right;border:0;background:transparent;color:var(--tx-dim);cursor:pointer;font-size:14px}
+  .expl-empty{text-align:center;color:var(--tx-dim);font-size:13px;padding:32px 12px;line-height:1.6}
+  .expl-pop2{position:fixed;z-index:70;width:280px;background:var(--surface);border:1px solid var(--bd-strong);border-radius:12px;box-shadow:var(--shadow-md);padding:12px}
+  .expl-pop2 textarea{width:100%;min-height:70px;resize:vertical;border:1px solid var(--bd-strong);border-radius:8px;padding:8px 10px;font:400 13px/1.5 'Inter';outline:none;color:var(--tx);background:var(--canvas)}
+  .expl-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(10px);background:var(--accent);color:var(--accent-tx);font:600 12px 'Inter';padding:10px 18px;border-radius:99px;box-shadow:var(--shadow-md);z-index:80;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
   .expl-toast.show{opacity:1;transform:translateX(-50%)}
   .expl-canvas{position:relative}
 </style>
@@ -351,7 +373,7 @@ function optHTML(d,q,sel){return '<div class="cbx-opt'+(sel&&sel.id===d.id?' sel
     document.querySelectorAll('.expl-pop2').forEach(function(p){p.remove();});
     var pop=document.createElement('div');pop.className='expl-pop2';
     pop.style.left=Math.min(cx,window.innerWidth-296)+'px';pop.style.top=Math.min(cy,window.innerHeight-170)+'px';
-    pop.innerHTML='<div style="font:700 11px Inter;color:#7c3aed;margin-bottom:8px">'+ctx.alt+(ctx.ref?' · "'+esc(ctx.ref)+'"':'')+'</div><textarea placeholder="Tulis catatan..."></textarea><div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end"><button class="expl-btn expl-btn--ghost" style="background:#eef1f4;color:#5c7180" data-x>Batal</button><button class="expl-btn expl-btn--primary" data-ok>Simpan</button></div>';
+    pop.innerHTML='<div style="font:700 11px Inter;color:var(--tx-mut);margin-bottom:8px">'+ctx.alt+(ctx.ref?' · "'+esc(ctx.ref)+'"':'')+'</div><textarea placeholder="Tulis catatan..."></textarea><div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end"><button class="expl-btn expl-btn--ghost" style="background:var(--item-on);color:var(--tx-mut);border-color:transparent" data-x>Batal</button><button class="expl-btn expl-btn--primary" data-ok>Simpan</button></div>';
     document.body.appendChild(pop);var ta=pop.querySelector('textarea');ta.focus();
     pop.querySelector('[data-x]').onclick=function(){pop.remove();};
     pop.querySelector('[data-ok]').onclick=function(){var text=ta.value.trim();if(!text){pop.remove();return;}notes.push({alt:ctx.alt,x:ctx.x,y:ctx.y,w:ctx.w,h:ctx.h,ref:ctx.ref,text:text});save();render();pop.remove();toast('Komen tersimpan');};

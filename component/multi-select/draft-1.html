@@ -15,56 +15,66 @@
      · checkmark di dropdown · "No results" state · clear-all.
      ══════════════════════════════════════════════════════════════════ -->
 <title>Explorer · Multi-Select (Chips)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:-apple-system,'Segoe UI',Roboto,sans-serif; background:#eef1f4; color:#1c2b36; }
+  /* ═══ NEUTRAL MINIMAL — token chrome ═══ */
+  :root{--app-bg:#F4F4F2;--bar-bg:#EDECE6;--surface:#FCFCFB;--canvas:#FFFFFF;--bd:rgba(0,0,0,.08);--bd-strong:rgba(0,0,0,.16);--tx:#1F2328;--tx-mut:#6E6E68;--tx-dim:#A3A39B;--accent:#1F2328;--accent-tx:#fff;--item-on:#EAEAE6;--item-hover:#EDEDE9;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 6px 22px rgba(0,0,0,.12)}
+  body { font-family:-apple-system,'Segoe UI',Roboto,sans-serif; background:var(--app-bg); color:var(--tx); }
 
   /* ─────────── LAYER TOOLING ─────────── */
   .expl-topbar { position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:12px;
-    background:#1c2b36; color:#fff; padding:10px 20px; box-shadow:0 2px 12px rgba(0,0,0,.25); }
+    background:var(--bar-bg); color:var(--tx); padding:10px 20px; border-bottom:1px solid var(--bd-strong); }
   .expl-topbar .sp { flex:1; }
   .expl-btn { border:0; border-radius:8px; padding:8px 14px; font:600 13px -apple-system,sans-serif;
     cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:filter .12s,background .12s; }
-  .expl-btn--ghost { background:rgba(255,255,255,.12); color:#fff; }
-  .expl-btn--ghost:hover { background:rgba(255,255,255,.22); }
-  .expl-btn--ghost.on { background:#7B61FF; }
-  .expl-btn--primary { background:#0A84FF; color:#fff; }
-  .expl-btn--primary:hover { filter:brightness(1.08); }
-  .expl-hint { padding:10px 20px; font-size:12px; color:#5c7180; background:#e2e8ee; border-bottom:1px solid #d3dbe2; }
-  .expl-hint b { color:#1c2b36; }
+  .expl-btn svg { width:15px; height:15px; }
+  .expl-btn--ghost { background:transparent; border:1px solid var(--bd-strong); color:var(--tx-mut); }
+  .expl-btn--ghost:hover { background:var(--item-hover); color:var(--tx); }
+  .expl-btn--ghost.on { background:var(--accent); border-color:var(--accent); color:var(--accent-tx); }
+  .expl-btn--primary { background:var(--accent); color:var(--accent-tx); }
+  .expl-btn--primary:hover { background:#33383E; }
+  .expl-hint { padding:10px 20px; font-size:12px; color:var(--tx-mut); background:var(--app-bg); border-bottom:1px solid var(--bd); }
+  .expl-hint b { color:var(--tx); }
+  .expl-crumb { font-size:12px; font-weight:700; color:var(--tx-dim); letter-spacing:.02em; }
+  .expl-head { padding:26px 28px 4px; }
+  .expl-head h1 { font-size:30px; font-weight:800; letter-spacing:-.01em; line-height:1.12; color:var(--tx); }
+  .expl-head p { font-size:14px; color:var(--tx-mut); margin-top:7px; }
 
   .expl-grid { display:flex; flex-wrap:wrap; gap:28px; padding:28px; align-items:flex-start; }
-  .expl-alt { background:#fff; border-radius:14px; box-shadow:0 2px 16px rgba(28,43,54,.08); overflow:visible; width:520px; max-width:100%; border:2px solid transparent; }
-  .expl-alt-head { display:flex; align-items:center; gap:8px; padding:10px 14px; background:#f6f8fa; border-bottom:1px solid #e6ebf0; border-radius:14px 14px 0 0; }
-  .expl-alt-label { font-weight:700; font-size:13px; color:#1c2b36; }
-  .expl-alt-tag { font-size:11px; color:#7c8b98; }
+  .expl-alt { background:var(--surface); border-radius:14px; box-shadow:var(--shadow-sm); overflow:visible; width:520px; max-width:100%; border:2px solid transparent; }
+  .expl-alt-head { display:flex; align-items:center; gap:8px; padding:10px 14px; background:var(--app-bg); border-bottom:1px solid var(--bd); border-radius:14px 14px 0 0; }
+  .expl-alt-label { font-weight:700; font-size:13px; color:var(--tx); }
+  .expl-alt-tag { font-size:11px; color:var(--tx-dim); }
   .expl-alt-head .sp { flex:1; }
-  .expl-reset { border:1px solid #d3dbe2; background:#fff; border-radius:7px; padding:4px 10px; font:600 11px -apple-system,sans-serif; cursor:pointer; color:#41525f; }
-  .expl-reset:hover { background:#f0f3f6; }
-  .expl-canvas { position:relative; padding:22px; min-height:120px; background:#fff; border-radius:0 0 14px 14px; }
+  .expl-reset { border:1px solid var(--bd-strong); background:var(--surface); border-radius:7px; padding:4px 10px; font:600 11px -apple-system,sans-serif; cursor:pointer; color:var(--tx-mut); }
+  .expl-reset:hover { background:var(--item-hover); }
+  .expl-canvas { position:relative; padding:22px; min-height:120px; background:var(--canvas); border-radius:0 0 14px 14px; }
   body.expl-comment .expl-canvas { cursor:crosshair; }
-  .expl-pin { position:absolute; z-index:40; width:26px; height:26px; border-radius:50% 50% 50% 4px; background:#7B61FF; color:#fff;
-    font:700 11px/26px -apple-system,sans-serif; text-align:center; transform:translate(-2px,-28px); box-shadow:0 2px 8px rgba(0,0,0,.4); cursor:pointer; user-select:none; }
-  .expl-sel { position:absolute; z-index:39; border:1.5px dashed #7B61FF; background:rgba(123,97,255,.12); border-radius:4px; pointer-events:none; }
-  .expl-area { position:absolute; z-index:38; border:1.5px solid #7B61FF; background:rgba(123,97,255,.10); border-radius:4px; pointer-events:none; }
-  .expl-panel { position:fixed; top:0; right:0; height:100vh; width:300px; background:#fff; border-left:1px solid #dbe2e8; box-shadow:-4px 0 20px rgba(28,43,54,.12); z-index:60; display:flex; flex-direction:column; transform:translateX(300px); transition:transform .2s; }
+  .expl-pin { position:absolute; z-index:40; width:26px; height:26px; border-radius:50% 50% 50% 4px; background:var(--accent); color:var(--accent-tx);
+    font:700 11px/26px -apple-system,sans-serif; text-align:center; transform:translate(-2px,-28px); box-shadow:0 2px 8px rgba(0,0,0,.3); cursor:pointer; user-select:none; }
+  .expl-sel { position:absolute; z-index:39; border:1.5px dashed var(--accent); background:rgba(31,35,40,.10); border-radius:4px; pointer-events:none; }
+  .expl-area { position:absolute; z-index:38; border:1.5px solid var(--accent); background:rgba(31,35,40,.08); border-radius:4px; pointer-events:none; }
+  .expl-panel { position:fixed; top:0; right:0; height:100vh; width:300px; background:var(--surface); border-left:1px solid var(--bd-strong); box-shadow:var(--shadow-md); z-index:60; display:flex; flex-direction:column; transform:translateX(300px); transition:transform .2s; }
   .expl-panel.open { transform:none; }
-  .expl-panel-head { padding:14px 16px; border-bottom:1px solid #e6ebf0; display:flex; align-items:center; }
+  .expl-panel-head { padding:14px 16px; border-bottom:1px solid var(--bd); display:flex; align-items:center; }
   .expl-panel-head h2 { font-size:14px; font-weight:700; flex:1; }
-  .expl-panel-close { border:0; background:#eef1f4; border-radius:6px; width:28px; height:28px; cursor:pointer; color:#5c7180; }
+  .expl-panel-close { border:0; background:var(--item-on); border-radius:6px; width:28px; height:28px; cursor:pointer; color:var(--tx-mut); }
   .expl-list { flex:1; overflow:auto; padding:12px; }
-  .expl-empty { text-align:center; color:#9aa8b4; font-size:13px; padding:32px 12px; line-height:1.6; }
-  .expl-note { background:#f6f8fa; border:1px solid #e6ebf0; border-radius:10px; padding:10px 12px; margin-bottom:10px; }
-  .expl-note-ref { font:700 11px -apple-system,sans-serif; color:#7B61FF; margin-bottom:4px; }
-  .expl-note-text { font-size:13px; line-height:1.5; color:#2b3b47; word-break:break-word; }
-  .expl-note-del { float:right; border:0; background:transparent; color:#b9c4cd; cursor:pointer; font-size:14px; }
-  .expl-note-del:hover { color:#e35273; }
-  .expl-panel-foot { padding:12px 16px; border-top:1px solid #e6ebf0; }
-  .expl-pop { position:fixed; z-index:70; width:280px; background:#fff; border:1px solid #dbe2e8; border-radius:12px; box-shadow:0 12px 36px rgba(28,43,54,.28); padding:12px; }
-  .expl-pop-ref { font:700 11px -apple-system,sans-serif; color:#7B61FF; margin-bottom:8px; }
-  .expl-pop textarea { width:100%; min-height:70px; resize:vertical; border:1px solid #d3dbe2; border-radius:8px; padding:8px 10px; font:400 13px/1.5 -apple-system,sans-serif; outline:none; }
+  .expl-empty { text-align:center; color:var(--tx-dim); font-size:13px; padding:32px 12px; line-height:1.6; }
+  .expl-note { background:var(--app-bg); border:1px solid var(--bd); border-radius:10px; padding:10px 12px; margin-bottom:10px; }
+  .expl-note-ref { font:700 11px -apple-system,sans-serif; color:var(--tx-mut); margin-bottom:4px; }
+  .expl-note-text { font-size:13px; line-height:1.5; color:var(--tx); word-break:break-word; }
+  .expl-note-del { float:right; border:0; background:transparent; color:var(--tx-dim); cursor:pointer; font-size:14px; }
+  .expl-note-del:hover { color:#B42318; }
+  .expl-panel-foot { padding:12px 16px; border-top:1px solid var(--bd); }
+  .expl-pop { position:fixed; z-index:70; width:280px; background:var(--surface); border:1px solid var(--bd-strong); border-radius:12px; box-shadow:var(--shadow-md); padding:12px; }
+  .expl-pop-ref { font:700 11px -apple-system,sans-serif; color:var(--tx-mut); margin-bottom:8px; }
+  .expl-pop textarea { width:100%; min-height:70px; resize:vertical; border:1px solid var(--bd-strong); border-radius:8px; padding:8px 10px; font:400 13px/1.5 -apple-system,sans-serif; outline:none; color:var(--tx); background:var(--canvas); }
   .expl-pop-acts { display:flex; gap:8px; margin-top:8px; justify-content:flex-end; }
-  .expl-toast { position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(10px); background:#1c2b36; color:#fff; font:600 12px -apple-system,sans-serif; padding:10px 18px; border-radius:99px; box-shadow:0 8px 24px rgba(0,0,0,.35); z-index:80; opacity:0; pointer-events:none; transition:opacity .18s,transform .18s; }
+  .expl-toast { position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(10px); background:var(--accent); color:var(--accent-tx); font:600 12px -apple-system,sans-serif; padding:10px 18px; border-radius:99px; box-shadow:var(--shadow-md); z-index:80; opacity:0; pointer-events:none; transition:opacity .18s,transform .18s; }
   .expl-toast.show { opacity:1; transform:translateX(-50%); }
 
   /* ═════════════════ LAYER KOMPONEN (draft, NON-DS) ═════════════════ */
@@ -120,14 +130,25 @@
 </head>
 <body data-component="Multi-Select (Chips)">
 
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <g id="t-chat" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a7.5 7.5 0 01-10.9 6.7L4 20l1.8-5.1A7.5 7.5 0 1121 11.5z"/></g>
+    <g id="t-list" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></g>
+    <g id="t-send" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></g>
+  </defs></svg>
+
   <div class="expl-topbar">
-    <span style="font-size:11px;color:#94a3b8">klik 💬 lalu klik/drag area buat komen · komponen INTERAKTIF (ketik, pilih, hapus chip) · draft NON-DS</span>
+    <span style="font-size:11px;color:var(--tx-mut)">klik Komen lalu klik/drag area buat komen · komponen INTERAKTIF (ketik, pilih, hapus chip) · draft NON-DS</span>
     <span class="sp"></span>
-    <button class="expl-btn expl-btn--ghost" id="expl-comment-btn">💬 Komen</button>
-    <button class="expl-btn expl-btn--ghost" id="expl-list-btn">📋 Daftar</button>
-    <button class="expl-btn expl-btn--primary" id="expl-submit-btn">📤 Submit</button>
+    <button class="expl-btn expl-btn--ghost" id="expl-comment-btn"><svg viewBox="0 0 24 24"><use href="#t-chat"/></svg> Komen</button>
+    <button class="expl-btn expl-btn--ghost" id="expl-list-btn"><svg viewBox="0 0 24 24"><use href="#t-list"/></svg> Daftar</button>
+    <button class="expl-btn expl-btn--primary" id="expl-submit-btn"><svg viewBox="0 0 24 24"><use href="#t-send"/></svg> Submit</button>
   </div>
   <div class="expl-hint">⚠️ <b>Draft Fase 1 — belum pakai DS, komponen BARU.</b> Yang direview: <b>behaviour</b> (ketik→filter, klik→jadi chip, ✕/Backspace→hapus, overflow) &amp; <b>susunan</b> 2 pola. Nilai DS (warna/spacing/radius Aurora) nyusul di Fase 3.</div>
+
+  <header class="expl-head">
+    <h1>Multi Select</h1>
+    <p>Draft · bandingin behaviour &amp; susunan 2 pola multi-select</p>
+  </header>
 
   <div class="expl-grid" id="expl-grid">
 
@@ -321,7 +342,7 @@
     document.querySelectorAll('.expl-pop').forEach(function(p){p.remove();});
     var pop=document.createElement('div'); pop.className='expl-pop';
     pop.style.left=Math.min(cx,window.innerWidth-296)+'px'; pop.style.top=Math.min(cy,window.innerHeight-160)+'px';
-    pop.innerHTML='<div class="expl-pop-ref">Pola '+ctx.alt+(ctx.ref?' · "'+ctx.ref.replace(/</g,'&lt;')+'"':'')+'</div><textarea placeholder="Tulis catatan..."></textarea><div class="expl-pop-acts"><button class="expl-btn expl-btn--ghost" style="background:#eef1f4;color:#5c7180" data-x>Batal</button><button class="expl-btn expl-btn--primary" data-ok>Simpan</button></div>';
+    pop.innerHTML='<div class="expl-pop-ref">Pola '+ctx.alt+(ctx.ref?' · "'+ctx.ref.replace(/</g,'&lt;')+'"':'')+'</div><textarea placeholder="Tulis catatan..."></textarea><div class="expl-pop-acts"><button class="expl-btn expl-btn--ghost" style="background:var(--item-on);color:var(--tx-mut);border-color:transparent" data-x>Batal</button><button class="expl-btn expl-btn--primary" data-ok>Simpan</button></div>';
     document.body.appendChild(pop); var ta=pop.querySelector('textarea'); ta.focus();
     pop.querySelector('[data-x]').onclick=function(){pop.remove();};
     pop.querySelector('[data-ok]').onclick=function(){var t=ta.value.trim();if(!t){pop.remove();return;} notes.push({alt:ctx.alt,x:ctx.x,y:ctx.y,w:ctx.w,h:ctx.h,ref:ctx.ref,text:t}); save(); render(); pop.remove(); toast('Komen tersimpan');};
