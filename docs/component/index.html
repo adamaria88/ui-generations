@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══════════════════════════════════════════════════════════════════
+     COMPONENT EXPLORER — HUB TUNGGAL (1 link buat SEMUA komponen).
+     Struktur: Komponen → Platform (Web/Mobile) → Versi.
+       • Komponen baru = tambah objek di COMPONENTS.
+       • Platform      = tiap komponen punya array platforms[] (web/mobile).
+       • Iterasi baru  = tambah 1 versi di platform terkait (paling atas).
+     Draft di-load via iframe. Tombol "Buka di HP" = QR + URL draft langsung
+     (buat tes experience mobile di device beneran / full-layar).
+     Responsive: sidebar jadi drawer di layar sempit.
+     ══════════════════════════════════════════════════════════════════ -->
+<title>Component Explorer · Paper.id</title>
+<!-- Font DS Paper.id = Lato (pola sama kayak prototype lain, mis. tagih-invoice) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  /* ═══ NEUTRAL MINIMAL — token chrome (dipakai identik di 3 surface explorer) ═══ */
+  :root{
+    --app-bg:#F4F4F2; --side-bg:#E7E6E0; --bar-bg:#EDECE6; --surface:#FCFCFB; --canvas:#F4F4F2;
+    --bd:rgba(0,0,0,.08); --bd-strong:rgba(0,0,0,.16);
+    --tx:#1F2328; --tx-mut:#6E6E68; --tx-dim:#A3A39B;
+    --accent:#1F2328; --accent-tx:#fff;
+    --item-on:#EAEAE6; --item-hover:#EDEDE9;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.05); --shadow-md:0 6px 22px rgba(0,0,0,.10);
+    --warn-bg:#FBF3E4; --warn-bd:#E9D6AE; --warn-tx:#7A4B00;
+  }
+  body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;display:flex;background:var(--app-bg);color:var(--tx);overflow:hidden}
+
+  /* ─── SIDEBAR ─── */
+  .side{width:248px;flex:none;background:var(--side-bg);border-right:1px solid var(--bd-strong);display:flex;flex-direction:column;z-index:40;transition:transform .22s cubic-bezier(.4,0,.2,1)}
+  .side-h{padding:16px 16px 12px}
+  .side-h .logo{font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px}
+  .side-h .logo svg{width:18px;height:18px;flex:none}
+  .side-h .tag{font-size:11px;color:var(--tx-dim);margin-top:2px}
+  .side-search{margin:0 12px 10px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--bd);border-radius:8px;padding:7px 10px}
+  .side-search svg{width:14px;height:14px;color:var(--tx-dim);flex:none}
+  .side-search input{flex:1;border:0;background:transparent;color:var(--tx);font:400 12px 'Lato';outline:none}
+  .side-search input::placeholder{color:var(--tx-dim)}
+  .side-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx-dim);padding:6px 18px}
+  .side-list{flex:1;overflow:auto;padding:0 8px 12px}
+  .cmp-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:9px;cursor:pointer;margin-bottom:2px;transition:background .12s}
+  .cmp-item:hover{background:var(--item-hover)}
+  .cmp-item.on{background:var(--item-on)}
+  .cmp-dot{width:7px;height:7px;border-radius:50%;background:var(--tx-dim);flex:none}
+  .cmp-item.on .cmp-dot{background:var(--accent)}
+  .cmp-nm{flex:1;font-size:13px;font-weight:600;color:var(--tx-mut)}
+  .cmp-item.on .cmp-nm{color:var(--tx)}
+  .cmp-plat{font-size:12px;letter-spacing:1px;flex:none;opacity:.7;color:var(--tx-dim)}
+  .side-empty{padding:20px 18px;font-size:12px;color:var(--tx-dim);line-height:1.6}
+  .side-foot{padding:12px 16px;border-top:1px solid var(--bd);font-size:11px;color:var(--tx-dim)}
+
+  /* ─── MAIN ─── */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .bar{display:flex;align-items:center;gap:12px;padding:9px 16px;background:var(--bar-bg);border-bottom:1px solid var(--bd-strong);flex:none;flex-wrap:wrap}
+  .hamb{display:none;border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);border-radius:8px;width:36px;height:34px;cursor:pointer;flex:none}
+  .hamb svg{width:16px;height:16px}
+  .bar h1{font-size:14px;font-weight:800;color:var(--tx)}
+  .bar .status{font-size:11px;color:var(--tx-dim)}
+  /* platform toggle */
+  .plat{display:flex;gap:3px;background:var(--item-on);border-radius:9px;padding:3px}
+  .plat button{border:0;background:transparent;color:var(--tx-mut);font:600 12px 'Lato';padding:6px 12px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .12s,color .12s}
+  .plat button svg{width:13px;height:13px}
+  .plat button:hover{color:var(--tx)}
+  .plat button.on{background:var(--surface);color:var(--tx);box-shadow:var(--shadow-sm)}
+  .tabs{display:flex;gap:4px;background:var(--item-on);border-radius:10px;padding:4px}
+  .tabs button{border:0;background:transparent;color:var(--tx-mut);font:600 12px 'Lato';padding:6px 13px;border-radius:7px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .12s,color .12s}
+  .tabs button:hover{color:var(--tx)}
+  .tabs button.on{background:var(--accent);color:var(--accent-tx)}
+  .tabs .star{font-size:9px;color:var(--tx-mut)}
+  .tabs button.on .star{color:var(--accent-tx)}
+  .bar .sp{flex:1}
+  .bar-btn{border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);font:600 12px 'Lato';padding:7px 11px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .bar-btn svg{width:15px;height:15px}
+  .bar-btn:hover{background:var(--item-hover);color:var(--tx)}
+  .bar-btn.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
+  /* main action = primary (1 aja di topbar) */
+  .bar-btn--primary{background:var(--accent);border-color:var(--accent);color:var(--accent-tx);padding:7px 14px;font-weight:700}
+  .bar-btn--primary:hover{background:#33383E;color:var(--accent-tx)}
+  /* tombol icon-only + menu "Aksi lain" (⋯) — topbar dirampingin */
+  .bar-btn.ico-only{width:34px;height:34px;padding:0;justify-content:center;gap:0}
+  .more-wrap{position:relative;display:flex}
+  .more-menu{position:absolute;top:calc(100% + 7px);right:0;min-width:174px;background:var(--surface);
+    border:1px solid var(--bd-strong);border-radius:11px;box-shadow:var(--shadow-md);padding:5px;z-index:80;display:none}
+  .more-menu.open{display:block}
+  .more-item{width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;
+    color:var(--tx);font:600 12.5px 'Lato';padding:9px 11px;border-radius:7px;cursor:pointer;text-align:left}
+  .more-item svg{width:15px;height:15px;color:var(--tx-mut);flex:none}
+  .more-item:hover{background:var(--item-hover)}
+
+  .stage{flex:1;position:relative;background:var(--canvas)}
+  iframe{width:100%;height:100%;border:0;display:block}
+  .stage-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--tx-dim);font-size:14px}
+
+  /* changelog */
+  .log{position:absolute;top:0;right:0;height:100%;width:320px;max-width:88vw;background:var(--surface);border-left:1px solid var(--bd);box-shadow:var(--shadow-md);transform:translateX(340px);transition:transform .2s;overflow:auto;z-index:20}
+  .log.open{transform:none}
+  .log h2{font-size:13px;font-weight:700;padding:16px 18px 4px;color:var(--tx)}
+  .log .sub{font-size:11px;color:var(--tx-dim);padding:0 18px 12px}
+  .log-item{padding:12px 18px;border-top:1px solid var(--bd)}
+  .log-item.cur{background:var(--item-on)}
+  .log-v{font:700 12px 'Lato';color:var(--tx);margin-bottom:2px;display:flex;align-items:center;gap:6px}
+  .log-v .d{font-weight:500;color:var(--tx-dim);font-size:11px}
+  .log-t{font-size:12px;color:var(--tx-mut);margin-bottom:7px}
+  .log ul{margin:0;padding-left:16px}
+  .log li{font-size:12px;line-height:1.5;color:var(--tx-mut);margin-bottom:3px}
+  .log-open-btn{border:0;background:var(--accent);color:var(--accent-tx);font:600 11px 'Lato';padding:5px 10px;border-radius:6px;cursor:pointer;margin-top:6px}
+
+  /* QR popover */
+  .scrim{position:fixed;inset:0;background:rgba(20,22,26,.42);z-index:60;display:none;align-items:center;justify-content:center;padding:20px}
+  .scrim.open{display:flex}
+  .qr{background:var(--surface);color:var(--tx);border-radius:16px;padding:22px;width:320px;max-width:92vw;text-align:center;box-shadow:var(--shadow-md)}
+  .qr h3{font-size:15px;font-weight:800;margin-bottom:4px}
+  .qr p{font-size:12px;color:var(--tx-mut);line-height:1.5;margin-bottom:14px}
+  .qr .qrimg{width:190px;height:190px;margin:0 auto 14px;border-radius:10px;background:var(--app-bg);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .qr .qrimg img{width:100%;height:100%}
+  .qr .url{font:600 11px 'Lato';color:var(--tx-mut);background:var(--app-bg);border-radius:8px;padding:9px 10px;word-break:break-all;margin-bottom:12px;line-height:1.5}
+  .qr .qr-acts{display:flex;gap:8px}
+  .qr .qr-acts button{flex:1;border:0;border-radius:9px;padding:10px;font:700 12px 'Lato';cursor:pointer}
+  .qr-copy{background:var(--accent);color:var(--accent-tx)}
+  .qr-close{background:var(--item-on);color:var(--tx)}
+  .qr .hint{font-size:11px;color:var(--tx-dim);margin-top:10px}
+
+  .drawer-scrim{position:fixed;inset:0;background:rgba(20,22,26,.32);z-index:35;display:none}
+  .drawer-scrim.open{display:block}
+
+  /* ─── SHARE / ROUTING ─── */
+  /* toast konfirmasi + peringatan route ngaco */
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);z-index:90;
+    background:var(--accent);border:1px solid rgba(255,255,255,.10);color:#fff;font:600 12px 'Lato';
+    padding:10px 16px;border-radius:99px;box-shadow:var(--shadow-md);opacity:0;pointer-events:none;
+    transition:opacity .18s,transform .18s;max-width:90vw;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%)}
+  .toast.warn{background:var(--warn-bg);border-color:var(--warn-bd);color:var(--warn-tx)}
+  /* tombol copy link per-versi di changelog */
+  .log-acts{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+  .log-copy-btn{border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);
+    font:600 11px 'Lato';padding:5px 9px;border-radius:6px;cursor:pointer}
+  .log-copy-btn:hover{background:var(--item-hover);color:var(--tx)}
+  /* mode RAW — draft full-layar, chrome hub disembunyiin */
+  body.raw .side,body.raw .bar,body.raw .drawer-scrim,body.raw .log{display:none}
+  .raw-exit{display:none;position:fixed;top:12px;right:12px;z-index:70;border:0;border-radius:99px;
+    background:var(--accent);color:#fff;font:600 12px 'Lato';padding:8px 14px;cursor:pointer;
+    box-shadow:var(--shadow-md)}
+  .raw-exit:hover{filter:brightness(1.4)}
+  body.raw .raw-exit{display:block}
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width:820px){
+    .hamb{display:flex;align-items:center;justify-content:center}
+    .side{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%);box-shadow:var(--shadow-md)}
+    .side.open{transform:none}
+    .bar{gap:10px}
+    .bar .status{display:none}
+    .bar h1{font-size:13px}
+  }
+  @media (max-width:520px){
+    .plat button{padding:6px 9px;font-size:11px}
+    .tabs button{padding:6px 10px}
+    .bar-btn span.lbl{display:none}
+  }
+</style>
+</head>
+<body>
+  <!-- ikon line mono (Neutral Minimal) — ganti emoji chrome -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <g id="i-compass" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></g>
+    <g id="i-search" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-3.8-3.8"/></g>
+    <g id="i-menu" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></g>
+    <g id="i-monitor" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></g>
+    <g id="i-phone" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></g>
+    <g id="i-link" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 14.5l5-5"/><path d="M8 12l-2 2a3 3 0 004 4l2-2"/><path d="M16 12l2-2a3 3 0 00-4-4l-2 2"/></g>
+    <g id="i-expand" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></g>
+    <g id="i-list" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></g>
+    <g id="i-more" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></g>
+  </defs></svg>
+  <div class="drawer-scrim" id="drawer-scrim"></div>
+
+  <!-- ─── SIDEBAR ─── -->
+  <aside class="side" id="side">
+    <div class="side-h">
+      <div class="logo"><svg viewBox="0 0 24 24"><use href="#i-compass"/></svg> Component Explorer</div>
+      <div class="tag">Paper.id · eksplorasi komponen</div>
+    </div>
+    <div class="side-search"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg><input id="side-search" placeholder="Cari komponen..."></div>
+    <div class="side-lbl">Komponen</div>
+    <div class="side-list" id="side-list"></div>
+    <div class="side-foot" id="side-foot"></div>
+  </aside>
+
+  <!-- ─── MAIN ─── -->
+  <main class="main">
+    <div class="bar">
+      <button class="hamb" id="hamb"><svg viewBox="0 0 24 24"><use href="#i-menu"/></svg></button>
+      <h1 id="cmp-title">—</h1>
+      <span class="status" id="cmp-status"></span>
+      <div class="plat" id="plat"></div>
+      <div class="tabs" id="tabs"></div>
+      <span class="sp"></span>
+      <button class="bar-btn ico-only" id="log-btn" title="Changelog"><svg viewBox="0 0 24 24"><use href="#i-list"/></svg></button>
+      <button class="bar-btn bar-btn--primary" id="link-btn" title="Salin link share ke versi ini"><svg viewBox="0 0 24 24"><use href="#i-link"/></svg> Salin Link</button>
+      <div class="more-wrap">
+        <button class="bar-btn ico-only" id="more-btn" title="Aksi lain"><svg viewBox="0 0 24 24"><use href="#i-more"/></svg></button>
+        <div class="more-menu" id="more-menu">
+          <button class="more-item" id="raw-btn" title="Buka draft full-layar tanpa chrome hub"><svg viewBox="0 0 24 24"><use href="#i-expand"/></svg> Full-layar</button>
+          <button class="more-item" id="qr-btn"><svg viewBox="0 0 24 24"><use href="#i-phone"/></svg> Buka di HP</button>
+        </div>
+      </div>
+    </div>
+    <div class="stage">
+      <iframe id="frame" title="draft"></iframe>
+      <div class="stage-empty" id="stage-empty" style="display:none">Pilih komponen di sidebar</div>
+      <div class="log" id="log"></div>
+    </div>
+  </main>
+
+  <button class="raw-exit" id="raw-exit">✕ Keluar full-layar</button>
+  <div class="toast" id="toast"></div>
+
+  <!-- QR modal -->
+  <div class="scrim" id="qr-scrim">
+    <div class="qr">
+      <h3 style="display:flex;align-items:center;justify-content:center;gap:7px"><svg viewBox="0 0 24 24" style="width:17px;height:17px"><use href="#i-phone"/></svg>Buka di HP</h3>
+      <p>Scan QR ini pakai kamera HP, atau ketik URL-nya. Draft mobile bakal tampil <b>full-layar</b> pake keyboard &amp; sentuhan asli.</p>
+      <div class="qrimg" id="qr-img">…</div>
+      <div class="url" id="qr-url"></div>
+      <div class="qr-acts">
+        <button class="qr-copy" id="qr-copy">Copy URL</button>
+        <button class="qr-close" id="qr-close">Tutup</button>
+      </div>
+      <div class="hint" id="qr-hint"></div>
+    </div>
+  </div>
+
+<script>
+  /* ══════════════════════════════════════════════════════════════════
+     REGISTRY — Komponen → Platform → Versi.
+     `file` relatif ke hub ini. Platform key: 'web' | 'mobile'.
+     ══════════════════════════════════════════════════════════════════ */
+  var COMPONENTS = [
+    {
+      slug:'coachmark', name:'Coachmark',
+      platforms:[
+        { key:'web', label:'🖥 Web', phase:'Explore · revisi nav+close',
+          versions:[
+            { v:6, file:'coachmark/explore-close-c.html', date:'2026-07-15', title:'Close B vs C (toned) — banding 2 alternatif',
+              changes:['Banding **Alt B** (circle di kartu) vs **Alt C** (X di scrim) dalam 1 versi — toggle Gaya close',
+                'Dua-duanya DIKALEMIN: B = circle abu tipis + ikon muted · C = X putih polos di scrim (buang circle+shadow yang bikin keliatan tombol)',
+                'Kontrol **Emphasis** 3 level (Kalem 45% · Sedang 65% default · Jelas 85%) — berlaku buat DUA gaya',
+                'Prinsip: close tur = exit sekunder, harus ketemu kalau dicari tapi nggak nyaingin Next',
+                'Nav toggle + step tetep bisa dimainin. Audit lolos · DOM test 12 cek lolos',
+                '⚠️ Cek aksesibilitas: Kalem (45%) jangan sampai susah dilihat. Pilih gaya + level yang pas'] },
+            { v:5, file:'coachmark/explore-nav-close.html', date:'2026-07-15', title:'Adjust · dots di footer + nav jadi 2 toggle + close B kalem',
+              changes:['1. DOTS SEJAJAR TOMBOL — pindah ke dalam footer (sesama navigasi), bukan row terpisah di atas',
+                '2. CLOSE = **Alt B** (circle X pojok) jadi default + DIKALEMIN: ikon muted #a5b6c1, circle #f3f6f9 tipis, ikon 16px. Selector tetep ada buat banding',
+                '3. NAVIGASI = **2 toggle varian** (Dots / Counter) — bukan auto by jumlah step. Biar Figma cukup 2 varian, nggak meledak. Panduan ≤5/≥6 jadi guideline, bukan behaviour',
+                'Audit lolos exit 0 · DOM test: 23 cek lolos',
+                '⚠️ EXPLORE — nunggu user oke, baru playground property final + Figma'] },
+            { v:4, file:'coachmark/explore-nav-close.html', date:'2026-07-15', title:'Explore · nav 2 jenis + gaya close (rename → Coachmark)',
+              changes:['RENAME: Spotlight → **Coachmark** (keputusan user). Web dulu; Figma nyusul abis pilihan final',
+                'NAV 2 JENIS auto-switch by jumlah step:',
+                '  • ≤5 step → **dots + Next** (dots jumpable, nggak butuh Back)',
+                '  • ≥6 step → **counter "1/7" + Back + Next** (dots nggak kebaca di atas 5)',
+                'SKIP diganti → 5 gaya CLOSE buat dipilih: A ikon X pojok · B X circle button · C X di scrim · D X footer-kiri · E tombol "Skip tour"',
+                'Konten pakai konteks Paper.id (Invoice Pembelian, supplier). Nilai 100% DS, audit lolos exit 0',
+                'Diverifikasi DOM (jsdom): 24 cek nav+close lolos',
+                '⚠️ EXPLORE — belum final. Nunggu user pilih gaya close + oke 2 nav, baru dirapihin jadi playground property + Figma'] },
+            { v:3, file:'coachmark/playground-alt-a.html', date:'2026-07-13', title:'Nama final "Spotlight" + hover dots + edge case visual + fix',
+              changes:['NAMA FINAL: **Spotlight** (keputusan user). Kandidat lain: Tour (Ant Design) / Walkthrough / Coachmark. Semua komponen + page direname',
+                'Spotlight `8621:253341` · Spotlight Content `8619:915` · Spotlight Dots `8618:277683` · _Spotlight/Dot `8618:646` · _Spotlight/Arrow `8628:1191` · Spotlight Scrim `8622:1053`',
+                'LABEL TOMBOL = INGGRIS (keputusan user): Skip · Previous · Next · Done. Komponen library dibikin generik',
+                'EDGE CASE VISUAL di guideline Figma (6 kasus, pakai komponen beneran + konten Paper): judul panjang · deskripsi panjang · tanpa gambar · tur 5 step · minimal · target mepet tepi',
+                'HOVER DOTS: _Spotlight/Dot sekarang Active × State (4 varian). Dot mati di-hover → #89bde5 (action/primary/hover) · dot aktif di-hover → #3385b5 (pressed)',
+                'FIX: arrow lama (kotak diputar 45°) rusak — pivot rotasi Figma dari sudut, bukan tengah. Diganti VECTOR segitiga 4 arah, nol rotasi',
+                'FIX: border + bg nyasar di 11 dari 12 varian — swapComponent bawa serta override placeholder Pop Over. Di-strip',
+                'FIX: tombol Kembali/Lanjut nggak mentok kanan — Spacer layoutGrow 0 → 1',
+                'Referensi web (dicek 2026-07-13): Ant Design Tour (anatomi 1:1, dots di footer) · Atlassian Spotlight (dismiss tiap step, maks 3-4 step)',
+                'Audit binding tree-walk LOLOS: unbound=[] · wrongCollection=[]'] },
+            { v:2, file:'coachmark/playground-alt-a.html', date:'2026-07-13', title:'Fase 4-5 · Guideline + Figma (LIVE)',
+              changes:['✅ Komponen LIVE di Figma Paperverse',
+                'Kartu = INSTANCE component/Pop Over, Content Frame di-SWAP (cara pakai yang diniatkan DS)',
+                'Tombol = INSTANCE Button (Tertiary/Secondary/Primary), Head dimatiin via property bawaan',
+                'Scrim = cutout beneran via boolean subtract + ring putih',
+                '⚠️ Beda dari playground: Steps pindah ke komponen Dots (kalau digabung = 48 varian, nggak kekelola) · Image jadi BOOLEAN bukan SLOT',
+                'Guideline 9-section: _output/explorer/coachmark/guideline-alt-a.md'] },
+            { v:1, file:'coachmark/playground-alt-a.html', date:'2026-07-13', title:'Playground · Alt A (property model)',
+              changes:['Komponen BARU — coachmark / feature walkthrough. Masuk dari SPEC (skip Fase 1-2 riset, brief udah lengkap)',
+                'Kartu = component/Pop Over Paperverse (live-pull node 5400:4798) — 281px, radius 4, shadow table/option',
+                'Tombol Lanjut/Selesai/Kembali/Lewati = Button Paperverse (pill 30px, radius full)',
+                'VARIANT: Jumlah step (2–5) · Step aktif · Arah kartu (auto/atas/bawah/kiri/kanan)',
+                'BOOLEAN: Gambar · Deskripsi · Dots · Lewati · Kembali · Arrow · Scrim · Ring',
+                'SLOT: Judul · Deskripsi · Gambar (16:9)',
+                'Keputusan user: Kembali di KANAN sebelah Lanjut · klik scrim = no-op · Esc = Skip · target ilang = skip step · mobile ditunda',
+                '⚠️ DRIFT: lebar default = 320px (keputusan user), Pop Over Paperverse aslinya 281px → wajib dicatat di paperverse-vs-aurora.md pas Fase 5',
+                'Jumlah dot NGIKUT property "Jumlah step" (1 kontrol, 2 efek) — di Figma jadi VARIANT 2-5, pola sama kayak Number of Chips',
+                '⚠️ 4 elemen BARU (belum ada di DS, disetujui user buat dibikin): Scrim (#133f5d @70%) · Ring (2px putih) · Dots (8px) · Arrow (12px)',
+                'Lolos component-audit.mjs exit 0'] },
+          ] },
+      ]
+    },
+    {
+      slug:'segmented-button', name:'Segmented Button',
+      platforms:[
+        { key:'web', label:'🖥 Web', phase:'Fase 1 · draft',
+          versions:[
+            { v:1, file:'segmented-button/draft-1.html', date:'2026-07-10', title:'First draft (2 pola, NON-DS)',
+              changes:['Komponen BARU — segmented button (pilih 1 dari N segment, mutually exclusive, langsung efek)','Pola A — Pill / Sliding thumb: track abu, segment terpilih = pill putih yang meluncur · ala iOS / Ant / Mantine','Pola B — Outlined connected: tombol nyambung 1 border, terpilih = tint + ✓ checkmark · ala Material 3 / Carbon','Behaviour: single-select, multi-select (Pola B), + ikon, block/full-width, small size, segment disabled','⚠️ NON-DS — warna/font generik, nunggu Fase 3 live-pull'] },
+          ] },
+      ]
+    },
+    {
+      slug:'multi-select', name:'Multi-Select (Chips)',
+      platforms:[
+        { key:'web', label:'🖥 Web', phase:'Fase 1 · draft',
+          versions:[
+            { v:4, file:'multi-select/playground-alt-a.html', date:'2026-07-08', title:'Playground · Alt A (property model)',
+              changes:['Panel properties ala Figma buat Alt A (Tokenized default)','VARIANT: Number of Chips (0–5) + State (Default/Hover/Focus/Disabled/Error)','BOOLEAN: Show Label · Helper · Clear-all · Chevron','SLOT: Label/Placeholder/Helper (teks bebas) · SWAP: Chip = Chips Carousel, × = delete','State Default = interaktif penuh (ketik/pilih/hapus/backspace) · hover state aktif','Lolos component-audit.mjs exit 0'] },
+            { v:3, file:'multi-select/alternatives.html', date:'2026-07-08', title:'Fase 3 · 5 alternatif (token DS live-pull)',
+              changes:['Varian BARU Autocomplete (multi-select) — live-pull Paperverse: Autocomplete (node 2582:6502) + Chips Carousel (node 6146:13674)','5 treatment: A Tokenized default · B Overflow +N · C Ghost chips · D Rich (leading dot) · E Summary collapse','Chip = Chips Carousel (pill putih border #dde1e5) + icon delete · checkbox dropdown aktif #4199d5 · error #e35273','Tiap alt: toggle State (Default/Disabled/Error) + interaktif (ketik/pilih/hapus)','Nilai 100% DS, lolos component-audit.mjs exit 0','Tiap alt ada ⭐ Pilih · 🎛️ Playground · 📄 Guideline · 🎨 Figma'] },
+            { v:2, file:'multi-select/draft-2.html', date:'2026-07-08', title:'Revisi 2 feedback (dropdown persist + icon center)',
+              changes:['Dropdown TETAP KEBUKA pas pilih opsi → bisa pilih beruntun (A & B) — fix bug detach yang bikin nutup','Icon action (✕/⌄) nempel kanan & RATA TENGAH vertikal, nggak ikut turun pas chips wrap/overflow','Sisanya sama kayak draft-1'] },
+            { v:1, file:'multi-select/draft-1.html', date:'2026-07-08', title:'First draft (2 pola, NON-DS)',
+              changes:['Komponen BARU — autocomplete multi-select, opsi terpilih jadi CHIP yang bisa di-delete DI DALAM field','Pola A — Tokenized (chips wrap, field melar) · ala MUI/react-select','Pola B — Tokenized + overflow +N (chips dibatasi, sisanya jadi +N) · ala Ant Design','Behaviour: ketik→filter+highlight · klik opsi→chip (checkmark di dropdown) · ✕ chip / Backspace→hapus · clear-all · No results','Keyboard: ↑↓ navigasi · Enter toggle · Esc tutup','⚠️ NON-DS — warna/font generik, nunggu Fase 3 live-pull'] },
+          ] },
+      ]
+    },
+    {
+      slug:'combobox', name:'Combobox',
+      platforms:[
+        { key:'web', label:'🖥 Web', phase:'Fase 1 · draft',
+          versions:[
+            { v:1, file:'combobox/draft-1.html', date:'2026-07-03', title:'First draft (2 pola behaviour)',
+              changes:['Pola A — Input-first (MUI Autocomplete + Headless UI): ketik nyaring real-time + highlight','Pola B — Select-trigger (shadcn/ui): kelihatan kayak select, klik buka popover + search','Keyboard: ↑↓ navigasi · Enter pilih · Esc tutup · empty state','⚠️ NON-DS — warna/font generik'] },
+          ] },
+        { key:'mobile', label:'📱 Mobile', phase:'Fase 1 · draft',
+          versions:[
+            { v:3, file:'combobox/draft-3.html', date:'2026-07-05', title:'Mobile + KEYBOARD + switcher pola',
+              changes:['Keyboard on-screen naik pas tap field (di desktop = simulasi)','A Full-screen · B Bottom sheet · C Inline popover','📱 Di HP → full-layar + keyboard asli','🔀 Di HP → switcher A/B/C, 1 pola satu waktu (gampang dicoba satu-satu)','🖥 Di desktop → 3-up buat compare'] },
+            { v:2, file:'combobox/draft-2.html', date:'2026-07-05', title:'Eksplor 2 pola di MOBILE',
+              changes:['Pola A → Full-screen search · Pola B → Bottom sheet','📱 Di HP → full-layar + switcher A/B','🖥 Di desktop → 2-up buat compare'] },
+          ] },
+      ]
+    },
+    {
+      slug:'push-notification', name:'Push Notification',
+      platforms:[
+        { key:'web', label:'🖥 Web', phase:'Fase 1-3 · draft',
+          versions:[
+            { v:5, file:'push-notification/alternatives.html', date:'2026-07-01', title:'Fase 3 · 5 alternatif (token DS)',
+              changes:['5 arah: Standard · Compact · Thumbnail · Action inline · Info-only','Semua warna/font/shadow dari DS (Aurora/Paperverse)','Tiap alt ada action ⭐ Pilih · 📄 Guideline · 🎨 Figma'] },
+            { v:4, file:'push-notification/draft-4.html', date:'2026-07-01', title:'Timer auto-dismiss per severity',
+              changes:['Auto-dismiss: info/success 5 dtk, warning/danger 8 dtk','Pause on hover','Label durasi di anatomy'] },
+            { v:3, file:'push-notification/draft-3.html', date:'2026-07-01', title:'Layout timestamp + toggle severity',
+              changes:['"baru saja" sejajar button','Close ✕ ke pojok kanan-atas','Segmented toggle ganti severity'] },
+            { v:2, file:'push-notification/draft-2.html', date:'2026-07-01', title:'Sederhanakan kartu',
+              changes:['Buang app label','Max 1 action','Icon leading kiri','Severity cuma di icon'] },
+            { v:1, file:'push-notification/draft-1.html', date:'2026-07-01', title:'First draft (Ant + Sonner + Mantine)',
+              changes:['Kartu kaya ala Ant','Stack + motion ala Sonner','Async loading→success ala Mantine'] },
+          ] },
+      ]
+    },
+    {
+      slug:'banner', name:'Banner',
+      platforms:[
+        { key:'web', label:'🖥 Web', phase:'Fase 1 · draft',
+          versions:[
+            { v:1, file:'banner/draft-1.html', date:'2026-07-08', title:'First draft (2 pola, NON-DS)',
+              changes:['Versi BARU — riset fresh, BUKAN dari Banner Paperverse existing','Pola A — Inline compact: 1 baris (icon + pesan + link + ✕)','Pola B — Prominent block: icon + judul + body + tombol aksi + ✕','Tone: info · success · warning · critical','Behaviour: dismiss interaktif (+ Reset), critical non-dismissible','⚠️ NON-DS — warna/font generik, nunggu Fase 3 live-pull'] },
+          ] },
+      ]
+    },
+    {
+      slug:'radio-button', name:'Radio Button',
+      platforms:[
+        { key:'web', label:'🖥 Web', phase:'Fase 5 · Figma + refine',
+          versions:[
+            { v:4, file:'radio-button/draft-3.html', date:'2026-07-07', title:'Playground property (5 feedback)',
+              changes:['Panel properties ala Figma: jumlah kartu (2–5) + toggle section','Toggle show/hide: monogram · badge · deskripsi · harga','Usulan SLOT (leading, trailing/harga) + SWAP (badge → Chip Status)','Hover state aktif (arahkan kursor)','Badge = padanan Chip Status existing (bukan bikin baru)','Lolos component-audit.mjs exit 0'] },
+            { v:3, file:'radio-button/alternatives.html', date:'2026-07-06', title:'Fase 3 · 5 alternatif (token DS)',
+              changes:['5 treatment state selected: A Outline · B Soft-fill · C Left-accent · D Strong-outline · E Compact','Warna semantic: dot/ring aktif #4199d5 · block selected bg #f2f7fc','Icon emoji → monogram huruf (DS-safe)','Tiap alt: toggle State (Default/Disabled/Error) + klik pilih','Lolos component-audit.mjs exit 0','Tiap alt ada ⭐ Pilih · 📄 Guideline · 🎨 Figma'] },
+            { v:2, file:'radio-button/draft-2.html', date:'2026-07-06', title:'Penempatan kontrol selection blocks',
+              changes:['Kartu KAYA (icon+deskripsi+harga) → radio KANAN (trailing)','Kartu PADAT (teks minim) → radio KIRI (leading)','Radio biasa tetap kiri (konvensi)','Dasar: Helios "left when content minimal" + NN/g label-kanan'] },
+            { v:1, file:'radio-button/draft-1.html', date:'2026-07-06', title:'First draft (2 variant, NON-DS)',
+              changes:['Variant 1 — Radio biasa: dot + label, list vertikal (metode pembayaran)','Variant 2 — Selection blocks: kartu icon + judul + deskripsi + nilai (pilih paket) + susunan padat tanpa icon','Behaviour: klik pilih (mutually exclusive per grup), hover, selected, disabled, error','⚠️ NON-DS — warna/font generik, nunggu Fase 3 live-pull'] },
+          ] },
+      ]
+    },
+    // ← komponen berikutnya tambah di sini
+  ];
+
+  var frame=document.getElementById('frame'), tabs=document.getElementById('tabs'), plat=document.getElementById('plat'),
+      log=document.getElementById('log'), sideList=document.getElementById('side-list'), stageEmpty=document.getElementById('stage-empty'),
+      side=document.getElementById('side'), drawerScrim=document.getElementById('drawer-scrim');
+  var curSlug=null, curPlatKey=null, curV=null;
+
+  function comp(slug){ return COMPONENTS.find(function(c){return c.slug===slug;}); }
+  function curComp(){ return comp(curSlug); }
+  function curPlat(){ var c=curComp(); return c&&c.platforms.find(function(p){return p.key===curPlatKey;}); }
+  function totalVersions(c){ return c.platforms.reduce(function(a,p){return a+p.versions.length;},0); }
+  function platIcons(c){ return c.platforms.map(function(p){return p.label.split(' ')[0];}).join(' '); }
+  // tanggal versi paling awal = kapan komponen pertama dibuat
+  function createdOf(c){ var ds=[]; c.platforms.forEach(function(p){p.versions.forEach(function(v){if(v.date)ds.push(v.date);});}); return ds.length?ds.sort()[0]:''; }
+  // urut komponen: yang TERBARU dibuat di atas
+  function sortedComponents(){ return COMPONENTS.slice().sort(function(a,b){return createdOf(b).localeCompare(createdOf(a));}); }
+
+  function renderSidebar(filter){
+    filter=(filter||'').toLowerCase();
+    var shown=sortedComponents().filter(function(c){return c.name.toLowerCase().indexOf(filter)>=0;});
+    document.getElementById('side-foot').textContent=COMPONENTS.length+' komponen · '+
+      COMPONENTS.reduce(function(a,c){return a+totalVersions(c);},0)+' iterasi';
+    if(!shown.length){ sideList.innerHTML='<div class="side-empty">Nggak ada komponen cocok.</div>'; return; }
+    sideList.innerHTML='';
+    shown.forEach(function(c){
+      var el=document.createElement('div'); el.className='cmp-item'+(c.slug===curSlug?' on':'');
+      el.innerHTML='<span class="cmp-dot"></span><span class="cmp-nm">'+c.name+'</span><span class="cmp-plat">'+platIcons(c)+'</span>';
+      el.onclick=function(){ selectComponent(c.slug); closeDrawer(); };
+      sideList.appendChild(el);
+    });
+  }
+
+  /* selectComponent/selectPlatform nerima target platform+versi (dipakai router).
+     Kalau nggak dikasih → jatuh ke platform pertama + versi terbaru (perilaku lama). */
+  function selectComponent(slug, platKey, v){
+    curSlug=slug; var c=comp(slug);
+    document.getElementById('cmp-title').textContent=c.name;
+    // platform toggle
+    plat.innerHTML='';
+    if(c.platforms.length>1){
+      c.platforms.forEach(function(p){
+        var b=document.createElement('button');
+        var pic=p.key==='mobile'?'#i-phone':'#i-monitor';
+        b.innerHTML='<svg viewBox="0 0 24 24"><use href="'+pic+'"/></svg>'+p.label.replace(/[🖥📱💻🌐📲🖥️]/g,'').trim();
+        b.onclick=function(){ selectPlatform(p.key); };
+        b.dataset.k=p.key; plat.appendChild(b);
+      });
+      plat.style.display='flex';
+    } else { plat.style.display='none'; }
+    var target=c.platforms.find(function(p){return p.key===platKey;}) || c.platforms[0];
+    selectPlatform(target.key, v);
+    renderSidebar(document.getElementById('side-search').value);
+  }
+
+  function selectPlatform(key, v){
+    curPlatKey=key; var c=curComp(), p=curPlat();
+    document.getElementById('cmp-status').textContent=p.phase||'';
+    plat.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.dataset.k===key);});
+    // version tabs
+    tabs.innerHTML='';
+    p.versions.slice().sort(function(a,b){return a.v-b.v;}).forEach(function(ver){
+      var isLatest=ver.v===p.versions[0].v;
+      var b=document.createElement('button'); b.dataset.v=ver.v;
+      b.innerHTML='v'+ver.v+(isLatest?' <span class="star">✦</span>':'');
+      b.onclick=function(){ showVersion(ver.v); };
+      tabs.appendChild(b);
+    });
+    var exists=(v!=null)&&p.versions.some(function(x){return x.v===v;});
+    showVersion(exists?v:p.versions[0].v);
+  }
+
+  function showVersion(v){
+    curV=v; var p=curPlat(), ver=p.versions.find(function(x){return x.v===v;});
+    stageEmpty.style.display='none'; frame.style.display='block'; frame.src=ver.file;
+    tabs.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',+b.dataset.v===v);});
+    renderLog();
+    syncHash();   // URL selalu cerminan yang lagi dilihat
+  }
+
+  function renderLog(){
+    var c=curComp(), p=curPlat(); if(!c||!p){log.innerHTML='';return;}
+    log.innerHTML='<h2>Changelog · '+c.name+' '+p.label.replace(/[🖥📱💻🌐📲🖥️]/g,'').trim()+'</h2><div class="sub">History iterasi platform ini</div>'+
+      p.versions.map(function(ver){
+        return '<div class="log-item'+(ver.v===curV?' cur':'')+'">'+
+          '<div class="log-v">v'+ver.v+(ver.v===p.versions[0].v?' ✦':'')+' <span class="d">· '+ver.date+'</span></div>'+
+          '<div class="log-t">'+ver.title+'</div>'+
+          '<ul>'+ver.changes.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>'+
+          '<div class="log-acts">'+
+            (ver.v===curV?'':'<button class="log-open-btn" data-v="'+ver.v+'">Lihat v'+ver.v+'</button>')+
+            '<button class="log-copy-btn" data-copy="'+ver.v+'"><svg viewBox="0 0 24 24" style="width:13px;height:13px;vertical-align:-2px"><use href="#i-link"/></svg> Salin link v'+ver.v+'</button>'+
+          '</div>'+
+        '</div>';
+      }).join('');
+    log.querySelectorAll('.log-open-btn').forEach(function(b){b.onclick=function(){showVersion(+b.dataset.v);};});
+    // tiap versi punya link share sendiri — nunjuk ke halaman share, bukan hub ini
+    log.querySelectorAll('.log-copy-btn').forEach(function(b){b.onclick=function(){
+      var url=shareUrl(curSlug,curPlatKey,+b.dataset.copy);
+      if(!url){ toast('Halaman share belum dibuat — jalanin: node paper-designer/tools/make-share-page.mjs '+curSlug, true); return; }
+      copy(url, '🔗 Link share v'+b.dataset.copy+' ke-copy');
+    };});
+  }
+
+  /* ─── drawer (mobile) ─── */
+  function openDrawer(){ side.classList.add('open'); drawerScrim.classList.add('open'); }
+  function closeDrawer(){ side.classList.remove('open'); drawerScrim.classList.remove('open'); }
+  document.getElementById('hamb').onclick=openDrawer;
+  drawerScrim.onclick=closeDrawer;
+
+  /* ── menu "Aksi lain" (⋯) — rampingin topbar ── */
+  var moreBtn=document.getElementById('more-btn'), moreMenu=document.getElementById('more-menu');
+  moreBtn.onclick=function(e){ e.stopPropagation(); moreMenu.classList.toggle('open'); };
+  document.addEventListener('click',function(e){ if(!moreBtn.contains(e.target) && !moreMenu.contains(e.target)) moreMenu.classList.remove('open'); });
+  moreMenu.querySelectorAll('.more-item').forEach(function(b){ b.addEventListener('click',function(){ moreMenu.classList.remove('open'); }); });
+
+  /* ─── QR / Buka di HP ─── */
+  function draftAbsUrl(){
+    var p=curPlat(); if(!p) return location.href;
+    var ver=p.versions.find(function(x){return x.v===curV;});
+    return new URL(ver.file, location.href).href;
+  }
+  var qrScrim=document.getElementById('qr-scrim');
+  document.getElementById('qr-btn').onclick=function(){
+    var url=draftAbsUrl();
+    document.getElementById('qr-url').textContent=url;
+    var isLocal=/^(file:|https?:\/\/(localhost|127\.|192\.168\.|10\.))/.test(url);
+    document.getElementById('qr-hint').textContent=isLocal
+      ? '⚠️ URL ini lokal — HP harus di jaringan yang sama, atau deploy dulu ke GitHub Pages.'
+      : 'Tip: draft mobile (v Mobile) yang paling asik dites di HP.';
+    var img=document.getElementById('qr-img');
+    img.innerHTML='…';
+    var qsrc='https://api.qrserver.com/v1/create-qr-code/?size=190x190&margin=0&data='+encodeURIComponent(url);
+    var im=new Image(); im.onload=function(){img.innerHTML='';img.appendChild(im);};
+    im.onerror=function(){img.innerHTML='<span style="font-size:11px;color:var(--tx-dim);padding:10px">QR butuh internet.<br>Pakai URL di bawah.</span>';};
+    im.src=qsrc;
+    qrScrim.classList.add('open');
+  };
+  document.getElementById('qr-close').onclick=function(){qrScrim.classList.remove('open');};
+  qrScrim.onclick=function(e){if(e.target===qrScrim)qrScrim.classList.remove('open');};
+  document.getElementById('qr-copy').onclick=function(){
+    var url=document.getElementById('qr-url').textContent, btn=this;
+    function done(){btn.textContent='✓ Ke-copy';setTimeout(function(){btn.textContent='Copy URL';},1500);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done,done);}
+    else{var ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}ta.remove();done();}
+  };
+
+  document.getElementById('log-btn').onclick=function(){log.classList.toggle('open');this.classList.toggle('on');};
+  document.getElementById('side-search').oninput=function(){ renderSidebar(this.value); };
+
+  /* ══════════════════════════════════════════════════════════════════
+     ROUTING — state ada di URL, jadi tiap komponen & versi punya link sendiri.
+
+       #/spotlight                 → komponen (platform pertama, versi terbaru)
+       #/spotlight/web/v3          → komponen + platform + versi PERSIS
+       #/spotlight/web/v3/raw      → draft full-layar (tanpa chrome hub)
+
+     Slug/versi ngaco → fallback ke yang terdekat + kasih tau lewat toast,
+     JANGAN diem-diem nampilin yang salah.
+     ══════════════════════════════════════════════════════════════════ */
+  var rawMode=false, muteHash=false;
+
+  function toast(msg,warn){
+    var t=document.getElementById('toast');
+    t.textContent=msg; t.classList.toggle('warn',!!warn); t.classList.add('show');
+    clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('show');},2600);
+  }
+  function copy(txt,ok){
+    function done(){toast(ok);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb);}
+    else fb();
+    function fb(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');}catch(e){}ta.remove();done();}
+  }
+  function routeOf(slug,platKey,v,raw){
+    return '#/'+slug+'/'+platKey+'/v'+v+(raw?'/raw':'');
+  }
+  function absUrl(hash){
+    return location.origin==='null'
+      ? location.pathname+hash                 // file:// — origin nggak kepake
+      : location.origin+location.pathname+hash;
+  }
+  function syncHash(){
+    if(!curSlug) return;
+    var h=routeOf(curSlug,curPlatKey,curV,rawMode);
+    if(location.hash===h) return;
+    muteHash=true;                             // cegah hashchange mantul balik ke router
+    location.hash=h;
+    setTimeout(function(){muteHash=false;},0);
+  }
+  function setRaw(on){
+    rawMode=on;
+    document.body.classList.toggle('raw',on);
+    syncHash();
+  }
+
+  function applyRoute(){
+    var parts=location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);
+    if(!parts.length) return false;
+
+    var slug=parts[0], c=comp(slug);
+    if(!c){ toast('Komponen "'+slug+'" nggak ada — dibuka yang terbaru.',true); return false; }
+
+    var platKey=parts[1]||null;
+    if(platKey && !c.platforms.some(function(p){return p.key===platKey;})){
+      toast('Platform "'+platKey+'" nggak ada di '+c.name+' — dibuka platform default.',true);
+      platKey=null;
+    }
+    var p=c.platforms.find(function(x){return x.key===platKey;})||c.platforms[0];
+
+    var v=null, vRaw=(parts[2]||'').replace(/^v/,'');
+    if(vRaw){
+      v=parseInt(vRaw,10);
+      if(isNaN(v)||!p.versions.some(function(x){return x.v===v;})){
+        toast('v'+vRaw+' nggak ada di '+c.name+' — dibuka v'+p.versions[0].v+'.',true);
+        v=null;
+      }
+    }
+    rawMode = parts.indexOf('raw')>=0;
+    document.body.classList.toggle('raw',rawMode);
+
+    selectComponent(slug, p.key, v);
+    return true;
+  }
+
+  // back/forward browser + orang paste link baru di address bar
+  window.addEventListener('hashchange',function(){
+    if(muteHash) return;
+    if(!applyRoute() && COMPONENTS.length) selectComponent(sortedComponents()[0].slug);
+  });
+
+  /* ── LINK SHARE ──────────────────────────────────────────────────────
+     Link share NGGAK nunjuk ke hub ini. Dia nunjuk ke halaman share terpisah
+     (share/<slug>-<token>.html) yang cuma berisi data 1 komponen.
+
+     Kenapa: hub ini nyimpen SEMUA komponen di array COMPONENTS. Kalau link share
+     nunjuk ke sini, penerima tinggal hapus hash / View Source → kelihatan semua.
+     Halaman share nggak punya data komponen lain sama sekali → nggak ada yang
+     bisa digali. Bikin/refresh: node paper-designer/tools/make-share-page.mjs --all
+     ─────────────────────────────────────────────────────────────────── */
+  var SHARE_TOKEN={"coachmark":"8267b1","segmented-button":"8fa2c0","multi-select":"e464b7","combobox":"f6d310","push-notification":"fb0763","banner":"643ded","radio-button":"8c4287"};  // slug → token (disuntik generator; kosong = share page belum dibuat)
+  function shareUrl(slug,platKey,v){
+    var tok=SHARE_TOKEN[slug]; if(!tok) return null;
+    var c=comp(slug);
+    var hash='#'+(c.platforms.length>1?platKey+'/':'')+'v'+v;
+    var base=location.pathname.replace(/[^/]*$/,'');
+    return (location.origin==='null'?'':location.origin)+base+'share/'+slug+'-'+tok+'.html'+hash;
+  }
+  document.getElementById('link-btn').onclick=function(){
+    var url=shareUrl(curSlug,curPlatKey,curV);
+    if(!url){
+      toast('Halaman share buat "'+curSlug+'" belum dibuat — jalanin: node paper-designer/tools/make-share-page.mjs '+curSlug, true);
+      return;
+    }
+    copy(url, '🔗 Link share '+curComp().name+' v'+curV+' ke-copy (cuma komponen ini)');
+  };
+  document.getElementById('raw-btn').onclick=function(){ setRaw(true); };
+  document.getElementById('raw-exit').onclick=function(){ setRaw(false); };
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&rawMode) setRaw(false); });
+
+  // init — hormatin hash kalau ada, kalau nggak ambil komponen terbaru
+  renderSidebar('');
+  if(!COMPONENTS.length){ stageEmpty.style.display='flex'; frame.style.display='none'; }
+  else if(!applyRoute()){ selectComponent(sortedComponents()[0].slug); }
+</script>
+</body>
+</html>
