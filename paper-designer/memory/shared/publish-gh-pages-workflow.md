@@ -13,8 +13,10 @@ Kalau `status:"built"` dan `source.branch:"gh-pages"` → **Pages udah nyala, ja
 ## Repo & akses
 
 - Repo: `adamaria88/ui-generations` (**PUBLIC**).
-- **Push WAJIB pakai akun GitHub `adamaria88`** — akun lain (mis. default `damnn88`) gak punya akses, push gagal 403. Cek akun aktif: `gh api user -q .login`. Ganti kalau salah: `gh auth switch --user adamaria88`.
-- Kalau di laptop lain login pakai akun ketiga yang belum collaborator sama sekali → **push apapun bakal gagal duluan sebelum sempat mikirin Pages**. Cek dulu: `gh api repos/adamaria88/ui-generations/collaborators`.
+- **Push WAJIB pakai akun GitHub yang terdaftar sebagai collaborator repo ini** (owner `adamaria88` atau collaborator lain yang udah ditambahin — cek: `gh api repos/adamaria88/ui-generations/collaborators`). Akun random/belum ditambahin = push gagal 403.
+- Cek akun `gh` aktif di laptop ini: `gh api user -q .login`. Kalau salah akun (login default beda dari yang seharusnya), ganti: `gh auth switch --user <akun-yang-benar>`.
+- **Khusus laptop admin (adamaria88)** — laptop ini kadang punya >1 akun GitHub ke-login (`gh auth status` bisa nunjukin lebih dari satu), default aktifnya bisa nyasar ke akun lain yang gak punya akses. Selalu double-check akun aktif = `adamaria88` sebelum push dari laptop ini.
+- **Designer lain (bukan laptop admin)** — pakai akun GitHub masing-masing yang udah ditambahin admin sebagai collaborator (role `write` udah cukup, lihat poin di bawah). JANGAN nyoba login pakai akun `adamaria88` — itu bukan akun kalian.
 - **Penting:** akses `write` (collaborator biasa) itu **CUKUP buat push & update Pages**. Cuma akses **admin** yang bisa buka Settings (termasuk halaman Settings > Pages) — ini aturan baku GitHub, gak bisa diubah walau adminnya udah kasih akses apapun. Karena Pages **udah pernah di-enable sekali** (step 5 di bawah), designer dengan akses `write` **gak perlu dan gak akan bisa** buka Settings — dan memang gak perlu, karena update Pages berikutnya cukup push konten ke branch `gh-pages`.
 
 ## Struktur & alasan
