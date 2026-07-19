@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══════════════════════════════════════════════════════════════════
+     SCREENING REFERRAL PROGRAM — 10 app + kompetitor Paper.id
+     Sumber: Mobbin MCP (search_screens, 19 Jul 2026). Tiap app ada link
+     ke screen aslinya di Mobbin — klik nama app / tombol "Lihat di Mobbin".
+     Chrome pakai token Neutral Minimal (sama kayak _output/explorer/).
+     Interaktif: filter kategori, sort matrix, expand detail app.
+     ══════════════════════════════════════════════════════════════════ -->
+<title>Screening Referral Program · Paper.id</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --app-bg:#F4F4F2; --side-bg:#E7E6E0; --bar-bg:#EDECE6; --surface:#FCFCFB; --canvas:#F4F4F2;
+    --bd:rgba(0,0,0,.08); --bd-strong:rgba(0,0,0,.16);
+    --tx:#1F2328; --tx-mut:#6E6E68; --tx-dim:#A3A39B;
+    --accent:#1F2328; --accent-tx:#fff;
+    --item-on:#EAEAE6; --item-hover:#EDEDE9;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.05); --shadow-md:0 6px 22px rgba(0,0,0,.10);
+    --ok:#1F7A4D; --ok-bg:#E4F2EA;
+    --no:#A33A2E; --no-bg:#F8E7E4;
+    --mid:#8A6D1F; --mid-bg:#FBF3E4;
+    --paper:#1B5E8C; --paper-bg:#E6F0F7;
+  }
+  body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:var(--app-bg);color:var(--tx);line-height:1.55;-webkit-font-smoothing:antialiased}
+
+  /* ─── TOPBAR ─── */
+  .bar{position:sticky;top:0;z-index:50;background:var(--bar-bg);border-bottom:1px solid var(--bd-strong);
+       padding:10px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .bar .brand{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:800}
+  .bar .brand svg{width:18px;height:18px;flex:none}
+  .bar .meta{font-size:11px;color:var(--tx-dim)}
+  .bar .sp{flex:1}
+  .navlinks{display:flex;gap:2px;background:var(--item-on);border-radius:9px;padding:3px}
+  .navlinks a{text-decoration:none;color:var(--tx-mut);font:600 12px 'Lato';padding:6px 11px;border-radius:6px;transition:.12s}
+  .navlinks a:hover{background:var(--surface);color:var(--tx)}
+
+  .wrap{max-width:1160px;margin:0 auto;padding:32px 24px 80px}
+  section{margin-bottom:52px;scroll-margin-top:70px}
+  .eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tx-dim);margin-bottom:7px}
+  h1{font-size:32px;font-weight:900;letter-spacing:-.02em;line-height:1.2;margin-bottom:10px}
+  h2{font-size:21px;font-weight:800;letter-spacing:-.01em;margin-bottom:6px}
+  h3{font-size:15px;font-weight:800;margin-bottom:5px}
+  .lede{font-size:15px;color:var(--tx-mut);max-width:70ch}
+  .sub{font-size:13px;color:var(--tx-mut);max-width:75ch;margin-bottom:18px}
+
+  .card{background:var(--surface);border:1px solid var(--bd);border-radius:13px;padding:20px}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:14px}
+
+  /* ─── HERO STATS ─── */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:22px}
+  .stat{background:var(--surface);border:1px solid var(--bd);border-radius:12px;padding:15px 17px}
+  .stat .n{font-size:26px;font-weight:900;letter-spacing:-.02em;line-height:1.1}
+  .stat .l{font-size:11.5px;color:var(--tx-mut);margin-top:3px}
+
+  /* ─── VERDICT BAR ─── */
+  .verdict{background:var(--paper-bg);border:1px solid #C4DCEC;border-radius:13px;padding:18px 20px;margin-top:22px}
+  .verdict h3{color:var(--paper);margin-bottom:6px;font-size:14px}
+  .verdict p{font-size:13.5px;color:#245C82;max-width:78ch}
+
+  /* ─── FILTER ─── */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+  .chip{border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);
+        font:600 12px 'Lato';padding:7px 13px;border-radius:20px;cursor:pointer;transition:.12s}
+  .chip:hover{background:var(--item-hover);color:var(--tx)}
+  .chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
+  .fcount{font-size:11.5px;color:var(--tx-dim);margin-left:4px}
+
+  /* ─── MATRIX ─── */
+  .mwrap{background:var(--surface);border:1px solid var(--bd);border-radius:13px;overflow:hidden}
+  .mscroll{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;min-width:800px}
+  thead th{background:var(--item-on);font-size:11px;font-weight:700;color:var(--tx-mut);text-align:center;
+           padding:11px 8px;border-bottom:1px solid var(--bd-strong);white-space:nowrap;position:relative}
+  thead th.appcol{text-align:left;padding-left:18px;min-width:190px;position:sticky;left:0;background:var(--item-on);z-index:2}
+  thead th.sortable{cursor:pointer;user-select:none}
+  thead th.sortable:hover{color:var(--tx)}
+  thead th .arw{opacity:.35;font-size:9px;margin-left:3px}
+  thead th.sorted .arw{opacity:1}
+  tbody td{padding:11px 8px;text-align:center;border-bottom:1px solid var(--bd);font-size:12.5px}
+  tbody td.appcol{text-align:left;padding-left:18px;position:sticky;left:0;background:var(--surface);z-index:1}
+  tbody tr:hover td{background:var(--item-hover)}
+  tbody tr:hover td.appcol{background:var(--item-hover)}
+  tbody tr.paper td{background:var(--paper-bg)!important;font-weight:700}
+  tbody tr.paper td.appcol{background:var(--paper-bg)!important}
+  .appname{font-weight:700;font-size:13px;display:block}
+  .apptag{font-size:10.5px;color:var(--tx-dim);font-weight:400}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:11px;white-space:nowrap}
+  .p-ok{background:var(--ok-bg);color:var(--ok)}
+  .p-no{background:var(--no-bg);color:var(--no)}
+  .p-mid{background:var(--mid-bg);color:var(--mid)}
+  .score{font-weight:900;font-size:14px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid var(--bd);font-size:11.5px;color:var(--tx-mut);background:var(--canvas)}
+  .legend b{color:var(--tx)}
+
+  /* ─── APP CARDS ─── */
+  .app{background:var(--surface);border:1px solid var(--bd);border-radius:13px;overflow:hidden;transition:.15s}
+  .app:hover{border-color:var(--bd-strong);box-shadow:var(--shadow-sm)}
+  .app-h{padding:16px 18px;cursor:pointer;display:flex;align-items:flex-start;gap:12px}
+  .app-h:hover{background:var(--item-hover)}
+  .app-rank{width:26px;height:26px;border-radius:7px;background:var(--item-on);color:var(--tx-mut);
+            font:900 12px 'Lato';display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px}
+  .app.hi .app-rank{background:var(--ok-bg);color:var(--ok)}
+  .app-t{flex:1;min-width:0}
+  .app-t .nm{font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .badge{font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2.5px 7px;border-radius:5px;background:var(--item-on);color:var(--tx-mut)}
+  .badge.b2b{background:#E9E4F5;color:#5B4394}
+  .badge.con{background:#E4EEF5;color:#2C6284}
+  .badge.star{background:var(--ok-bg);color:var(--ok)}
+  .app-t .hl{font-size:13px;color:var(--tx-mut);margin-top:3px}
+  .app-t .hl b{color:var(--tx)}
+  .chev{width:16px;height:16px;color:var(--tx-dim);flex:none;margin-top:4px;transition:transform .2s}
+  .app.open .chev{transform:rotate(180deg)}
+  .app-thumb{width:40px;flex:none;border-radius:5px;border:1px solid var(--bd);overflow:hidden;background:var(--canvas);margin-top:2px}
+  .app-thumb img{width:100%;display:block}
+  .app-b{display:none;padding:16px 18px 18px;border-top:1px solid var(--bd)}
+  .app.open .app-b{display:block}
+  /* shot mobile = kolom kiri; shot web (landscape) = full-width di atas */
+  .app-b.mob{display:none;grid-template-columns:236px 1fr;gap:22px;align-items:start}
+  .app.open .app-b.mob{display:grid}
+  .shot{border:1px solid var(--bd);border-radius:9px;overflow:hidden;background:var(--canvas);cursor:zoom-in;transition:.15s}
+  .shot:hover{border-color:var(--bd-strong);box-shadow:var(--shadow-sm)}
+  .shot img{width:100%;display:block}
+  .shot-cap{font-size:10.5px;color:var(--tx-dim);padding:6px 9px;border-top:1px solid var(--bd);background:var(--surface);
+            display:flex;align-items:center;gap:5px}
+  .shot-cap svg{width:11px;height:11px;flex:none}
+  .app-b.web .shot{max-width:600px;margin-bottom:16px}
+  .app-b .row{padding:12px 0;border-bottom:1px solid var(--bd)}
+  .app-b .row:last-of-type{border-bottom:0}
+  .app-b .k{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx-dim);margin-bottom:4px}
+  .app-b .v{font-size:13.5px;color:var(--tx-mut)}
+  .app-b .v b{color:var(--tx)}
+  .takeaway{background:var(--canvas);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:11px 14px;margin-top:12px}
+  .takeaway .k{margin-bottom:3px}
+  .takeaway .v{color:var(--tx);font-size:13.5px}
+  .mobbin{display:inline-flex;align-items:center;gap:6px;margin-top:13px;font:700 12px 'Lato';
+          color:var(--tx);text-decoration:none;border:1px solid var(--bd-strong);border-radius:8px;padding:7px 12px}
+  .mobbin:hover{background:var(--item-hover)}
+  .mobbin svg{width:13px;height:13px}
+
+  /* ─── PATTERN ─── */
+  .pat{background:var(--surface);border:1px solid var(--bd);border-radius:13px;padding:19px}
+  .pat .num{font-size:11px;font-weight:900;color:var(--tx-dim);letter-spacing:.06em}
+  .pat h3{margin:5px 0 7px}
+  .pat p{font-size:13.5px;color:var(--tx-mut)}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:13px;border:1px solid var(--bd);border-radius:9px;overflow:hidden}
+  .vs>div{padding:12px 14px}
+  .vs .bad{background:var(--no-bg);border-right:1px solid var(--bd)}
+  .vs .good{background:var(--ok-bg)}
+  .vs .lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px}
+  .vs .bad .lbl{color:var(--no)}
+  .vs .good .lbl{color:var(--ok)}
+  .vs .txt{font-size:13px;color:var(--tx);line-height:1.45}
+  .vs .src{font-size:11px;color:var(--tx-mut);margin-top:5px}
+
+  /* ─── BANNER GALLERY ─── */
+  .ban{background:var(--surface);border:1px solid var(--bd);border-radius:11px;padding:15px 16px}
+  .ban .shot{margin-bottom:11px}
+  .ban .nm{font-size:13px;font-weight:800;margin-bottom:4px}
+  .ban .cp{font-size:13px;color:var(--tx);background:var(--canvas);border-radius:7px;padding:9px 11px;margin:7px 0;line-height:1.4}
+  .ban .no{font-size:12px;color:var(--tx-mut)}
+  .ban a{font-size:11.5px;color:var(--tx-mut);text-decoration:underline;text-underline-offset:2px}
+  .ban a:hover{color:var(--tx)}
+
+  /* ─── REKOMENDASI ─── */
+  .rec{background:var(--surface);border:1px solid var(--bd);border-radius:13px;padding:19px;position:relative}
+  .rec.pick{border-color:var(--ok);border-width:2px;box-shadow:var(--shadow-sm)}
+  .rec .tag{position:absolute;top:-10px;right:15px;background:var(--ok);color:#fff;font:700 10px 'Lato';
+            letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:5px}
+  .rec .opt{font-size:11px;font-weight:900;color:var(--tx-dim);letter-spacing:.08em}
+  .rec h3{margin:5px 0 8px}
+  .rec ol{margin:10px 0 0 17px}
+  .rec li{font-size:13px;color:var(--tx-mut);margin-bottom:4px}
+  .rec .risk{font-size:12.5px;color:var(--no);margin-top:11px;padding-top:11px;border-top:1px solid var(--bd)}
+
+  .note{background:var(--mid-bg);border:1px solid #E9D6AE;border-radius:11px;padding:15px 17px;font-size:13px;color:#6B4A0F}
+  .note b{color:#4A3208}
+  footer{border-top:1px solid var(--bd);margin-top:44px;padding-top:20px;font-size:12px;color:var(--tx-dim)}
+
+  /* ─── LIGHTBOX ─── */
+  .lb{position:fixed;inset:0;background:rgba(20,22,26,.86);z-index:100;display:none;
+      align-items:center;justify-content:center;padding:34px 20px;cursor:zoom-out}
+  .lb.open{display:flex}
+  .lb img{max-width:100%;max-height:100%;border-radius:9px;box-shadow:0 18px 60px rgba(0,0,0,.5)}
+  .lb-cap{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);color:#EDECE6;font-size:12.5px;
+          background:rgba(0,0,0,.55);padding:7px 15px;border-radius:20px;white-space:nowrap}
+  .lb-x{position:fixed;top:16px;right:18px;width:36px;height:36px;border-radius:9px;border:0;cursor:pointer;
+        background:rgba(255,255,255,.14);color:#fff;font-size:19px;line-height:1}
+  .lb-x:hover{background:rgba(255,255,255,.26)}
+
+  @media(max-width:760px){ .app-b.mob{grid-template-columns:1fr} .app-b.mob .shot{max-width:280px} }
+  @media(max-width:640px){
+    .wrap{padding:24px 16px 60px} h1{font-size:25px} .vs{grid-template-columns:1fr}
+    .vs .bad{border-right:0;border-bottom:1px solid var(--bd)} .navlinks{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="lb" id="lb">
+  <button class="lb-x" id="lbx" aria-label="Tutup">✕</button>
+  <img id="lbimg" src="" alt="">
+  <div class="lb-cap" id="lbcap"></div>
+</div>
+
+<div class="bar">
+  <span class="brand">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+    Screening Referral Program
+  </span>
+  <span class="meta">10 app · Mobbin · 19 Jul 2026</span>
+  <span class="sp"></span>
+  <nav class="navlinks">
+    <a href="#matrix">Matrix</a>
+    <a href="#apps">10 App</a>
+    <a href="#pola">Pola</a>
+    <a href="#banner">Banner</a>
+    <a href="#rekom">Rekomendasi</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <!-- ═══ HERO ═══ -->
+  <section>
+    <div class="eyebrow">Riset Kompetitif · Mobile Referral</div>
+    <h1>Kenapa halaman referral kita<br>nggak bikin orang gerak</h1>
+    <p class="lede">Screening 10 app — 5 kompetitor konsep Paper.id (B2B/SaaS invoicing &amp; payroll) dan 5 benchmark fintech consumer — buat cari tau pola apa yang bikin halaman referral mereka nendang, dan apa yang hilang di wireframe kita.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="n">12rb</div><div class="l">unique user dashboard mobile (7 hari terakhir)</div></div>
+      <div class="stat"><div class="n">10</div><div class="l">app di-screening</div></div>
+      <div class="stat"><div class="n">6/10</div><div class="l">taruh nominal di headline</div></div>
+      <div class="stat"><div class="n">6/10</div><div class="l">punya tracker "udah dapet berapa"</div></div>
+      <div class="stat"><div class="n">1/6</div><div class="l">skor Paper.id — paling bawah dari 11</div></div>
+    </div>
+
+    <div class="verdict">
+      <h3>Kesimpulan singkat</h3>
+      <p>Wireframe kita cuma menang di satu hal: <b>entry point banner-nya udah ada</b>. Selebihnya kalah di semua dimensi — headline nggak nyebut duit, nggak ada tracker progres, tiering disajiin sebagai tabel 3 kolom (nggak ada satu pun dari 10 app yang pakai 3 kolom), dan halamannya paling panjang. Insentif Rp500rb — angka terkuat yang kita punya — ada di <b>baris terakhir tabel</b>, posisi paling lemah di halaman.</p>
+    </div>
+  </section>
+
+  <!-- ═══ MATRIX ═══ -->
+  <section id="matrix">
+    <div class="eyebrow">Bagian 1</div>
+    <h2>Matrix skor</h2>
+    <p class="sub">6 dimensi, tiap dimensi 1 poin. Klik judul kolom buat sort. Baris biru = posisi kita sekarang.</p>
+
+    <div class="filters">
+      <button class="chip on" data-f="all">Semua<span class="fcount">11</span></button>
+      <button class="chip" data-f="b2b">B2B / SaaS<span class="fcount">5</span></button>
+      <button class="chip" data-f="con">Fintech consumer<span class="fcount">5</span></button>
+    </div>
+
+    <div class="mwrap">
+      <div class="mscroll">
+        <table id="mtx">
+          <thead>
+            <tr>
+              <th class="appcol sortable" data-c="0">App <span class="arw">▼</span></th>
+              <th class="sortable" data-c="1">Angka di<br>headline <span class="arw">▼</span></th>
+              <th class="sortable" data-c="2">Tracker<br>progres <span class="arw">▼</span></th>
+              <th class="sortable" data-c="3">Tier<br>visual <span class="arw">▼</span></th>
+              <th class="sortable" data-c="4">Ringkas<br>(≤1 scroll) <span class="arw">▼</span></th>
+              <th class="sortable" data-c="5">Share<br>multi-kanal <span class="arw">▼</span></th>
+              <th class="sortable" data-c="6">Entry dari<br>Home <span class="arw">▼</span></th>
+              <th class="sortable sorted" data-c="7">Skor <span class="arw">▼</span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="legend">
+        <span><b class="pill p-ok">Ada</b> = jelas ada &amp; kuat</span>
+        <span><b class="pill p-mid">Separo</b> = ada tapi lemah / kekubur</span>
+        <span><b class="pill p-no">Nggak</b> = nggak ada</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 10 APP ═══ -->
+  <section id="apps">
+    <div class="eyebrow">Bagian 2</div>
+    <h2>Detail 10 app</h2>
+    <p class="sub">Klik tiap kartu buat lihat rinciannya. Tombol "Lihat di Mobbin" buka screen aslinya.</p>
+
+    <div class="filters">
+      <button class="chip on" data-af="all">Semua<span class="fcount">10</span></button>
+      <button class="chip" data-af="b2b">B2B / SaaS<span class="fcount">5</span></button>
+      <button class="chip" data-af="con">Fintech consumer<span class="fcount">5</span></button>
+    </div>
+
+    <div id="applist" style="display:flex;flex-direction:column;gap:11px"></div>
+  </section>
+
+  <!-- ═══ POLA ═══ -->
+  <section id="pola">
+    <div class="eyebrow">Bagian 3</div>
+    <h2>4 pola yang mereka punya, kita nggak</h2>
+    <p class="sub">Ini yang muncul berulang di app dengan skor tinggi.</p>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+
+      <div class="pat">
+        <div class="num">POLA 01</div>
+        <h3>Headline = nominal, bukan nama fitur</h3>
+        <p>6 dari 10 app naruh angka rupiah/dolar langsung di judul. Alasannya sederhana: orang scroll cepat, dan yang bikin berhenti itu <b>angka</b>, bukan ajakan. Gusto bahkan kasih warna beda cuma buat nominalnya.</p>
+        <div class="vs">
+          <div class="bad">
+            <div class="lbl">Wireframe kita</div>
+            <div class="txt">"Bagikan kode referral Anda"</div>
+            <div class="src">Nama aksi. Nol angka. Rp500rb baru muncul ~700px di bawah.</div>
+          </div>
+          <div class="good">
+            <div class="lbl">Yang kepake di 7 app</div>
+            <div class="txt">"Invite businesses. <b>Get paid $300.</b>"</div>
+            <div class="src">Gusto — nominal jadi kalimat kedua, dikasih warna aksen sendiri.</div>
+          </div>
+        </div>
+        <div class="takeaway"><div class="k">Buat kita</div><div class="v">Naikin "Dapatkan hingga Rp500.000 per Mitra" jadi headline. Itu senjata terkuat kita, sekarang lagi disimpen di gudang.</div></div>
+      </div>
+
+      <div class="pat">
+        <div class="num">POLA 02</div>
+        <h3>Tracker "udah dapet berapa"</h3>
+        <p>6 dari 10 punya. Ini yang mengubah halaman referral dari <b>sekali baca</b> jadi <b>halaman yang dibuka berulang</b>. Contra: 3 counter (Client Invited / Converted / Total Rewards). Harvest: 4 counter. Chime: "Track your milestones". Crypto.com: kartu Total Earned + 5 slot badge.</p>
+        <div class="takeaway"><div class="k">Buat kita</div><div class="v">Kita punya user yang refer <b>ratusan</b> orang — mereka ini paling butuh tracker, dan sekarang nggak dikasih sama sekali. Tanpa tracker, mereka nggak punya alasan buka halaman ini lagi setelah nyalin kode.</div></div>
+      </div>
+
+      <div class="pat">
+        <div class="num">POLA 03</div>
+        <h3>Tiering = tangga, bukan tabel</h3>
+        <p>Nggak ada satu pun dari 10 app yang pakai tabel 3 kolom. Yang pakai tabel cuma N26 — dan itu <b>2 kolom</b>. Sisanya bikin visual: Greenlight busur koin $30→$300, Contra progress bar antar tier, Opal milestone stack, Origin timeline bernomor.</p>
+        <div class="vs">
+          <div class="bad">
+            <div class="lbl">Wireframe kita</div>
+            <div class="txt">Tabel 3 kolom: Jumlah company / Reguler / KYB<br>6 baris angka rapat</div>
+            <div class="src">Kebaca sebagai dokumen syarat, bukan sebagai target.</div>
+          </div>
+          <div class="good">
+            <div class="lbl">Greenlight</div>
+            <div class="txt">Busur koin naik: $30 → $50 → $70 → $150 → $300<br>+ "up to <b>$600</b> in total"</div>
+            <div class="src">Tier jadi keliatan sebagai <i>tangga yang bisa dinaikin</i>.</div>
+          </div>
+        </div>
+        <div class="takeaway"><div class="k">Buat kita</div><div class="v">Kolom Reguler vs KYB bisa dipisah jadi toggle/switcher, bukan dijejerin. Sekali lihat cuma perlu 1 kolom angka.</div></div>
+      </div>
+
+      <div class="pat">
+        <div class="num">POLA 04</div>
+        <h3>Semua muat di 1 layar (atau 1 scroll pendek)</h3>
+        <p>Gusto, Fresha, Chime, Klarna — selesai dalam 1 layar. Syarat &amp; ketentuan dikecilin jadi paragraf abu di bawah CTA, atau disembunyiin di link "Read the terms". Wireframe kita: 4 card ketumpuk, tiap card penuh paragraf, T&amp;C 6 poin ikut dipajang.</p>
+        <div class="takeaway"><div class="k">Buat kita</div><div class="v">"Cara mengundang Mitra" (3 langkah) + "Syarat Mitra yang diundang" (3 checklist) + T&amp;C bisa jadi accordion. Yang wajib kelihatan pas buka: <b>angka, kode, tombol</b>.<br><span style="font-size:12px;color:var(--tx-mut)">Ref: Practical UI — Dannaway, Ch.2 p.52 (tiap elemen harus "earn its place")</span></div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ BANNER ═══ -->
+  <section id="banner">
+    <div class="eyebrow">Bagian 4</div>
+    <h2>Referensi banner entry point</h2>
+    <p class="sub">Lo minta entry point baru di Home. Ini 6 cara app lain naruh referral di dashboard — semuanya <b>nyebut nominal di banner-nya</b>, bukan cuma ngajak.</p>
+
+    <div class="grid3">
+      <div class="ban">
+        <div class="shot" data-full="img/ban-oportun.webp" data-cap="Oportun — banner entry point"><img src="img/ban-oportun.webp" alt="Banner referral Oportun" loading="lazy"></div>
+        <div class="nm">Oportun</div>
+        <div class="cp">"Share Oportun &amp; score a <b>$5 bonus</b>"<br><span style="font-size:12px;color:var(--tx-mut)">Refer 3 friends within a month for an extra $35. That's $50 total.</span></div>
+        <div class="no">Card ilustrasi + tombol hitam. Bonus: ada badge kecil <b>"Get $5"</b> nempel di header, jadi kelihatan terus.</div>
+        <a href="https://mobbin.com/screens/8746da51-926c-49e7-9d8e-c819a9d238ba" target="_blank" rel="noopener">Lihat di Mobbin ↗</a>
+      </div>
+      <div class="ban">
+        <div class="shot" data-full="img/ban-zip.webp" data-cap="Zip — banner entry point"><img src="img/ban-zip.webp" alt="Banner referral Zip" loading="lazy"></div>
+        <div class="nm">Zip</div>
+        <div class="cp">"<b>Give $10, get $10!</b>"</div>
+        <div class="no">Banner ungu, 2 aksi: <b>Invite now</b> (primary) + <b>Learn more →</b> (text link). Pola 2-aksi ini pas banget buat kita — langsung share vs baca detail dulu.</div>
+        <a href="https://mobbin.com/screens/c8fe67b1-7bcd-421a-b96f-1374c6a783ad" target="_blank" rel="noopener">Lihat di Mobbin ↗</a>
+      </div>
+      <div class="ban">
+        <div class="shot" data-full="img/ban-greenlight.webp" data-cap="Greenlight — banner entry point"><img src="img/ban-greenlight.webp" alt="Banner referral Greenlight" loading="lazy"></div>
+        <div class="nm">Greenlight</div>
+        <div class="cp">"Invite friends, get <b>$600</b>"<br><span style="font-size:12px;color:var(--tx-mut)">Every friend you invite can earn you more!</span></div>
+        <div class="no">Ditaruh di halaman "Offers and Perks" terpisah, bukan di Home. Alternatif kalau Home udah padat.</div>
+        <a href="https://mobbin.com/screens/90de0c17-686d-4e65-9385-7dc207f8f08e" target="_blank" rel="noopener">Lihat di Mobbin ↗</a>
+      </div>
+      <div class="ban">
+        <div class="shot" data-full="img/ban-classpass.webp" data-cap="ClassPass — banner entry point"><img src="img/ban-classpass.webp" alt="Banner referral ClassPass" loading="lazy"></div>
+        <div class="nm">ClassPass</div>
+        <div class="cp">"Give a friend <b>$40</b> and get <b>$40</b> in return"</div>
+        <div class="no">Punya section header sendiri ("Refer your friends") di atas banner — jadi bukan cuma card nyempil di antara promo lain.</div>
+        <a href="https://mobbin.com/screens/810b3b13-6a73-4de9-9795-2f839bbc2290" target="_blank" rel="noopener">Lihat di Mobbin ↗</a>
+      </div>
+      <div class="ban">
+        <div class="shot" data-full="img/ban-fi.webp" data-cap="Fi — banner entry point"><img src="img/ban-fi.webp" alt="Banner referral Fi" loading="lazy"></div>
+        <div class="nm">Fi</div>
+        <div class="cp">"Refer a friend, get <b>1 month FREE</b>"</div>
+        <div class="no">Card kuning full-bleed di posisi paling atas Home, di bawah nama user. Posisi persis kayak slot yang kita punya.</div>
+        <a href="https://mobbin.com/screens/c3e01575-f94e-45ab-9d0f-8d9cdf343d1b" target="_blank" rel="noopener">Lihat di Mobbin ↗</a>
+      </div>
+      <div class="ban">
+        <div class="shot" data-full="img/ban-acorns.webp" data-cap="Acorns — banner entry point"><img src="img/ban-acorns.webp" alt="Banner referral Acorns" loading="lazy"></div>
+        <div class="nm">Acorns</div>
+        <div class="cp">"We'll invest <b>$1,375</b> into your account when you invite 5 friends and they invest."</div>
+        <div class="no">Nggak pakai card — teks gede polos + 1 tombol hijau full-width. Paling murah dibikin, tetep nendang karena angkanya gede.</div>
+        <a href="https://mobbin.com/screens/dd69d29d-7db9-416e-b303-0348bf6ba80c" target="_blank" rel="noopener">Lihat di Mobbin ↗</a>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:16px">
+      <b>Banner kita sekarang:</b> "Ajak Mitra dan Dapatkan Bagi Hasil — Ajak Mitra bergabung ke Paper.id dan dapatkan bagi hasil hingga Rp500rb per Mitra." Angkanya <b>udah ada</b> di banner (bagus!) tapi ketaruh di kalimat kedua, ukuran kecil, sejajar sama teks lain. Di 6 contoh di atas, nominalnya selalu jadi <b>bagian paling gede</b> di banner.
+    </div>
+  </section>
+
+  <!-- ═══ REKOMENDASI ═══ -->
+  <section id="rekom">
+    <div class="eyebrow">Bagian 5</div>
+    <h2>3 arah desain</h2>
+    <p class="sub">Semua pakai komponen Paperverse Mobile. Pilih satu, gue lanjut ke gerbang mapping komponen.</p>
+
+    <div class="grid3">
+      <div class="rec">
+        <div class="opt">ARAH A</div>
+        <h3>Hero Angka</h3>
+        <p style="font-size:13.5px;color:var(--tx-mut)">Paling pendek, paling nendang. Semua detail masuk accordion.</p>
+        <ol>
+          <li>Headline nominal gede</li>
+          <li>Kode referral + salin</li>
+          <li>Tombol share</li>
+          <li>Tiering &amp; syarat (accordion)</li>
+        </ol>
+        <div class="risk">Risiko: user yang refer ratusan Mitra kurang dapet info progres.</div>
+      </div>
+
+      <div class="rec">
+        <div class="opt">ARAH B</div>
+        <h3>Dashboard Progres</h3>
+        <p style="font-size:13.5px;color:var(--tx-mut)">Fokus ke user aktif. Bikin balik lagi tiap bulan.</p>
+        <ol>
+          <li>Kartu "Total didapat + jumlah Mitra"</li>
+          <li>Tangga tier + progress bar</li>
+          <li>Kode + share</li>
+          <li>Syarat (accordion)</li>
+        </ol>
+        <div class="risk">Risiko: user baru lihat "Rp0" duluan — kurang memikat.</div>
+      </div>
+
+      <div class="rec pick">
+        <span class="tag">Rekomendasi</span>
+        <div class="opt">ARAH C</div>
+        <h3>Gabungan</h3>
+        <p style="font-size:13.5px;color:var(--tx-mut)">Nutup dua-duanya: user baru kena hook angka, user aktif dapet progresnya.</p>
+        <ol>
+          <li>Hero nominal</li>
+          <li>Tracker progres</li>
+          <li>Tangga tier (toggle Reguler/KYB)</li>
+          <li>Syarat (accordion)</li>
+          <li>CTA WhatsApp sticky</li>
+        </ol>
+        <div class="risk" style="color:var(--ok)">Paling mendekati Greenlight (5/6, skor tertinggi) + struktur tier Contra.</div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:18px">
+      <b>Catatan sebelum lanjut.</b> Report ini baru riset — belum nyentuh komponen. Langkah berikutnya wajib lewat <b>gerbang mapping</b>: tabel "UI need → komponen Paperverse Mobile → token", buat di-approve dulu. Kalau ada kebutuhan yang komponennya belum ada di Paperverse Mobile (misal progress bar tier), gue lapor di situ — bukan bikin sendiri diam-diam.
+    </div>
+  </section>
+
+  <footer>
+    Sumber: Mobbin (search_screens, 19 Juli 2026) · 16 screen ditelaah, 10 dipilih buat screening + 6 referensi banner.<br>
+    Screenshot disimpan lokal di <code>img/</code> — report tetap jalan offline / kalau link Mobbin expired. Hak cipta screenshot ada di app masing-masing; dipakai buat riset desain internal.<br>
+    Insight desain: Refactoring UI (Wathan &amp; Schoger) Ch.5 · Practical UI (Dannaway) Ch.2 p.52.<br>
+    Skoring subjektif berdasarkan screen yang tersedia di Mobbin — bukan audit produk lengkap. Beberapa app mungkin punya fitur yang nggak ke-capture di screen-nya.
+  </footer>
+
+</div>
+
+<script>
+/* ═══════════ DATA ═══════════
+   ok=1 kuat · mid=0.5 lemah/kekubur · no=0
+   Skor = jumlah dari 6 dimensi. */
+const APPS=[
+ {n:'Contra',img:'contra',plat:'web',cat:'b2b',tag:'Freelance + invoicing',hl:'Earn when you invite your clients',
+  s:['mid','ok','ok','mid','no','no'],
+  d:{Insentif:'$25/client (tier Connector, 1–5 invite) naik ke $35/client (Influencer, 6–15 invite)',
+     Tracker:'<b>3 counter</b>: Client Invited / Client Converted / Total Rewards. Plus <b>progress bar</b> antar tier dengan label "0/5".',
+     Tier:'Tier dilist sebagai kartu (Connector, Influencer) + progress bar visual di atasnya — bukan tabel.',
+     Share:'Field email inline + tombol "Invite new client". Undangan langsung dari halaman, nggak cuma nyalin kode.',
+     Panjang:'Panel settings, agak panjang tapi terstruktur per blok.'},
+  t:'Struktur tier-nya <b>paling mirip punya kita</b> (reward per-entity, naik tier by jumlah). Bedanya mereka bikin progress bar, kita bikin tabel. Ini contoh paling langsung buat ditiru.',
+  u:'https://mobbin.com/screens/86533219-603b-420e-8479-42657b7fdd04'},
+
+ {n:'Chime',img:'chime',plat:'mob',cat:'con',tag:'Neobank',hl:'$100 for you, $100 for a friend',
+  s:['ok','ok','no','ok','mid','no'],
+  d:{Insentif:'$100 buat pengundang, $100 buat yang diundang, + bonus $10 SpotMe',
+     Tracker:'Section <b>"Track your milestones"</b> → Total earned $0. Plus list "Invite friends · Show all".',
+     Tier:'Nggak ada tier — flat reward.',
+     Share:'Tombol "Share your link" + tombol QR di sebelahnya.',
+     Panjang:'1 layar. T&C dikecilin jadi paragraf abu di bawah tombol.'},
+  t:'Contoh paling bersih buat <b>headline nominal</b>: angka jadi judulnya sendiri, bukan pelengkap. Ilustrasi orang bikin hangat tanpa makan banyak ruang.',
+  u:'https://mobbin.com/screens/2fd618c2-8d1c-4810-b2c2-ec678889c2ea'},
+
+ {n:'Greenlight',img:'greenlight',plat:'mob',cat:'con',tag:'Family banking',hl:'Share more, earn more — up to $600 in total',
+  s:['ok','ok','ok','mid','mid','ok'],
+  d:{Insentif:'$30 buat referral pertama, naik terus sampai total $600',
+     Tracker:'"Invites 0 · Total rewards $0" + tab <b>History / Invite Friends</b> + empty state "No pending invites yet".',
+     Tier:'<b>Busur koin</b> $30 → $50 → $70 → $150 → $300 di paling atas. Tier jadi gambar, bukan angka.',
+     Share:'Tombol Share + tombol Scan (QR).',
+     Panjang:'1–2 scroll. Ada link "How it works" buat detail.',
+     'Entry point':'Card di halaman "Offers and Perks": "Invite friends, get $600 · Learn More →"'},
+  t:'Skor tertinggi. Satu-satunya yang punya <b>lengkap</b>: ladder visual + tracker + empty state + entry point. Kalau mau satu contoh buat ditiru bulat-bulat, ini.',
+  u:'https://mobbin.com/screens/c7f95630-20aa-4214-8cf4-02b5e359361e'},
+
+ {n:'Gusto',img:'gusto',plat:'mob',cat:'b2b',tag:'Payroll SaaS (B2B)',hl:'Invite businesses. Get paid $300.',
+  s:['ok','no','mid','ok','no','no'],
+  d:{Insentif:'$300 buat kamu, $100 buat mereka. <b>Dobel</b> ($300/$100) kalau bisnis yang diajak punya 10+ karyawan.',
+     Tracker:'❌ Nggak ada sama sekali.',
+     Tier:'Cuma 1 kondisi dobel (10+ karyawan), disebut di teks — bukan visual.',
+     Share:'Field link + tombol "Share link" sticky di bawah.',
+     Panjang:'1 layar. 3 langkah bericon, tiap langkah judul + 1 baris.'},
+  t:'Target audiens paling deket sama kita — <b>ngajak bisnis, bukan teman</b>. Perhatiin: nominalnya dikasih <b>warna beda</b> dari sisa headline. Trik murah, efeknya gede.',
+  u:'https://mobbin.com/screens/83af1a24-59ad-4d1f-88a4-b8b365c3d4f4'},
+
+ {n:'Crypto.com',img:'crypto',plat:'mob',cat:'con',tag:'Crypto exchange',hl:'Earn up to US$30 per referral',
+  s:['ok','ok','ok','mid','no','no'],
+  d:{Insentif:'US$1 sampai US$25 tergantung aksi yang dilakukan referee',
+     Tracker:'Kartu atas: <b>Total Earned $0.00</b> | <b>Referrals 0</b>, plus 5 slot badge kosong (progress ke "Rewards+ Boost" setelah 5 referral).',
+     Tier:'Reward bertingkat <b>by aksi</b> bukan by jumlah: trade $10 → US$1, deposit $50 → US$4, dst.',
+     Share:'1 tombol Share biru sticky.',
+     Panjang:'1–2 scroll.'},
+  t:'Contoh bagus buat <b>slot badge kosong</b> sebagai progress — 5 kotak, keisi satu-satu. Lebih ngena dari progress bar buat target kecil.',
+  u:'https://mobbin.com/screens/2aae23f3-f7f1-4c4c-a062-110c7007e64d'},
+
+ {n:'Deel',img:'deel',plat:'web',cat:'b2b',tag:'Global payroll (B2B)',hl:'Invite business via link / via email',
+  s:['no','ok','no','no','ok','no'],
+  d:{Insentif:'$50 gift card per kontraktor yang dibayar (sampai 4), atau $200 buat 1 karyawan',
+     Tracker:'Panel kanan: <b>Summary → Total received $0</b>. Plus tab "Invite History (0)".',
+     Tier:'Nggak ada tangga — cuma 2 skema paralel.',
+     Share:'<b>Paling lengkap</b>: copy link + email + baris ikon Twitter/LinkedIn/Facebook/<b>WhatsApp</b>/email.',
+     Panjang:'Panjang, tapi 2 kolom jadi kebaca.'},
+  t:'Satu-satunya yang naruh <b>WhatsApp</b> di baris share — relevan banget buat pasar kita. Tapi headline-nya lemah (nggak ada angka), jadi skornya ketarik turun.',
+  u:'https://mobbin.com/screens/1d7e6a43-2b61-4c69-90a7-5df43c81cb90'},
+
+ {n:'Fresha',img:'fresha',plat:'web',cat:'b2b',tag:'Booking + payment for business',hl:'Invite a business to Fresha and receive $100 credit',
+  s:['ok','no','no','ok','no','ok'],
+  d:{Insentif:'$100 credit buat dua-duanya',
+     Tracker:'❌ Nggak ada.',
+     Tier:'Nggak ada.',
+     Share:'Tombol "Next" → lanjut ke step kirim undangan.',
+     Panjang:'1 layar. "How it works" 3 langkah bernomor dalam 1 card + 1 info banner.',
+     'Entry point':'Banner ungu berilustrasi di panel "Credits and referrals" + link "Send an invite →"'},
+  t:'Struktur paling <b>ringkas</b> di antara 10. Persis kayak wireframe kita tapi <b>dipangkas setengahnya</b> — dan headline-nya nyebut angka. Bukti kalau format kita bisa selamat cuma dengan dipotong.',
+  u:'https://mobbin.com/screens/f9354535-ce38-4252-b6b9-db44421ad45c'},
+
+ {n:'N26',img:'n26',plat:'mob',cat:'con',tag:'Neobank',hl:'Reward amounts (per plan)',
+  s:['no','mid','mid','mid','no','no'],
+  d:{Insentif:'€30–€100 tergantung paket yang diambil referee',
+     Tracker:'Link "Track invites" di pojok kanan atas — ada, tapi disembunyiin.',
+     Tier:'<b>Tabel 2 kolom</b>: Their plan | You get. Metal €100 / Go €80 / Smart €60 / Standard €30.',
+     Share:'1 tombol "Refer and earn now".',
+     Panjang:'1–2 scroll: 3 langkah timeline + tabel + link T&C/FAQ.'},
+  t:'Pembanding paling penting buat kita. Ini <b>satu-satunya yang masih pakai tabel</b> — dan itu pun cuma <b>2 kolom</b>. Tabel 3 kolom kita (Jumlah / Reguler / KYB) nggak ada bandingannya di 10 app manapun.',
+  u:'https://mobbin.com/screens/94fbed6f-c918-4bdc-ae71-fe0f8c8b9d4a'},
+
+ {n:'Klarna',img:'klarna',plat:'mob',cat:'con',tag:'BNPL',hl:'Get $75 by inviting friends',
+  s:['ok','no','mid','mid','no','no'],
+  d:{Insentif:'$5 buat tiap teman, $15 gift card buat kamu × 5 teman pertama = $75',
+     Tracker:'❌ Nggak ada.',
+     Tier:'Ada ambang "5 atau lebih teman" tapi disampaikan lewat teks, bukan visual.',
+     Share:'"Share your link" — tombol ditaruh <b>di atas foto hero</b>.',
+     Panjang:'1–2 scroll. "How it works." 3 langkah bernomor.'},
+  t:'Contoh <b>hero foto + tombol nempel di atasnya</b>. Menarik, tapi tanpa tracker halamannya jadi sekali-baca. Bukti kalau headline bagus doang nggak cukup.',
+  u:'https://mobbin.com/screens/51688496-dd70-446d-95f8-e01991ca60d5'},
+
+ {n:'Harvest',img:'harvest',plat:'web',cat:'b2b',tag:'Time tracking + invoicing',hl:'Recommend Harvest to your friends',
+  s:['no','ok','no','no','ok','no'],
+  d:{Insentif:'$10 credit buat kamu, $10 diskon buat mereka',
+     Tracker:'<b>4 counter</b> sejajar: Total trials / Referred customers / Total earned credits / Remaining credits.',
+     Tier:'Nggak ada.',
+     Share:'Link readonly + Share on Twitter + <b>Refer by email</b> (textarea, sampai 5 alamat sekaligus).',
+     Panjang:'Panjang, bentuknya form.',
+     Unik:'Ada field <b>"Your testimonial"</b> — user nulis kenapa dia suka Harvest, ditampilin ke orang yang diundang.'},
+  t:'Produk paling deket sama Paper.id (invoicing SaaS) tapi <b>halaman referral-nya paling lemah</b> — kebaca kayak form admin, bukan tawaran. Pelajaran: jangan asumsi "karena B2B jadi boleh kering".',
+  u:'https://mobbin.com/screens/ee15d11f-2252-450b-9705-0029a94a63b0'},
+
+ {n:'Paper.id',cat:'paper',tag:'Wireframe sekarang',hl:'Bagikan kode referral Anda',
+  s:['no','no','mid','no','no','mid'],
+  d:{Insentif:'Rp300rb–Rp500rb per company, beda Reguler vs KYB',
+     Tracker:'❌ Nggak ada.',
+     Tier:'Tabel <b>3 kolom</b> (Jumlah company / Reguler / KYB), 6 baris. Paling padat di antara 11.',
+     Share:'Cuma salin kode. Nggak ada tombol share ke WhatsApp/kanal lain.',
+     Panjang:'Paling panjang: 4 card ketumpuk + T&C 6 poin.',
+     'Entry point':'Card gelap di Home — <b>udah ada</b>, tapi nominalnya di kalimat kedua ukuran kecil.'},
+  t:'Menang cuma di entry point. Rp500rb — angka terkuat yang kita punya — ada di <b>baris terakhir tabel</b>, posisi paling lemah di seluruh halaman.',
+  u:''}
+];
+
+const LBL={ok:'Ada',mid:'Separo',no:'Nggak'};
+const VAL={ok:1,mid:.5,no:0};
+const scoreOf=a=>a.s.reduce((t,v)=>t+VAL[v],0);
+
+/* ─── MATRIX ─── */
+const tb=document.querySelector('#mtx tbody');
+let sortCol=7,sortDir=-1,filt='all';
+
+function renderMatrix(){
+  const rows=APPS.filter(a=>filt==='all'||a.cat===filt||a.cat==='paper');
+  rows.sort((x,y)=>{
+    let a,b;
+    if(sortCol===0){a=x.n.toLowerCase();b=y.n.toLowerCase();return a<b?sortDir:a>b?-sortDir:0}
+    if(sortCol===7){a=scoreOf(x);b=scoreOf(y)}
+    else{a=VAL[x.s[sortCol-1]];b=VAL[y.s[sortCol-1]]}
+    return a===b?x.n.localeCompare(y.n):(a<b?sortDir:-sortDir);
+  });
+  tb.innerHTML=rows.map(a=>{
+    const sc=scoreOf(a);
+    return `<tr class="${a.cat==='paper'?'paper':''}">
+      <td class="appcol"><span class="appname">${a.n}</span><span class="apptag">${a.tag}</span></td>
+      ${a.s.map(v=>`<td><span class="pill p-${v}">${LBL[v]}</span></td>`).join('')}
+      <td><span class="score">${sc}</span><span style="color:var(--tx-dim);font-size:11px">/6</span></td>
+    </tr>`;
+  }).join('');
+}
+document.querySelectorAll('#mtx thead th.sortable').forEach(th=>{
+  th.onclick=()=>{
+    const c=+th.dataset.c;
+    if(c===sortCol)sortDir*=-1; else{sortCol=c;sortDir=-1}
+    document.querySelectorAll('#mtx thead th').forEach(t=>t.classList.remove('sorted'));
+    th.classList.add('sorted');
+    th.querySelector('.arw').textContent=sortDir===-1?'▼':'▲';
+    renderMatrix();
+  };
+});
+document.querySelectorAll('.chip[data-f]').forEach(c=>{
+  c.onclick=()=>{
+    document.querySelectorAll('.chip[data-f]').forEach(x=>x.classList.remove('on'));
+    c.classList.add('on'); filt=c.dataset.f; renderMatrix();
+  };
+});
+
+/* ─── APP CARDS ─── */
+const list=document.getElementById('applist');
+let afilt='all';
+function renderApps(){
+  const rows=APPS.filter(a=>a.cat!=='paper'&&(afilt==='all'||a.cat===afilt))
+                 .sort((x,y)=>scoreOf(y)-scoreOf(x));
+  list.innerHTML=rows.map((a,i)=>{
+    const sc=scoreOf(a);
+    const shot=`<div class="shot" data-full="img/${a.img}.webp" data-cap="${a.n} — ${a.tag}">
+        <img src="img/${a.img}.webp" alt="Screen referral ${a.n}" loading="lazy">
+        <div class="shot-cap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          Klik buat perbesar
+        </div>
+      </div>`;
+    return `<div class="app${sc>=4?' hi':''}">
+      <div class="app-h">
+        <span class="app-rank">${i+1}</span>
+        <span class="app-thumb"><img src="img/${a.img}.webp" alt="" loading="lazy"></span>
+        <div class="app-t">
+          <span class="nm">${a.n}
+            <span class="badge ${a.cat}">${a.cat==='b2b'?'B2B / SaaS':'Consumer'}</span>
+            ${sc>=4?'<span class="badge star">Skor '+sc+'/6</span>':'<span class="badge">Skor '+sc+'/6</span>'}
+          </span>
+          <span class="hl">“${a.hl}”</span>
+        </div>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="app-b ${a.plat}">
+        ${shot}
+        <div>
+        ${Object.entries(a.d).map(([k,v])=>`<div class="row"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('')}
+        <div class="takeaway"><div class="k">Pelajaran buat kita</div><div class="v">${a.t}</div></div>
+        <a class="mobbin" href="${a.u}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+          Lihat di Mobbin
+        </a>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.app-h').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('open'));
+  bindShots();
+}
+document.querySelectorAll('.chip[data-af]').forEach(c=>{
+  c.onclick=()=>{
+    document.querySelectorAll('.chip[data-af]').forEach(x=>x.classList.remove('on'));
+    c.classList.add('on'); afilt=c.dataset.af; renderApps();
+  };
+});
+
+/* ─── LIGHTBOX ─── */
+const lb=document.getElementById('lb'),lbimg=document.getElementById('lbimg'),lbcap=document.getElementById('lbcap');
+function openLB(src,cap){lbimg.src=src;lbcap.textContent=cap;lb.classList.add('open');document.body.style.overflow='hidden'}
+function closeLB(){lb.classList.remove('open');document.body.style.overflow='';lbimg.src=''}
+function bindShots(){
+  document.querySelectorAll('.shot').forEach(s=>{
+    if(s.dataset.bound)return; s.dataset.bound='1';
+    s.onclick=e=>{e.stopPropagation();openLB(s.dataset.full,s.dataset.cap)};
+  });
+}
+lb.onclick=closeLB;
+document.getElementById('lbx').onclick=e=>{e.stopPropagation();closeLB()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLB()});
+
+renderMatrix(); renderApps(); bindShots();
+</script>
+</body>
+</html>
