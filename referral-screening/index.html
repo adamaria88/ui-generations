@@ -114,6 +114,15 @@
   .badge.b2b{background:#E9E4F5;color:#5B4394}
   .badge.con{background:#E4EEF5;color:#2C6284}
   .badge.star{background:var(--ok-bg);color:var(--ok)}
+  .badge.mob{background:#E4F0EA;color:#1F6B49}
+  .badge.web{background:#F0E9DC;color:#7A5A1F}
+  .plat-tag{display:inline-flex;align-items:center;gap:3px;font-size:10.5px;font-weight:700;
+            padding:2px 7px;border-radius:5px;white-space:nowrap}
+  .plat-tag.mob{background:#E4F0EA;color:#1F6B49}
+  .plat-tag.web{background:#F0E9DC;color:#7A5A1F}
+  .fgroup{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .fgroup+.fgroup{margin-left:6px;padding-left:14px;border-left:1px solid var(--bd-strong)}
+  .flabel{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tx-dim)}
   .app-t .hl{font-size:13px;color:var(--tx-mut);margin-top:3px}
   .app-t .hl b{color:var(--tx)}
   .chev{width:16px;height:16px;color:var(--tx-dim);flex:none;margin-top:4px;transition:transform .2s}
@@ -244,7 +253,20 @@
 
     <div class="verdict">
       <h3>Kesimpulan singkat</h3>
-      <p>Wireframe kita cuma menang di satu hal: <b>entry point banner-nya udah ada</b>. Selebihnya kalah di semua dimensi — headline nggak nyebut duit, nggak ada tracker progres, tiering disajiin sebagai tabel 3 kolom (nggak ada satu pun dari 10 app yang pakai 3 kolom), dan halamannya paling panjang. Insentif Rp500rb — angka terkuat yang kita punya — ada di <b>baris terakhir tabel</b>, posisi paling lemah di halaman.</p>
+      <p style="margin-bottom:0">Wireframe kita cuma menang di satu hal: <b>entry point banner-nya udah ada</b>. Selebihnya kalah di semua dimensi — headline nggak nyebut duit, nggak ada tracker progres, tiering disajiin sebagai tabel 3 kolom (nggak ada satu pun dari 10 app yang pakai 3 kolom), dan halamannya paling panjang. Insentif Rp500rb — angka terkuat yang kita punya — ada di <b>baris terakhir tabel</b>, posisi paling lemah di halaman.</p>
+    </div>
+
+    <div class="note" style="margin-top:14px">
+      <b>⚠️ Baca ini dulu — nggak semua app di sini mobile.</b><br>
+      Brief kita mobile, tapi <b>4 dari 10 app di sini web</b>: Contra, Deel, Fresha, Harvest — dan itu justru yang B2B semua.
+      Alasannya: <b>referral screen B2B/invoicing di mobile jarang banget</b>. Dari pencarian, cuma <b>Gusto</b> yang ketemu.
+      Ini sendiri udah jadi temuan — kompetitor sejenis kita rata-rata <b>belum garap referral di mobile</b>, jadi kalau kita bikin bener, ini ruang kosong.
+      <br><br>
+      <b>Cara pakainya beda:</b>
+      <br>• <span class="plat-tag mob">Mobile</span> (7 app) — dipakai buat <b>mapping layout</b>: hierarki, ukuran, posisi CTA, panjang halaman.
+      <br>• <span class="plat-tag web">Web</span> (4 app) — <b>JANGAN dipakai buat layout.</b> Ambil <b>logikanya</b> aja: struktur tier, apa yang di-track, cara reward dihitung. Contra masuk sini — struktur tier-nya emas, tapi tata letaknya nggak bisa ditiru mentah ke mobile.
+      <br><br>
+      Pakai filter <b>Platform</b> di bawah buat misahin.
     </div>
   </section>
 
@@ -255,9 +277,18 @@
     <p class="sub">6 dimensi, tiap dimensi 1 poin. Klik judul kolom buat sort. Baris biru = posisi kita sekarang.</p>
 
     <div class="filters">
-      <button class="chip on" data-f="all">Semua<span class="fcount">11</span></button>
-      <button class="chip" data-f="b2b">B2B / SaaS<span class="fcount">5</span></button>
-      <button class="chip" data-f="con">Fintech consumer<span class="fcount">5</span></button>
+      <div class="fgroup">
+        <span class="flabel">Platform</span>
+        <button class="chip on" data-p="all">Semua<span class="fcount">11</span></button>
+        <button class="chip" data-p="mob">Mobile<span class="fcount">7</span></button>
+        <button class="chip" data-p="web">Web<span class="fcount">4</span></button>
+      </div>
+      <div class="fgroup">
+        <span class="flabel">Segmen</span>
+        <button class="chip on" data-f="all">Semua</button>
+        <button class="chip" data-f="b2b">B2B / SaaS</button>
+        <button class="chip" data-f="con">Consumer</button>
+      </div>
     </div>
 
     <div class="mwrap">
@@ -293,9 +324,18 @@
     <p class="sub">Klik tiap kartu buat lihat rinciannya. Tombol "Lihat di Mobbin" buka screen aslinya.</p>
 
     <div class="filters">
-      <button class="chip on" data-af="all">Semua<span class="fcount">10</span></button>
-      <button class="chip" data-af="b2b">B2B / SaaS<span class="fcount">5</span></button>
-      <button class="chip" data-af="con">Fintech consumer<span class="fcount">5</span></button>
+      <div class="fgroup">
+        <span class="flabel">Platform</span>
+        <button class="chip on" data-ap="all">Semua<span class="fcount">10</span></button>
+        <button class="chip" data-ap="mob">Mobile<span class="fcount">6</span></button>
+        <button class="chip" data-ap="web">Web<span class="fcount">4</span></button>
+      </div>
+      <div class="fgroup">
+        <span class="flabel">Segmen</span>
+        <button class="chip on" data-af="all">Semua</button>
+        <button class="chip" data-af="b2b">B2B / SaaS</button>
+        <button class="chip" data-af="con">Consumer</button>
+      </div>
     </div>
 
     <div id="applist" style="display:flex;flex-direction:column;gap:11px"></div>
@@ -591,7 +631,7 @@ const APPS=[
   t:'Produk paling deket sama Paper.id (invoicing SaaS) tapi <b>halaman referral-nya paling lemah</b> — kebaca kayak form admin, bukan tawaran. Pelajaran: jangan asumsi "karena B2B jadi boleh kering".',
   u:'https://mobbin.com/screens/ee15d11f-2252-450b-9705-0029a94a63b0'},
 
- {n:'Paper.id',cat:'paper',tag:'Wireframe sekarang',hl:'Bagikan kode referral Anda',
+ {n:'Paper.id',plat:'mob',cat:'paper',tag:'Wireframe sekarang',hl:'Bagikan kode referral Anda',
   s:['no','no','mid','no','no','mid'],
   d:{Insentif:'Rp300rb–Rp500rb per company, beda Reguler vs KYB',
      Tracker:'❌ Nggak ada.',
@@ -609,10 +649,12 @@ const scoreOf=a=>a.s.reduce((t,v)=>t+VAL[v],0);
 
 /* ─── MATRIX ─── */
 const tb=document.querySelector('#mtx tbody');
-let sortCol=7,sortDir=-1,filt='all';
+let sortCol=7,sortDir=-1,filt='all',pfilt='all';
+const PLAT={mob:'Mobile',web:'Web'};
 
 function renderMatrix(){
-  const rows=APPS.filter(a=>filt==='all'||a.cat===filt||a.cat==='paper');
+  const rows=APPS.filter(a=>a.cat==='paper'||
+    ((filt==='all'||a.cat===filt)&&(pfilt==='all'||a.plat===pfilt)));
   rows.sort((x,y)=>{
     let a,b;
     if(sortCol===0){a=x.n.toLowerCase();b=y.n.toLowerCase();return a<b?sortDir:a>b?-sortDir:0}
@@ -623,7 +665,9 @@ function renderMatrix(){
   tb.innerHTML=rows.map(a=>{
     const sc=scoreOf(a);
     return `<tr class="${a.cat==='paper'?'paper':''}">
-      <td class="appcol"><span class="appname">${a.n}</span><span class="apptag">${a.tag}</span></td>
+      <td class="appcol">
+        <span class="appname">${a.n} <span class="plat-tag ${a.plat}">${PLAT[a.plat]}</span></span>
+        <span class="apptag">${a.tag}</span></td>
       ${a.s.map(v=>`<td><span class="pill p-${v}">${LBL[v]}</span></td>`).join('')}
       <td><span class="score">${sc}</span><span style="color:var(--tx-dim);font-size:11px">/6</span></td>
     </tr>`;
@@ -645,12 +689,18 @@ document.querySelectorAll('.chip[data-f]').forEach(c=>{
     c.classList.add('on'); filt=c.dataset.f; renderMatrix();
   };
 });
+document.querySelectorAll('.chip[data-p]').forEach(c=>{
+  c.onclick=()=>{
+    document.querySelectorAll('.chip[data-p]').forEach(x=>x.classList.remove('on'));
+    c.classList.add('on'); pfilt=c.dataset.p; renderMatrix();
+  };
+});
 
 /* ─── APP CARDS ─── */
 const list=document.getElementById('applist');
-let afilt='all';
+let afilt='all',apfilt='all';
 function renderApps(){
-  const rows=APPS.filter(a=>a.cat!=='paper'&&(afilt==='all'||a.cat===afilt))
+  const rows=APPS.filter(a=>a.cat!=='paper'&&(afilt==='all'||a.cat===afilt)&&(apfilt==='all'||a.plat===apfilt))
                  .sort((x,y)=>scoreOf(y)-scoreOf(x));
   list.innerHTML=rows.map((a,i)=>{
     const sc=scoreOf(a);
@@ -667,6 +717,7 @@ function renderApps(){
         <span class="app-thumb"><img src="img/${a.img}.webp" alt="" loading="lazy"></span>
         <div class="app-t">
           <span class="nm">${a.n}
+            <span class="badge ${a.plat}">${PLAT[a.plat]}</span>
             <span class="badge ${a.cat}">${a.cat==='b2b'?'B2B / SaaS':'Consumer'}</span>
             ${sc>=4?'<span class="badge star">Skor '+sc+'/6</span>':'<span class="badge">Skor '+sc+'/6</span>'}
           </span>
@@ -694,6 +745,12 @@ document.querySelectorAll('.chip[data-af]').forEach(c=>{
   c.onclick=()=>{
     document.querySelectorAll('.chip[data-af]').forEach(x=>x.classList.remove('on'));
     c.classList.add('on'); afilt=c.dataset.af; renderApps();
+  };
+});
+document.querySelectorAll('.chip[data-ap]').forEach(c=>{
+  c.onclick=()=>{
+    document.querySelectorAll('.chip[data-ap]').forEach(x=>x.classList.remove('on'));
+    c.classList.add('on'); apfilt=c.dataset.ap; renderApps();
   };
 });
 
