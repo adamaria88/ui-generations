@@ -157,11 +157,17 @@ img{display:block}
 .au-form-field--invalid .form-field__control{border-color:var(--color-light-red-30,#f6c7d2)}
 .au-form-field--disabled .form-field__control{background:var(--color-light-grey-30,#eaedef)}
 .au-form-field--disabled .au-input{color:var(--color-dark-brand-25,#c2cdd5);cursor:not-allowed}
-.au-hint{display:none;align-items:center;gap:var(--spacing-xs,4px);
+/* AURORA: au-hint / au-hint--error
+   Source: aurora/projects/ui/form-field/hint/hint.component.scss L5-16
+   → display:block, 12/18, warna --color-state-danger-text-light. TANPA ikon (Aurora ga pakai ikon). */
+.au-hint{display:none;margin:0;
   font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
-  color:var(--color-state-danger-text-light,#e35273)}
-.au-hint svg{width:14px;height:14px;flex:none}
-.au-form-field--invalid .au-hint{display:flex}
+  color:var(--color-text-muted,#a5b6c1)}
+.au-hint--error{color:var(--color-state-danger-text-light,#e35273)}
+.au-form-field--invalid .au-hint{display:block}
+/* AURORA: au-label--error — Source: form-field/label/label.component.scss L17-19
+   form-field.component.ts L255-256 nge-set label ke state error otomatis saat invalid */
+.au-form-field--invalid .au-form-field__label{color:var(--color-state-danger-text-light,#e35273)}
 
 /* AURORA: au-country-code-select (dipakai di dalam form-field, prefix telepon)
    Source: aurora/projects/ui/country-code-select/country-code-select.component.scss L17-56
@@ -309,26 +315,162 @@ img{display:block}
 /* AURORA: au-toast — Source: aurora/projects/ui/toast/toast.component.scss L1-30
    OVERRIDE: di HP lebar 450px ga muat → full width dikurangi jarak pinggir
    (Aurora sendiri sudah punya @media <=768px max-width; di sini jadi lebar dasar). */
-.au-toast-host{position:fixed;left:50%;transform:translateX(-50%);top:calc(12px + env(safe-area-inset-top,0px));
-  z-index:60;width:100%;max-width:420px;padding:0 var(--spacing-lg,16px);
+/* OVERRIDE nilai ikut node Figma "Toast" 2176:10742: px 12 py 8, radius 8,
+   gradient ke kanan #133f5d→#0a1d28, ikon 20px, judul 14 semibold + subteks 12 regular.
+   Lebar: Figma 320px (= 360 − 2×20). Di sini full width dikurangi jarak pinggir. */
+.au-toast-host{position:fixed;left:50%;transform:translateX(-50%);top:calc(20px + env(safe-area-inset-top,0px));
+  z-index:60;width:100%;max-width:420px;padding:0 var(--spacing-xl,20px);
   display:flex;flex-direction:column;gap:var(--spacing-sm,8px);pointer-events:none}
-.au-toast{box-sizing:border-box;width:100%;padding:var(--spacing-md,12px);
-  border-radius:var(--radius-lg,12px);
+.au-toast{box-sizing:border-box;width:100%;
+  padding:var(--spacing-sm,8px) var(--spacing-md,12px);
+  border-radius:var(--radius-md,8px);
   background:linear-gradient(90deg,#133f5d 0%,#0a1d28 100%);
-  color:var(--color-text-inverse,#fff);display:flex;align-items:center;gap:var(--spacing-sm,8px);
-  box-shadow:0 3px 10px 0 rgb(0 0 0 / 8%);pointer-events:auto;
+  color:var(--color-text-inverse,#fff);display:flex;align-items:flex-start;gap:var(--spacing-sm,8px);
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.08));pointer-events:auto;
   animation:au-toast-in var(--speed-slow,400ms) var(--ease-out-strong,ease-out) forwards}
 .au-toast--danger{background:var(--color-light-red-60,#b52b55)}
 .au-toast--out{animation:au-toast-out 200ms cubic-bezier(.4,0,.2,1) forwards}
-.au-toast__icon{width:24px;height:24px;flex:none}
+.au-toast__icon{width:20px;height:20px;flex:none}
 .au-toast__icon svg{width:100%;height:100%;display:block}
-.au-toast__text{flex:1;font-size:var(--text-body-size-md,14px);line-height:var(--text-body-line-height-md,22px)}
+.au-toast__text{flex:1 0 0;min-width:0;display:flex;flex-direction:column;gap:var(--spacing-xs,4px)}
+.au-toast__title{font-size:var(--text-body-size-md,14px);line-height:var(--text-body-line-height-md,22px);
+  font-weight:var(--text-body-weight-semibold,600)}
+.au-toast__sub{font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px)}
 .au-toast__close{background:transparent;border:none;cursor:pointer;padding:0;width:20px;height:20px;
   flex:none;color:var(--color-light-brand-50,#4199d5)}
 .au-toast--danger .au-toast__close{color:#fff}
 .au-toast__close svg{width:100%;height:100%;display:block}
 @keyframes au-toast-in{from{opacity:0;transform:translateY(-100px)}to{opacity:1;transform:translateY(0)}}
 @keyframes au-toast-out{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-100px)}}
+
+/* ============================================================
+   SCREEN 2 — Daftar Mitra (node Figma "Partner-myList" 2176:10704)
+   ============================================================ */
+.screen{display:none;flex-direction:column;flex:1;min-height:0}
+.screen.is-active{display:flex}
+
+/* OVERRIDE: nav bar list (Figma "Navigation Bar" 2176:10705) — Aurora ga punya */
+.navbar2{position:sticky;top:0;z-index:20;background:var(--color-surface-light-default,#fff);
+  padding:var(--spacing-xs,4px) var(--spacing-lg,16px);
+  padding-top:calc(var(--spacing-xs,4px) + env(safe-area-inset-top,0px));
+  display:flex;align-items:center;gap:var(--spacing-sm,8px);
+  filter:drop-shadow(0 -5px 10px rgba(65,153,213,.1))}
+.navbar2__mid{flex:1 0 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.navbar2__mid h2{margin:0;font-size:16px;line-height:20px;font-weight:var(--text-heading-weight-bold,700);
+  color:var(--color-text-primary,#133f5d)}
+.navbar2__id{display:flex;align-items:center;gap:var(--spacing-xs,4px);
+  font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
+  color:var(--color-text-secondary,#718c9e);background:transparent;border:none;padding:0;cursor:pointer}
+.navbar2__id:hover{color:var(--color-light-blue-50,#4199d5)}
+
+/* AURORA: au-tab — Source: aurora/projects/ui/tab/tab.component.scss (struktur underline + active) */
+.au-tab{display:flex;background:var(--color-surface-light-default,#fff);
+  box-shadow:inset 0 -1px 0 0 var(--color-border-subtle,#f2f4f5)}
+.au-tab__item{flex:1 0 0;display:flex;align-items:center;justify-content:center;gap:var(--spacing-xs,4px);
+  height:38px;background:transparent;border:none;cursor:pointer;
+  font-size:var(--text-body-size-md,14px);line-height:var(--text-body-line-height-md,22px);
+  color:var(--color-text-muted,#a5b6c1);box-shadow:inset 0 -2px 0 0 transparent;
+  transition:color var(--speed-fast,200ms) var(--ease-out-regular,ease-out),
+             box-shadow var(--speed-fast,200ms) var(--ease-out-regular,ease-out)}
+.au-tab__item:hover{color:var(--color-text-secondary,#718c9e)}
+.au-tab__item.active{color:var(--color-text-primary,#133f5d);font-weight:var(--text-body-weight-semibold,600);
+  box-shadow:inset 0 -2px 0 0 var(--color-light-blue-50,#4199d5)}
+.au-tab__count{background:var(--color-light-grey-30,#eaedef);color:var(--color-text-secondary,#718c9e);
+  border-radius:var(--radius-sm,4px);padding:0 var(--spacing-xs,4px);
+  font-size:var(--text-body-size-sm,12px);line-height:18px}
+
+/* APPROVED-CUSTOM: baris filter (komposisi au-chip + au-btn icon-only) */
+.filterbar{display:flex;align-items:center;gap:var(--spacing-sm,8px);
+  padding:var(--spacing-lg,16px);background:var(--color-surface-light-default,#fff);
+  overflow-x:auto;scrollbar-width:none}
+.filterbar::-webkit-scrollbar{display:none}
+.filterbar .au-chip{flex:none}
+.icon-round{width:30px;height:30px;flex:none;display:flex;align-items:center;justify-content:center;
+  border-radius:var(--radius-full,9999px);border:1px solid var(--color-border-default,#dde1e5);
+  background:var(--color-surface-light-default,#fff);color:var(--color-text-primary,#133f5d);cursor:pointer;
+  transition:background var(--speed-fast,200ms) var(--ease-out-regular,ease-out)}
+.icon-round:hover{background:var(--color-light-brand-15,#e7f2fa)}
+.icon-round:active{background:var(--color-light-brand-25,#cfe5f5)}
+
+.list-body{flex:1;display:flex;flex-direction:column;gap:var(--spacing-sm,8px);
+  padding:var(--spacing-md,12px);padding-bottom:calc(74px + env(safe-area-inset-bottom,0px));
+  background:var(--color-surface-light-platform,#f8fbfe)}
+
+/* OVERRIDE: .banner-connection — gradient promo (Figma 2176:10709). Aurora banner ga punya varian gradient */
+.au-banner--connection{display:flex;align-items:center;gap:var(--spacing-md,12px);
+  padding:var(--spacing-md,12px);border-radius:var(--radius-md,8px);
+  border:none;  /* Figma: banner promo ini tanpa stroke, beda dari au-banner default */
+  background:linear-gradient(270deg,#ffbd42 -34.05%,#ffe8bd 23.84%,#ffffff 77.66%);
+  font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
+  color:var(--color-text-primary,#133f5d)}
+.au-banner__icon--connection{position:relative;width:18px;height:18px;flex:none}
+.au-banner__icon--connection img{position:absolute;inset:0;width:18px;height:18px}
+.au-banner__icon--connection img.star{width:11.88px;height:11.88px;inset:auto;left:3.06px;top:3.6px}
+.au-banner--connection p{flex:1 0 0;min-width:0;margin:0}
+.au-banner--connection b{font-weight:var(--text-body-weight-bold,700)}
+.au-banner--connection .link{flex:none;background:none;border:none;padding:0;cursor:pointer;
+  font-size:var(--text-body-size-sm,12px);font-weight:var(--text-body-weight-semibold,600);
+  color:var(--color-light-blue-50,#4199d5)}
+.au-banner--connection .link:hover{text-decoration:underline}
+
+/* OVERRIDE: .card-partnerList — kartu mitra (Figma 2176:10711). Aurora ga punya au-card */
+.pcard{display:flex;align-items:center;gap:var(--spacing-md,12px);width:100%;text-align:left;
+  background:var(--color-surface-light-default,#fff);
+  border:1px solid var(--color-border-subtle,#f2f4f5);
+  border-radius:var(--radius-md,8px);padding:var(--spacing-md,12px);cursor:pointer;
+  transition:background var(--speed-fast,200ms) var(--ease-out-regular,ease-out)}
+.pcard:hover{background:var(--color-light-blue-10,#f8fbfe)}
+.pcard:active{background:var(--color-light-blue-15,#f2f7fc)}
+.pcard__profile{display:flex;align-items:center;gap:var(--spacing-sm,8px);flex:1 0 0;min-width:0}
+.pcard__avatar{width:48px;height:48px;flex:none;display:flex;align-items:center;justify-content:center;
+  padding:var(--spacing-xs,4px);background:var(--color-surface-light-default,#fff);
+  border:1px solid var(--color-border-subtle,#f2f4f5);border-radius:var(--radius-md,8px);overflow:hidden}
+.pcard__initials{width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  font-size:var(--text-body-size-md,14px);line-height:var(--text-body-line-height-md,22px);
+  font-weight:var(--text-body-weight-semibold,600);color:var(--color-text-secondary,#718c9e)}
+.pcard__avatar img{width:40px;height:40px;object-fit:cover;border-radius:4px;transform:scale(1.6842)}
+.pcard__text{display:flex;flex-direction:column;gap:2px;flex:1 0 0;min-width:0}
+.pcard__name{display:flex;align-items:center;gap:var(--spacing-xs,4px);min-width:0}
+.pcard__name span{font-size:14px;line-height:22px;font-weight:var(--text-body-weight-semibold,600);
+  color:var(--color-text-primary,#133f5d);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pcard__sub{display:flex;align-items:center;gap:var(--spacing-xs,4px);flex-wrap:wrap;
+  font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
+  color:var(--color-text-primary,#133f5d)}
+.pcard__org{font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
+  color:var(--color-text-secondary,#718c9e);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.au-chip--sm{display:inline-flex;align-items:center;padding:2px var(--spacing-xs,4px);
+  border-radius:var(--radius-sm,4px);background:var(--ppc-grey,#f8f9fa);
+  font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
+  font-weight:var(--text-body-weight-semibold,600);color:var(--color-text-secondary,#718c9e)}
+.pcard__status{flex:none;display:flex;align-items:center;gap:var(--spacing-xs,4px);
+  font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
+  color:var(--color-text-muted,#a5b6c1)}
+.pcard__status--ok{color:var(--color-state-success-text-light,#97cc56)}
+.pcard__status svg{width:16px;height:16px}
+.pcard .au-btn{flex:none;width:80px;font-size:var(--text-body-size-sm,12px);line-height:18px}
+
+/* OVERRIDE: .tabbar — bottom nav mobile (Figma 2176:10741). Aurora ga punya */
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:0;z-index:15;
+  width:100%;max-width:420px;
+  display:flex;align-items:center;gap:var(--spacing-sm,8px);
+  padding:var(--spacing-sm,8px);
+  padding-bottom:calc(var(--spacing-sm,8px) + env(safe-area-inset-bottom,0px));
+  background:var(--color-surface-light-default,#fff);
+  filter:drop-shadow(0 -3px 5px rgba(0,0,0,.09))}
+.tabbar__item{flex:1 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:var(--spacing-xs,4px);background:none;border:none;cursor:pointer;padding:0;
+  font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
+  color:var(--color-text-secondary,#718c9e)}
+.tabbar__item:hover{color:var(--color-light-blue-50,#4199d5)}
+.tabbar__item svg{width:24px;height:24px}
+.tabbar__fab{width:38px;height:38px;flex:none;border-radius:var(--radius-full,9999px);
+  display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;
+  background:var(--color-action-primary-bg,#4199d5);color:var(--color-text-inverse,#fff);
+  box-shadow:0 0 0 1px rgb(10 13 18 / 18%) inset,0 1px 0 1px rgb(255 255 255 / 10%) inset,
+             0 -2px 0 0 rgb(10 13 18 / 5%) inset,0 3px 2.5px 0 rgba(0,0,0,.06)}
+.tabbar__fab:hover{background:var(--color-action-primary-hover,#89bde5)}
+.tabbar__fab:active{background:var(--color-action-primary-pressed,#3385b5)}
+.tabbar__fab svg{width:18px;height:18px}
 
 /* transisi halus antar kondisi (ref smooth-transitions-rule) */
 .fade-in{animation:fade-in var(--speed-normal,300ms) var(--ease-out-regular,ease-out) both}
@@ -353,10 +495,23 @@ img{display:block}
 <symbol id="ic-refresh" viewBox="0 0 24 24" fill="none"><path d="M21 10C21 10 18.995 7.26822 17.3662 5.63824C15.7373 4.00827 13.4864 3 11 3C6.02944 3 2 7.02944 2 12C2 16.9706 6.02944 21 11 21C15.1031 21 18.5649 18.2543 19.6482 14.5M21 10V4M21 10H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="ic-check-filled" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.7056 3.02409C14.9613 3.18895 17.0729 4.20195 18.6196 5.86101C20.1663 7.52004 21.0353 9.70341 21.0532 11.9772C21.0563 14.0578 20.3419 16.0757 19.0317 17.6862L18.3989 18.3923C17.1351 19.644 15.532 20.4935 13.7905 20.8337C12.0492 21.1738 10.2468 20.99 8.60889 20.3053C6.97091 19.6206 5.56968 18.4653 4.58155 16.9841C3.59341 15.5027 3.06175 13.7608 3.05323 11.9772C3.05266 11.5392 3.08795 11.1018 3.1587 10.6696C3.50348 8.42222 4.67766 6.38808 6.44678 4.97136C8.21578 3.55475 10.45 2.85936 12.7056 3.02409ZM16.9985 8.50944C16.6053 8.12168 15.9723 8.12603 15.5845 8.51921L10.687 13.4841L8.4585 11.2243C8.07074 10.831 7.4377 10.8268 7.04444 11.2145C6.65146 11.6023 6.647 12.2354 7.03467 12.6286L9.97608 15.611C10.1639 15.8012 10.4206 15.9089 10.688 15.9089C10.9554 15.9087 11.2121 15.8014 11.3999 15.611L17.0083 9.92351C17.3959 9.53041 17.3913 8.89727 16.9985 8.50944Z" fill="currentColor"/></symbol>
 <symbol id="ic-verified" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M14.5224 2.15426C15.0194 1.94778 15.5811 1.94775 16.0781 2.15426C16.5753 2.35451 16.9691 2.75551 17.1757 3.25289L17.8994 4.99703C18.0995 5.4943 18.5 5.88793 18.997 6.09469L20.7412 6.81832C20.993 6.91522 21.219 7.07047 21.4062 7.25778C21.5935 7.45158 21.7423 7.67831 21.8457 7.92379C21.9488 8.16902 21.9999 8.43365 22 8.69821C22 8.96298 21.9489 9.22819 21.8457 9.4736L21.1289 11.2177C20.9222 11.7151 20.9223 12.277 21.1289 12.7744L21.8261 14.5185C22.0328 15.0159 22.0328 15.5787 21.8261 16.0761C21.626 16.5733 21.2255 16.9671 20.7285 17.1738L18.9843 17.8974C18.4872 18.1041 18.0933 18.5046 17.8867 19.0019L17.163 20.7461C16.9629 21.2435 16.5626 21.638 16.0654 21.8447C15.5682 22.0514 15.006 22.0514 14.5087 21.8447L12.7656 21.1279C12.5202 21.0245 12.255 20.9726 11.9902 20.9726C11.7255 20.9727 11.4611 21.0246 11.2158 21.1279L9.47164 21.8447C8.97459 22.0512 8.41302 22.0512 7.91598 21.8447C7.41872 21.6444 7.02399 21.2435 6.81734 20.7461L6.09469 19.0019C5.89451 18.5047 5.49411 18.1042 4.99703 17.8974L3.25289 17.1738C2.75583 16.9735 2.36189 16.5733 2.15523 16.0761C1.94858 15.5787 1.94858 15.0159 2.15523 14.5185L2.87887 12.7744C3.08534 12.2771 3.08546 11.715 2.87887 11.2177L2.16207 9.4736C2.05874 9.22812 2.0068 8.96306 2.0068 8.69821C2.00683 8.43354 2.05886 8.1691 2.16207 7.92379C2.25893 7.66542 2.41329 7.4451 2.60055 7.25778C2.79423 7.07049 3.02026 6.92168 3.26558 6.81832L5.00973 6.09469C5.50037 5.88795 5.90076 5.49432 6.10738 4.99703L6.83101 3.25289C7.03121 2.75548 7.43142 2.36098 7.92867 2.15426C8.42587 1.94763 8.98813 1.94757 9.48531 2.15426L11.2285 2.87789C11.4739 2.97479 11.7391 3.02633 12.0039 3.02633C12.2685 3.02629 12.5266 2.98119 12.7783 2.87789L14.5224 2.15426ZM16.0605 9.50192C15.7853 9.19259 15.3114 9.16447 15.0019 9.43942L10.9365 13.0556L8.9941 11.3545C8.68256 11.0815 8.20848 11.1123 7.93551 11.4238C7.66255 11.7353 7.69428 12.2094 8.00582 12.4824L10.3388 14.5273L10.3486 14.5361L10.3593 14.5439C10.696 14.8184 11.1828 14.8183 11.5195 14.5439L11.5322 14.5341L11.5449 14.5234L15.998 10.5605C16.3073 10.2853 16.3355 9.81138 16.0605 9.50192Z" fill="currentColor"/></symbol>
+<symbol id="ic-menu" viewBox="0 0 24 24" fill="none"><path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-bell" viewBox="0 0 24 24" fill="none"><path opacity="0.15" fill-rule="evenodd" clip-rule="evenodd" d="M7.96819 15.1354H16.4674C17.1831 15.1354 17.8094 14.5092 17.8094 13.7935V8.87289C17.6304 8.78344 17.4515 8.69394 17.1831 8.60449C16.02 8.15719 14.6781 8.33609 13.6045 8.96234C12.9782 9.49914 12.173 9.94649 11.4573 10.3043C10.2943 10.6622 9.13124 9.85699 7.78924 11.3779C6.98404 12.5409 7.07354 14.0619 7.96819 15.1354Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5489 3.1354C7.6587 3.79683 5.50175 6.3846 5.50175 9.475V14.5078H5.001C3.89602 14.5078 3 15.4034 3 16.5088C3 17.6135 3.89631 18.5098 5.001 18.5098H7.99855C8.27485 18.5098 8.4988 18.2859 8.4988 18.0096C8.4988 17.7333 8.27485 17.5093 7.99855 17.5093H5.001C4.44888 17.5093 4.00051 17.061 4.00051 16.5088C4.00051 15.9561 4.44848 15.5083 5.001 15.5083H17.865C17.9103 15.5218 17.9584 15.529 18.0082 15.529C18.0579 15.529 18.1059 15.5218 18.1513 15.5083H19.0082C19.5613 15.5083 20.0086 15.9557 20.0086 16.5088C20.0086 17.0614 19.5609 17.5093 19.0082 17.5093H11.9996C11.7233 17.5093 11.4993 17.7333 11.4993 18.0096C11.4993 18.2859 11.7233 18.5098 11.9996 18.5098H19.0082C20.1136 18.5098 21.0092 17.6138 21.0092 16.5088C21.0092 15.4031 20.1139 14.5078 19.0082 14.5078H18.5084V9.475C18.5084 6.38445 16.3512 3.79654 13.4607 3.13529C13.2975 2.48323 12.7074 2 12.0049 2C11.3023 2 10.7121 2.48329 10.5489 3.1354ZM17.5079 14.5078V9.475C17.5079 6.43655 15.0435 3.97217 12.0051 3.97217C8.96665 3.97217 6.50225 6.43655 6.50225 9.475V14.5078H17.5079ZM10.004 20.076C10.004 21.1449 10.9052 22 12.005 22C13.1049 22 14.0061 21.1449 14.0061 20.076C14.0061 19.7997 13.7821 19.5758 13.5058 19.5758C13.2295 19.5758 13.0056 19.7997 13.0056 20.076C13.0056 20.5802 12.5637 20.9995 12.005 20.9995C11.4464 20.9995 11.0045 20.5802 11.0045 20.076C11.0045 19.7997 10.7805 19.5758 10.5042 19.5758C10.2279 19.5758 10.004 19.7997 10.004 20.076Z" fill="currentColor"/></symbol>
+<symbol id="ic-copy" viewBox="0 0 24 24" fill="none"><path d="M9.80371 22H20.9998C21.552 22 21.9998 21.5523 21.9998 21V19.4274C21.9998 19.4274 21.9998 15.6679 16.2148 16.7108C10.2427 17.7875 8.80371 12.83 8.80371 10.9802V21C8.80371 21.5523 9.25143 22 9.80371 22Z" fill="currentColor" fill-opacity="0.15"/><path d="M5 15C4.06812 15 3.60218 15 3.23463 14.8478C2.74458 14.6448 2.35523 14.2554 2.15224 13.7654C2 13.3978 2 12.9319 2 12V5.2C2 4.0799 2 3.51984 2.21799 3.09202C2.40973 2.71569 2.71569 2.40973 3.09202 2.21799C3.51984 2 4.0799 2 5.2 2H12C12.9319 2 13.3978 2 13.7654 2.15224C14.2554 2.35523 14.6448 2.74458 14.8478 3.23463C15 3.60218 15 4.06812 15 5M22 18.8C22 19.9201 22 20.4802 21.782 20.908C21.5903 21.2843 21.2843 21.5903 20.908 21.782C20.4802 22 19.9201 22 18.8 22H12.2C11.0799 22 10.5198 22 10.092 21.782C9.71569 21.5903 9.40973 21.2843 9.21799 20.908C9 20.4802 9 19.9201 9 18.8V12.2C9 11.0799 9 10.5198 9.21799 10.092C9.40973 9.71569 9.71569 9.40973 10.092 9.21799C10.5198 9 11.0799 9 12.2 9H18.8C19.9201 9 20.4802 9 20.908 9.21799C21.2843 9.40973 21.5903 9.71569 21.782 10.092C22 10.5198 22 11.0799 22 12.2V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-search" viewBox="0 0 24 24" fill="none"><path d="M3 10.3281C3 13.9793 5.95991 16.9392 9.61113 16.9392C11.007 16.9392 12.7607 16.1029 13.8278 15.3645C9.19288 13.8056 10.6744 6.22244 3.81968 7.1371C3.2973 8.08318 3 9.17091 3 10.3281Z" fill="currentColor" fill-opacity="0.15"/><path d="M21 21L15.0001 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C12.2136 3 14.1872 4.02748 15.4699 5.63153" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-filter-lines" viewBox="0 0 24 24" fill="none"><path d="M6 12H18M3 6H21M9 18H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-compass" viewBox="0 0 24 24" fill="none"><g clip-path="url(#cp-compass)"><path opacity="0.2" fill-rule="evenodd" clip-rule="evenodd" d="M20.5226 13.6902C20.2124 15.5364 19.3174 17.2342 17.9696 18.5335C16.6219 19.8328 14.8925 20.665 13.0361 20.9075C11.1798 21.1501 9.29465 20.7901 7.65831 19.8806C6.02197 18.9711 4.72092 17.5602 3.94678 15.8556C4.22265 15.3429 4.54787 14.8583 4.91783 14.4088C5.49042 13.7536 6.19229 13.2239 6.97936 12.8529C7.76644 12.4819 8.62172 12.2777 9.49149 12.253C10.6773 12.44 11.8834 12.4596 13.0747 12.3113C13.6247 12.1383 14.1453 11.883 14.6186 11.5539C15.1409 11.1605 15.7556 10.9084 16.4036 10.8216C17.0516 10.7349 17.7111 10.8165 18.3184 11.0586C18.8776 11.2762 19.3729 11.6315 19.7582 12.0915C20.1436 12.5515 20.4065 13.1014 20.5226 13.6902V13.6902Z" fill="currentColor"/><path d="M16.609 4.93129C14.6571 3.68958 12.2926 3.27237 10.0337 3.77112C7.77478 4.26986 5.80575 5.64387 4.5582 7.59198C3.90111 8.63049 3.46785 9.79465 3.28612 11.0101C3.02538 12.8612 3.36507 14.7471 4.25529 16.3909C5.14551 18.0347 6.53936 19.3498 8.23214 20.1429C9.92492 20.9361 11.8274 21.1655 13.6602 20.7976C15.493 20.4297 17.1596 19.4838 18.4151 18.0988C18.7393 17.7583 19.0258 17.3839 19.2697 16.9821C20.1587 15.5901 20.6351 13.9748 20.6437 12.3232C20.6523 10.6716 20.1927 9.05134 19.3182 7.65024" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.21924 15.9915L10.0739 10.437L15.6187 8.59204L13.7737 14.1368L8.21924 15.9915V15.9915Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="cp-compass"><rect width="20" height="20" fill="white" transform="translate(1.74707 2)"/></clipPath></defs></symbol>
+<symbol id="ic-document" viewBox="0 0 24 24" fill="none"><path opacity="0.2" d="M8.14795 14.0249C9.14188 13.6119 10.2878 13.6892 11.2993 14.355C11.9378 14.9463 12.5764 15.4422 13.2983 15.9331L13.4331 16.0249H13.4399C13.4825 16.0519 13.5327 16.0774 13.5913 16.0952C13.6126 16.1017 13.6345 16.1048 13.6558 16.1089C14.0184 16.2215 14.3662 16.2323 14.6655 16.2261C15.0029 16.2191 15.2396 16.1967 15.5073 16.2183C15.7494 16.2378 15.9753 16.2936 16.2075 16.4321C16.4414 16.5717 16.7113 16.8135 17.0122 17.2466C17.4827 18.017 17.6878 18.7174 17.5894 19.3784C17.4283 19.5561 17.1855 19.6566 16.9204 19.6567H7.87939C7.30337 19.5815 6.84815 19.0712 6.84814 18.3296V14.9995C7.21187 14.568 7.63893 14.2637 8.14795 14.0249Z" fill="currentColor" stroke="currentColor" stroke-width="1.05882"/><g clip-path="url(#cp-doc)"><path d="M15.9997 12.6746H9.08203" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.9997 16.4864H9.08203" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.7895 8.96063H9.08252" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.94622 20.2668C7.13766 20.2668 6.41895 19.485 6.41895 18.6053V5.31298C6.41895 4.43334 7.13766 3.65143 7.94622 3.65143H14.0553L18.6372 8.63604V18.6053C18.6372 19.485 17.9184 20.2668 17.1099 20.2668H11.989" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.4253 3.65155V9.32032H18.5462" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="cp-doc"><rect width="14.8236" height="18" fill="white" transform="translate(5.0708 3)"/></clipPath></defs></symbol>
+<symbol id="ic-cart" viewBox="0 0 24 24" fill="none"><path opacity="0.2" fill-rule="evenodd" clip-rule="evenodd" d="M17.0951 16.5131H9.32116C8.89825 16.5184 8.4869 16.3751 8.15888 16.1081C7.83086 15.8411 7.607 15.4674 7.52636 15.0522L6.31592 8.93741C7.57426 8.69268 8.8786 8.8996 9.99942 9.52176C10.7848 10.1619 11.6515 10.6952 12.5768 11.1079C13.9542 11.5044 15.4255 10.5652 17.0221 12.4331C17.4499 13.0241 17.6862 13.7321 17.6993 14.4616C17.7123 15.1911 17.5015 15.9071 17.0951 16.5131Z" fill="currentColor"/><path d="M17.7108 19.4975C17.8598 19.4996 18.0048 19.546 18.1274 19.6307C18.2499 19.7155 18.3445 19.8348 18.3991 19.9734C18.4537 20.1121 18.4658 20.2639 18.4339 20.4094C18.4021 20.555 18.3276 20.6878 18.22 20.791C18.1125 20.8941 17.9767 20.9629 17.8299 20.9887C17.6831 21.0144 17.532 20.996 17.3957 20.9356C17.2595 20.8752 17.1442 20.7757 17.0647 20.6497C16.9852 20.5237 16.9449 20.3769 16.949 20.2279C16.9545 20.0304 17.0375 19.8431 17.18 19.7064C17.3226 19.5697 17.5133 19.4946 17.7108 19.4975V19.4975Z" fill="currentColor"/><path d="M10.2181 19.4974C10.3671 19.4995 10.5121 19.5459 10.6347 19.6306C10.7573 19.7154 10.8518 19.8347 10.9064 19.9734C10.961 20.112 10.9732 20.2638 10.9413 20.4094C10.9094 20.5549 10.8349 20.6877 10.7274 20.7909C10.6198 20.894 10.484 20.9628 10.3372 20.9886C10.1904 21.0144 10.0393 20.9959 9.90305 20.9355C9.7668 20.8752 9.65157 20.7756 9.57203 20.6496C9.49249 20.5236 9.45222 20.3768 9.45634 20.2278C9.45769 20.1296 9.47854 20.0327 9.51769 19.9426C9.55683 19.8525 9.61349 19.7712 9.68437 19.7032C9.75525 19.6352 9.83894 19.582 9.93056 19.5467C10.0222 19.5114 10.1199 19.4946 10.2181 19.4974V19.4974Z" fill="currentColor"/><path d="M7.21289 12.433H20.1834" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.44619 7.49741H21.3419L19.881 15.0522C19.8004 15.4674 19.5765 15.8411 19.2485 16.1081C18.9205 16.3751 18.5092 16.5184 18.0862 16.5131H9.32097C8.89806 16.5184 8.48671 16.3751 8.1587 16.1081C7.83068 15.8411 7.60682 15.4674 7.52618 15.0522L6.31573 8.93741L5.10529 3H2.77832" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-headset" viewBox="0 0 24 24" fill="none"><path d="M4 13.5789V10.4211C4 8.18765 4.84285 6.04572 6.34315 4.46647C7.84344 2.88722 9.87827 2 12 2C14.1217 2 16.1566 2.88722 17.6569 4.46647C19.1571 6.04572 20 8.18765 20 10.4211V13.5789M4 13.5789C4 13.0206 4.21071 12.4851 4.58579 12.0903C4.96086 11.6955 5.46957 11.4737 6 11.4737H7C7.53043 11.4737 8.03914 11.6955 8.41421 12.0903C8.78929 12.4851 9 13.0206 9 13.5789V16.7368C9 17.2952 8.78929 17.8307 8.41421 18.2255C8.03914 18.6203 7.53043 18.8421 7 18.8421H6C5.46957 18.8421 4.96086 18.6203 4.58579 18.2255C4.21071 17.8307 4 17.2952 4 16.7368V13.5789ZM20 13.5789C20 13.0206 19.7893 12.4851 19.4142 12.0903C19.0391 11.6955 18.5304 11.4737 18 11.4737H17C16.4696 11.4737 15.9609 11.6955 15.5858 12.0903C15.2107 12.4851 15 13.0206 15 13.5789V16.7368C15 17.2952 15.2107 17.8307 15.5858 18.2255C15.9609 18.6203 16.4696 18.8421 17 18.8421H18M20 13.5789V16.7368C20 17.2952 19.7893 17.8307 19.4142 18.2255C19.0391 18.6203 18.5304 18.8421 18 18.8421M18 18.8421C18 20.5863 15.314 22 12 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path opacity="0.1" d="M10.4513 1.98298C6.33329 3.0864 2.89659 8.88201 4 13C4.42184 14.5743 3.84467 17.5197 5 18.5C5.35755 12.8015 17.401 9.39772 14.2979 1.94312C13.073 1.63987 11.7564 1.63328 10.4513 1.98298Z" fill="currentColor"/></symbol>
+<symbol id="ic-check-circle" viewBox="0 0 24 24" fill="none"><path opacity="0.1" d="M1.82666 12.2286C1.82666 17.7993 6.34262 22.3152 11.9133 22.3152C14.043 22.3152 16.7187 21.0394 18.3467 19.9127C11.2752 17.5342 13.5356 5.96457 3.07725 7.36008C2.28025 8.80352 1.82666 10.4631 1.82666 12.2286Z" fill="currentColor"/><path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C15.5066 2 18.5916 3.80485 20.3768 6.53625M7.5 12L10.5 15L16.5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="ic-flag-id" viewBox="0 0 18 18"><path d="M9 18C13.9706 18 18 13.9706 18 9C18 4.02944 13.9706 0 9 0C4.02944 0 0 4.02944 0 9C0 13.9706 4.02944 18 9 18Z" fill="#F0F0F0"/><path d="M9 0C5.10896 0 1.79417 2.46992 0.537109 5.9248H17.4629C16.2058 2.46992 12.891 0 9 0Z" fill="#D80027"/><circle cx="9" cy="9" r="8.5" fill="none" stroke="rgba(19,63,93,.12)"/></symbol>
 </defs></svg>
 
 <div class="phone">
+<!-- ================= SCREEN 1 — Buat Mitra Baru ================= -->
+<div class="screen is-active" data-screen="Buat Mitra Baru" data-flow-next="Daftar Mitra" data-flow-label="Simpan Mitra">
+
   <!-- ===== APP BAR (Figma: Navigation Bar) ===== -->
   <header class="appbar">
     <div class="appbar__row">
@@ -398,7 +553,7 @@ img{display:block}
           </div>
           <span id="phone-suffix" aria-live="polite"></span>
         </div>
-        <p class="au-hint" id="phone-hint"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-alert"/></svg><span>Nomor telepon belum lengkap.</span></p>
+        <p class="au-hint au-hint--error" id="phone-hint">Nomor telepon belum lengkap.</p>
       </div>
 
       <!-- ===== HASIL PENCARIAN — semua kondisi bisa dicek lewat widget "State" ===== -->
@@ -520,7 +675,7 @@ img{display:block}
           <input class="au-input" id="nama" placeholder="Nama Mitra" autocomplete="organization"
                  oninput="onNameInput()" onfocus="setActive('ff-name',1)" onblur="setActive('ff-name',0)">
         </div>
-        <p class="au-hint"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-alert"/></svg><span>Nama mitra belum diisi.</span></p>
+        <p class="au-hint au-hint--error">Nama mitra belum diisi.</p>
       </div>
 
       <div class="au-form-field" id="ff-email">
@@ -529,7 +684,7 @@ img{display:block}
           <input class="au-input" id="email" type="email" placeholder="Email" autocomplete="email"
                  oninput="clearError('ff-email')" onfocus="setActive('ff-email',1)" onblur="setActive('ff-email',0)">
         </div>
-        <p class="au-hint"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-alert"/></svg><span>Format email belum benar.</span></p>
+        <p class="au-hint au-hint--error">Format email belum benar.</p>
       </div>
 
       <div class="au-form-field" id="ff-no">
@@ -538,7 +693,7 @@ img{display:block}
           <input class="au-input" id="nomor" value="112" inputmode="numeric"
                  oninput="clearError('ff-no')" onfocus="setActive('ff-no',1)" onblur="setActive('ff-no',0)">
         </div>
-        <p class="au-hint"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-alert"/></svg><span>No. mitra belum diisi.</span></p>
+        <p class="au-hint au-hint--error">No. mitra belum diisi.</p>
       </div>
 
       <div class="au-form-field">
@@ -587,6 +742,139 @@ img{display:block}
   </div>
 </div>
 
+<!-- ================= SCREEN 2 — Daftar Mitra (Figma "Partner-myList") ================= -->
+<div class="screen" data-screen="Daftar Mitra">
+
+  <header class="navbar2">
+    <button class="au-btn au-btn--tertiary au-btn--icon-only" type="button" aria-label="Menu" onclick="soon('Menu')">
+      <svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-menu"/></svg>
+    </button>
+    <div class="navbar2__mid">
+      <h2>Partner</h2>
+      <button class="navbar2__id" type="button" onclick="copyId()">
+        Company ID: ST1PFO
+        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-copy"/></svg>
+      </button>
+    </div>
+    <button class="au-btn au-btn--tertiary au-btn--icon-only" type="button" aria-label="Notifikasi" onclick="soon('Notifikasi')">
+      <svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-bell"/></svg>
+    </button>
+  </header>
+
+  <nav class="au-tab" role="tablist" onclick="pickTab(event)">
+    <button class="au-tab__item active" type="button" role="tab" aria-selected="true">My Partner</button>
+    <button class="au-tab__item" type="button" role="tab" aria-selected="false">
+      Connection Request <span class="au-tab__count">5</span>
+    </button>
+  </nav>
+
+  <div class="filterbar">
+    <button class="icon-round" type="button" aria-label="Filter" onclick="soon('Filter')">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-filter-lines"/></svg>
+    </button>
+    <button class="au-chip active" type="button" onclick="pickType(this)">All</button>
+    <button class="au-chip" type="button" onclick="pickType(this)">Client</button>
+    <button class="au-chip" type="button" onclick="pickType(this)">Supplier</button>
+    <button class="au-chip" type="button" onclick="pickType(this)">Both</button>
+    <button class="icon-round" type="button" aria-label="Cari mitra" onclick="soon('Cari mitra')">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-search"/></svg>
+    </button>
+  </div>
+
+  <div class="list-body" id="partner-list">
+    <div class="au-banner au-banner--connection">
+      <span class="au-banner__icon au-banner__icon--connection">
+        <img src="assets/connection-badge.svg" width="18" height="18" alt="">
+        <img class="star" src="assets/connection-star.svg" width="12" height="12" alt="">
+      </span>
+      <p>Connect dan dapatkan <b>biaya lebih rendah</b>.</p>
+      <button class="link" type="button" onclick="soon('Pelajari Connect')">Pelajari</button>
+    </div>
+
+    <div id="list-items">
+      <button class="pcard" type="button" onclick="soon('Detail mitra')">
+        <span class="pcard__profile">
+          <span class="pcard__avatar"><span class="pcard__initials">M</span></span>
+          <span class="pcard__text">
+            <span class="pcard__name"><span>Makaryo</span></span>
+            <span class="pcard__sub">6281211235813 <span class="au-chip au-chip--sm">Supplier</span></span>
+          </span>
+        </span>
+        <span class="au-btn au-btn--primary au-btn--compact" role="button" tabindex="0" onclick="event.stopPropagation();connectFromList(this)">Connect</span>
+      </button>
+
+      <button class="pcard" type="button" onclick="soon('Detail mitra')">
+        <span class="pcard__profile">
+          <span class="pcard__avatar"><span class="pcard__initials">GT</span></span>
+          <span class="pcard__text">
+            <span class="pcard__name"><span>Global Tech Solusindo</span></span>
+            <span class="pcard__sub">6281211235813 <span class="au-chip au-chip--sm">Supplier</span></span>
+          </span>
+        </span>
+        <span class="pcard__status">Requested</span>
+      </button>
+
+      <button class="pcard" type="button" onclick="soon('Detail mitra')">
+        <span class="pcard__profile">
+          <span class="pcard__avatar"><span class="pcard__initials">AJ</span></span>
+          <span class="pcard__text">
+            <span class="pcard__name"><span>Abadi Jaya</span></span>
+            <span class="pcard__sub">6281211235813 <span class="au-chip au-chip--sm">Client</span></span>
+          </span>
+        </span>
+        <span class="au-btn au-btn--secondary au-btn--compact au-btn--brand-fg" role="button" tabindex="0" onclick="event.stopPropagation();inviteFromList(this)">Invite</span>
+      </button>
+
+      <button class="pcard" type="button" onclick="soon('Detail mitra')">
+        <span class="pcard__profile">
+          <span class="pcard__avatar"><span class="pcard__initials">BT</span></span>
+          <span class="pcard__text">
+            <span class="pcard__name"><span>Bintang Timur</span></span>
+            <span class="pcard__sub">6281211235813 <span class="au-chip au-chip--sm">Client</span></span>
+          </span>
+        </span>
+        <span class="pcard__status">Invited</span>
+      </button>
+
+      <button class="pcard" type="button" onclick="soon('Detail mitra')">
+        <span class="pcard__profile">
+          <span class="pcard__avatar"><img src="assets/partner-logo.png" width="40" height="40" alt=""></span>
+          <span class="pcard__text">
+            <span class="pcard__name">
+              <span>Astro</span>
+              <span class="ppc__verified"><svg width="12" height="12" viewBox="0 0 24 24" aria-label="Terverifikasi"><use href="#ic-verified"/></svg></span>
+            </span>
+            <span class="pcard__org">PT Astro Technologies Indonesia</span>
+            <span class="pcard__sub"><span class="au-chip au-chip--sm">Both</span> 081211235813</span>
+          </span>
+        </span>
+        <span class="pcard__status pcard__status--ok">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><use href="#ic-check-circle"/></svg>
+          Connected
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="tabbar">
+    <button class="tabbar__item" type="button" onclick="soon('Home')">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><use href="#ic-compass"/></svg>Home
+    </button>
+    <button class="tabbar__item" type="button" onclick="soon('Penjualan')">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><use href="#ic-document"/></svg>Penjualan
+    </button>
+    <button class="tabbar__fab" type="button" aria-label="Buat baru" onclick="goForm()">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><use href="#ic-plus"/></svg>
+    </button>
+    <button class="tabbar__item" type="button" onclick="soon('Pembelian')">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><use href="#ic-cart"/></svg>Pembelian
+    </button>
+    <button class="tabbar__item" type="button" onclick="soon('Bantuan')">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><use href="#ic-headset"/></svg>Bantuan
+    </button>
+  </nav>
+</div>
+
 <div class="au-toast-host" id="toasts" role="status" aria-live="polite"></div>
 <script>
 /* ============================================================
@@ -626,7 +914,7 @@ function syncField(name){
     SUFFIX.innerHTML = '<span class="field-success"><svg width="20" height="20" viewBox="0 0 24 24" aria-label="Nomor ditemukan"><use href="#ic-check-filled"/></svg></span>';
   } else if (name === 'invalid') {
     ff.classList.add('au-form-field--invalid');
-    HINT.querySelector('span').textContent = 'Nomor telepon belum lengkap.';
+    HINT.textContent = 'Nomor telepon belum lengkap.';
   }
   if (name !== 'connected' && autoFilled && !nameTouched) { setName(''); }
   syncing = false;
@@ -685,24 +973,26 @@ function clearError(id){ document.getElementById(id).classList.remove('au-form-f
 function markError(id, msg){
   var ff = document.getElementById(id);
   ff.classList.add('au-form-field--invalid');
-  if (msg) ff.querySelector('.au-hint span').textContent = msg;
+  if (msg) ff.querySelector('.au-hint').textContent = msg;
   return ff;
 }
 
 function saveMitra(){
-  var first = null;
+  /* SEMUA field wajib yang kosong ditandai sekaligus — bukan satu-satu.
+     (Aurora: form-field--invalid → label + hint ikut merah, error-state-matcher form.submitted) */
+  var bad = [];
   ['ff-phone','ff-name','ff-no','ff-email'].forEach(function(id){ clearError(id); });
 
   if (digits().length < MIN_DIGITS) {
-    first = markError('ff-phone', digits().length ? 'Nomor telepon belum lengkap.' : 'Nomor telepon belum diisi.');
-    setState(digits().length ? 'invalid' : 'default');
+    setState(digits().length ? 'invalid' : 'default');  /* setState nge-reset field dulu… */
+    bad.push(markError('ff-phone', digits().length ? 'Nomor telepon belum lengkap.' : 'Nomor telepon belum diisi.'));
   }
-  if (!document.getElementById('nama').value.trim())  first = first || markError('ff-name');
-  if (!document.getElementById('nomor').value.trim()) first = first || markError('ff-no');
+  if (!document.getElementById('nama').value.trim())  bad.push(markError('ff-name'));
+  if (!document.getElementById('nomor').value.trim()) bad.push(markError('ff-no'));
   var mail = document.getElementById('email').value.trim();
-  if (mail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) first = first || markError('ff-email');
+  if (mail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) bad.push(markError('ff-email'));
 
-  if (first) { first.scrollIntoView({behavior:'smooth', block:'center'}); return; }
+  if (bad.length) { bad[0].scrollIntoView({behavior:'smooth', block:'center'}); return; }
 
   var btn = document.getElementById('btn-save');
   var wasConnected = currentState() === 'connected';
@@ -713,39 +1003,107 @@ function saveMitra(){
     btn.disabled = false;
     btn.textContent = 'Simpan Mitra';
     if (digits().indexOf('800') === 0) {
-      toast('Gagal simpan mitra. Cek koneksi kamu.', 'danger');
+      toast('Gagal simpan mitra', 'danger', 'Cek koneksi kamu, lalu simpan lagi. Isian kamu masih aman.');
       return;
     }
-    toast(wasConnected
-      ? 'Mitra berhasil dibuat, permintaan koneksi terkirim.'
-      : 'Mitra berhasil dibuat.');
+    addPartnerRow(wasConnected);
+    goList();
+    /* teks toast persis node Figma "Toast" 2176:10742 */
+    toast('Mitra Berhasil Ditambah', null, 'Anda baru saja menambah mitra pada My Partner.');
     resetForm();
   }, 1200);
 }
 
-function resetForm(){
-  var main = document.querySelector('.content');
-  main.style.transition = 'opacity var(--speed-normal,300ms) var(--ease-out-regular,ease-out)';
-  main.style.opacity = '.35';
-  setTimeout(function(){
-    PHONE.value = ''; nameTouched = false; setName('');
-    document.getElementById('email').value = '';
-    document.getElementById('nomor').value = '113';
-    setState('default');
-    window.scrollTo({top:0, behavior:'smooth'});
-    main.style.opacity = '1';
-  }, 320);
+/* ---------- Screen 2: Daftar Mitra ---------- */
+function screenEl(name){ return document.querySelector('[data-screen="'+name+'"]'); }
+function showScreen(name){
+  [].forEach.call(document.querySelectorAll('[data-screen]'), function(s){
+    s.classList.toggle('is-active', s.getAttribute('data-screen') === name);
+  });
+  window.scrollTo({top:0});
+}
+function goList(){ showScreen('Daftar Mitra'); }
+function goForm(){ showScreen('Buat Mitra Baru'); }
+function goBack(){ goList(); }
+
+function initials(name){
+  var w = (name||'').trim().split(/\s+/).filter(Boolean);
+  if (!w.length) return '?';
+  return (w.length === 1 ? w[0].slice(0,1) : w[0].slice(0,1) + w[1].slice(0,1)).toUpperCase();
+}
+/* baris mitra baru — statusnya nyusul apa yang terjadi di form */
+function addPartnerRow(wasConnected){
+  var nama  = document.getElementById('nama').value.trim() || 'Mitra Baru';
+  var tel   = '62' + digits();
+  var tipe  = (document.querySelector('.section-card .au-chip.active') || {textContent:'Supplier & Client'}).textContent.trim();
+  var found = ['found','connected'].indexOf(currentState()) > -1;
+
+  var row = document.createElement('button');
+  row.className = 'pcard fade-in';
+  row.type = 'button';
+  row.setAttribute('onclick', "soon('Detail mitra')");
+  var aksi = wasConnected
+    ? '<span class="pcard__status">Requested</span>'
+    : (found
+        ? '<span class="au-btn au-btn--primary au-btn--compact" role="button" tabindex="0" onclick="event.stopPropagation();connectFromList(this)">Connect</span>'
+        : '<span class="au-btn au-btn--secondary au-btn--compact au-btn--brand-fg" role="button" tabindex="0" onclick="event.stopPropagation();inviteFromList(this)">Invite</span>');
+  row.innerHTML =
+    '<span class="pcard__profile">'
+    + '<span class="pcard__avatar"><span class="pcard__initials"></span></span>'
+    + '<span class="pcard__text"><span class="pcard__name"><span></span></span>'
+    + '<span class="pcard__sub"><span class="pcard__tel"></span> <span class="au-chip au-chip--sm"></span></span>'
+    + '</span></span>' + aksi;
+  row.querySelector('.pcard__initials').textContent = initials(nama);
+  row.querySelector('.pcard__name span').textContent = nama;
+  row.querySelector('.pcard__tel').textContent = tel;
+  row.querySelector('.au-chip--sm').textContent = tipe;
+
+  var list = document.getElementById('list-items');
+  list.insertBefore(row, list.firstChild);
 }
 
-function toast(msg, type){
+function pickTab(ev){
+  var item = ev.target.closest ? ev.target.closest('.au-tab__item') : null;
+  if (!item) return;
+  [].forEach.call(item.parentNode.children, function(c){
+    c.classList.remove('active'); c.setAttribute('aria-selected','false');
+  });
+  item.classList.add('active'); item.setAttribute('aria-selected','true');
+  if (item.textContent.indexOf('Connection Request') > -1) soon('Tab Connection Request');
+}
+function connectFromList(el){
+  var s = document.createElement('span');
+  s.className = 'pcard__status'; s.textContent = 'Requested';
+  el.parentNode.replaceChild(s, el);
+  toast('Permintaan koneksi terkirim', null, 'Tunggu mitra kamu nyetujuin, ya.');
+}
+function inviteFromList(el){
+  var s = document.createElement('span');
+  s.className = 'pcard__status'; s.textContent = 'Invited';
+  el.parentNode.replaceChild(s, el);
+  toast('Undangan terkirim', null, 'Mitra kamu dapat ajakan gabung ke Paper.');
+}
+function copyId(){ toast('Company ID disalin', null, 'ST1PFO udah ada di clipboard kamu.'); }
+
+function resetForm(){
+  PHONE.value = ''; nameTouched = false; setName('');
+  document.getElementById('email').value = '';
+  document.getElementById('nomor').value = '113';
+  ['ff-phone','ff-name','ff-no','ff-email'].forEach(function(id){ clearError(id); });
+  setState('default');
+}
+
+function toast(msg, type, sub){
   var host = document.getElementById('toasts');
   var t = document.createElement('div');
   t.className = 'au-toast' + (type === 'danger' ? ' au-toast--danger' : '');
-  t.innerHTML = '<span class="au-toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-'
+  t.innerHTML = '<span class="au-toast__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-'
     + (type === 'danger' ? 'alert' : 'check-filled') + '"/></svg></span>'
-    + '<span class="au-toast__text"></span>'
+    + '<span class="au-toast__text"><span class="au-toast__title"></span>'
+    + (sub ? '<span class="au-toast__sub"></span>' : '') + '</span>'
     + '<button class="au-toast__close" type="button" aria-label="Tutup"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-x-close"/></svg></button>';
-  t.querySelector('.au-toast__text').textContent = msg;
+  t.querySelector('.au-toast__title').textContent = msg;
+  if (sub) t.querySelector('.au-toast__sub').textContent = sub;
   t.querySelector('.au-toast__close').onclick = function(){ close(); };
   host.appendChild(t);
   var timer = setTimeout(close, 4000);
@@ -757,7 +1115,6 @@ function toast(msg, type){
 }
 
 function soon(what){ toast(what + ' belum masuk prototype ini.'); }
-function goBack(){ toast('Balik ke Daftar Mitra (halamannya belum dibikin).'); }
 
 setState('default');
 </script>
