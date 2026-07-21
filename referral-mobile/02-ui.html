@@ -46,8 +46,9 @@
   --state-success-icon:#97cc56; --state-success-bg:#f7fbf3;
   --state-danger-icon:#e35273;  --state-danger-bg:#fdf3f5;
   --state-caution-icon:#eab11c; --state-caution-bg:#fdf9ef;
-  /* gradient — dipakai Progress Bar */
+  /* gradient — Progress Bar fill & Toast background */
   --grad-0:#97cc56; --grad-100:#4199d5;
+  --toast-a:#133f5d; --toast-b:#0a1d28;
   /* spacing */
   --sp-2xs:2px; --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px; --sp-xl:20px; --sp-5xl:36px;
   /* radius */
@@ -254,15 +255,20 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
 .sticky{flex:none;padding:var(--sp-md) var(--sp-lg);background:var(--surface-default);
         box-shadow:var(--shadow-blue-01)}
 
-/* PAPERVERSE: Toast  ·  componentKey 93b418bf31e19e959c9d725e9fb5cd281a4d0029
-   ⚠️ Nilai persis BELUM di-extract (nodeId belum ada). Sementara pakai token umum:
-      surface color/text/primary + radius/md 8 + Body-SemiBold/S. TANDAI buat diverifikasi. */
+/* PAPERVERSE: Toast  ·  component set 3203:4461 (type=Default)
+   ⚠️ BG-nya GRADIENT #133f5d → #0a1d28, bukan solid. Gampang salah.
+   Nilai: lebar 320 · padding spacing/md 12 / spacing/sm 8 · gap 8 · radius/md 8
+          shadow drop 0 3px 5px rgba(0,0,0,.08) · judul Body-SemiBold/M 14/22 putih
+          ikon 20×20 · close x-close 18×18 radius/full */
 .toast{position:absolute;left:var(--sp-lg);right:var(--sp-lg);bottom:80px;
-       background:var(--text-primary);color:var(--text-inverse);border-radius:var(--r-md);
-       padding:var(--sp-md);font:600 12px/18px 'Lato';display:flex;align-items:center;gap:var(--sp-sm);
+       background:linear-gradient(90deg,var(--toast-a),var(--toast-b));
+       color:var(--text-inverse);border-radius:var(--r-md);
+       padding:var(--sp-sm) var(--sp-md);font:600 14px/22px 'Lato';
+       display:flex;align-items:center;gap:var(--sp-sm);
+       box-shadow:0 3px 5px rgba(0,0,0,.08);
        opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none}
 .toast.on{opacity:1;transform:none}
-.toast svg{width:16px;height:16px;flex:none}
+.toast svg{width:20px;height:20px;flex:none}
 
 /* Empty State — POLA, bukan komponen (dikonfirmasi designer DS 2026-07-20)
    Susunan: Ilustrasi → judul → subjudul (kasih jalan keluar) → Button primary */
@@ -767,14 +773,6 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
       <p>Sesuai aturan, ini <b>dilaporkan</b> — bukan dikarang diam-diam. Sementara disusun dari
       token asli (surface + border + radius/md 8). Perlu keputusan: bikin komponen baru di DS,
       atau daftarin sebagai custom yang disetujui.</p>
-    </div>
-
-    <div class="note">
-      <h3>⚠️ Toast — masih ditandai</h3>
-      <p><code>componentKey 93b418bf…</code> ketemu, tapi <b>nilai persisnya belum ke-extract</b> —
-      nggak ada instance Toast di node manapun yang udah disampel.</p>
-      <p>Sementara pakai token umum (<code>text/primary</code> + <code>radius/md</code> 8 +
-      Body-SemiBold/S). Butuh link page <code>↳ Toast</code> buat diverifikasi.</p>
     </div>
 
     <div class="note" style="border-color:#E5C4BE;background:#F8E7E4">
