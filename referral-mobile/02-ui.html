@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══════════════════════════════════════════════════════════════════
+     PROGRAM REFERRAL MOBILE — Arah C · Paper.id
+     SEMUA nilai di-extract langsung dari Paperverse 1.0 Mobile
+     (fileKey 2Fga9lAogbeZ0q2uGlhFTc) via Figma MCP. TIDAK ADA yang
+     diketik dari ingatan. Tiap blok CSS komponen punya anotasi
+     PAPERVERSE: <komponen> + nodeId sumbernya.
+
+     Cache token   : paper-designer/ds/paperverse-mobile-tokens.md
+     Registry key  : paper-designer/ds/paperverse-mobile-components.md
+     Wireframe     : 01-wireframe-c.html
+     Riset          : ../referral-screening/
+     ══════════════════════════════════════════════════════════════════ -->
+<title>Program Referral Mobile — Arah C · Paper.id</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   TOKEN — verbatim dari get_variable_defs Paperverse Mobile
+   Sumber node: 2582:3053 · 6570:27936 · 6162:8665 · 6570:27938
+                1174:6446 · 7556:3571 · 6404:30972
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  /* color/text */
+  --text-primary:#133f5d; --text-secondary:#718c9e; --text-disabled:#c2cdd5;
+  --text-muted:#a5b6c1; --text-inverse:#ffffff; --text-link:#4199d5;
+  /* color/surface */
+  --surface-default:#ffffff; --surface-raised:#f3f6f9; --surface-platform:#f8fbfe;
+  --surface-muted:#e7eaec;
+  /* color/border */
+  --border-default:#dde1e5; --border-medium:#e1e5e8; --border-subtle:#f2f4f5;
+  --divider:#D6DBE0; --btn-secondary-border:#eaedef;
+  /* color/action */
+  --action-primary-bg:#4199d5; --action-primary-hover:#89bde5; --action-primary-pressed:#3385b5;
+  --action-destructive-bg:#e35273; --action-disabled-bg:#e7eaec; --action-disabled-fg:#7f97a7;
+  /* color/light */
+  --light-brand-15:#f2f7fc; --light-brand-25:#d1e6f5; --light-blue-20:#e8f3fa;
+  --light-grey-20:#f8f9fa; --light-grey-25:#f2f4f5; --light-grey-40:#dde1e5;
+  /* color/state */
+  --state-active-icon:#4199d5;  --state-active-bg:#f2f7fc;
+  --state-success-icon:#97cc56; --state-success-bg:#f7fbf3;
+  --state-danger-icon:#e35273;  --state-danger-bg:#fdf3f5;
+  --state-caution-icon:#eab11c; --state-caution-bg:#fdf9ef;
+  /* gradient — dipakai Progress Bar */
+  --grad-0:#97cc56; --grad-100:#4199d5;
+  /* spacing */
+  --sp-2xs:2px; --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px; --sp-xl:20px; --sp-5xl:36px;
+  /* radius */
+  --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-full:9999px;
+  /* stroke */
+  --stroke-xs:1px; --stroke-md:1.5px; --stroke-lg:2px;
+  /* shade/button/color — 4 layer, verbatim */
+  --shade-button:0 1px 2px rgba(10,13,18,.05),
+                 inset 0 0 0 1px rgba(10,13,18,.18),
+                 inset 0 1px 0 1px rgba(255,255,255,.10),
+                 inset 0 -2px 0 0 rgba(10,13,18,.05);
+  /* Shadow Blue-01 — dipakai bar sticky bawah */
+  --shadow-blue-01:0 -5px 20px rgba(65,153,213,.10);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;color:#1F2328}
+
+/* ─── chrome halaman review (BUKAN DS) ─── */
+.top{position:sticky;top:0;z-index:50;background:#EDECE6;border-bottom:1px solid rgba(0,0,0,.2);
+     padding:10px 22px;display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+.top b{font-size:14px;font-weight:700}
+.top .m{font-size:11px;color:#A3A39B}
+.top .sp{flex:1}
+.top a{font:600 12px 'Lato';color:#6E6E68;text-decoration:none;border:1px solid rgba(0,0,0,.2);
+       border-radius:8px;padding:6px 11px}
+.top a:hover{background:#EDEDE9;color:#1F2328}
+.wrap{max-width:1400px;margin:0 auto;padding:26px 22px 70px}
+.deck{display:flex;gap:26px;overflow-x:auto;padding:6px 2px 22px;align-items:flex-start}
+.fr{flex:none;width:360px}
+.fr-cap{margin-bottom:9px}
+.fr-cap .t{font-size:13px;font-weight:700}
+.fr-cap .s{font-size:11.5px;color:#A3A39B}
+
+/* ═══ SHELL HP — 360px = lebar artboard Paperverse Mobile ═══ */
+.phone{width:360px;height:720px;background:var(--surface-default);
+       border:1px solid rgba(0,0,0,.2);border-radius:var(--r-xl);overflow:hidden;
+       box-shadow:0 1px 2px rgba(0,0,0,.05),0 4px 10px rgba(0,0,0,.06);
+       display:flex;flex-direction:column;position:relative}
+.sbar{height:24px;display:flex;align-items:center;justify-content:space-between;
+      padding:0 var(--sp-lg);font:600 11px 'Lato';color:var(--text-primary);flex:none}
+
+/* PAPERVERSE: Navigation Bar
+   Sumber: componentKey 389c6ef89aaf94796d39cab66b8e880263b05373
+   Nilai: padding spacing/lg 16 · Heading/S 16/20/700 · border color/border/subtle */
+.nbar{height:56px;flex:none;display:flex;align-items:center;gap:var(--sp-md);
+      padding:0 var(--sp-lg);border-bottom:var(--stroke-xs) solid var(--border-subtle);
+      background:var(--surface-default)}
+.nbar .ttl{font:700 16px/20px 'Lato';color:var(--text-primary)}
+.nbar .ico{width:24px;height:24px;flex:none;color:var(--text-primary)}
+
+.scroll{flex:1;overflow-y:auto;padding:var(--sp-lg) var(--sp-lg) var(--sp-xl);
+        background:var(--surface-default)}
+.scroll::-webkit-scrollbar{width:0}
+
+/* ═══ TIPOGRAFI — text style Paperverse Mobile ═══ */
+.h-s   {font:700 16px/20px 'Lato';color:var(--text-primary)}   /* Heading/S */
+.hl-m  {font:700 20px/1.35 'Lato';color:var(--text-primary)}   /* Headline/Headline Medium */
+.b-m   {font:400 14px/22px 'Lato';color:var(--text-primary)}   /* Body/M */
+.bsb-m {font:600 14px/22px 'Lato';color:var(--text-primary)}   /* Body-SemiBold/M */
+.b-s   {font:400 12px/18px 'Lato';color:var(--text-primary)}   /* Body/S */
+.bsb-s {font:600 12px/18px 'Lato';color:var(--text-primary)}   /* Body-SemiBold/S */
+.t-sec {color:var(--text-secondary)} .t-dis{color:var(--text-disabled)}
+
+/* ═══ HERO ═══ */
+.hero{margin-bottom:var(--sp-xl)}
+.hero .lbl{font:400 12px/18px 'Lato';color:var(--text-secondary);margin-bottom:var(--sp-2xs)}
+.hero .amt{font:700 20px/1.35 'Lato';color:var(--text-primary)}
+.hero .sub{font:400 14px/22px 'Lato';color:var(--text-secondary);margin-top:var(--sp-xs)}
+
+.sec{margin-top:var(--sp-xl)}
+.sec-t{font:700 16px/20px 'Lato';color:var(--text-primary);margin-bottom:var(--sp-md)}
+.sec-t .n{font-weight:400;color:var(--text-secondary)}
+
+/* PAPERVERSE: molecule/section (kontainer)
+   Nilai: surface color/surface/light/default · border color/border/default · radius/lg 12 */
+.card{background:var(--surface-default);border:var(--stroke-xs) solid var(--border-default);
+      border-radius:var(--r-lg);overflow:hidden}
+
+/* kartu progres — komposisi dari token (bukan komponen jadi) */
+.prog{display:flex}
+.prog>div{flex:1;padding:var(--sp-md)}
+.prog>div+div{border-left:var(--stroke-xs) solid var(--border-default)}
+.prog .k{display:flex;align-items:center;gap:var(--sp-xs);
+         font:400 12px/18px 'Lato';color:var(--text-secondary)}
+.prog .dot{width:8px;height:8px;border-radius:var(--r-full);flex:none}
+.prog .dot.ok{background:var(--state-success-icon)}
+.prog .dot.pend{background:var(--state-caution-icon)}
+.prog .v{font:700 16px/20px 'Lato';color:var(--text-primary);margin-top:var(--sp-2xs)}
+.prog .u{font:400 12px/18px 'Lato';color:var(--text-secondary)}
+
+/* link teks — semantic/text/link #4199d5 */
+.tlink{display:inline-flex;align-items:center;gap:var(--sp-xs);
+       font:600 14px/22px 'Lato';color:var(--text-link);cursor:pointer;
+       background:none;border:0;padding:0;margin-top:var(--sp-md)}
+.tlink svg{width:16px;height:16px}
+
+/* PAPERVERSE: Input Text  ·  node 7181:1703
+   Nilai: h40 · padding spacing/md 12 / spacing/sm 8 · radius 4
+          border stroke/xs color/light/grey/40 · isi Body/M · placeholder color/dark/blue/25 */
+.field{height:40px;display:flex;align-items:center;gap:var(--sp-md);
+       padding:var(--sp-sm) var(--sp-md);border-radius:var(--r-sm);
+       border:var(--stroke-xs) solid var(--light-grey-40);background:var(--surface-default)}
+.field .code{flex:1;font:600 14px/22px 'Lato';color:var(--text-primary);letter-spacing:.06em}
+.field .cp{display:flex;align-items:center;gap:var(--sp-xs);
+           font:600 12px/18px 'Lato';color:var(--text-link);cursor:pointer;flex:none}
+.field .cp svg{width:16px;height:16px}
+
+/* PAPERVERSE: Button  ·  node 6078:20486 (Primary/Default/Default)
+   Nilai: padding spacing/lg 16 / spacing/sm 8 · gap spacings/sm 8
+          radius/full 9999 · Body-SemiBold/M · shade/button/color 4 layer
+          Primary bg color/action/primary/bg #4199d5, fg color/text/inverse */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-sm);
+     padding:var(--sp-sm) var(--sp-lg);border-radius:var(--r-full);border:0;cursor:pointer;
+     font:600 14px/22px 'Lato';background:var(--action-primary-bg);color:var(--text-inverse);
+     box-shadow:var(--shade-button);white-space:nowrap}
+.btn:hover{background:var(--action-primary-hover)}
+.btn:active{background:var(--action-primary-pressed)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn--secondary{background:var(--surface-default);color:var(--text-primary);
+                box-shadow:none;border:var(--stroke-xs) solid var(--btn-secondary-border)}
+.btn--secondary:hover{background:var(--light-grey-20)}
+.btn--block{width:100%}
+.btn:disabled{background:var(--action-disabled-bg);color:var(--action-disabled-fg);
+              box-shadow:none;cursor:default}
+
+/* PAPERVERSE: Tab  ·  node 7556:3571
+   ⚠️ Ini `Tab` (pemisah konten), BUKAN `Tab Bar` (nav bawah).
+   Dipakai gantiin Content Switcher — komponen itu belum ada di DS.
+   Nilai: padding 16/8 · gap 2 · border-bottom stroke/lg 2
+          aktif   color/light/blue/50 #4199d5 + semantic/text/primary
+          nonaktif color/border/default #dde1e5 + semantic/text/disabled */
+.tabs{display:flex;background:var(--surface-default)}
+.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+             gap:var(--sp-2xs);padding:var(--sp-sm) var(--sp-lg);border:0;cursor:pointer;
+             background:transparent;font:600 14px/22px 'Lato';
+             color:var(--text-disabled);border-bottom:var(--stroke-lg) solid var(--border-default)}
+.tabs button.on{color:var(--text-primary);border-bottom-color:var(--action-primary-bg)}
+
+/* PAPERVERSE: Progress Bar  ·  node 1174:6461 (Size=Default)
+   ⚠️ Fill-nya GRADIENT hijau→biru, track tebal 16px. Bukan bar tipis.
+   Nilai: track color/light/brand/25 #d1e6f5 h16 radius/xl 16
+          fill gradient color/gradient/outline-1 0%#97cc56 → 100%#4199d5 radius 8
+          judul Lato Bold 14/22 · persen Body/M rata kanan w36 · helper Body/M secondary */
+.pb{display:flex;flex-direction:column;gap:var(--sp-xs)}
+.pb-row{display:flex;flex-direction:column;gap:var(--sp-2xs)}
+.pb-top{display:flex;align-items:center;gap:var(--sp-md);color:var(--text-primary)}
+.pb-top .ttl{flex:1;font:700 14px/22px 'Lato'}
+.pb-top .pct{width:36px;text-align:right;font:400 14px/22px 'Lato'}
+.pb-track{height:16px;border-radius:var(--r-xl);background:var(--light-brand-25);
+          overflow:hidden;margin:var(--sp-xs) 0}
+.pb-fill{height:16px;border-radius:var(--r-md);
+         background:linear-gradient(90deg,var(--grad-0),var(--grad-100))}
+.pb-help{font:400 14px/22px 'Lato';color:var(--text-secondary)}
+
+/* tier row */
+.tier{padding:var(--sp-md) 0}
+.tier+.tier{border-top:var(--stroke-xs) solid var(--border-subtle)}
+
+/* PAPERVERSE: Chips  ·  node 7552:1715 (Subtle/Blue)
+   Nilai: padding spacing/xs 4 / spacing/2xs 2 · gap 4 · radius 4
+          Body-SemiBold/S 12/18/600 · Subtle Blue bg #e8f3fa fg color/text/secondary
+   Warna state dari color/state/*: success #97cc56/#f7fbf3 · caution #eab11c/#fdf9ef */
+.chip{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-xs);
+      padding:var(--sp-2xs) var(--sp-xs);border-radius:var(--r-sm);
+      font:600 12px/18px 'Lato';white-space:nowrap;
+      background:var(--light-blue-20);color:var(--text-secondary)}
+.chip--success{background:var(--state-success-bg);color:var(--state-success-icon)}
+.chip--caution{background:var(--state-caution-bg);color:var(--state-caution-icon)}
+
+/* baris Mitra — komposisi list dari token */
+.mrow{display:flex;align-items:center;gap:var(--sp-md);padding:var(--sp-md) 0}
+.mrow+.mrow{border-top:var(--stroke-xs) solid var(--border-subtle)}
+.mav{width:32px;height:32px;border-radius:var(--r-full);flex:none;
+     background:var(--light-brand-15);display:flex;align-items:center;justify-content:center;
+     font:700 12px/18px 'Lato';color:var(--action-primary-bg)}
+.mrow .tt{flex:1;min-width:0}
+.mrow .n{font:600 14px/22px 'Lato';color:var(--text-primary);
+         white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mrow .s{font:400 12px/18px 'Lato';color:var(--text-secondary)}
+.mrow .amt{font:700 14px/22px 'Lato';color:var(--state-success-icon);flex:none}
+
+/* PAPERVERSE: Accordion  ·  section 6162:8665 (Variant=Transparent)
+   Nilai: tinggi baris tertutup 54px · judul Body-SemiBold/M
+          isi Body/M secondary · divider color/border/subtle */
+.acc-i{border-bottom:var(--stroke-xs) solid var(--border-subtle);cursor:pointer}
+.acc-h{min-height:54px;display:flex;align-items:center;gap:var(--sp-md);padding:var(--sp-md) 0}
+.acc-h .q{flex:1;font:600 14px/22px 'Lato';color:var(--text-primary)}
+.acc-h .cv{width:20px;height:20px;flex:none;color:var(--text-secondary);transition:transform .2s}
+.acc-i.on .acc-h .cv{transform:rotate(180deg)}
+.acc-b{display:none;font:400 14px/22px 'Lato';color:var(--text-secondary);padding-bottom:var(--sp-md)}
+.acc-i.on .acc-b{display:block}
+
+/* bar sticky bawah — Shadow Blue-01 */
+.sticky{flex:none;padding:var(--sp-md) var(--sp-lg);background:var(--surface-default);
+        box-shadow:var(--shadow-blue-01)}
+
+/* PAPERVERSE: Toast  ·  componentKey 93b418bf31e19e959c9d725e9fb5cd281a4d0029
+   ⚠️ Nilai persis BELUM di-extract (nodeId belum ada). Sementara pakai token umum:
+      surface color/text/primary + radius/md 8 + Body-SemiBold/S. TANDAI buat diverifikasi. */
+.toast{position:absolute;left:var(--sp-lg);right:var(--sp-lg);bottom:80px;
+       background:var(--text-primary);color:var(--text-inverse);border-radius:var(--r-md);
+       padding:var(--sp-md);font:600 12px/18px 'Lato';display:flex;align-items:center;gap:var(--sp-sm);
+       opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none}
+.toast.on{opacity:1;transform:none}
+.toast svg{width:16px;height:16px;flex:none}
+
+/* Empty State — POLA, bukan komponen (dikonfirmasi designer DS 2026-07-20)
+   Susunan: Ilustrasi → judul → subjudul (kasih jalan keluar) → Button primary */
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;
+       gap:var(--sp-sm);padding:var(--sp-5xl) var(--sp-lg)}
+.empty .ill{width:120px;height:120px;margin-bottom:var(--sp-sm)}
+.empty .t{font:700 16px/20px 'Lato';color:var(--text-primary)}
+.empty .s{font:400 14px/22px 'Lato';color:var(--text-secondary);max-width:30ch}
+.empty .btn{margin-top:var(--sp-sm)}
+
+/* skeleton loading */
+.sk{background:var(--light-grey-25);border-radius:var(--r-sm);animation:pulse 1.3s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+
+/* banner Home */
+.hbg{background:var(--surface-platform);padding:var(--sp-lg);flex:1;overflow-y:auto}
+.hbg::-webkit-scrollbar{width:0}
+.ghost{border:1px dashed var(--border-default);border-radius:var(--r-lg);
+       height:76px;display:flex;align-items:center;justify-content:center;
+       font:400 12px/18px 'Lato';color:var(--text-muted);background:var(--surface-default)}
+
+/* PAPERVERSE: Banner  ·  componentKey a96b35aae4180decd6fb08e2cf6b8470e255f2b0
+   ⚠️ Nilai persis BELUM di-extract. Sementara komposisi dari token:
+      surface default + border default + radius/lg 12. TANDAI buat diverifikasi. */
+.banner{background:var(--surface-default);border:var(--stroke-xs) solid var(--border-default);
+        border-radius:var(--r-lg);padding:var(--sp-lg);cursor:pointer}
+.banner .n{font:400 12px/18px 'Lato';color:var(--text-secondary)}
+.banner .v{font:700 20px/1.35 'Lato';color:var(--text-primary);margin:var(--sp-2xs) 0 var(--sp-xs)}
+.banner .s{font:400 12px/18px 'Lato';color:var(--text-secondary);margin-bottom:var(--sp-md)}
+
+.notes{margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
+.note{background:#FCFCFB;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:17px 19px}
+.note h3{font-size:14px;font-weight:700;margin-bottom:6px}
+.note p{font-size:13px;color:#6E6E68} .note p+p{margin-top:7px} .note b{color:#1F2328}
+.warn{background:#FBF3E4;border:1px solid #E9D6AE;border-radius:12px;padding:15px 18px;
+      font-size:13px;color:#6B4A0F;margin-bottom:20px}
+.warn b{color:#4A3208}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <b>Program Referral Mobile — Arah C</b>
+  <span class="m">nilai asli Paperverse Mobile</span>
+  <span class="sp"></span>
+  <a href="01-wireframe-c.html">← Wireframe</a>
+  <a href="../referral-screening/index.html">Report riset</a>
+</div>
+
+<div class="wrap">
+
+  <div class="warn">
+    <b>Semua nilai di-extract langsung dari Figma</b> — warna, ukuran, radius, shadow, text style.
+    Nol nilai ketikan dari ingatan. Tiap blok CSS komponen ada anotasi <code>PAPERVERSE:</code> +
+    nodeId sumbernya. <b>2 komponen masih ditandai</b> (Toast &amp; Banner) — nilai persisnya belum
+    ke-extract, lihat catatan di bawah.
+  </div>
+
+  <div class="deck">
+
+    <!-- ══ 1 · HOME ══ -->
+    <div class="fr">
+      <div class="fr-cap"><div class="t">1 · Home — entry point</div><div class="s">banner pengganti yang lama</div></div>
+      <div class="phone">
+        <div class="sbar"><span>12.37</span><span>100%</span></div>
+        <div class="hbg">
+          <div class="ghost" style="margin-bottom:12px">Kartu Total Saldo</div>
+          <div class="ghost" style="height:60px;margin-bottom:16px">Promo carousel</div>
+          <div class="banner" onclick="alert('→ buka Program Referral')">
+            <div class="n">Ajak Mitra</div>
+            <div class="v">Dapatkan hingga<br>Rp500.000 per Mitra</div>
+            <div class="s">Bagi hasil tiap Mitra yang gabung &amp; berlangganan</div>
+            <button class="btn">Lihat Program</button>
+          </div>
+          <div class="ghost" style="height:60px;margin-top:16px">Konten Home lain</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 2 · UTAMA ══ -->
+    <div class="fr">
+      <div class="fr-cap"><div class="t">2 · Program Referral</div><div class="s">bisa diklik — tab, accordion, salin</div></div>
+      <div class="phone">
+        <div class="sbar"><span>12.37</span><span>100%</span></div>
+        <div class="nbar">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          <span class="ttl">Program Referral</span>
+        </div>
+        <div class="scroll">
+
+          <div class="hero">
+            <div class="lbl">Bagi hasil per Mitra</div>
+            <div class="amt">Dapatkan hingga Rp500.000</div>
+            <div class="sub">Makin banyak Mitra yang gabung, makin besar bagi hasil per Mitra-nya.</div>
+          </div>
+
+          <div class="card">
+            <div class="prog">
+              <div>
+                <div class="k"><span class="dot ok"></span>Sudah cair</div>
+                <div class="v">Rp1.500.000</div>
+                <div class="u">4 Mitra</div>
+              </div>
+              <div>
+                <div class="k"><span class="dot pend"></span>Menunggu</div>
+                <div class="v">Rp500.000</div>
+                <div class="u">1 Mitra</div>
+              </div>
+            </div>
+          </div>
+          <button class="tlink" onclick="alert('→ buka WhatsApp ke Amanda')">
+            Bagi hasil sudah cair? Chat Amanda
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+
+          <div class="sec">
+            <div class="sec-t">Kode referral kamu</div>
+            <div class="field">
+              <span class="code">DE6D3S4KCZ</span>
+              <span class="cp" onclick="toast()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Salin
+              </span>
+            </div>
+          </div>
+
+          <div class="sec">
+            <div class="sec-t">Bagi hasil per Mitra</div>
+            <div class="tabs" style="margin-bottom:var(--sp-lg)">
+              <button class="on" onclick="tier(this,'reg')">Reguler</button>
+              <button onclick="tier(this,'kyb')">KYB</button>
+            </div>
+            <div id="tiers">
+              <div class="tier">
+                <div class="pb"><div class="pb-row">
+                  <div class="pb-top"><span class="ttl">1–5 Mitra</span><span class="pct vl" data-reg="300rb" data-kyb="400rb">300rb</span></div>
+                  <div class="pb-track"><div class="pb-fill" style="width:80%"></div></div>
+                  <div class="pb-help">Kamu di sini — 4 dari 5 Mitra</div>
+                </div></div>
+              </div>
+              <div class="tier">
+                <div class="pb"><div class="pb-row">
+                  <div class="pb-top"><span class="ttl">6–10 Mitra</span><span class="pct vl" data-reg="350rb" data-kyb="450rb">350rb</span></div>
+                  <div class="pb-track"><div class="pb-fill" style="width:0"></div></div>
+                  <div class="pb-help">Kurang 2 Mitra lagi</div>
+                </div></div>
+              </div>
+              <div class="tier">
+                <div class="pb"><div class="pb-row">
+                  <div class="pb-top"><span class="ttl">11+ Mitra</span><span class="pct vl" data-reg="400rb" data-kyb="500rb">400rb</span></div>
+                  <div class="pb-track"><div class="pb-fill" style="width:0"></div></div>
+                  <div class="pb-help">Tarif tertinggi</div>
+                </div></div>
+              </div>
+            </div>
+            <div class="b-s t-sec" style="margin-top:var(--sp-md)">Dihitung ulang tiap awal bulan.</div>
+          </div>
+
+          <div class="sec">
+            <div class="sec-t">Mitra kamu <span class="n">(5)</span></div>
+            <div class="mrow">
+              <span class="mav">MJ</span>
+              <span class="tt"><div class="n">PT Maju Jaya Sentosa</div><div class="s">KYB selesai · 12 Jul</div></span>
+              <span class="amt">+Rp400rb</span>
+            </div>
+            <div class="mrow">
+              <span class="mav">BA</span>
+              <span class="tt"><div class="n">CV Berkah Abadi</div><div class="s">Langganan aktif · 8 Jul</div></span>
+              <span class="amt">+Rp400rb</span>
+            </div>
+            <div class="mrow">
+              <span class="mav">CT</span>
+              <span class="tt"><div class="n">PT Cahaya Timur</div><div class="s">Menunggu verifikasi KYC</div></span>
+              <span class="chip chip--caution">Proses</span>
+            </div>
+            <button class="tlink">Lihat semua Mitra
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <div class="sec">
+            <div class="sec-t">Pertanyaan umum</div>
+            <div class="acc-i" onclick="this.classList.toggle('on')">
+              <div class="acc-h"><span class="q">Syarat Mitra yang diundang</span>
+                <svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
+              <div class="acc-b">Terhubung otomatis dengan kamu, berlangganan Paper Plus 1 tahun, dan sudah terverifikasi KYC atau KYB.</div>
+            </div>
+            <div class="acc-i" onclick="this.classList.toggle('on')">
+              <div class="acc-h"><span class="q">Kapan bagi hasil cair?</span>
+                <svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
+              <div class="acc-b">Setelah Mitra menyelesaikan semua syarat. Pencairan manual — detail rekening diverifikasi lewat WhatsApp.</div>
+            </div>
+            <div class="acc-i" onclick="this.classList.toggle('on')">
+              <div class="acc-h"><span class="q">Syarat &amp; ketentuan</span>
+                <svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
+              <div class="acc-b">Periode program 1 Juli–31 Desember 2026. Paper berhak mengubah atau menghentikan program bila ditemukan indikasi kecurangan.</div>
+            </div>
+          </div>
+
+        </div>
+        <div class="sticky">
+          <button class="btn btn--block" onclick="toast()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/></svg>
+            Bagikan Kode Referral
+          </button>
+        </div>
+        <div class="toast" id="tst">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Kode referral disalin
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 3 · BELUM PUNYA MITRA ══ -->
+    <div class="fr">
+      <div class="fr-cap"><div class="t">3 · Belum punya Mitra</div><div class="s">pola Empty State production</div></div>
+      <div class="phone">
+        <div class="sbar"><span>12.37</span><span>100%</span></div>
+        <div class="nbar">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          <span class="ttl">Program Referral</span>
+        </div>
+        <div class="scroll">
+          <div class="hero">
+            <div class="lbl">Bagi hasil per Mitra</div>
+            <div class="amt">Dapatkan hingga Rp500.000</div>
+            <div class="sub">Makin banyak Mitra yang gabung, makin besar bagi hasil per Mitra-nya.</div>
+          </div>
+
+          <div class="empty" style="padding:var(--sp-xl) 0">
+            <svg class="ill" viewBox="0 0 120 120" fill="none">
+              <ellipse cx="60" cy="104" rx="42" ry="7" fill="#f2f7fc"/>
+              <path d="M26 44h30l7 9h31a5 5 0 0 1 5 5v34a5 5 0 0 1-5 5H26a5 5 0 0 1-5-5V49a5 5 0 0 1 5-5Z" fill="#d1e6f5"/>
+              <path d="M26 56h68a5 5 0 0 1 5 5v31a5 5 0 0 1-5 5H26a5 5 0 0 1-5-5V61a5 5 0 0 1 5-5Z" fill="#e8f3fa"/>
+              <circle cx="60" cy="76" r="14" fill="#ffffff"/>
+              <path d="M54 70h12M54 76h12M54 82h7" stroke="#c2cdd5" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="92" cy="34" r="6" fill="#f2f7fc"/><circle cx="30" cy="30" r="4" fill="#f2f7fc"/>
+            </svg>
+            <div class="t">Belum ada Mitra yang bergabung</div>
+            <div class="s">Bagikan kode kamu sekarang, atau pelajari dulu cara kerjanya di bawah.</div>
+          </div>
+
+          <div class="sec" style="margin-top:0">
+            <div class="sec-t">Kode referral kamu</div>
+            <div class="field">
+              <span class="code">DE6D3S4KCZ</span>
+              <span class="cp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Salin</span>
+            </div>
+          </div>
+
+          <div class="sec">
+            <div class="sec-t">Cara kerjanya</div>
+            <div class="mrow" style="border:0"><span class="mav">1</span>
+              <span class="tt"><div class="n">Bagikan kode ke rekan bisnis</div><div class="s">Lewat WhatsApp atau salin manual</div></span></div>
+            <div class="mrow"><span class="mav">2</span>
+              <span class="tt"><div class="n">Mitra daftar &amp; verifikasi</div><div class="s">KYC atau KYB, lalu berlangganan Paper Plus</div></span></div>
+            <div class="mrow"><span class="mav">3</span>
+              <span class="tt"><div class="n">Bagi hasil masuk</div><div class="s">Cair lewat Amanda di WhatsApp</div></span></div>
+          </div>
+
+          <div class="sec">
+            <div class="sec-t">Bagi hasil per Mitra</div>
+            <div class="tabs" style="margin-bottom:var(--sp-lg)">
+              <button class="on">Reguler</button><button>KYB</button>
+            </div>
+            <div class="tier"><div class="pb"><div class="pb-row">
+              <div class="pb-top"><span class="ttl">1–5 Mitra</span><span class="pct">300rb</span></div>
+              <div class="pb-track"><div class="pb-fill" style="width:0"></div></div>
+            </div></div></div>
+            <div class="tier"><div class="pb"><div class="pb-row">
+              <div class="pb-top"><span class="ttl">6–10 Mitra</span><span class="pct">350rb</span></div>
+              <div class="pb-track"><div class="pb-fill" style="width:0"></div></div>
+            </div></div></div>
+            <div class="tier"><div class="pb"><div class="pb-row">
+              <div class="pb-top"><span class="ttl">11+ Mitra</span><span class="pct">400rb</span></div>
+              <div class="pb-track"><div class="pb-fill" style="width:0"></div></div>
+            </div></div></div>
+          </div>
+        </div>
+        <div class="sticky"><button class="btn btn--block">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/></svg>
+          Bagikan Kode Referral</button></div>
+      </div>
+    </div>
+
+    <!-- ══ 4 · LOADING ══ -->
+    <div class="fr">
+      <div class="fr-cap"><div class="t">4 · Loading</div><div class="s">skeleton, CTA disabled</div></div>
+      <div class="phone">
+        <div class="sbar"><span>12.37</span><span>100%</span></div>
+        <div class="nbar">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          <span class="ttl">Program Referral</span>
+        </div>
+        <div class="scroll">
+          <div class="sk" style="height:18px;width:40%;margin-bottom:8px"></div>
+          <div class="sk" style="height:27px;width:88%;margin-bottom:10px"></div>
+          <div class="sk" style="height:22px;width:96%;margin-bottom:6px"></div>
+          <div class="sk" style="height:22px;width:62%"></div>
+          <div class="sk" style="height:88px;margin-top:20px;border-radius:12px"></div>
+          <div class="sk" style="height:20px;width:34%;margin-top:20px"></div>
+          <div class="sk" style="height:40px;margin-top:12px;border-radius:4px"></div>
+          <div class="sk" style="height:20px;width:44%;margin-top:20px"></div>
+          <div class="sk" style="height:38px;margin-top:12px"></div>
+          <div class="sk" style="height:16px;margin-top:16px;border-radius:16px"></div>
+          <div class="sk" style="height:16px;margin-top:20px;border-radius:16px"></div>
+          <div class="sk" style="height:16px;margin-top:20px;border-radius:16px"></div>
+        </div>
+        <div class="sticky"><button class="btn btn--block" disabled>Bagikan Kode Referral</button></div>
+      </div>
+    </div>
+
+    <!-- ══ 5 · ERROR ══ -->
+    <div class="fr">
+      <div class="fr-cap"><div class="t">5 · Error</div><div class="s">wajib ada jalan keluar</div></div>
+      <div class="phone">
+        <div class="sbar"><span>12.37</span><span>100%</span></div>
+        <div class="nbar">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          <span class="ttl">Program Referral</span>
+        </div>
+        <div class="scroll" style="display:flex;align-items:center">
+          <div class="empty" style="width:100%">
+            <svg class="ill" viewBox="0 0 120 120" fill="none">
+              <ellipse cx="60" cy="104" rx="42" ry="7" fill="#fdf3f5"/>
+              <path d="M26 40h68a5 5 0 0 1 5 5v46a5 5 0 0 1-5 5H26a5 5 0 0 1-5-5V45a5 5 0 0 1 5-5Z" fill="#e8f3fa"/>
+              <path d="M21 45a5 5 0 0 1 5-5h68a5 5 0 0 1 5 5v9H21v-9Z" fill="#d1e6f5"/>
+              <circle cx="29" cy="47" r="2.5" fill="#ffffff"/><circle cx="37" cy="47" r="2.5" fill="#ffffff"/>
+              <circle cx="60" cy="76" r="17" fill="#fdf3f5"/>
+              <path d="M60 68v9M60 84h.01" stroke="#e35273" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <div class="t">Gagal memuat program</div>
+            <div class="s">Koneksi kamu terputus atau server sedang sibuk. Coba sebentar lagi.</div>
+            <button class="btn" style="margin-top:var(--sp-md)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+              Coba Lagi</button>
+            <button class="tlink" style="margin-top:var(--sp-sm)">Kembali ke Beranda</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ CATATAN ═══ -->
+  <div class="notes">
+    <div class="note">
+      <h3>Komponen DS yang dipakai</h3>
+      <p><b>Button</b> (pill 9999, shadow 4-layer) · <b>Input Text</b> (40px, radius 4) ·
+      <b>Tab</b> (garis bawah 2px) · <b>Progress Bar</b> (gradient hijau→biru, track 16px) ·
+      <b>Chips</b> (radius 4, Body-SemiBold/S) · <b>Accordion</b> (baris 54px) ·
+      <b>Navigation Bar</b>.</p>
+      <p>Tiap blok CSS-nya ada anotasi <code>PAPERVERSE:</code> + nodeId sumber — bisa dicek satu-satu.</p>
+    </div>
+
+    <div class="note">
+      <h3>⚠️ 2 komponen masih ditandai</h3>
+      <p><b>Toast</b> dan <b>Banner</b> — componentKey-nya udah ketemu tapi <b>nilai persisnya belum
+      ke-extract</b> (belum ketemu nodeId-nya). Sementara disusun dari token umum dan ditandai
+      di CSS.</p>
+      <p>Kalau kamu kasih link 2 page itu, gue extract dan ganti biar 100% match.</p>
+    </div>
+
+    <div class="note">
+      <h3>⚠️ Ukuran hero — perlu keputusan</h3>
+      <p>Arah C mengandalkan angka besar. Tapi text style terbesar yang <b>terkonfirmasi</b> di
+      Paperverse Mobile cuma <b>Headline/Headline Medium = Lato Bold 20px</b> — itu yang gue pakai.</p>
+      <p>DS punya <b>Heading/M</b> dan <b>Heading/L</b>, plus token sampai
+      <code>text/heading/size/6xl</code>, tapi <b>nilainya nggak ke-extract</b> dari node manapun
+      yang gue akses. Kalau Heading/L lebih besar, hero-nya harusnya pakai itu — kasih tau nilainya
+      atau link node yang pakai style itu.</p>
+    </div>
+
+    <div class="note">
+      <h3>Beda dari wireframe</h3>
+      <p><b>Hero mengecil</b> — dari 27px jadi 20px, nurut DS. Dominasinya sekarang lebih
+      bergantung ke posisi &amp; warna, bukan ukuran doang.</p>
+      <p><b>Progress bar jadi jauh lebih tebal</b> — 16px dengan gradient hijau→biru, sesuai DS.
+      Efeknya tangga tier lebih berat dari perkiraan di wireframe. Kalau kerasa terlalu ramai,
+      alternatifnya tier ditulis angka aja tanpa bar.</p>
+      <p><b>Tombol jadi pill</b> — semua Button Paperverse Mobile pakai <code>radius/full</code>.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toast(){
+  const t=document.getElementById('tst');
+  t.classList.add('on'); clearTimeout(window.__t);
+  window.__t=setTimeout(()=>t.classList.remove('on'),1700);
+}
+function tier(btn,mode){
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('#tiers .vl').forEach(v=>{ v.textContent=v.dataset[mode]; });
+}
+</script>
+</body>
+</html>

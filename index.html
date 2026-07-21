@@ -1,3 +1,449 @@
-﻿<!doctype html><meta charset=utf-8>
-<meta http-equiv="refresh" content="0; url=./component/">
-<title>Redirect</title><a href="./component/">component explorer &rarr;</a>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══════════════════════════════════════════════════════════════════
+     UI GENERATIONS — HUB TUNGGAL (1 link buat SEMUA generate UI)
+     Tiap generate UI = 1 objek di GENERATIONS, punya 6 step tetap.
+
+     ── NAMBAH GENERATE UI BARU ──────────────────────────────────────
+     Tambah 1 objek di array GENERATIONS (paling atas = paling baru):
+       { slug, nama, brief, platform, updated, steps:{1..6} }
+     Tiap step: { status, file?, catatan? }
+       status : 'done' | 'aktif' | 'nunggu' | 'skip'
+       file   : path relatif dari _output/ (dibuka di panel kanan)
+     Nggak perlu sentuh HTML/CSS — registry doang.
+
+     Chrome pakai token Neutral Minimal (samain sama _output/explorer/).
+     Deploy: lihat paper-designer/memory/shared/publish-gh-pages-workflow.md
+     ══════════════════════════════════════════════════════════════════ -->
+<title>UI Generations · Paper.id</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  :root{
+    --app-bg:#F4F4F2; --side-bg:#E7E6E0; --bar-bg:#EDECE6; --surface:#FCFCFB; --canvas:#F4F4F2;
+    --bd:rgba(0,0,0,.08); --bd-strong:rgba(0,0,0,.16);
+    --tx:#1F2328; --tx-mut:#6E6E68; --tx-dim:#A3A39B;
+    --accent:#1F2328; --accent-tx:#fff;
+    --item-on:#EAEAE6; --item-hover:#EDEDE9;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.05); --shadow-md:0 6px 22px rgba(0,0,0,.10);
+    --ok:#1F7A4D; --ok-bg:#E4F2EA;
+    --run:#1B5E8C; --run-bg:#E6F0F7;
+    --wait-bg:#EDECE8;
+    --warn-bg:#FBF3E4; --warn-bd:#E9D6AE; --warn-tx:#7A4B00;
+  }
+  body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;display:flex;
+       background:var(--app-bg);color:var(--tx);overflow:hidden}
+
+  /* ─── SIDEBAR ─── */
+  .side{width:262px;flex:none;background:var(--side-bg);border-right:1px solid var(--bd-strong);
+        display:flex;flex-direction:column;z-index:40;transition:transform .22s cubic-bezier(.4,0,.2,1)}
+  .side-h{padding:16px 16px 12px}
+  .side-h .logo{font-size:14px;font-weight:900;display:flex;align-items:center;gap:8px}
+  .side-h .logo svg{width:18px;height:18px;flex:none}
+  .side-h .tag{font-size:11px;color:var(--tx-dim);margin-top:2px}
+  .side-search{margin:0 12px 10px;display:flex;align-items:center;gap:8px;background:var(--surface);
+               border:1px solid var(--bd);border-radius:8px;padding:7px 10px}
+  .side-search svg{width:14px;height:14px;color:var(--tx-dim);flex:none}
+  .side-search input{flex:1;border:0;background:transparent;color:var(--tx);font:400 12px 'Lato';outline:none}
+  .side-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+            color:var(--tx-dim);padding:6px 18px}
+  .side-list{flex:1;overflow:auto;padding:0 8px 12px}
+  .gen{padding:10px 12px;border-radius:9px;cursor:pointer;margin-bottom:3px;transition:background .12s}
+  .gen:hover{background:var(--item-hover)}
+  .gen.on{background:var(--item-on)}
+  .gen .nm{font-size:13px;font-weight:700;color:var(--tx-mut);display:flex;align-items:center;gap:7px}
+  .gen.on .nm{color:var(--tx)}
+  .gen .meta{font-size:11px;color:var(--tx-dim);margin-top:3px;display:flex;align-items:center;gap:6px}
+  .plat{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+        padding:1.5px 5px;border-radius:4px;background:#E4F0EA;color:#1F6B49}
+  .plat.web{background:#F0E9DC;color:#7A5A1F}
+  /* mini progress 6 titik */
+  .dots{display:flex;gap:3px;margin-top:7px}
+  .dots i{width:100%;height:3px;border-radius:2px;background:#D6D5CF}
+  .dots i.done{background:var(--ok)}
+  .dots i.aktif{background:var(--run)}
+  .side-empty{padding:18px;font-size:12px;color:var(--tx-dim);line-height:1.6}
+  .side-foot{padding:11px 16px;border-top:1px solid var(--bd);font-size:11px;color:var(--tx-dim)}
+  .side-foot a{color:var(--tx-mut)}
+
+  /* ─── MAIN ─── */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .bar{display:flex;align-items:center;gap:11px;padding:9px 16px;background:var(--bar-bg);
+       border-bottom:1px solid var(--bd-strong);flex:none;flex-wrap:wrap}
+  .hamb{display:none;border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);
+        border-radius:8px;width:36px;height:34px;cursor:pointer;flex:none}
+  .hamb svg{width:16px;height:16px}
+  .bar h1{font-size:14px;font-weight:900}
+  .bar .sub{font-size:11px;color:var(--tx-dim)}
+  .bar .sp{flex:1}
+  .bar-btn{border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);
+           font:600 12px 'Lato';padding:7px 11px;border-radius:8px;cursor:pointer;
+           display:flex;align-items:center;gap:6px;text-decoration:none}
+  .bar-btn svg{width:14px;height:14px}
+  .bar-btn:hover{background:var(--item-hover);color:var(--tx)}
+  .bar-btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-tx);font-weight:700}
+  .bar-btn.primary:hover{background:#33383E;color:var(--accent-tx)}
+  .bar-btn:disabled{opacity:.4;cursor:default}
+  .bar-btn:disabled:hover{background:transparent;color:var(--tx-mut)}
+
+  /* ─── STEP RAIL ─── */
+  .rail{display:flex;gap:0;padding:12px 16px 0;background:var(--bar-bg);
+        border-bottom:1px solid var(--bd-strong);overflow-x:auto;flex:none}
+  .rail::-webkit-scrollbar{height:0}
+  .st{flex:1;min-width:132px;position:relative;padding:0 4px 12px;cursor:pointer;border:0;
+      background:transparent;text-align:left;font-family:'Lato'}
+  .st .line{height:3px;border-radius:2px;background:#D6D5CF;margin-bottom:8px}
+  .st.done .line{background:var(--ok)}
+  .st.aktif .line{background:var(--run)}
+  .st.skip .line{background:#D6D5CF;opacity:.5}
+  .st .no{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--tx-dim)}
+  .st .nm{font-size:12.5px;font-weight:700;color:var(--tx-mut);margin-top:1px;line-height:1.3}
+  .st.cur .nm{color:var(--tx)}
+  .st.cur .no{color:var(--tx)}
+  .st:hover .nm{color:var(--tx)}
+  .st .badge{display:inline-block;font-size:9.5px;font-weight:700;padding:1.5px 6px;
+             border-radius:4px;margin-top:5px}
+  .st.done .badge{background:var(--ok-bg);color:var(--ok)}
+  .st.aktif .badge{background:var(--run-bg);color:var(--run)}
+  .st.nunggu .badge{background:var(--wait-bg);color:var(--tx-dim)}
+  .st.skip .badge{background:var(--wait-bg);color:var(--tx-dim)}
+  .st.cur::after{content:'';position:absolute;left:4px;right:4px;bottom:0;height:2px;background:var(--accent)}
+
+  /* ─── BODY ─── */
+  .body{flex:1;display:flex;min-height:0}
+  .info{width:352px;flex:none;border-right:1px solid var(--bd);background:var(--surface);
+        overflow-y:auto;padding:18px 20px 26px}
+  .info h2{font-size:16px;font-weight:900;margin-bottom:3px}
+  .info .lead{font-size:12px;color:var(--tx-dim);margin-bottom:15px}
+  .blk{margin-bottom:16px}
+  .blk .k{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+          color:var(--tx-dim);margin-bottom:5px}
+  .blk .v{font-size:13px;color:var(--tx-mut);line-height:1.55}
+  .blk .v b{color:var(--tx)}
+  .blk ul{margin:0 0 0 16px} .blk li{font-size:13px;color:var(--tx-mut);line-height:1.55;margin-bottom:3px}
+  .callout{border-radius:10px;padding:12px 14px;font-size:12.5px;line-height:1.55}
+  .callout.warn{background:var(--warn-bg);border:1px solid var(--warn-bd);color:var(--warn-tx)}
+  .callout.warn b{color:#4A3208}
+  .callout.tool{background:var(--run-bg);border:1px solid #C4DCEC;color:#245C82}
+  .callout.tool b{color:var(--run)}
+  .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+
+  /* ─── STAGE ─── */
+  .stage{flex:1;position:relative;background:var(--canvas);min-width:0}
+  .stage iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+  .stage-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+               justify-content:center;gap:9px;text-align:center;padding:30px;color:var(--tx-dim)}
+  .stage-empty svg{width:44px;height:44px;opacity:.4}
+  .stage-empty .t{font-size:14px;font-weight:700;color:var(--tx-mut)}
+  .stage-empty .s{font-size:12.5px;max-width:38ch;line-height:1.55}
+
+  @media(max-width:1080px){ .info{width:300px} }
+  @media(max-width:860px){
+    .side{position:fixed;inset:0 auto 0 0;transform:translateX(-100%)}
+    .side.open{transform:none}
+    .hamb{display:flex;align-items:center;justify-content:center}
+    .body{flex-direction:column}
+    .info{width:100%;border-right:0;border-bottom:1px solid var(--bd);max-height:46%}
+    .stage{min-height:300px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="side" id="side">
+  <div class="side-h">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      UI Generations
+    </div>
+    <div class="tag">Paper.id · pusat semua generate UI</div>
+  </div>
+  <div class="side-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input id="q" placeholder="Cari generate UI…">
+  </div>
+  <div class="side-lbl">Generate UI</div>
+  <div class="side-list" id="list"></div>
+  <div class="side-foot">
+    Nambah baru? Edit array <b>GENERATIONS</b> di file ini.<br>
+    <a href="explorer/index.html" id="lnk-explorer">→ Component Explorer</a>
+  </div>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<main class="main">
+  <div class="bar">
+    <button class="hamb" id="hamb" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <div>
+      <h1 id="gnama">—</h1>
+      <div class="sub" id="gsub"></div>
+    </div>
+    <span class="sp"></span>
+    <button class="bar-btn" id="prev">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      Step sebelumnya
+    </button>
+    <button class="bar-btn" id="next">
+      Step berikutnya
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+    <a class="bar-btn primary" id="open" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+      Buka tab baru
+    </a>
+  </div>
+
+  <nav class="rail" id="rail"></nav>
+
+  <div class="body">
+    <div class="info" id="info"></div>
+    <div class="stage" id="stage"></div>
+  </div>
+</main>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   6 STEP TETAP — dipakai semua generate UI
+   ═══════════════════════════════════════════════════════════════ */
+const STEPS=[
+ {no:1,nm:'Brief masuk',
+  desc:'Brief dari ClickUp / gambar / teks. Yang wajib jelas: <b>screen apa</b>, <b>user lagi ngapain</b>, <b>aksi utamanya apa</b>.',
+  out:'Ringkasan brief + pertanyaan yang masih ngegantung',
+  tool:null},
+ {no:2,nm:'Report riset',
+  desc:'Screening app pembanding (Mobbin) + kompetitor. Hasilnya matrix skor per dimensi, detail tiap app, dan pola yang kita belum punya.',
+  out:'Report HTML interaktif — matrix, screenshot lokal, pola, arah desain',
+  tool:null},
+ {no:3,nm:'Pola → wireframe',
+  desc:'Tiap arah desain yang diusulkan <b>digenerate wireframe-nya semua</b> (bukan cuma yang difavoritin). Non-DS, abu-abu polos — yang dinilai urutan blok &amp; proporsi.',
+  out:'1 file wireframe per pola',
+  tool:'Wireframe-nya bisa dikomenin langsung pakai overlay ala Figma. Klik di titik manapun buat naruh pin.'},
+ {no:4,nm:'Apply Paperverse',
+  desc:'Pola yang kepilih di-apply Design System. Nilai (warna/ukuran/radius/shadow) <b>di-extract langsung dari Figma</b> — nol nilai ketikan dari ingatan. Tiap blok CSS dianotasi <code>PAPERVERSE:</code> + nodeId.',
+  out:'Prototype HTML pakai nilai DS asli + hasil audit',
+  tool:null},
+ {no:5,nm:'Adjust → Figma',
+  desc:'Revisi dari komentar, terus digenerate jadi file Figma. Komponen yang udah ada <b>wajib di-instance</b>, dilarang rebuild manual.',
+  out:'Versi revisi + file Figma',
+  tool:'Masih bisa dikomenin pakai overlay sebelum masuk Figma.'},
+ {no:6,nm:'Prototype interaktif',
+  desc:'Desain final dikasih aksi beneran — bisa diklik, pindah screen, munculin state. Buat nunjukin interaksi ke tim produk / tech.',
+  out:'Prototype yang bisa diklik + link publik',
+  tool:null}
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   REGISTRY — tambah objek baru di PALING ATAS
+   ═══════════════════════════════════════════════════════════════ */
+const GENERATIONS=[
+ {
+  slug:'referral-mobile',
+  nama:'Program Referral',
+  brief:'Revamp halaman Incentive/Referral + banner entry point di Home. Masalahnya: insentif Rp500rb kurang ke-highlight, halaman kepanjangan, kebanyakan teks.',
+  platform:'mobile',
+  updated:'20 Jul 2026',
+  steps:{
+   1:{status:'done',
+      catatan:'Brief masuk lewat <b>gambar wireframe + poster program</b>, bukan link ClickUp. Aksi utama diubah dari "Chat CS" jadi <b>"Bagikan Kode"</b> — Chat CS turun jadi text-link, karena tujuan halaman ini nambah Mitra, bukan nyairin. Sudah di-approve.<br><br>⚠️ Tier bentrok antara wireframe (1–5/6–10/11+) dan poster (5–10/11–20/&gt;20) — <b>diputuskan pakai angka wireframe</b>.'},
+   2:{status:'done',file:'referral-screening/index.html',
+      catatan:'11 app mobile + 4 web + 7 referensi banner. Skor Paper.id <b>1/6 — paling bawah dari 12</b>.<br><br>Temuan terbesar: kompetitor terdekat (Contra, Harvest, Fresha, Deel) <b>cuma punya versi web</b> — belum ada yang garap referral di mobile. Itu ruang kosong.'},
+   3:{status:'done',file:'referral-mobile/01-wireframe-c.html',
+      catatan:'⚠️ <b>Baru 1 dari 3 pola yang digenerate.</b> Arah A (Hero Angka) dan B (Dashboard Progres) belum dibikin wireframe-nya — waktu itu diminta "pola C dulu".<br><br>Arah C berisi 5 layar: Home, utama, belum-punya-Mitra, loading, error.'},
+   4:{status:'done',file:'referral-mobile/02-ui.html',
+      catatan:'Audit prototype: <b>spacing di luar skala nol, radius nol, 8 hex semuanya token DS terverifikasi</b>. 13 blok CSS dianotasi.<br><br>⚠️ <b>Toast</b> &amp; <b>Banner</b> masih ditandai — componentKey ketemu tapi nilai persis belum ke-extract.<br>⚠️ <b>Hero mengecil</b> 27px→20px, nurut text style DS terbesar yang terkonfirmasi. Nilai <code>Heading/L</code> belum ketemu.'},
+   5:{status:'nunggu',
+      catatan:'Belum jalan. Yang ditunggu: keputusan soal <b>ukuran hero</b>, plus nilai <b>Toast</b> &amp; <b>Banner</b> (butuh link node Figma-nya).'},
+   6:{status:'nunggu',catatan:'Belum jalan — nunggu step 5 kelar.'}
+  }
+ },
+ {
+  slug:'expense-management',
+  nama:'Expense Management',
+  brief:'List Pengeluaran + catat pengeluaran. Jadi referensi hidup buat bentukan tabel standar Paper.id.',
+  platform:'web',
+  updated:'20 Mei 2026',
+  steps:{
+   1:{status:'done',catatan:'Brief produk masuk sebelum alur 6-step ini ada.'},
+   2:{status:'skip',catatan:'Belum ada tahap report riset waktu itu.'},
+   3:{status:'done',file:'expense-management/01-flow.html',catatan:'User flow, belum pakai format wireframe non-DS.'},
+   4:{status:'done',file:'expense-management/02-ui.html',
+      catatan:'Jadi <b>referensi bentukan tabel standar</b>: sticky kolom aksi, filter inline per kolom, pagination center, dropdown portal ke body.<br><br>⚠️ Dibikin sebelum ritual extract-dari-Figma dipakai — sebagian nilai belum terverifikasi.'},
+   5:{status:'skip'},6:{status:'skip'}
+  }
+ },
+ {
+  slug:'tagih-invoice',
+  nama:'Tagih Invoice',
+  brief:'Alur penagihan invoice — dari list sampai kirim tagihan.',
+  platform:'web',
+  updated:'Jun 2026',
+  steps:{
+   1:{status:'done',catatan:'Sebelum alur 6-step ini ada.'},
+   2:{status:'skip'},
+   3:{status:'done',file:'tagih-invoice/01-flow.html'},
+   4:{status:'done',file:'tagih-invoice/02-ui.html'},
+   5:{status:'done',file:'tagih-invoice/03-figma.html',catatan:'Sudah sampai tahap generate Figma.'},
+   6:{status:'skip'}
+  }
+ },
+ {
+  slug:'push-notification',
+  nama:'Push Notification',
+  brief:'Komponen + halaman push notification.',
+  platform:'mobile',
+  updated:'Jul 2026',
+  steps:{
+   1:{status:'done'},2:{status:'skip'},3:{status:'skip'},
+   4:{status:'done',file:'push-notification/index.html'},
+   5:{status:'done',file:'push-notification-component/component-guide.html',
+      catatan:'Ada component guide terpisah.'},
+   6:{status:'skip'}
+  }
+ }
+];
+
+const LBL={done:'Selesai',aktif:'Jalan',nunggu:'Nunggu',skip:'Dilewat'};
+const $=id=>document.getElementById(id);
+let curG=0,curS=1,filt='';
+
+/* ─── SIDEBAR ─── */
+function renderList(){
+  const rows=GENERATIONS.map((g,i)=>({g,i}))
+    .filter(({g})=>!filt||(g.nama+' '+g.brief).toLowerCase().includes(filt));
+  if(!rows.length){ $('list').innerHTML='<div class="side-empty">Nggak ada yang cocok.</div>'; return; }
+  $('list').innerHTML=rows.map(({g,i})=>{
+    const dots=[1,2,3,4,5,6].map(n=>{
+      const s=(g.steps[n]||{}).status||'nunggu';
+      return `<i class="${s==='done'?'done':s==='aktif'?'aktif':''}"></i>`;
+    }).join('');
+    const done=[1,2,3,4,5,6].filter(n=>(g.steps[n]||{}).status==='done').length;
+    return `<div class="gen${i===curG?' on':''}" data-i="${i}">
+      <div class="nm">${g.nama}</div>
+      <div class="meta"><span class="plat ${g.platform==='web'?'web':''}">${g.platform}</span>
+        <span>${done}/6 step</span><span>·</span><span>${g.updated}</span></div>
+      <div class="dots">${dots}</div>
+    </div>`;
+  }).join('');
+  $('list').querySelectorAll('.gen').forEach(el=>{
+    el.onclick=()=>{ curG=+el.dataset.i; curS=firstInteresting(GENERATIONS[curG]); render(); };
+  });
+}
+/* step pertama yang layak dibuka: yang 'aktif', kalau nggak ada → done terakhir, kalau nggak ada → 1 */
+function firstInteresting(g){
+  for(let n=1;n<=6;n++) if((g.steps[n]||{}).status==='aktif') return n;
+  let last=1;
+  for(let n=1;n<=6;n++) if((g.steps[n]||{}).status==='done') last=n;
+  return last;
+}
+
+/* ─── RAIL ─── */
+function renderRail(){
+  const g=GENERATIONS[curG];
+  $('rail').innerHTML=STEPS.map(s=>{
+    const st=(g.steps[s.no]||{}).status||'nunggu';
+    return `<button class="st ${st}${s.no===curS?' cur':''}" data-n="${s.no}">
+      <div class="line"></div>
+      <div class="no">STEP ${s.no}</div>
+      <div class="nm">${s.nm}</div>
+      <span class="badge">${LBL[st]}</span>
+    </button>`;
+  }).join('');
+  $('rail').querySelectorAll('.st').forEach(b=>{ b.onclick=()=>{ curS=+b.dataset.n; render(); }; });
+}
+
+/* ─── INFO + STAGE ─── */
+function renderInfo(){
+  const g=GENERATIONS[curG], s=STEPS[curS-1], d=g.steps[curS]||{status:'nunggu'};
+  let html=`<h2>Step ${s.no} — ${s.nm}</h2>
+    <div class="lead">${g.nama} · ${LBL[d.status]}</div>`;
+
+  if(curS===1){
+    html+=`<div class="blk"><div class="k">Brief</div><div class="v">${g.brief}</div></div>`;
+  }
+  html+=`<div class="blk"><div class="k">Ngapain di step ini</div><div class="v">${s.desc}</div></div>
+         <div class="blk"><div class="k">Hasilnya</div><div class="v">${s.out}</div></div>`;
+
+  if(d.catatan) html+=`<div class="blk"><div class="k">Catatan</div><div class="v">${d.catatan}</div></div>`;
+  if(s.tool)    html+=`<div class="blk"><div class="callout tool"><b>Bisa dikomenin.</b> ${s.tool}</div></div>`;
+
+  if(curS===1){
+    html+=`<div class="blk"><div class="callout warn">
+      <b>ClickUp belum nyambung.</b> MCP yang aktif cuma Mobbin &amp; Figma — jadi link CU
+      <b>nggak bisa dibaca otomatis</b>. Sementara: copas isi brief-nya, atau screenshot.
+      Kalau mau otomatis, MCP ClickUp harus dipasang dulu.</div></div>`;
+  }
+
+  const acts=[];
+  if(d.file) acts.push(`<a class="bar-btn" href="${d.file}" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+      Buka file</a>`);
+  if(acts.length) html+=`<div class="acts">${acts.join('')}</div>`;
+  $('info').innerHTML=html;
+}
+
+function renderStage(){
+  const g=GENERATIONS[curG], d=g.steps[curS]||{};
+  if(d.file){ $('stage').innerHTML=`<iframe src="${d.file}" title="Step ${curS}"></iframe>`; return; }
+  const st=d.status||'nunggu';
+  const msg = st==='skip'
+    ? {t:'Step ini dilewat',s:'Generate UI ini dibikin sebelum alur 6-step dipakai, jadi step ini nggak ada file-nya.'}
+    : st==='done'
+    ? {t:'Selesai, tapi tanpa file',s:'Step ini kelar di percakapan — nggak menghasilkan file yang bisa dibuka.'}
+    : {t:'Belum jalan',s:'Belum ada yang bisa ditampilin. Lihat catatan di panel kiri buat tau apa yang ditunggu.'};
+  $('stage').innerHTML=`<div class="stage-empty">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+    <div class="t">${msg.t}</div><div class="s">${msg.s}</div></div>`;
+}
+
+function render(){
+  const g=GENERATIONS[curG], d=g.steps[curS]||{};
+  $('gnama').textContent=g.nama;
+  $('gsub').textContent=`${g.platform} · diperbarui ${g.updated}`;
+  $('prev').disabled=curS<=1; $('next').disabled=curS>=6;
+  const o=$('open');
+  if(d.file){ o.href=d.file; o.style.display='flex'; } else { o.style.display='none'; }
+  renderList(); renderRail(); renderInfo(); renderStage();
+  location.hash=`${g.slug}/${curS}`;
+  if(window.innerWidth<=860) $('side').classList.remove('open');
+}
+
+/* ─── NAV ─── */
+$('prev').onclick=()=>{ if(curS>1){curS--;render();} };
+$('next').onclick=()=>{ if(curS<6){curS++;render();} };
+$('hamb').onclick=()=>$('side').classList.toggle('open');
+$('q').oninput=e=>{ filt=e.target.value.toLowerCase().trim(); renderList(); };
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  if(e.key==='ArrowLeft'&&curS>1){curS--;render();}
+  if(e.key==='ArrowRight'&&curS<6){curS++;render();}
+});
+
+/* Component Explorer: folder-nya `explorer/` di lokal, tapi `component/` pas dipublish.
+   Cek mana yang kebuka, biar link-nya bener di dua-duanya. */
+(function fixExplorerLink(){
+  const a=$('lnk-explorer'); if(!a)return;
+  fetch('explorer/index.html',{method:'HEAD'})
+    .then(r=>{ if(!r.ok) a.href='component/index.html'; })
+    .catch(()=>{ a.href='component/index.html'; });
+})();
+
+/* deep link: #slug/step */
+(function init(){
+  const m=(location.hash||'').replace('#','').split('/');
+  const i=GENERATIONS.findIndex(g=>g.slug===m[0]);
+  if(i>=0){ curG=i; const n=+m[1]; curS=(n>=1&&n<=6)?n:firstInteresting(GENERATIONS[i]); }
+  else curS=firstInteresting(GENERATIONS[0]);
+  render();
+})();
+</script>
+</body>
+</html>
