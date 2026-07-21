@@ -284,11 +284,15 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
        height:76px;display:flex;align-items:center;justify-content:center;
        font:400 12px/18px 'Lato';color:var(--text-muted);background:var(--surface-default)}
 
-/* PAPERVERSE: Banner  ·  componentKey a96b35aae4180decd6fb08e2cf6b8470e255f2b0
-   ⚠️ Nilai persis BELUM di-extract. Sementara komposisi dari token:
-      surface default + border default + radius/lg 12. TANDAI buat diverifikasi. */
+/* 🔴 BELUM ADA KOMPONENNYA — kartu promo entry point di Home.
+   Komponen `Banner` di DS (instance 7556:3000) ternyata NOTICE INLINE
+   ("Connection request sent…"), BUKAN kartu promo — beda kebutuhan.
+   Yang mirip tapi bukan: `card` (kartu pembayaran), `Product Card`, `Carrousel`.
+   Sesuai HUKUM MATI #2 ini DILAPORKAN, bukan dikarang diam-diam.
+   Sementara: komposisi dari token asli — surface/light/default + border/default
+   + radius/md 8 (nilai yang sama dipakai Banner asli) + spacing/lg. */
 .banner{background:var(--surface-default);border:var(--stroke-xs) solid var(--border-default);
-        border-radius:var(--r-lg);padding:var(--sp-lg);cursor:pointer}
+        border-radius:var(--r-md);padding:var(--sp-lg);cursor:pointer}
 .banner .n{font:400 12px/18px 'Lato';color:var(--text-secondary)}
 .banner .v{font:700 20px/1.35 'Lato';color:var(--text-primary);margin:var(--sp-2xs) 0 var(--sp-xs)}
 .banner .s{font:400 12px/18px 'Lato';color:var(--text-secondary);margin-bottom:var(--sp-md)}
@@ -754,22 +758,36 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
       <p>Tiap blok CSS-nya ada anotasi <code>PAPERVERSE:</code> + nodeId sumber — bisa dicek satu-satu.</p>
     </div>
 
-    <div class="note">
-      <h3>⚠️ 2 komponen masih ditandai</h3>
-      <p><b>Toast</b> dan <b>Banner</b> — componentKey-nya udah ketemu tapi <b>nilai persisnya belum
-      ke-extract</b> (belum ketemu nodeId-nya). Sementara disusun dari token umum dan ditandai
-      di CSS.</p>
-      <p>Kalau kamu kasih link 2 page itu, gue extract dan ganti biar 100% match.</p>
+    <div class="note" style="border-color:#E5C4BE;background:#F8E7E4">
+      <h3 style="color:#A33A2E">🔴 Kartu promo Home belum ada komponennya</h3>
+      <p>Komponen <b>Banner</b> di DS ternyata <b>notice inline</b> — isi aslinya
+      <i>"Connection request sent. Wait them to approve it."</i> Bukan kartu promo.</p>
+      <p>Yang mirip tapi juga bukan: <code>card</code> (kartu pembayaran), <code>Product Card</code>,
+      <code>Carrousel</code>. Jadi <b>entry point referral di Home nggak punya padanan di DS</b>.</p>
+      <p>Sesuai aturan, ini <b>dilaporkan</b> — bukan dikarang diam-diam. Sementara disusun dari
+      token asli (surface + border + radius/md 8). Perlu keputusan: bikin komponen baru di DS,
+      atau daftarin sebagai custom yang disetujui.</p>
     </div>
 
     <div class="note">
-      <h3>⚠️ Ukuran hero — perlu keputusan</h3>
-      <p>Arah C mengandalkan angka besar. Tapi text style terbesar yang <b>terkonfirmasi</b> di
-      Paperverse Mobile cuma <b>Headline/Headline Medium = Lato Bold 20px</b> — itu yang gue pakai.</p>
-      <p>DS punya <b>Heading/M</b> dan <b>Heading/L</b>, plus token sampai
-      <code>text/heading/size/6xl</code>, tapi <b>nilainya nggak ke-extract</b> dari node manapun
-      yang gue akses. Kalau Heading/L lebih besar, hero-nya harusnya pakai itu — kasih tau nilainya
-      atau link node yang pakai style itu.</p>
+      <h3>⚠️ Toast — masih ditandai</h3>
+      <p><code>componentKey 93b418bf…</code> ketemu, tapi <b>nilai persisnya belum ke-extract</b> —
+      nggak ada instance Toast di node manapun yang udah disampel.</p>
+      <p>Sementara pakai token umum (<code>text/primary</code> + <code>radius/md</code> 8 +
+      Body-SemiBold/S). Butuh link page <code>↳ Toast</code> buat diverifikasi.</p>
+    </div>
+
+    <div class="note" style="border-color:#E5C4BE;background:#F8E7E4">
+      <h3 style="color:#A33A2E">🔴 Plafon teks DS = 16px</h3>
+      <p>Screen produksi asli (<code>Partner-myList</code>, satu layar penuh) <b>cuma pakai
+      12 / 14 / 16px</b>. <code>Heading/S</code> 16px adalah teks terbesar yang dipakai.</p>
+      <p>Hero sekarang <b>20px</b> — dari <code>Headline/Medium</code>, tapi itu library lama
+      (<code>[old]Paper.id Color &amp; Font</code>), bukan Paperverse Mobile.</p>
+      <p><b>Konsekuensinya:</b> pola "hero angka gede" yang jadi dasar Arah C — dan yang dipakai
+      Chime/Gusto/Crypto.com di 28–32px — <b>nggak didukung DS ini</b>. Kalau mau, itu
+      <b>penambahan ke DS</b>, keputusan kamu sebagai designer DS.</p>
+      <p><code>Heading/M</code> dan <code>Heading/L</code> ada sebagai style tapi nilainya belum
+      ketemu di node manapun yang disampel.</p>
     </div>
 
     <div class="note">
