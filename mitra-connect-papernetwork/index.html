@@ -1036,6 +1036,7 @@ function addPartnerRow(wasConnected){
   var nama  = document.getElementById('nama').value.trim() || 'Mitra Baru';
   var tel   = '62' + digits();
   var tipe  = (document.querySelector('.section-card .au-chip.active') || {textContent:'Supplier & Client'}).textContent.trim();
+  if (tipe.indexOf('&') > -1) tipe = 'Both';   /* di daftar, Figma nulisnya "Both" */
   var found = ['found','connected'].indexOf(currentState()) > -1;
 
   var row = document.createElement('button');
