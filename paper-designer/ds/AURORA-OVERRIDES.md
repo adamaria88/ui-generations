@@ -226,6 +226,56 @@
 
 ---
 
+### Override: Mobile app bar (`.appbar`) — TIDAK ADA di Aurora
+
+- **Aurora spec:** tidak ada komponen app bar mobile. Yang ada `au-breadcrumb` (+ back button) untuk desktop.
+- **Override jadi:** `.appbar` custom — bg white, px 20 py 4, `drop-shadow(0 -5px 10px rgba(65,153,213,.1))`, back button = `au-btn--tertiary au-btn--icon-only` 30×30 ikon `chevron-left` 18px, judul 16px bold center.
+- **Alasan:** prototype mobile (360–430px) butuh header nav; nilai dibaca dari node Figma "Navigation Bar" (file `qNrWKLLBDi82z94Dv7nqC5`, node 2169:98630).
+- **Approved by:** user on 2026-07-21 ("yang ga ada, ikutin figma persis")
+- **Class CSS di output:** `.appbar`, `.appbar__row`, `.appbar__title`
+
+### Override: Sticky bottom CTA (`.page-bottom-cta`) — TIDAK ADA di Aurora
+
+- **Aurora spec:** tidak ada. Pola desktop = tombol di kanan bawah card form.
+- **Override jadi:** container fixed bottom, white, px 16 py 12, `drop-shadow(0 -3px 5px rgba(0,0,0,.08))`, isi `au-btn--primary` full width + `env(safe-area-inset-bottom)`.
+- **Alasan:** di mobile tombol utama wajib kejangkau jempol tanpa scroll; node Figma ".page-bottom-cta".
+- **Approved by:** user on 2026-07-21
+- **Class CSS di output:** `.page-bottom-cta`
+
+### Override: Kartu saran mitra (`.ppc` / `.partner-ppc-suggestion`) — TIDAK ADA di Aurora
+
+- **Aurora spec:** tidak ada `au-card`/`au-avatar`. Aurora punya `connection-icon` tapi bukan kartu kontak.
+- **Override jadi:** wrapper bg `#f8f9fa` radius 12 + subtitle 12px `text-secondary` + contact card putih (border `--color-border-subtle`, radius 8, padding 12, gap 8) berisi avatar 48px (gambar 40px, zoom 168.42% ikut Figma), nama 14px semibold + `check-verified-solid` 12px biru, nomor 12px, tombol pill `au-btn--compact`.
+- **Alasan:** komponen ini sudah ada di file Figma Paper (`.partner-ppc-suggestion`) tapi belum diport ke Aurora. Kandidat untuk diangkat jadi komponen Aurora.
+- **Approved by:** user on 2026-07-21
+- **Class CSS di output:** `.ppc`, `.ppc__subtitle`, `.ppc__contact`, `.ppc__info`, `.ppc__user`, `.ppc__avatar`, `.ppc__name`, `.ppc__verified`, `.ppc__phone`, `.ppc__action`
+
+### Override: Spinner inline di dalam field (`.field-spinner`) — TIDAK ADA di Aurora
+
+- **Aurora spec:** tidak ada spinner indeterminate (`aurora-intent-lookup.md` G: "pakai au-skeleton").
+- **Override jadi:** lingkaran 20px border 2px `light-grey-40` + `border-top-color` brand, `animation 1000ms linear infinite`.
+- **Alasan:** pencarian nomor jalan di dalam field; skeleton tidak cocok untuk suffix field. Bentuk ikut Figma frame "sedang mencari".
+- **Approved by:** user on 2026-07-21
+- **Class CSS di output:** `.field-spinner`
+
+### Override: `au-form-field` tinggi kontrol 36px (mobile)
+
+- **Aurora spec:** `form-field.component.scss` L34 — `.au-input { min-height: 40px; padding: 8px 12px }`
+- **Override jadi:** `min-height: 36px; padding: 4px 12px` (border color tetap `--color-border-default`).
+- **Alasan:** node Figma mobile "Input" tingginya 36px. Pakai 40px bikin drift ~4px per field (terbukti di diff heatmap: total ~16px meleset di 4 field).
+- **Approved by:** user on 2026-07-21
+- **Class CSS di output:** `.form-field__control`
+
+### Override: `au-toast` lebar di mobile
+
+- **Aurora spec:** `toast.component.scss` L3 — `width: 450px` (override Paper.id sebelumnya: 380px).
+- **Override jadi:** `width: 100%` dalam host `max-width: 420px` + padding 16px kiri-kanan (efektif ≈ lebar layar − 32px).
+- **Alasan:** layar HP 360–430px, 380/450px ga muat. Aurora sendiri sudah punya `@media (width <= 768px) { max-width: calc(100vw - 40px) }` — ini penerusannya untuk mobile-first.
+- **Approved by:** user on 2026-07-21
+- **Class CSS di output:** `.au-toast`, `.au-toast-host`
+
+---
+
 ## Hubungan dengan Aurora Lookup Ritual
 
 - Mekanisme 1 (Pre-coding lookup) → kalau hasilnya ❌ TIDAK ADA → STOP & lapor user → user pilih (a/b/c)
