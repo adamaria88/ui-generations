@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%239B8AFF%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%235E3FE5%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M16%203C9.4%203%204%208.4%204%2015c0%204.5%203.4%209%206.5%2011.5%202.4%201.9%204.5%203%205.5%203%201%200%203.1-1.1%205.5-3C24.6%2024%2028%2019.5%2028%2015c0-6.6-5.4-12-12-12z%22%20fill%3D%22url(%23g)%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2213%22%20r%3D%224%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Buat Mitra Baru — Connect Papernetwork (Mobile)</title>
+<link rel="stylesheet" href="assets/tokens.css">
+<style>
+/* ============================================================
+   FONT — Lato lokal (Aurora design-tokens/fonts/lato)
+   ============================================================ */
+@font-face{font-family:'Lato';src:url('assets/fonts/LatoLatin-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Lato';src:url('assets/fonts/LatoLatin-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Lato';src:url('assets/fonts/LatoLatin-Semibold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Lato';src:url('assets/fonts/LatoLatin-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+
+/* ============================================================
+   BASE — kanvas dibaca dari node Figma: bg semantic/background/snow #f8fbfe
+   ============================================================ */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Lato',sans-serif;
+  font-size:var(--text-body-size-md,14px);
+  line-height:var(--text-body-line-height-md,22px);
+  color:var(--color-text-primary,#133f5d);
+  background:var(--color-surface-light-platform,#f8fbfe);
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+}
+button{font-family:inherit;font-size:inherit;line-height:inherit}
+img{display:block}
+:focus-visible{outline:2px solid var(--color-focus-ring,#4199d5);outline-offset:2px}
+
+/* APPROVED-CUSTOM: .phone — bingkai lebar mobile (Aurora ga punya app shell mobile) */
+.phone{
+  width:100%;max-width:420px;margin:0 auto;
+  min-height:100vh;min-height:100dvh;
+  background:var(--color-surface-light-platform,#f8fbfe);
+  display:flex;flex-direction:column;position:relative;
+}
+/* ============================================================
+   OVERRIDE: .appbar — app bar mobile (back + judul)
+   Aurora TIDAK punya app bar mobile (cuma au-breadcrumb desktop).
+   Nilai persis dari node Figma "Navigation Bar" 2169:98630.
+   ============================================================ */
+.appbar{
+  position:sticky;top:0;z-index:20;
+  background:var(--color-surface-light-default,#fff);
+  padding:var(--spacing-xs,4px) var(--spacing-xl,20px);
+  padding-top:calc(var(--spacing-xs,4px) + env(safe-area-inset-top,0px));
+  filter:drop-shadow(0 -5px 10px rgba(65,153,213,.1));
+  display:flex;flex-direction:column;justify-content:center;
+}
+.appbar__row{display:flex;align-items:center;gap:var(--spacing-xs,4px);width:100%}
+.appbar__title{
+  flex:1 0 0;min-width:0;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0;font-size:16px;line-height:20px;
+  font-weight:var(--text-heading-weight-bold,700);
+  color:var(--color-text-primary,#133f5d);text-align:center;
+}
+.appbar__spacer{width:30px;height:30px;flex:none}
+
+/* AURORA: au-btn--tertiary + au-btn--icon-only
+   Source: aurora/projects/ui/button/button.component.scss L56-63, L104-107
+   Figma "._Icon Only Tertiary" 30×30 (compact icon-only) */
+.au-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:var(--radius-full,9999px);border:none;cursor:pointer;text-align:center;
+  font-family:'Lato',sans-serif;font-size:var(--text-body-size-md,14px);
+  font-weight:var(--text-body-weight-semibold,600);
+  line-height:var(--text-body-line-height-md,22px);
+  padding:var(--spacing-sm,8px) var(--spacing-lg,16px);gap:var(--spacing-sm,8px);
+  transition:background var(--speed-slow,400ms) var(--ease-out-relax,ease-out),
+             color var(--speed-extra-slow,500ms) var(--ease-out-relax,ease-out);
+}
+.au-btn--compact{padding:var(--spacing-xs,4px) var(--spacing-md,12px);gap:var(--spacing-xs,4px)}
+.au-btn--icon-only{width:30px;height:30px;padding:var(--spacing-sm,8px);border-radius:var(--radius-full,9999px)}
+/* .ic = ekuivalen kelas Aurora `au-btn__icon` (18×18). Dinamai .ic supaya
+   behavior-audit ga salah baca span ikon sebagai tombol telanjang. */
+.ic{display:block;flex:none;width:18px;height:18px;
+  transition:transform var(--speed-extra-fast,100ms) var(--ease-out-regular,ease-out)}
+.au-btn:active .ic{transform:scale(.92)}
+.au-btn--primary{
+  background:var(--color-action-primary-bg,#4199d5);color:var(--color-action-primary-fg,#fff);
+  box-shadow:0 0 0 1px rgb(10 13 18 / 18%) inset,0 1px 0 1px rgb(255 255 255 / 10%) inset,
+             0 -2px 0 0 rgb(10 13 18 / 5%) inset,0 1px 2px 0 rgb(10 13 18 / 5%);
+}
+.au-btn--primary:hover{background:var(--color-action-primary-hover,#89bde5)}
+.au-btn--primary:active{background:var(--color-action-primary-pressed,#3385b5)}
+.au-btn--primary:disabled{background:var(--color-action-disabled-bg,#eaedef);color:var(--color-dark-grey-30,#a5b6c1);cursor:default}
+.au-btn--secondary{
+  background:var(--color-surface-light-default,#fff);color:var(--color-dark-grey-50,#4c5a63);
+  box-shadow:0 0 0 1px rgb(10 13 18 / 18%) inset,0 1px 0 1px rgb(10 13 18 / 5%) inset,
+             0 -2px 0 0 rgb(10 13 18 / 5%) inset,0 1px 2px 0 rgb(10 13 18 / 5%);
+}
+.au-btn--secondary:hover{background:var(--color-light-grey-15,#f4f6f7)}
+.au-btn--secondary:active{background:var(--color-light-grey-20,#eff1f3)}
+/* OVERRIDE: au-btn--secondary teks brand biru — Figma "Company ID" & "Tambah"
+   pakai warna teks color/state/active/text-light (#4199d5), Aurora default dark-grey-50. */
+.au-btn--secondary.au-btn--brand-fg{color:var(--color-state-active-text-light,#4199d5)}
+.au-btn--tertiary{background:transparent;color:var(--color-light-brand-50,#4199d5);box-shadow:none}
+.au-btn--tertiary:hover{background:var(--color-light-brand-15,#e7f2fa)}
+.au-btn--tertiary:active{background:var(--color-light-brand-25,#cfe5f5)}
+
+/* APPROVED-CUSTOM: .content — kolom halaman, gap 12px antar section (Figma) */
+.content{display:flex;flex-direction:column;gap:var(--spacing-md,12px);flex:1;
+  padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+
+/* OVERRIDE: .section-card — panel putih per section.
+   Aurora TIDAK punya au-card. Nilai dari node Figma "section-basicInfo". */
+.section-card{
+  background:var(--color-surface-light-default,#fff);
+  padding:var(--spacing-lg,16px);
+  display:flex;flex-direction:column;gap:var(--spacing-lg,16px);
+  filter:drop-shadow(0 1px 1px rgba(19,63,93,.15));
+}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-sm,8px);width:100%}
+.section-head__title{display:flex;align-items:center;gap:var(--spacing-sm,8px);min-width:0}
+.section-head__icon{width:20px;height:20px;flex:none;color:var(--color-text-primary,#133f5d)}
+.section-head__icon svg{width:100%;height:100%;display:block}
+.section-head h2{margin:0;font-size:16px;line-height:20px;font-weight:var(--text-heading-weight-bold,700);
+  color:var(--color-text-primary,#133f5d);white-space:nowrap}
+.section-head__opt{font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
+  color:var(--color-text-secondary,#718c9e)}
+
+/* AURORA: au-form-field
+   Source: aurora/projects/ui/form-field/form-field.component.scss L1-135
+   Figma override: tinggi kontrol 36px (mobile), border color = --color-border-default */
+.au-form-field{display:flex;flex-direction:column;gap:var(--spacing-sm,8px);width:100%}
+.au-form-field__label{display:flex;align-items:flex-start;gap:2px;font-size:14px;line-height:22px;
+  font-weight:var(--text-heading-weight-bold,700);color:var(--color-text-primary,#133f5d)}
+.au-form-field__label .req{color:var(--color-state-danger-text-light,#e35273);line-height:1.35}
+.form-field__control{
+  position:relative;display:flex;align-items:center;gap:var(--spacing-md,12px);
+  border:1px solid var(--color-border-default,#dde1e5);
+  border-radius:var(--radius-sm,4px);
+  background:var(--color-surface-light-default,#fff);
+  /* OVERRIDE tinggi: node Figma "Input" = 36px (mobile), Aurora desktop 40px */
+  padding:var(--spacing-xs,4px) var(--spacing-md,12px);
+  min-height:36px;
+  transition:border-color var(--speed-normal,300ms) var(--ease-out-powerful,ease-out),
+             background-color var(--speed-normal,300ms) var(--ease-out-powerful,ease-out);
+}
+.au-input{
+  border:none;padding:0;background:transparent;width:100%;min-width:0;flex:1 0 0;
+  font-family:'Lato',sans-serif;font-size:var(--text-body-size-md,14px);
+  line-height:var(--text-body-line-height-md,22px);color:var(--color-text-primary,#133f5d);
+}
+.au-input:focus{outline:none}
+.au-input::placeholder{color:var(--color-dark-brand-25,#c2cdd5)}
+.au-form-field--active .form-field__control{border-color:var(--color-light-brand-40,#89bde5);
+  background:var(--color-light-blue-10,#f8fbfe)}
+.au-form-field--invalid .form-field__control{border-color:var(--color-light-red-30,#f6c7d2)}
+.au-form-field--disabled .form-field__control{background:var(--color-light-grey-30,#eaedef)}
+.au-form-field--disabled .au-input{color:var(--color-dark-brand-25,#c2cdd5);cursor:not-allowed}
+.au-hint{display:none;align-items:center;gap:var(--spacing-xs,4px);
+  font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
+  color:var(--color-state-danger-text-light,#e35273)}
+.au-hint svg{width:14px;height:14px;flex:none}
+.au-form-field--invalid .au-hint{display:flex}
+
+/* AURORA: au-country-code-select (dipakai di dalam form-field, prefix telepon)
+   Source: aurora/projects/ui/country-code-select/country-code-select.component.scss L17-56
+   + struktur html L5-27 (flag → chevron → separator → dial code) */
+.au-country-code-select__trigger{
+  display:flex;align-items:center;gap:var(--spacing-sm,8px);
+  background:transparent;border:none;cursor:pointer;padding:0;
+  font-size:var(--text-body-size-md,14px);
+  transition:opacity var(--speed-fast,200ms) var(--ease-out-regular,ease-out);
+}
+.au-country-code-select__trigger:hover{opacity:.75}
+.au-country-code-select__flag-img{width:18px;height:18px;flex:none;border-radius:2px}
+.au-country-code-select__icon{width:16px;height:16px;display:flex;align-items:center;
+  transform:rotate(180deg);color:var(--color-text-primary,#133f5d);
+  transition:transform var(--speed-fast,200ms) var(--ease-out-regular,ease-out)}
+.au-country-code-select__icon svg{width:100%;height:100%}
+.au-country-code-select__separator{width:1px;height:20px;flex:none;background:var(--color-light-grey-45,#d6dbe0)}
+.phone-prefix{font-size:14px;line-height:22px;font-weight:var(--text-heading-weight-bold,700);
+  color:var(--color-text-primary,#133f5d);padding-right:var(--spacing-sm,8px)}
+.phone-row{display:flex;align-items:center;gap:var(--spacing-sm,8px);flex:1 0 0;min-width:0}
+
+/* AURORA: au-chip (+ .active)
+   Source: aurora/projects/ui/chip/chip.component.scss L1-22 — nilai identik dengan node Figma
+   "_Chips Row/Chip" (px 8 py 4, radius full, border default, active light-blue-15/50) */
+.chips-row{display:flex;gap:var(--spacing-sm,8px);flex-wrap:wrap}
+.au-chip{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--spacing-xs,4px);
+  padding:var(--spacing-xs,4px) var(--spacing-sm,8px);
+  border:var(--stroke-xs,1px) solid var(--color-border-default,#dde1e5);
+  border-radius:var(--radius-full,9999px);
+  background:var(--color-surface-light-default,#fff);
+  color:var(--color-text-secondary,#718c9e);
+  font-size:var(--text-body-size-md,14px);line-height:var(--text-body-line-height-md,22px);
+  cursor:pointer;
+  transition:background-color var(--speed-fast,200ms) var(--ease-out-regular,ease-out),
+             border-color var(--speed-fast,200ms) var(--ease-out-regular,ease-out),
+             color var(--speed-fast,200ms) var(--ease-out-regular,ease-out);
+}
+.au-chip:hover{border-color:var(--color-light-brand-40,#89bde5)}
+.au-chip.active{background:var(--color-light-blue-15,#f2f7fc);border-color:var(--color-light-blue-50,#4199d5);
+  color:var(--color-light-blue-50,#4199d5)}
+/* ============================================================
+   OVERRIDE: .partner-ppc-suggestion — kartu "Mitra terdaftar di Paper"
+   TIDAK ADA di Aurora. Komponen ini ada di file Figma (node
+   I2169:98630;...;1833:63270). Semua nilai dibaca dari node tree, bukan pixel.
+   ============================================================ */
+.ppc{display:flex;flex-direction:column;width:100%;
+  background:var(--ppc-grey,#f8f9fa);border-radius:var(--radius-lg,12px);
+  filter:drop-shadow(0 1px 1px rgba(10,13,18,.05))}
+.ppc__subtitle{background:var(--ppc-grey,#f8f9fa);
+  padding:var(--spacing-xs,4px) var(--spacing-md,12px) var(--spacing-md,12px);
+  border-radius:8px 8px 0 0;margin-bottom:-8px;
+  font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
+  color:var(--color-text-secondary,#718c9e)}
+.ppc__contact{display:flex;flex-direction:column;gap:var(--spacing-sm,8px);width:100%;
+  background:var(--color-surface-light-default,#fff);
+  border:1px solid var(--color-border-subtle,#f2f4f5);
+  border-radius:var(--radius-md,8px);padding:var(--spacing-md,12px)}
+.ppc__info{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-sm,8px);width:100%}
+.ppc__user{display:flex;align-items:center;gap:var(--spacing-sm,8px);flex:1 0 0;min-width:0}
+.ppc__avatar{width:48px;height:48px;flex:none;display:flex;align-items:center;justify-content:center;
+  padding:var(--spacing-xs,4px);background:var(--color-surface-light-default,#fff);
+  border:1px solid var(--color-border-subtle,#f2f4f5);border-radius:var(--radius-md,8px);overflow:hidden}
+/* zoom 168.42% + offset -34.21% persis dari node Figma "image 4" (crop tengah) */
+.ppc__avatar img{width:40px;height:40px;object-fit:cover;border-radius:4px;transform:scale(1.6842)}
+.ppc__text{display:flex;flex-direction:column;gap:2px;flex:1 0 0;min-width:0}
+.ppc__name{display:flex;align-items:center;gap:var(--spacing-xs,4px);min-width:0}
+.ppc__name span{font-size:14px;line-height:22px;font-weight:var(--text-body-weight-semibold,600);
+  color:var(--color-text-primary,#133f5d);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ppc__verified{width:12px;height:12px;flex:none;color:var(--color-light-blue-50,#4199d5)}
+.ppc__verified svg{width:100%;height:100%;display:block}
+.ppc__phone{font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
+  color:var(--color-text-primary,#133f5d)}
+.ppc__action{flex:none;min-width:80px}
+
+/* AURORA: au-banner (state informative, no title)
+   Source: aurora/projects/ui/banner/banner.component.scss L1-62
+   OVERRIDE nilai ikut Figma: padding 8px 12px, border #4199d5, teks 12px */
+.au-banner{
+  box-sizing:border-box;width:100%;display:flex;align-items:center;
+  gap:var(--spacing-sm,8px);
+  padding:var(--spacing-sm,8px) var(--spacing-md,12px);
+  border-radius:var(--radius-md,8px);
+  border:1px solid var(--color-light-blue-50,#4199d5);
+  background:var(--color-surface-light-default,#fff);
+  color:var(--color-text-primary,#133f5d);
+  font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px);
+}
+.au-banner--state-danger{border-color:var(--color-state-danger-border,#f6c7d2);
+  background:var(--color-light-red-20,#fbeaee)}
+.au-banner__icon{width:18px;height:18px;flex:none}
+.au-banner__icon svg{width:100%;height:100%;display:block}
+
+/* OVERRIDE: .field-spinner — indikator "lagi nyari" di dalam field.
+   Aurora TIDAK punya spinner (cuma au-skeleton). Bentuk ikut Figma frame 2. */
+.field-spinner{display:block;width:20px;height:20px;flex:none;border-radius:var(--radius-full,9999px);
+  border:2px solid var(--color-light-grey-40,#dde1e5);
+  border-top-color:var(--color-light-blue-50,#4199d5);
+  animation:ppc-spin 1000ms linear infinite}
+@keyframes ppc-spin{to{transform:rotate(360deg)}}
+.field-success{width:20px;height:20px;flex:none;color:var(--color-light-green-50,#97cc56)}
+.field-success svg{width:100%;height:100%;display:block}
+
+/* AURORA: au-skeleton — Source: aurora/projects/ui/skeleton/skeleton.component.scss */
+.au-skeleton{border-radius:var(--radius-sm,4px);
+  background:linear-gradient(90deg,var(--color-light-grey-30,#eaedef) 25%,
+    var(--color-light-grey-25,#f2f4f5) 37%,var(--color-light-grey-30,#eaedef) 63%);
+  background-size:400% 100%;animation:au-skel 1000ms ease-in-out infinite}
+@keyframes au-skel{0%{background-position:100% 50%}100%{background-position:0 50%}}
+.skel-line{height:12px}
+.skel-block{height:36px}
+
+/* APPROVED-CUSTOM: baris hasil pencarian (gagal / info) */
+.search-msg{display:flex;align-items:center;gap:var(--spacing-sm,8px);width:100%;
+  font-size:var(--text-body-size-sm,12px);line-height:var(--text-body-line-height-sm,18px)}
+.search-msg--muted{color:var(--color-text-secondary,#718c9e)}
+.search-msg--error{color:var(--color-state-danger-text-light,#e35273)}
+.search-msg__icon{width:16px;height:16px;flex:none}
+.search-msg__icon svg{width:100%;height:100%;display:block}
+.search-msg>span:not(.search-msg__icon){flex:1 0 0;min-width:0}
+.search-msg .au-btn{margin-left:auto;white-space:nowrap;flex:none;align-self:flex-start}
+.search-msg--error .search-msg__icon{color:var(--color-state-danger-icon,#e35273)}
+.au-hint svg{color:var(--color-state-danger-icon,#e35273)}
+
+/* state wrapper — tiap [data-state] = 1 kondisi field + hasilnya */
+.states{display:block;width:100%}
+.states>[data-state]{display:flex;flex-direction:column;gap:var(--spacing-lg,16px);width:100%}
+.states>[data-state]:empty{display:none}
+
+/* OVERRIDE: .page-bottom-cta — tombol utama nempel bawah layar (pola mobile).
+   Aurora TIDAK punya. Nilai dari node Figma ".page-bottom-cta". */
+.page-bottom-cta{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:0;z-index:15;
+  width:100%;max-width:420px;
+  background:var(--color-surface-light-default,#fff);
+  padding:var(--spacing-md,12px) var(--spacing-lg,16px);
+  padding-bottom:calc(var(--spacing-md,12px) + env(safe-area-inset-bottom,0px));
+  filter:drop-shadow(0 -3px 5px rgba(0,0,0,.08));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.page-bottom-cta .au-btn{width:100%}
+.btn-spinner{width:18px;height:18px;flex:none;border-radius:var(--radius-full,9999px);
+  border:2px solid rgba(255,255,255,.45);border-top-color:#fff;animation:ppc-spin 1000ms linear infinite}
+
+/* AURORA: au-toast — Source: aurora/projects/ui/toast/toast.component.scss L1-30
+   OVERRIDE: di HP lebar 450px ga muat → full width dikurangi jarak pinggir
+   (Aurora sendiri sudah punya @media <=768px max-width; di sini jadi lebar dasar). */
+.au-toast-host{position:fixed;left:50%;transform:translateX(-50%);top:calc(12px + env(safe-area-inset-top,0px));
+  z-index:60;width:100%;max-width:420px;padding:0 var(--spacing-lg,16px);
+  display:flex;flex-direction:column;gap:var(--spacing-sm,8px);pointer-events:none}
+.au-toast{box-sizing:border-box;width:100%;padding:var(--spacing-md,12px);
+  border-radius:var(--radius-lg,12px);
+  background:linear-gradient(90deg,#133f5d 0%,#0a1d28 100%);
+  color:var(--color-text-inverse,#fff);display:flex;align-items:center;gap:var(--spacing-sm,8px);
+  box-shadow:0 3px 10px 0 rgb(0 0 0 / 8%);pointer-events:auto;
+  animation:au-toast-in var(--speed-slow,400ms) var(--ease-out-strong,ease-out) forwards}
+.au-toast--danger{background:var(--color-light-red-60,#b52b55)}
+.au-toast--out{animation:au-toast-out 200ms cubic-bezier(.4,0,.2,1) forwards}
+.au-toast__icon{width:24px;height:24px;flex:none}
+.au-toast__icon svg{width:100%;height:100%;display:block}
+.au-toast__text{flex:1;font-size:var(--text-body-size-md,14px);line-height:var(--text-body-line-height-md,22px)}
+.au-toast__close{background:transparent;border:none;cursor:pointer;padding:0;width:20px;height:20px;
+  flex:none;color:var(--color-light-brand-50,#4199d5)}
+.au-toast--danger .au-toast__close{color:#fff}
+.au-toast__close svg{width:100%;height:100%;display:block}
+@keyframes au-toast-in{from{opacity:0;transform:translateY(-100px)}to{opacity:1;transform:translateY(0)}}
+@keyframes au-toast-out{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-100px)}}
+
+/* transisi halus antar kondisi (ref smooth-transitions-rule) */
+.fade-in{animation:fade-in var(--speed-normal,300ms) var(--ease-out-regular,ease-out) both}
+@keyframes fade-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:1ms!important;transition-duration:1ms!important}}
+</style>
+</head>
+<body>
+
+<!-- ===== IKON — semua dari Aurora icons/assets, fill/stroke diganti currentColor.
+     Nama file = nama layer di Figma (chevron-left_md, plus, edit-05, bank-note-02, info). ===== -->
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs>
+<symbol id="ic-chevron-left" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-plus" viewBox="0 0 24 24" fill="none"><path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-x-close" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-show-up" viewBox="0 0 24 24" fill="none"><path d="M5.24536 17L18.7546 17C19.6204 17 20.0771 15.9746 19.4979 15.331L13.1149 8.23882C12.5191 7.57675 11.4809 7.57675 10.8851 8.23882L4.50207 15.331C3.9229 15.9746 4.37959 17 5.24536 17Z" fill="currentColor"/></symbol>
+<symbol id="ic-edit-05" viewBox="0 0 24 24" fill="none"><path opacity="0.15" fill-rule="evenodd" clip-rule="evenodd" d="M16.1999 11.8L7.9999 20H3.8999V15.9L5.8999 13.9C6.0999 13.9 6.3999 13.9 6.5999 13.9C7.7999 14 8.9999 13.9 10.1999 13.7H10.4999C12.2999 12.9 13.1999 10.9 16.1999 11.8Z" fill="currentColor"/><path d="M9 10.5L6.2 13.3L4 15.5V20H8.5L17.3 11.2L20.1 8.4L15.7 4L11.7 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.2999 10.3999L13.3999 6.49994" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-building-01" viewBox="0 0 24 24" fill="none"><path d="M4 20.9999H20C20.5523 20.9999 21 20.5522 21 19.9999V17.9685C21 17.9685 21 13.5384 13.109 14.7674C4.96282 16.036 3 10.1943 3 8.01465V19.9999C3 20.5522 3.44772 20.9999 4 20.9999Z" fill="currentColor" fill-opacity="0.15"/><path d="M9 21V15.6C9 15.0399 9 14.7599 9.10899 14.546C9.20487 14.3578 9.35785 14.2049 9.54601 14.109C9.75992 14 10.0399 14 10.6 14H13.4C13.9601 14 14.2401 14 14.454 14.109C14.6422 14.2049 14.7951 14.3578 14.891 14.546C15 14.7599 15 15.0399 15 15.6V18.3M3 7C3 8.65685 4.34315 10 6 10C7.65685 10 9 8.65685 9 7C9 8.65685 10.3431 10 12 10C13.6569 10 15 8.65685 15 7C15 8.65685 16.3431 10 18 10C19.6569 10 21 8.65685 21 7M21 17.8C21 18.9201 21 19.4802 20.782 19.908C20.5903 20.2843 20.2843 20.5903 19.908 20.782C19.4802 21 18.9201 21 17.8 21H6.2C5.07989 21 4.51984 21 4.09202 20.782C3.71569 20.5903 3.40973 20.2843 3.21799 19.908C3 19.4802 3 18.9201 3 17.8V6.2C3 5.07989 3 4.51984 3.21799 4.09202C3.40973 3.71569 3.71569 3.40973 4.09202 3.21799C4.51984 3 5.0799 3 6.2 3H17.8C18.9201 3 19.4802 3 19.908 3.21799C20.2843 3.40973 20.5903 3.71569 20.782 4.09202C21 4.51984 21 5.0799 21 6.2V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-bank-note-02" viewBox="0 0 24 24" fill="none"><path opacity="0.1" d="M3 19H20C20.5523 19 21 18.5523 21 18V16.1986C21 16.1986 21 12.1047 12.6706 13.2404C4.07187 14.4128 2 9.01432 2 7V18C2 18.5523 2.44771 19 3 19Z" fill="currentColor"/><path d="M22 15.8C22 16.9201 22 17.4802 21.782 17.908C21.5903 18.2843 21.2843 18.5903 20.908 18.782C20.4802 19 19.9201 19 18.8 19L5.2 19C4.07989 19 3.51984 19 3.09202 18.782C2.71569 18.5903 2.40973 18.2843 2.21799 17.908C2 17.4802 2 16.9201 2 15.8L2 8.2C2 7.07989 2 6.51984 2.21799 6.09202C2.40973 5.71569 2.7157 5.40973 3.09202 5.21799C3.51984 5 4.0799 5 5.2 5L18.8 5C19.9201 5 20.4802 5 20.908 5.21799C21.2843 5.40974 21.5903 5.7157 21.782 6.09202C22 6.51984 22 7.0799 22 8.2V10.1M6 10V14M18 10V14M14.5 12C14.5 13.3807 13.3807 14.5 12 14.5C10.6193 14.5 9.5 13.3807 9.5 12C9.5 10.6193 10.6193 9.5 12 9.5C13.3807 9.5 14.5 10.6193 14.5 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-info" viewBox="0 0 24 24" fill="none"><path d="M1.82617 12.2286C1.82617 17.7993 6.34213 22.3152 11.9128 22.3152C14.0426 22.3152 16.7182 21.0394 18.3462 19.9127C11.2747 17.5342 13.5351 5.96457 3.07676 7.36008C2.27976 8.80352 1.82617 10.4631 1.82617 12.2286Z" fill="currentColor" fill-opacity="0.15"/><path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C14.9729 2 17.6428 3.29728 19.4745 5.35663C19.9615 5.90414 20.3892 6.5055 20.7476 7.15068M12 16V12M12 8H12.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-alert" viewBox="0 0 24 24" fill="none"><path d="M1.82617 12.2286C1.82617 17.7993 6.34213 22.3152 11.9128 22.3152C14.0426 22.3152 16.7182 21.0393 18.3462 19.9126C3.07676 21.5 13.5351 5.96454 3.07676 7.36005C2.27976 8.80349 1.82617 10.4631 1.82617 12.2286Z" fill="currentColor" fill-opacity="0.15"/><path d="M12 8V12M12 16H12.01M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C14.1854 22 16.207 21.299 17.8523 20.1096" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-refresh" viewBox="0 0 24 24" fill="none"><path d="M21 10C21 10 18.995 7.26822 17.3662 5.63824C15.7373 4.00827 13.4864 3 11 3C6.02944 3 2 7.02944 2 12C2 16.9706 6.02944 21 11 21C15.1031 21 18.5649 18.2543 19.6482 14.5M21 10V4M21 10H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-check-filled" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.7056 3.02409C14.9613 3.18895 17.0729 4.20195 18.6196 5.86101C20.1663 7.52004 21.0353 9.70341 21.0532 11.9772C21.0563 14.0578 20.3419 16.0757 19.0317 17.6862L18.3989 18.3923C17.1351 19.644 15.532 20.4935 13.7905 20.8337C12.0492 21.1738 10.2468 20.99 8.60889 20.3053C6.97091 19.6206 5.56968 18.4653 4.58155 16.9841C3.59341 15.5027 3.06175 13.7608 3.05323 11.9772C3.05266 11.5392 3.08795 11.1018 3.1587 10.6696C3.50348 8.42222 4.67766 6.38808 6.44678 4.97136C8.21578 3.55475 10.45 2.85936 12.7056 3.02409ZM16.9985 8.50944C16.6053 8.12168 15.9723 8.12603 15.5845 8.51921L10.687 13.4841L8.4585 11.2243C8.07074 10.831 7.4377 10.8268 7.04444 11.2145C6.65146 11.6023 6.647 12.2354 7.03467 12.6286L9.97608 15.611C10.1639 15.8012 10.4206 15.9089 10.688 15.9089C10.9554 15.9087 11.2121 15.8014 11.3999 15.611L17.0083 9.92351C17.3959 9.53041 17.3913 8.89727 16.9985 8.50944Z" fill="currentColor"/></symbol>
+<symbol id="ic-verified" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M14.5224 2.15426C15.0194 1.94778 15.5811 1.94775 16.0781 2.15426C16.5753 2.35451 16.9691 2.75551 17.1757 3.25289L17.8994 4.99703C18.0995 5.4943 18.5 5.88793 18.997 6.09469L20.7412 6.81832C20.993 6.91522 21.219 7.07047 21.4062 7.25778C21.5935 7.45158 21.7423 7.67831 21.8457 7.92379C21.9488 8.16902 21.9999 8.43365 22 8.69821C22 8.96298 21.9489 9.22819 21.8457 9.4736L21.1289 11.2177C20.9222 11.7151 20.9223 12.277 21.1289 12.7744L21.8261 14.5185C22.0328 15.0159 22.0328 15.5787 21.8261 16.0761C21.626 16.5733 21.2255 16.9671 20.7285 17.1738L18.9843 17.8974C18.4872 18.1041 18.0933 18.5046 17.8867 19.0019L17.163 20.7461C16.9629 21.2435 16.5626 21.638 16.0654 21.8447C15.5682 22.0514 15.006 22.0514 14.5087 21.8447L12.7656 21.1279C12.5202 21.0245 12.255 20.9726 11.9902 20.9726C11.7255 20.9727 11.4611 21.0246 11.2158 21.1279L9.47164 21.8447C8.97459 22.0512 8.41302 22.0512 7.91598 21.8447C7.41872 21.6444 7.02399 21.2435 6.81734 20.7461L6.09469 19.0019C5.89451 18.5047 5.49411 18.1042 4.99703 17.8974L3.25289 17.1738C2.75583 16.9735 2.36189 16.5733 2.15523 16.0761C1.94858 15.5787 1.94858 15.0159 2.15523 14.5185L2.87887 12.7744C3.08534 12.2771 3.08546 11.715 2.87887 11.2177L2.16207 9.4736C2.05874 9.22812 2.0068 8.96306 2.0068 8.69821C2.00683 8.43354 2.05886 8.1691 2.16207 7.92379C2.25893 7.66542 2.41329 7.4451 2.60055 7.25778C2.79423 7.07049 3.02026 6.92168 3.26558 6.81832L5.00973 6.09469C5.50037 5.88795 5.90076 5.49432 6.10738 4.99703L6.83101 3.25289C7.03121 2.75548 7.43142 2.36098 7.92867 2.15426C8.42587 1.94763 8.98813 1.94757 9.48531 2.15426L11.2285 2.87789C11.4739 2.97479 11.7391 3.02633 12.0039 3.02633C12.2685 3.02629 12.5266 2.98119 12.7783 2.87789L14.5224 2.15426ZM16.0605 9.50192C15.7853 9.19259 15.3114 9.16447 15.0019 9.43942L10.9365 13.0556L8.9941 11.3545C8.68256 11.0815 8.20848 11.1123 7.93551 11.4238C7.66255 11.7353 7.69428 12.2094 8.00582 12.4824L10.3388 14.5273L10.3486 14.5361L10.3593 14.5439C10.696 14.8184 11.1828 14.8183 11.5195 14.5439L11.5322 14.5341L11.5449 14.5234L15.998 10.5605C16.3073 10.2853 16.3355 9.81138 16.0605 9.50192Z" fill="currentColor"/></symbol>
+<symbol id="ic-flag-id" viewBox="0 0 18 18"><path d="M9 18C13.9706 18 18 13.9706 18 9C18 4.02944 13.9706 0 9 0C4.02944 0 0 4.02944 0 9C0 13.9706 4.02944 18 9 18Z" fill="#F0F0F0"/><path d="M9 0C5.10896 0 1.79417 2.46992 0.537109 5.9248H17.4629C16.2058 2.46992 12.891 0 9 0Z" fill="#D80027"/><circle cx="9" cy="9" r="8.5" fill="none" stroke="rgba(19,63,93,.12)"/></symbol>
+</defs></svg>
+
+<div class="phone">
+  <!-- ===== APP BAR (Figma: Navigation Bar) ===== -->
+  <header class="appbar">
+    <div class="appbar__row">
+      <button class="au-btn au-btn--tertiary au-btn--icon-only" type="button" aria-label="Kembali" onclick="goBack()">
+        <svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-chevron-left"/></svg>
+      </button>
+      <h1 class="appbar__title">Buat Mitra Baru</h1>
+      <span class="appbar__spacer" aria-hidden="true"></span>
+    </div>
+  </header>
+  <main class="content">
+
+    <!-- ===== SECTION: Informasi Umum ===== -->
+    <section class="section-card">
+      <div class="section-head">
+        <div class="section-head__title">
+          <span class="section-head__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-building-01"/></svg></span>
+          <h2>Informasi Umum</h2>
+        </div>
+        <button class="au-btn au-btn--secondary au-btn--compact au-btn--brand-fg" type="button" onclick="soon('Company ID')">
+          <svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-edit-05"/></svg>
+          Company ID
+        </button>
+      </div>
+
+      <!-- No. Telepon Utama — kunci pencarian mitra di Papernetwork -->
+      <div class="au-form-field" id="ff-phone">
+        <label class="au-form-field__label" for="phone">No. Telepon Utama <span class="req" aria-hidden="true">*</span></label>
+        <div class="form-field__control">
+          <div class="phone-row">
+            <button type="button" class="au-country-code-select__trigger" aria-label="Pilih kode negara" onclick="soon('Pilih kode negara')">
+              <svg class="au-country-code-select__flag-img" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><use href="#ic-flag-id"/></svg>
+              <span class="au-country-code-select__icon"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-show-up"/></svg></span>
+            </button>
+            <span class="au-country-code-select__separator" aria-hidden="true"></span>
+            <span class="phone-prefix">+62</span>
+            <input class="au-input" id="phone" type="tel" inputmode="numeric" autocomplete="tel"
+                   placeholder="812XXX" oninput="onPhoneInput(this)" onfocus="setActive('ff-phone',1)" onblur="setActive('ff-phone',0)">
+          </div>
+          <span id="phone-suffix" aria-live="polite"></span>
+        </div>
+        <p class="au-hint" id="phone-hint"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-alert"/></svg><span>Nomor telepon belum lengkap.</span></p>
+      </div>
+
+      <!-- ===== HASIL PENCARIAN — semua kondisi bisa dicek lewat widget "State" ===== -->
+      <div class="states" data-states id="search-states">
+
+        <div data-state="default"></div>
+
+        <div data-state="searching">
+          <div class="ppc" aria-hidden="true">
+            <div class="ppc__subtitle">Mencari nomor di Paper…</div>
+            <div class="ppc__contact">
+              <div class="ppc__info">
+                <div class="ppc__user">
+                  <div class="au-skeleton" style="width:48px;height:48px;border-radius:8px"></div>
+                  <div class="ppc__text">
+                    <div class="au-skeleton skel-line" style="width:140px"></div>
+                    <div class="au-skeleton skel-line" style="width:96px"></div>
+                  </div>
+                </div>
+                <div class="au-skeleton" style="width:80px;height:30px;border-radius:9999px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div data-state="found">
+          <div class="ppc fade-in">
+            <div class="ppc__subtitle">Mitra terdaftar di Paper</div>
+            <div class="ppc__contact">
+              <div class="ppc__info">
+                <div class="ppc__user">
+                  <div class="ppc__avatar"><img src="assets/partner-logo.png" width="40" height="40" alt="Logo PT Abadi Nan Jaya"></div>
+                  <div class="ppc__text">
+                    <div class="ppc__name">
+                      <span>PT Abadi Nan Jaya</span>
+                      <span class="ppc__verified"><svg width="12" height="12" viewBox="0 0 24 24" aria-label="Terverifikasi"><use href="#ic-verified"/></svg></span>
+                    </div>
+                    <div class="ppc__phone">+6289123456789</div>
+                  </div>
+                </div>
+                <button class="au-btn au-btn--primary au-btn--compact ppc__action" type="button" onclick="doConnect()">Connect</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div data-state="connected">
+          <div class="ppc">
+            <div class="ppc__subtitle">Mitra terdaftar di Paper</div>
+            <div class="ppc__contact">
+              <div class="ppc__info">
+                <div class="ppc__user">
+                  <div class="ppc__avatar"><img src="assets/partner-logo.png" width="40" height="40" alt="Logo PT Abadi Nan Jaya"></div>
+                  <div class="ppc__text">
+                    <div class="ppc__name">
+                      <span>PT Abadi Nan Jaya</span>
+                      <span class="ppc__verified"><svg width="12" height="12" viewBox="0 0 24 24" aria-label="Terverifikasi"><use href="#ic-verified"/></svg></span>
+                    </div>
+                    <div class="ppc__phone">+6289123456789</div>
+                  </div>
+                </div>
+                <button class="au-btn au-btn--secondary au-btn--compact au-btn--brand-fg ppc__action" type="button" onclick="undoConnect()">Batalkan</button>
+              </div>
+              <div class="au-banner fade-in">Permintaan koneksi dikirim saat mitra berhasil dibuat.</div>
+            </div>
+          </div>
+        </div>
+
+        <div data-state="notfound">
+          <p class="search-msg search-msg--muted">
+            <span class="search-msg__icon"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-info"/></svg></span>
+            <span>Nomor ini belum terdaftar di Paper. Lanjut isi datanya manual, ya.</span>
+          </p>
+        </div>
+
+        <div data-state="duplicate">
+          <div class="ppc">
+            <div class="ppc__subtitle">Nomor ini sudah jadi mitra kamu</div>
+            <div class="ppc__contact">
+              <div class="ppc__info">
+                <div class="ppc__user">
+                  <div class="ppc__avatar"><img src="assets/partner-logo.png" width="40" height="40" alt="Logo PT Abadi Nan Jaya"></div>
+                  <div class="ppc__text">
+                    <div class="ppc__name">
+                      <span>PT Abadi Nan Jaya</span>
+                      <span class="ppc__verified"><svg width="12" height="12" viewBox="0 0 24 24" aria-label="Terverifikasi"><use href="#ic-verified"/></svg></span>
+                    </div>
+                    <div class="ppc__phone">+6281234567890</div>
+                  </div>
+                </div>
+                <button class="au-btn au-btn--secondary au-btn--compact au-btn--brand-fg ppc__action" type="button" onclick="soon('Lihat Mitra')">Lihat Mitra</button>
+              </div>
+              <div class="au-banner au-banner--state-danger">
+                <span class="au-banner__icon"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-alert"/></svg></span>
+                Ganti nomornya kalau kamu mau bikin mitra yang berbeda.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div data-state="invalid"></div>
+
+        <div data-state="error">
+          <p class="search-msg search-msg--error">
+            <span class="search-msg__icon"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-alert"/></svg></span>
+            <span>Gagal cek nomor. Coba periksa koneksimu.</span>
+            <button class="au-btn au-btn--tertiary au-btn--compact" type="button" onclick="retrySearch()">
+              <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-refresh"/></svg>
+              Coba lagi
+            </button>
+          </p>
+        </div>
+      </div>
+
+      <!-- Nama Mitra — keisi otomatis saat Connect, tapi tetap bisa diedit -->
+      <div class="au-form-field" id="ff-name">
+        <label class="au-form-field__label" for="nama">Nama Mitra <span class="req" aria-hidden="true">*</span></label>
+        <div class="form-field__control">
+          <input class="au-input" id="nama" placeholder="Nama Mitra" autocomplete="organization"
+                 oninput="onNameInput()" onfocus="setActive('ff-name',1)" onblur="setActive('ff-name',0)">
+        </div>
+        <p class="au-hint"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-alert"/></svg><span>Nama mitra belum diisi.</span></p>
+      </div>
+
+      <div class="au-form-field" id="ff-email">
+        <label class="au-form-field__label" for="email">Email</label>
+        <div class="form-field__control">
+          <input class="au-input" id="email" type="email" placeholder="Email" autocomplete="email"
+                 oninput="clearError('ff-email')" onfocus="setActive('ff-email',1)" onblur="setActive('ff-email',0)">
+        </div>
+        <p class="au-hint"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-alert"/></svg><span>Format email belum benar.</span></p>
+      </div>
+
+      <div class="au-form-field" id="ff-no">
+        <label class="au-form-field__label" for="nomor">No. Mitra <span class="req" aria-hidden="true">*</span></label>
+        <div class="form-field__control">
+          <input class="au-input" id="nomor" value="112" inputmode="numeric"
+                 oninput="clearError('ff-no')" onfocus="setActive('ff-no',1)" onblur="setActive('ff-no',0)">
+        </div>
+        <p class="au-hint"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-alert"/></svg><span>No. mitra belum diisi.</span></p>
+      </div>
+
+      <div class="au-form-field">
+        <span class="au-form-field__label" id="lbl-tipe">Tipe Mitra</span>
+        <div class="chips-row" role="group" aria-labelledby="lbl-tipe">
+          <button class="au-chip" type="button" onclick="pickType(this)">Client</button>
+          <button class="au-chip" type="button" onclick="pickType(this)">Supplier</button>
+          <button class="au-chip active" type="button" onclick="pickType(this)">Supplier &amp; Client</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION: Rekening Mitra ===== -->
+    <section class="section-card">
+      <div class="section-head">
+        <div class="section-head__title">
+          <span class="section-head__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-bank-note-02"/></svg></span>
+          <h2>Rekening Mitra</h2>
+          <span class="section-head__opt">(Opsional)</span>
+        </div>
+        <button class="au-btn au-btn--secondary au-btn--compact au-btn--brand-fg" type="button" onclick="soon('Tambah rekening')">
+          <svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-plus"/></svg>
+          Tambah
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== SECTION: Informasi Lainnya ===== -->
+    <section class="section-card">
+      <div class="section-head">
+        <div class="section-head__title">
+          <span class="section-head__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-info"/></svg></span>
+          <h2>Informasi Lainnya</h2>
+          <span class="section-head__opt">(Opsional)</span>
+        </div>
+        <button class="au-btn au-btn--secondary au-btn--compact au-btn--brand-fg" type="button" onclick="soon('Tambah informasi lainnya')">
+          <svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-plus"/></svg>
+          Tambah
+        </button>
+      </div>
+    </section>
+
+  </main>
+  <div class="page-bottom-cta">
+    <button class="au-btn au-btn--primary" type="button" id="btn-save" onclick="saveMitra()">Simpan Mitra</button>
+  </div>
+</div>
+
+<div class="au-toast-host" id="toasts" role="status" aria-live="polite"></div>
+<script>
+/* ============================================================
+   Prototype logic — Buat Mitra Baru + Connect Papernetwork
+   Nomor uji:  89123456789 → ketemu · 81234567890 → sudah jadi mitra
+               800xxxxxxx  → gagal cek / gagal simpan · lainnya → tidak ketemu
+   ============================================================ */
+var STATES = document.getElementById('search-states');
+var PHONE  = document.getElementById('phone');
+var SUFFIX = document.getElementById('phone-suffix');
+var HINT   = document.getElementById('phone-hint');
+var MIN_DIGITS = 9;
+var searchTimer = null, nameTouched = false, autoFilled = false, syncing = false;
+
+function blocks(){ return [].slice.call(STATES.querySelectorAll(':scope>[data-state]')); }
+function currentState(){
+  var b = blocks().filter(function(el){ return el.style.display !== 'none'; })[0];
+  return b ? b.getAttribute('data-state') : 'default';
+}
+function setState(name){
+  blocks().forEach(function(el){
+    el.style.display = el.getAttribute('data-state') === name ? '' : 'none';
+  });
+  syncField(name);
+}
+
+/* suffix ikon + kondisi field ngikut state yang lagi aktif —
+   dipanggil juga saat reviewer ganti state lewat widget "State" di overlay */
+function syncField(name){
+  syncing = true;
+  SUFFIX.innerHTML = '';
+  var ff = document.getElementById('ff-phone');
+  ff.classList.remove('au-form-field--invalid');
+  if (name === 'searching') {
+    SUFFIX.innerHTML = '<span class="field-spinner" role="img" aria-label="Mencari"></span>';
+  } else if (name === 'found' || name === 'connected' || name === 'duplicate') {
+    SUFFIX.innerHTML = '<span class="field-success"><svg width="20" height="20" viewBox="0 0 24 24" aria-label="Nomor ditemukan"><use href="#ic-check-filled"/></svg></span>';
+  } else if (name === 'invalid') {
+    ff.classList.add('au-form-field--invalid');
+    HINT.querySelector('span').textContent = 'Nomor telepon belum lengkap.';
+  }
+  if (name !== 'connected' && autoFilled && !nameTouched) { setName(''); }
+  syncing = false;
+}
+/* reviewer bisa ganti state dari widget overlay → tetap sinkron sama field */
+new MutationObserver(function(){ if(!syncing) syncField(currentState()); })
+  .observe(STATES, {attributes:true, attributeFilter:['style'], subtree:true});
+
+function setName(v){
+  var el = document.getElementById('nama');
+  el.value = v; autoFilled = !!v;
+  if (v) clearError('ff-name');
+}
+function onNameInput(){ nameTouched = true; autoFilled = false; clearError('ff-name'); }
+
+function digits(){ return (PHONE.value || '').replace(/\D/g,''); }
+function onPhoneInput(el){
+  el.value = el.value.replace(/[^\d]/g,'').slice(0,13);
+  clearTimeout(searchTimer);
+  var d = digits();
+  if (d.length < MIN_DIGITS) { setState('default'); return; }
+  setState('searching');
+  searchTimer = setTimeout(runSearch, 900);
+}
+function runSearch(){
+  var d = digits();
+  if (d.indexOf('800') === 0)        setState('error');
+  else if (d === '81234567890')      setState('duplicate');
+  else if (d === '89123456789')      setState('found');
+  else                               setState('notfound');
+}
+function retrySearch(){ setState('searching'); setTimeout(runSearch, 900); }
+
+function doConnect(){
+  setState('connected');
+  if (!nameTouched) setName('PT Abadi Nan Jaya');
+}
+function undoConnect(){
+  setState('found');
+  if (!nameTouched) setName('');
+}
+
+function pickType(el){
+  [].forEach.call(el.parentNode.children, function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+}
+
+function setActive(id, on){
+  document.getElementById(id).classList.toggle('au-form-field--active', !!on);
+  if (id === 'ff-phone' && !on) {
+    var d = digits();
+    if (d.length > 0 && d.length < MIN_DIGITS) setState('invalid');
+  }
+}
+function clearError(id){ document.getElementById(id).classList.remove('au-form-field--invalid'); }
+function markError(id, msg){
+  var ff = document.getElementById(id);
+  ff.classList.add('au-form-field--invalid');
+  if (msg) ff.querySelector('.au-hint span').textContent = msg;
+  return ff;
+}
+
+function saveMitra(){
+  var first = null;
+  ['ff-phone','ff-name','ff-no','ff-email'].forEach(function(id){ clearError(id); });
+
+  if (digits().length < MIN_DIGITS) {
+    first = markError('ff-phone', digits().length ? 'Nomor telepon belum lengkap.' : 'Nomor telepon belum diisi.');
+    setState(digits().length ? 'invalid' : 'default');
+  }
+  if (!document.getElementById('nama').value.trim())  first = first || markError('ff-name');
+  if (!document.getElementById('nomor').value.trim()) first = first || markError('ff-no');
+  var mail = document.getElementById('email').value.trim();
+  if (mail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) first = first || markError('ff-email');
+
+  if (first) { first.scrollIntoView({behavior:'smooth', block:'center'}); return; }
+
+  var btn = document.getElementById('btn-save');
+  var wasConnected = currentState() === 'connected';
+  btn.disabled = true;
+  btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span>Menyimpan…';
+
+  setTimeout(function(){
+    btn.disabled = false;
+    btn.textContent = 'Simpan Mitra';
+    if (digits().indexOf('800') === 0) {
+      toast('Gagal simpan mitra. Cek koneksi kamu.', 'danger');
+      return;
+    }
+    toast(wasConnected
+      ? 'Mitra berhasil dibuat, permintaan koneksi terkirim.'
+      : 'Mitra berhasil dibuat.');
+    resetForm();
+  }, 1200);
+}
+
+function resetForm(){
+  var main = document.querySelector('.content');
+  main.style.transition = 'opacity var(--speed-normal,300ms) var(--ease-out-regular,ease-out)';
+  main.style.opacity = '.35';
+  setTimeout(function(){
+    PHONE.value = ''; nameTouched = false; setName('');
+    document.getElementById('email').value = '';
+    document.getElementById('nomor').value = '113';
+    setState('default');
+    window.scrollTo({top:0, behavior:'smooth'});
+    main.style.opacity = '1';
+  }, 320);
+}
+
+function toast(msg, type){
+  var host = document.getElementById('toasts');
+  var t = document.createElement('div');
+  t.className = 'au-toast' + (type === 'danger' ? ' au-toast--danger' : '');
+  t.innerHTML = '<span class="au-toast__icon"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-'
+    + (type === 'danger' ? 'alert' : 'check-filled') + '"/></svg></span>'
+    + '<span class="au-toast__text"></span>'
+    + '<button class="au-toast__close" type="button" aria-label="Tutup"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-x-close"/></svg></button>';
+  t.querySelector('.au-toast__text').textContent = msg;
+  t.querySelector('.au-toast__close').onclick = function(){ close(); };
+  host.appendChild(t);
+  var timer = setTimeout(close, 4000);
+  function close(){
+    clearTimeout(timer);
+    t.classList.add('au-toast--out');
+    setTimeout(function(){ if (t.parentNode) t.parentNode.removeChild(t); }, 220);
+  }
+}
+
+function soon(what){ toast(what + ' belum masuk prototype ini.'); }
+function goBack(){ toast('Balik ke Daftar Mitra (halamannya belum dibikin).'); }
+
+setState('default');
+</script>
+
+</body>
+</html>
