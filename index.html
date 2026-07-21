@@ -253,7 +253,9 @@ const GENERATIONS=[
   updated:'20 Jul 2026',
   steps:{
    1:{status:'done',
-      catatan:'Brief masuk lewat <b>gambar wireframe + poster program</b>, bukan link ClickUp. Aksi utama diubah dari "Chat CS" jadi <b>"Bagikan Kode"</b> — Chat CS turun jadi text-link, karena tujuan halaman ini nambah Mitra, bukan nyairin. Sudah di-approve.<br><br>⚠️ Tier bentrok antara wireframe (1–5/6–10/11+) dan poster (5–10/11–20/&gt;20) — <b>diputuskan pakai angka wireframe</b>.'},
+      cu:'https://app.clickup.com/t/86d3pj271',
+      cuNama:'[Design Request] Incentive Program on Mobile Referral Banner &amp; Detail',
+      catatan:'Sumber brief: <b>CU 86d3pj271</b> (assignee Ryan Rahadian, status <code>3.0 design</code>) + sticky note di <b>FigJam board</b> <i>SCN Exploration – Fina</i>, ditulis <code>fina.smb.product</code>.<br><br>Aksi utama diubah dari "Chat CS" jadi <b>"Bagikan Kode"</b> — Chat CS turun jadi text-link, karena tujuan halaman ini nambah Mitra, bukan nyairin. Sudah di-approve.<br><br>✅ Tier <b>1–5 / 6–10 / 11+</b> terkonfirmasi dari sticky (poster yang pakai 5–10/11–20/&gt;20 itu yang beda). Reset per bulan.<br><br>🔴 <b>SYARAT YANG KELEWAT — belum ditangani desain:</b> "user yang berhak untuk dapat refer <b>wajib KYB &amp; trusted</b>". Artinya user yang belum KYB nggak berhak ikut — butuh <b>layar ke-6 "belum memenuhi syarat"</b> + banner Home yang beda buat mereka.<br><br>🆕 Belum masuk desain: nominal <b>PaperPlus 1 tahun = Rp1.080.000</b>, dan pencairan pakai <b>detail rekening</b>.'},
    2:{status:'done',file:'referral-screening/index.html',
       catatan:'11 app mobile + 4 web + 7 referensi banner. Skor Paper.id <b>1/6 — paling bawah dari 12</b>.<br><br>Temuan terbesar: kompetitor terdekat (Contra, Harvest, Fresha, Deel) <b>cuma punya versi web</b> — belum ada yang garap referral di mobile. Itu ruang kosong.'},
    3:{status:'done',file:'referral-mobile/01-wireframe-c.html',
@@ -368,6 +370,9 @@ function renderInfo(){
 
   if(curS===1){
     html+=`<div class="blk"><div class="k">Brief</div><div class="v">${g.brief}</div></div>`;
+    if(d.cu) html+=`<div class="blk"><div class="k">Task ClickUp</div>
+      <div class="v"><a href="${d.cu}" target="_blank" rel="noopener"
+      style="color:var(--run);font-weight:700">${d.cuNama||d.cu}</a></div></div>`;
   }
   html+=`<div class="blk"><div class="k">Ngapain di step ini</div><div class="v">${s.desc}</div></div>
          <div class="blk"><div class="k">Hasilnya</div><div class="v">${s.out}</div></div>`;
@@ -377,9 +382,12 @@ function renderInfo(){
 
   if(curS===1){
     html+=`<div class="blk"><div class="callout warn">
-      <b>ClickUp belum nyambung.</b> MCP yang aktif cuma Mobbin &amp; Figma — jadi link CU
-      <b>nggak bisa dibaca otomatis</b>. Sementara: copas isi brief-nya, atau screenshot.
-      Kalau mau otomatis, MCP ClickUp harus dipasang dulu.</div></div>`;
+      <b>ClickUp: config udah ada, tinggal login.</b> <code>.mcp.json</code> udah di-commit di repo,
+      tapi tiap orang <b>wajib login sendiri</b> (OAuth per akun — nggak bisa diwakilin).<br><br>
+      Sekali doang per laptop: <code>cd</code> ke folder repo → jalanin <code>claude</code> →
+      approve prompt MCP → ketik <code>/mcp</code> → pilih <b>clickup</b> → <b>Authenticate</b> →
+      browser kebuka → login → Allow.<br><br>
+      Belum login? Copas aja isi brief-nya manual.</div></div>`;
   }
 
   const acts=[];
