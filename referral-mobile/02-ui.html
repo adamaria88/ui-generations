@@ -218,6 +218,15 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
 .chip--success{background:var(--state-success-bg);color:var(--state-success-icon)}
 .chip--caution{background:var(--state-caution-bg);color:var(--state-caution-icon)}
 
+/* checklist verifikasi — lingkaran centang, komposisi dari token
+   selesai = color/state/success (#97cc56 / #f7fbf3) · belum = border-default */
+.ck{width:32px;height:32px;border-radius:var(--r-full);flex:none;
+    display:flex;align-items:center;justify-content:center;
+    border:var(--stroke-md) solid var(--border-default);background:var(--surface-default)}
+.ck svg{width:16px;height:16px}
+.ck--ok{background:var(--state-success-bg);border-color:var(--state-success-icon);
+        color:var(--state-success-icon)}
+
 /* baris Mitra — komposisi list dari token */
 .mrow{display:flex;align-items:center;gap:var(--sp-md);padding:var(--sp-md) 0}
 .mrow+.mrow{border-top:var(--stroke-xs) solid var(--border-subtle)}
@@ -596,10 +605,146 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
       </div>
     </div>
 
+    <!-- ══ 6 · BELUM MEMENUHI SYARAT ══ -->
+    <div class="fr">
+      <div class="fr-cap"><div class="t">6 · Belum berhak ikut</div><div class="s">user belum KYB (L1–L3) · gerbang dari brief</div></div>
+      <div class="phone">
+        <div class="sbar"><span>12.37</span><span>100%</span></div>
+        <div class="nbar">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          <span class="ttl">Program Referral</span>
+        </div>
+        <div class="scroll">
+
+          <div class="hero">
+            <div class="lbl">Bagi hasil per Mitra</div>
+            <div class="amt">Dapatkan hingga Rp500.000</div>
+            <div class="sub">Program ini khusus buat perusahaan yang sudah terverifikasi KYB.</div>
+          </div>
+
+          <!-- kartu status verifikasi -->
+          <div class="card" style="padding:var(--sp-lg)">
+            <div class="pb">
+              <div class="pb-row">
+                <div class="pb-top">
+                  <span class="ttl">Verifikasi perusahaan</span>
+                  <span class="pct">2/3</span>
+                </div>
+                <div class="pb-track"><div class="pb-fill" style="width:66%"></div></div>
+                <div class="pb-help">Tinggal satu langkah lagi.</div>
+              </div>
+            </div>
+
+            <div style="margin-top:var(--sp-lg)">
+              <div class="mrow" style="border:0;padding-top:0">
+                <span class="ck ck--ok">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </span>
+                <span class="tt"><div class="n">Email &amp; nomor telepon</div><div class="s">Terverifikasi</div></span>
+              </div>
+              <div class="mrow">
+                <span class="ck ck--ok">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </span>
+                <span class="tt"><div class="n">KYC — identitas pribadi</div><div class="s">Terverifikasi</div></span>
+              </div>
+              <div class="mrow">
+                <span class="ck"></span>
+                <span class="tt"><div class="n">KYB — badan usaha</div><div class="s">Belum diverifikasi</div></span>
+                <span class="chip chip--caution">Wajib</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sec">
+            <div class="sec-t">Yang kamu dapat setelah KYB</div>
+            <div class="tabs" style="margin-bottom:var(--sp-lg)">
+              <button class="on">Reguler</button><button>KYB</button>
+            </div>
+            <div class="tier"><div class="pb"><div class="pb-row">
+              <div class="pb-top"><span class="ttl">1–5 Mitra</span><span class="pct">300rb</span></div>
+              <div class="pb-track"><div class="pb-fill" style="width:0"></div></div>
+            </div></div></div>
+            <div class="tier"><div class="pb"><div class="pb-row">
+              <div class="pb-top"><span class="ttl">6–10 Mitra</span><span class="pct">350rb</span></div>
+              <div class="pb-track"><div class="pb-fill" style="width:0"></div></div>
+            </div></div></div>
+            <div class="tier"><div class="pb"><div class="pb-row">
+              <div class="pb-top"><span class="ttl">11+ Mitra</span><span class="pct">400rb</span></div>
+              <div class="pb-track"><div class="pb-fill" style="width:0"></div></div>
+            </div></div></div>
+            <div class="b-s t-sec" style="margin-top:var(--sp-md)">Dihitung ulang tiap awal bulan.</div>
+          </div>
+
+          <div class="sec">
+            <div class="sec-t">Pertanyaan umum</div>
+            <div class="acc-i" onclick="this.classList.toggle('on')">
+              <div class="acc-h"><span class="q">Kenapa harus KYB dulu?</span>
+                <svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
+              <div class="acc-b">Bagi hasil dicairkan ke rekening badan usaha, jadi perusahaan kamu perlu terverifikasi dulu. Perusahaan yang sudah KYB juga dapat centang biru di profil.</div>
+            </div>
+            <div class="acc-i" onclick="this.classList.toggle('on')">
+              <div class="acc-h"><span class="q">Berapa lama proses KYB?</span>
+                <svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
+              <div class="acc-b">Estimasi 1 hari kerja setelah dokumen lengkap.</div>
+            </div>
+            <div class="acc-i" onclick="this.classList.toggle('on')">
+              <div class="acc-h"><span class="q">Syarat Mitra yang diundang</span>
+                <svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
+              <div class="acc-b">Terhubung otomatis dengan kamu, berlangganan Paper Plus 1 tahun (Rp1.080.000), dan sudah terverifikasi KYC atau KYB.</div>
+            </div>
+          </div>
+
+        </div>
+        <div class="sticky">
+          <button class="btn btn--block">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+            Lanjutkan Verifikasi
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 7 · BANNER HOME — BELUM BERHAK ══ -->
+    <div class="fr">
+      <div class="fr-cap"><div class="t">7 · Home — belum berhak</div><div class="s">banner beda buat user non-KYB</div></div>
+      <div class="phone">
+        <div class="sbar"><span>12.37</span><span>100%</span></div>
+        <div class="hbg">
+          <div class="ghost" style="margin-bottom:12px">Kartu Total Saldo</div>
+          <div class="ghost" style="height:60px;margin-bottom:16px">Promo carousel</div>
+
+          <div class="banner">
+            <div class="n">Ajak Mitra</div>
+            <div class="v">Dapatkan hingga<br>Rp500.000 per Mitra</div>
+            <div class="s">Tersedia setelah perusahaan kamu terverifikasi KYB — tinggal 1 langkah lagi.</div>
+            <button class="btn btn--secondary">Lanjutkan Verifikasi</button>
+          </div>
+
+          <div class="ghost" style="height:60px;margin-top:16px">Konten Home lain</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- ═══ CATATAN ═══ -->
   <div class="notes">
+    <div class="note" style="border-color:#C4DCEC;background:#E6F0F7">
+      <h3 style="color:#1B5E8C">🆕 Layar 6 &amp; 7 — gerbang KYB</h3>
+      <p>Dari brief di sticky FigJam: <b>"user yang berhak untuk dapat refer wajib KYB &amp; trusted"</b>.
+      Sebelumnya kelewat — semua user dapet tampilan sama.</p>
+      <p><b>"KYB &amp; trusted" itu satu hal, bukan dua.</b> Dari task <code>[Trusted Company
+      Identifier]</code> (deployed): <i>"Blue check = Trusted Company (KYB) only"</i>. Level
+      verifikasi: L1/L2 belum verif → L3 KYC → <b>L4 KYB = Trusted Company</b>. Jadi gerbangnya
+      satu: L4 atau belum.</p>
+      <p><b>Kenapa nggak pakai tombol disabled:</b> user nggak akan tau kenapa mati. Diganti aksi
+      yang bisa dikerjain — <b>"Lanjutkan Verifikasi"</b>, pakai istilah yang sama kayak prompt
+      verifikasi yang udah ada.</p>
+      <p><b>Banner Home tetep nyebut Rp500.000</b>, tapi syaratnya nempel persis di bawahnya.
+      Jujur sekaligus tetep narik — bukan ngiming-ngimingin lalu mentok.</p>
+    </div>
+
     <div class="note">
       <h3>Komponen DS yang dipakai</h3>
       <p><b>Button</b> (pill 9999, shadow 4-layer) · <b>Input Text</b> (40px, radius 4) ·
