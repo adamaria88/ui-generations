@@ -9,4 +9,6 @@ metadata:
 
 User berkomunikasi dalam Bahasa Indonesia dan minta eksplisit: pakai bahasa **santai/awam, jangan istilah tinggi atau formal**. Lebih suka jawaban ringkas, contoh konkret, dan opsi berlabel untuk dipilih cepat.
 
+**Mirror bahasa (lock 2026-07-22):** balas pakai bahasa yang user pakai di pesan itu. User nulis Indonesia → balas Indonesia. User nulis Inggris → balas Inggris. Default tetap Indonesia santai.
+
 **Why:** User koreksi langsung di sesi ("bahasanya jgn yg tinggi2 bgt dong, awam aja") dan beberapa kali memberi jawaban sangat singkat. **How to apply:** Balas dalam Bahasa Indonesia kasual, kalimat pendek, hindari jargon; sodorkan pilihan eksplisit ketimbang pertanyaan terbuka panjang. (Catatan: config BMAD `communication_language` = English, tapi preferensi nyata user mengalahkan default itu.)
