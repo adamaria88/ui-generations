@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══════════════════════════════════════════════════════════════════
+     WIREFRAME — Pola B · Program Referral Mobile
+     ⚠️ SENGAJA NON-DS. Abu-abu polos, bukan Paperverse.
+        Yang dinilai: urutan blok, proporsi, panjang halaman.
+     Loading & error SAMA buat semua pola — lihat pola C, nggak diulang.
+     Riset pendukung: ../referral-screening/
+     ══════════════════════════════════════════════════════════════════ -->
+<title>Wireframe B — Program Referral · Paper.id</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F4F4F2; --bar:#EDECE6; --surf:#FCFCFB;
+    --bd:rgba(0,0,0,.10); --bd2:rgba(0,0,0,.20);
+    --tx:#1F2328; --mut:#6E6E68; --dim:#A3A39B;
+    /* wireframe: 1 tone gelap = tempat bobot visual jatuh */
+    --ink:#2B2F36; --ink-tx:#fff;
+    --fill:#E4E3DE; --fill2:#EDECE8;
+    --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 10px rgba(0,0,0,.06);
+  }
+  body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--tx);line-height:1.5}
+
+  .top{position:sticky;top:0;z-index:50;background:var(--bar);border-bottom:1px solid var(--bd2);
+       padding:10px 22px;display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+  .top b{font-size:14px;font-weight:800}
+  .top .m{font-size:11px;color:var(--dim)}
+  .top .sp{flex:1}
+  .top a{font:700 12px 'Lato';color:var(--mut);text-decoration:none;border:1px solid var(--bd2);
+         border-radius:8px;padding:6px 11px}
+  .top a:hover{background:var(--fill2);color:var(--tx)}
+
+  .wrap{max-width:1400px;margin:0 auto;padding:26px 22px 70px}
+  .warn{background:#FBF3E4;border:1px solid #E9D6AE;border-radius:11px;padding:14px 17px;
+        font-size:13px;color:#6B4A0F;margin-bottom:22px}
+  .warn b{color:#4A3208}
+
+  h1{font-size:26px;font-weight:900;letter-spacing:-.02em;margin-bottom:7px}
+  .lede{font-size:14px;color:var(--mut);max-width:72ch;margin-bottom:22px}
+
+  /* ─── DECK ─── */
+  .deck{display:flex;gap:26px;overflow-x:auto;padding:6px 2px 22px;align-items:flex-start}
+  .frame{flex:none;width:340px}
+  .frame-cap{margin-bottom:9px}
+  .frame-cap .t{font-size:13px;font-weight:800}
+  .frame-cap .s{font-size:11.5px;color:var(--dim)}
+  .phone{width:340px;height:700px;background:var(--surf);border:1px solid var(--bd2);border-radius:22px;
+         overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;position:relative}
+
+  /* status + nav bar */
+  .sbar{height:26px;background:var(--fill2);display:flex;align-items:center;justify-content:space-between;
+        padding:0 14px;font-size:10px;color:var(--dim);flex:none}
+  .nbar{height:44px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;
+        padding:0 14px;flex:none}
+  .nbar .back{width:18px;height:18px;border:1.5px solid var(--mut);border-radius:4px;flex:none}
+  .nbar .ttl{font-size:13.5px;font-weight:700}
+
+  .scroll{flex:1;overflow-y:auto;padding:16px 14px 14px}
+  .scroll::-webkit-scrollbar{width:0}
+
+  /* ── blok wireframe ── */
+  .hero-n{font-size:11px;color:var(--mut);margin-bottom:1px}
+  .hero-v{font-size:27px;font-weight:900;letter-spacing:-.02em;line-height:1.12}
+  .hero-s{font-size:12px;color:var(--mut);margin-top:5px}
+
+  .box{background:var(--fill2);border:1px solid var(--bd);border-radius:10px;padding:12px 13px}
+  .sec-t{font-size:12.5px;font-weight:800;margin:20px 0 8px}
+
+  .prog{display:flex;border:1px solid var(--bd);border-radius:10px;overflow:hidden;background:var(--fill2)}
+  .prog>div{flex:1;padding:11px 12px}
+  .prog>div+div{border-left:1px solid var(--bd)}
+  .prog .k{font-size:10.5px;color:var(--mut);display:flex;align-items:center;gap:5px}
+  .prog .dot{width:6px;height:6px;border-radius:50%;background:var(--ink);flex:none}
+  .prog .dot.o{background:var(--dim)}
+  .prog .v{font-size:17px;font-weight:900;letter-spacing:-.01em;margin-top:2px}
+  .prog .u{font-size:10.5px;color:var(--dim)}
+
+  .link{font-size:12px;color:var(--tx);text-decoration:underline;text-underline-offset:2px;
+        display:inline-block;margin-top:9px;cursor:pointer;font-weight:700}
+
+  .code{display:flex;gap:7px;align-items:stretch;margin-top:7px}
+  .code .f{flex:1;border:1px solid var(--bd2);border-radius:9px;padding:10px 12px;background:var(--surf);
+           display:flex;align-items:center;justify-content:space-between}
+  .code .f .v{font-size:14px;font-weight:800;letter-spacing:.08em}
+  .code .f .c{font-size:11.5px;font-weight:700;color:var(--mut)}
+  .btn{border:0;border-radius:9px;padding:11px 15px;font:800 13px 'Lato';cursor:pointer;
+       background:var(--ink);color:var(--ink-tx);white-space:nowrap}
+  .btn.g{background:var(--fill);color:var(--tx);border:1px solid var(--bd2)}
+  .btn.w{width:100%;padding:13px}
+
+  /* content switcher */
+  .cs{display:flex;background:var(--fill);border-radius:9px;padding:3px;margin-bottom:10px}
+  .cs button{flex:1;border:0;background:transparent;font:700 12px 'Lato';color:var(--mut);
+             padding:7px;border-radius:6px;cursor:pointer}
+  .cs button.on{background:var(--surf);color:var(--tx);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+  .tier{display:flex;align-items:center;gap:10px;padding:9px 0}
+  .tier+.tier{border-top:1px solid var(--bd)}
+  .tier .lb{font-size:12px;width:74px;flex:none;color:var(--mut)}
+  .tier .bar{flex:1;height:6px;background:var(--fill);border-radius:3px;overflow:hidden}
+  .tier .bar i{display:block;height:100%;background:var(--ink);border-radius:3px}
+  .tier .vl{font-size:12.5px;font-weight:800;width:66px;text-align:right;flex:none}
+  .tier.cur .lb{color:var(--tx);font-weight:700}
+
+  .rowi{display:flex;align-items:center;gap:9px;padding:10px 0}
+  .rowi+.rowi{border-top:1px solid var(--bd)}
+  .rowi .av{width:26px;height:26px;border-radius:7px;background:var(--fill);flex:none}
+  .rowi .tt{flex:1;min-width:0}
+  .rowi .n{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rowi .s{font-size:11px;color:var(--mut)}
+  .rowi .amt{font-size:12.5px;font-weight:800;flex:none}
+  .rowi .amt.p{color:var(--dim);font-weight:400}
+  .chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:9px;background:var(--fill);color:var(--mut)}
+
+  .acc{border-top:1px solid var(--bd)}
+  .acc-i{padding:12px 0;border-bottom:1px solid var(--bd);cursor:pointer}
+  .acc-h{display:flex;align-items:center;justify-content:space-between;gap:9px}
+  .acc-h .q{font-size:12.5px;font-weight:700}
+  .acc-h .x{font-size:13px;color:var(--dim);flex:none}
+  .acc-b{display:none;font-size:12px;color:var(--mut);padding-top:7px}
+  .acc-i.on .acc-b{display:block}
+
+  .sticky{border-top:1px solid var(--bd);padding:11px 14px;background:var(--surf);flex:none}
+
+  /* empty / loading / error */
+  .center{display:flex;flex-direction:column;align-items:center;justify-content:center;
+          text-align:center;padding:34px 22px;gap:9px}
+  .center .ill{width:76px;height:76px;border-radius:16px;background:var(--fill)}
+  .center .t{font-size:14px;font-weight:800}
+  .center .s{font-size:12px;color:var(--mut);max-width:32ch}
+  .sk{background:var(--fill);border-radius:7px;animation:pulse 1.3s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+  /* toast */
+  .toast{position:absolute;left:14px;right:14px;bottom:76px;background:var(--ink);color:var(--ink-tx);
+         border-radius:9px;padding:11px 13px;font-size:12px;font-weight:700;
+         opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none}
+  .toast.on{opacity:1;transform:none}
+
+  /* home banner */
+  .home-h{padding:14px;background:var(--fill2);border-bottom:1px solid var(--bd)}
+  .home-h .l1{height:9px;width:52%;background:var(--fill);border-radius:4px;margin-bottom:6px}
+  .home-h .l2{height:9px;width:34%;background:var(--fill);border-radius:4px}
+  .ghost{height:74px;background:var(--fill2);border:1px dashed var(--bd2);border-radius:10px;
+         display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--dim)}
+  .banner{border:1.5px solid var(--ink);border-radius:11px;padding:13px;background:var(--surf)}
+  .banner .n{font-size:10.5px;color:var(--mut)}
+  .banner .v{font-size:21px;font-weight:900;letter-spacing:-.02em;line-height:1.15;margin:1px 0 4px}
+  .banner .s{font-size:11.5px;color:var(--mut);margin-bottom:9px}
+
+  .notes{margin-top:30px}
+  .note{background:var(--surf);border:1px solid var(--bd);border-radius:12px;padding:17px 19px;margin-bottom:12px}
+  .note h3{font-size:14px;font-weight:800;margin-bottom:6px}
+  .note p{font-size:13px;color:var(--mut)}
+  .note p+p{margin-top:7px}
+  .note b{color:var(--tx)}
+  .q{background:#E6F0F7;border:1px solid #C4DCEC;border-radius:12px;padding:17px 19px}
+  .q h3{font-size:14px;font-weight:800;color:#1B5E8C;margin-bottom:6px}
+  .q p,.q li{font-size:13px;color:#245C82}
+  .q ol{margin:7px 0 0 17px}
+  .q li{margin-bottom:4px}
+
+  .top a+a{margin-left:6px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <b>Wireframe B — Program Referral</b>
+  <span class="m">non-DS · cek proporsi &amp; urutan</span>
+  <span class="sp"></span>
+  <a href="01-wireframe-a.html">Pola A</a><a style="background:var(--ink);color:var(--ink-tx);border-color:var(--ink)">Pola B</a><a href="01-wireframe-c.html">Pola C</a>
+  <a href="../referral-screening/index.html">Report riset</a>
+</div>
+<div class="wrap">
+  <div class="warn">
+    <b>⚠️ Ini SENGAJA belum pakai Design System.</b> Semua abu-abu, ukuran asal-asalan.
+    Yang dinilai cuma <b>urutan blok, proporsi, dan panjang halaman</b>.
+    <b>Layar loading &amp; error sama persis buat ketiga pola</b> — ada di
+    <a href="01-wireframe-c.html" style="color:#4A3208"><b>pola C</b></a>, nggak diulang di sini.
+  </div>
+  <h1>Pola B — Dashboard Progres</h1>
+  <p class="lede">Halaman milik user, bukan brosur. Progres duluan, angka program jadi target. Bagus buat user aktif — tapi user baru disambut Rp0.</p>
+  <div class="deck"><div class="frame">
+  <div class="frame-cap"><div class="t">1 · Home — entry point</div><div class="s">sama buat semua pola</div></div>
+  <div class="phone"><div class="sbar"><span>12.37</span><span>100%</span></div>
+    <div class="home-h"><div class="l1"></div><div class="l2"></div></div>
+    <div class="scroll">
+      <div class="ghost" style="margin-bottom:12px">Kartu Total Saldo</div>
+      <div class="ghost" style="height:56px;margin-bottom:14px">Promo carousel</div>
+      <div class="banner">
+        <div class="n">Program Referral</div>
+        <div class="v">Rp1.500.000<br>sudah cair</div>
+        <div class="s">4 Mitra gabung · 1 lagi menunggu verifikasi</div>
+        <button class="btn" style="padding:9px 14px;font-size:12px">Lihat Progres</button>
+      </div>
+      <div class="ghost" style="height:56px;margin-top:14px">Konten Home lain</div>
+    </div></div></div><div class="frame">
+  <div class="frame-cap"><div class="t">2 · Utama — Dashboard</div><div class="s">progres duluan, angka program belakangan</div></div>
+  <div class="phone"><div class="sbar"><span>12.37</span><span>100%</span></div><div class="nbar"><span class="back"></span><span class="ttl">Program Referral</span></div>
+    <div class="scroll">
+      <div class="hero-n">Total bagi hasil kamu</div>
+      <div class="hero-v">Rp1.500.000</div>
+      <div class="hero-s">dari 4 Mitra yang sudah selesai verifikasi</div>
+
+      <div class="prog" style="margin-top:14px">
+        <div><div class="k"><span class="dot"></span>Sudah cair</div><div class="v">Rp1.500.000</div><div class="u">4 Mitra</div></div>
+        <div><div class="k"><span class="dot o"></span>Menunggu</div><div class="v">Rp500.000</div><div class="u">1 Mitra</div></div>
+      </div>
+      <span class="link">Chat Amanda untuk pencairan →</span>
+
+      <div class="sec-t">Progres tier kamu</div>
+      <div class="cs"><button class="on">Reguler</button><button>KYB</button></div>
+      
+  <div class="tier"><span class="lb">1–5 Mitra</span><span class="bar"><i style="width:80%"></i></span><span class="vl">Rp300rb</span></div>
+  <div class="tier"><span class="lb">6–10 Mitra</span><span class="bar"><i style="width:0"></i></span><span class="vl">Rp350rb</span></div>
+  <div class="tier"><span class="lb">11+ Mitra</span><span class="bar"><i style="width:0"></i></span><span class="vl">Rp400rb</span></div>
+      <div style="font-size:11px;color:var(--dim);margin-top:7px">Kurang 1 Mitra lagi buat naik ke Rp350rb per Mitra.</div>
+
+      <div class="sec-t">Riwayat Mitra <span style="font-weight:400;color:var(--dim)">(5)</span></div>
+      <div class="rowi"><span class="av"></span><span class="tt"><div class="n">PT Maju Jaya Sentosa</div><div class="s">KYB selesai · 12 Jul</div></span><span class="amt">+Rp400rb</span></div>
+      <div class="rowi"><span class="av"></span><span class="tt"><div class="n">CV Berkah Abadi</div><div class="s">Langganan aktif · 8 Jul</div></span><span class="amt">+Rp400rb</span></div>
+      <div class="rowi"><span class="av"></span><span class="tt"><div class="n">PT Cahaya Timur</div><div class="s">Menunggu KYC</div></span><span class="chip">Proses</span></div>
+      <span class="link">Lihat semua Mitra →</span>
+
+      <div class="sec-t">Kode referral kamu</div>
+      <div class="code">
+  <div class="f"><span class="v">DE6D3S4KCZ</span><span class="c">Salin</span></div>
+  <button class="btn">Bagikan</button>
+</div>
+
+      <div class="sec-t">Pertanyaan umum</div>
+      <div class="acc">
+        <div class="acc-i" onclick="acc(this)">
+  <div class="acc-h"><span class="q">Syarat Mitra yang diundang</span><span class="x">+</span></div>
+  <div class="acc-b">Terhubung otomatis, berlangganan Paper Plus 1 tahun, terverifikasi KYC atau KYB.</div></div>
+        <div class="acc-i" onclick="acc(this)">
+  <div class="acc-h"><span class="q">Kapan bagi hasil cair?</span><span class="x">+</span></div>
+  <div class="acc-b">Setelah Mitra menyelesaikan semua syarat. Pencairan manual lewat WhatsApp.</div></div>
+      </div>
+      <div style="height:8px"></div>
+    </div>
+    <div class="sticky"><button class="btn w">Bagikan Kode Referral</button></div></div></div><div class="frame">
+  <div class="frame-cap"><div class="t">3 · Belum punya Mitra</div><div class="s">masalah utama pola ini</div></div>
+  <div class="phone"><div class="sbar"><span>12.37</span><span>100%</span></div><div class="nbar"><span class="back"></span><span class="ttl">Program Referral</span></div>
+    <div class="scroll">
+      <div class="hero-n">Total bagi hasil kamu</div>
+      <div class="hero-v" style="color:var(--dim)">Rp0</div>
+      <div class="hero-s">Belum ada Mitra yang bergabung.</div>
+
+      <div class="prog" style="margin-top:14px">
+        <div><div class="k"><span class="dot o"></span>Sudah cair</div><div class="v" style="color:var(--dim)">Rp0</div><div class="u">0 Mitra</div></div>
+        <div><div class="k"><span class="dot o"></span>Menunggu</div><div class="v" style="color:var(--dim)">Rp0</div><div class="u">0 Mitra</div></div>
+      </div>
+
+      <div class="sec-t">Progres tier kamu</div>
+      <div class="cs"><button class="on">Reguler</button><button>KYB</button></div>
+      
+  <div class="tier"><span class="lb">1–5 Mitra</span><span class="bar"><i style="width:0"></i></span><span class="vl">Rp300rb</span></div>
+  <div class="tier"><span class="lb">6–10 Mitra</span><span class="bar"><i style="width:0"></i></span><span class="vl">Rp350rb</span></div>
+  <div class="tier"><span class="lb">11+ Mitra</span><span class="bar"><i style="width:0"></i></span><span class="vl">Rp400rb</span></div>
+
+      <div class="sec-t">Kode referral kamu</div>
+      <div class="code">
+  <div class="f"><span class="v">DE6D3S4KCZ</span><span class="c">Salin</span></div>
+  <button class="btn">Bagikan</button>
+</div>
+      <div style="height:8px"></div>
+    </div>
+    <div class="sticky"><button class="btn w">Bagikan Kode Referral</button></div></div></div></div>
+  <div class="notes"><div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:12px">
+<div class="note"><h3>Idenya</h3>
+  <p>Halaman ini <b>punya kamu</b>, bukan brosur program. Yang paling atas = <b>duit yang udah kamu dapet</b>.</p>
+  <p>Angka program (Rp500rb) turun jadi target di tangga tier, bukan judul.</p></div>
+<div class="note"><h3>Cocok buat</h3>
+  <p>User aktif — yang udah punya Mitra dan mau <b>ngecek progres</b>. Ini yang bikin halaman dibuka berulang.</p>
+  <p>Ref: Satispay (riwayat per milestone), Brex (tab tracking), N26 (Earned vs Pending).</p></div>
+<div class="note" style="background:#F8E7E4;border-color:#E5C4BE"><h3>Risikonya — lihat layar 3</h3>
+  <p><b>User baru disambut "Rp0".</b> Itu kebalikan dari memikat. Padahal mayoritas user yang buka pertama kali ada di kondisi ini.</p>
+  <p>Tangga tier semua kosong, riwayat kosong. Halaman yang harusnya ngajak malah kelihatan seperti laporan kosong.</p></div>
+<div class="note"><h3>Kenapa C jadi rekomendasi</h3>
+  <p>C naruh <b>angka program di atas</b> (hook buat user baru) lalu <b>progres di bawahnya</b> (buat user aktif) — dan untuk user baru, blok progres diganti "Cara kerjanya".</p>
+  <p>Jadi dua-duanya kebagian tanpa ada yang disambut Rp0.</p></div></div></div>
+</div>
+<script>
+function acc(el){el.classList.toggle('on')}
+</script>
+</body>
+</html>
