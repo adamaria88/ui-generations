@@ -104,20 +104,25 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
         background:var(--surface-default)}
 .scroll::-webkit-scrollbar{width:0}
 
-/* ═══ TIPOGRAFI — text style Paperverse Mobile ═══ */
-.h-s   {font:700 16px/20px 'Lato';color:var(--text-primary)}   /* Heading/S */
-.hl-m  {font:700 20px/1.35 'Lato';color:var(--text-primary)}   /* Headline/Headline Medium */
+/* ═══ TIPOGRAFI — text style Paperverse Mobile
+   ⚠️ PLAFON 16px. Screen produksi (Partner-myList) cuma pakai 12/14/16.
+      Heading/S = terbesar. Keputusan user 21 Jul: IKUT DS. ═══ */
+.h-s   {font:700 16px/20px 'Lato';color:var(--text-primary)}   /* Heading/S — TERBESAR */
 .b-m   {font:400 14px/22px 'Lato';color:var(--text-primary)}   /* Body/M */
 .bsb-m {font:600 14px/22px 'Lato';color:var(--text-primary)}   /* Body-SemiBold/M */
 .b-s   {font:400 12px/18px 'Lato';color:var(--text-primary)}   /* Body/S */
 .bsb-s {font:600 12px/18px 'Lato';color:var(--text-primary)}   /* Body-SemiBold/S */
 .t-sec {color:var(--text-secondary)} .t-dis{color:var(--text-disabled)}
 
-/* ═══ HERO ═══ */
-.hero{margin-bottom:var(--sp-xl)}
-.hero .lbl{font:400 12px/18px 'Lato';color:var(--text-secondary);margin-bottom:var(--sp-2xs)}
-.hero .amt{font:700 20px/1.35 'Lato';color:var(--text-primary)}
-.hero .sub{font:400 14px/22px 'Lato';color:var(--text-secondary);margin-top:var(--sp-xs)}
+/* ═══ HERO — dibatasi Heading/S 16px (keputusan: ikut DS)
+   Ukuran nggak bisa lagi dipakai buat dominasi, jadi hierarki diambil dari
+   3 lever lain: POSISI (paling atas), RUANG (jarak lega + garis pemisah),
+   KONTRAS (bold #133f5d vs sekitarnya regular #718c9e). ═══ */
+.hero{margin-bottom:var(--sp-xl);padding-bottom:var(--sp-lg);
+      border-bottom:var(--stroke-xs) solid var(--border-subtle)}
+.hero .lbl{font:400 12px/18px 'Lato';color:var(--text-secondary);margin-bottom:var(--sp-xs)}
+.hero .amt{font:700 16px/20px 'Lato';color:var(--text-primary)}  /* Heading/S */
+.hero .sub{font:400 14px/22px 'Lato';color:var(--text-secondary);margin-top:var(--sp-sm)}
 
 .sec{margin-top:var(--sp-xl)}
 .sec-t{font:700 16px/20px 'Lato';color:var(--text-primary);margin-bottom:var(--sp-md)}
@@ -290,18 +295,23 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
        height:76px;display:flex;align-items:center;justify-content:center;
        font:400 12px/18px 'Lato';color:var(--text-muted);background:var(--surface-default)}
 
-/* 🔴 BELUM ADA KOMPONENNYA — kartu promo entry point di Home.
-   Komponen `Banner` di DS (instance 7556:3000) ternyata NOTICE INLINE
-   ("Connection request sent…"), BUKAN kartu promo — beda kebutuhan.
-   Yang mirip tapi bukan: `card` (kartu pembayaran), `Product Card`, `Carrousel`.
-   Sesuai HUKUM MATI #2 ini DILAPORKAN, bukan dikarang diam-diam.
-   Sementara: komposisi dari token asli — surface/light/default + border/default
-   + radius/md 8 (nilai yang sama dipakai Banner asli) + spacing/lg. */
-.banner{background:var(--surface-default);border:var(--stroke-xs) solid var(--border-default);
-        border-radius:var(--r-md);padding:var(--sp-lg);cursor:pointer}
-.banner .n{font:400 12px/18px 'Lato';color:var(--text-secondary)}
-.banner .v{font:700 20px/1.35 'Lato';color:var(--text-primary);margin:var(--sp-2xs) 0 var(--sp-xs)}
-.banner .s{font:400 12px/18px 'Lato';color:var(--text-secondary);margin-bottom:var(--sp-md)}
+/* PAPERVERSE: Banner · component set 6445:35237 (Type=Attention, State=Informative)
+   Keputusan user 21 Jul: entry point Home PAKAI komponen Banner, bukan kartu custom.
+   Nilai: lebar 320 fixed · padding spacing/md 12 / spacing/sm 8 · gap 8 · radius/md 8
+          ikon 20×20 rata atas · gap judul–subjudul spacing/xs 4
+          judul Body-SemiBold/M 14/22 · subjudul Body/S 12/18 · dua-duanya #133f5d
+          Attention/Informative: bg color/state/active/bg #f2f7fc
+                                 border 1px component/button/primary/border #4199d5
+   ⚠️ Banner cuma punya slot CLOSE — nggak ada slot tombol CTA. Buka programnya
+      lewat tap seluruh banner; chevron dipakai sebagai penanda. */
+.banner{width:320px;margin:0 auto;display:flex;align-items:flex-start;gap:var(--sp-sm);
+        padding:var(--sp-sm) var(--sp-md);border-radius:var(--r-md);cursor:pointer;
+        background:var(--state-active-bg);border:var(--stroke-xs) solid var(--action-primary-bg)}
+.banner .ico{width:20px;height:20px;flex:none;color:var(--action-primary-bg)}
+.banner .txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--sp-xs)}
+.banner .v{font:600 14px/22px 'Lato';color:var(--text-primary)}   /* Body-SemiBold/M */
+.banner .s{font:400 12px/18px 'Lato';color:var(--text-primary)}   /* Body/S */
+.banner .cv{width:18px;height:18px;flex:none;color:var(--text-secondary);margin-top:2px}
 
 .notes{margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
 .note{background:#FCFCFB;border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:17px 19px}
@@ -327,8 +337,8 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
   <div class="warn">
     <b>Semua nilai di-extract langsung dari Figma</b> — warna, ukuran, radius, shadow, text style.
     Nol nilai ketikan dari ingatan. Tiap blok CSS komponen ada anotasi <code>PAPERVERSE:</code> +
-    nodeId sumbernya. <b>2 komponen masih ditandai</b> (Toast &amp; Banner) — nilai persisnya belum
-    ke-extract, lihat catatan di bawah.
+    nodeId sumbernya. <b>Semua komponen terverifikasi</b>, dan 3 keputusan desain sudah diambil:
+    hero ikut plafon DS 16px · entry point Home pakai komponen Banner · verifikasi berurutan KYC → KYB.
   </div>
 
   <div class="deck">
@@ -342,10 +352,12 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
           <div class="ghost" style="margin-bottom:12px">Kartu Total Saldo</div>
           <div class="ghost" style="height:60px;margin-bottom:16px">Promo carousel</div>
           <div class="banner" onclick="alert('→ buka Program Referral')">
-            <div class="n">Ajak Mitra</div>
-            <div class="v">Dapatkan hingga<br>Rp500.000 per Mitra</div>
-            <div class="s">Bagi hasil tiap Mitra yang gabung &amp; berlangganan</div>
-            <button class="btn">Lihat Program</button>
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span class="txt">
+              <span class="v">Dapatkan hingga Rp500.000 per Mitra</span>
+              <span class="s">Ajak Mitra bisnis kamu gabung ke Paper.id</span>
+            </span>
+            <svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
           </div>
           <div class="ghost" style="height:60px;margin-top:16px">Konten Home lain</div>
         </div>
@@ -641,7 +653,7 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
                   <span class="pct">2/3</span>
                 </div>
                 <div class="pb-track"><div class="pb-fill" style="width:66%"></div></div>
-                <div class="pb-help">Tinggal satu langkah lagi.</div>
+                <div class="pb-help">Verifikasi berurutan — tinggal KYB lagi.</div>
               </div>
             </div>
 
@@ -725,10 +737,12 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
           <div class="ghost" style="height:60px;margin-bottom:16px">Promo carousel</div>
 
           <div class="banner">
-            <div class="n">Ajak Mitra</div>
-            <div class="v">Dapatkan hingga<br>Rp500.000 per Mitra</div>
-            <div class="s">Tersedia setelah perusahaan kamu terverifikasi KYB — tinggal 1 langkah lagi.</div>
-            <button class="btn btn--secondary">Lanjutkan Verifikasi</button>
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+            <span class="txt">
+              <span class="v">Lanjutkan verifikasi KYB</span>
+              <span class="s">Tinggal 1 langkah lagi buat ikut bagi hasil hingga Rp500.000 per Mitra</span>
+            </span>
+            <svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
           </div>
 
           <div class="ghost" style="height:60px;margin-top:16px">Konten Home lain</div>
@@ -764,28 +778,27 @@ body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#F4F4F2;c
       <p>Tiap blok CSS-nya ada anotasi <code>PAPERVERSE:</code> + nodeId sumber — bisa dicek satu-satu.</p>
     </div>
 
-    <div class="note" style="border-color:#E5C4BE;background:#F8E7E4">
-      <h3 style="color:#A33A2E">🔴 Kartu promo Home belum ada komponennya</h3>
-      <p>Komponen <b>Banner</b> di DS ternyata <b>notice inline</b> — isi aslinya
-      <i>"Connection request sent. Wait them to approve it."</i> Bukan kartu promo.</p>
-      <p>Yang mirip tapi juga bukan: <code>card</code> (kartu pembayaran), <code>Product Card</code>,
-      <code>Carrousel</code>. Jadi <b>entry point referral di Home nggak punya padanan di DS</b>.</p>
-      <p>Sesuai aturan, ini <b>dilaporkan</b> — bukan dikarang diam-diam. Sementara disusun dari
-      token asli (surface + border + radius/md 8). Perlu keputusan: bikin komponen baru di DS,
-      atau daftarin sebagai custom yang disetujui.</p>
+    <div class="note">
+      <h3>Entry point Home = komponen Banner</h3>
+      <p><b>Keputusan: pakai Banner DS</b>, bukan kartu promo custom. Konsekuensinya nyata:</p>
+      <p>Banner itu <b>notice compact</b> — 320px, tinggi ~60px, judulnya <b>14px</b>. Jadi
+      "Rp500.000" di Home sekarang <b>seukuran teks biasa</b>, bukan angka besar seperti sebelumnya.</p>
+      <p>Banner juga <b>nggak punya slot tombol CTA</b> — cuma slot close. Jadi buka programnya
+      lewat <b>tap seluruh banner</b>; chevron dipasang sebagai penanda bisa ditap.</p>
+      <p style="font-size:12px;color:var(--tx-dim)">Baru varian Attention/Informative yang nilainya
+      di-extract. Warning/Success/Danger belum — belum kepakai di sini.</p>
     </div>
 
-    <div class="note" style="border-color:#E5C4BE;background:#F8E7E4">
-      <h3 style="color:#A33A2E">🔴 Plafon teks DS = 16px</h3>
-      <p>Screen produksi asli (<code>Partner-myList</code>, satu layar penuh) <b>cuma pakai
-      12 / 14 / 16px</b>. <code>Heading/S</code> 16px adalah teks terbesar yang dipakai.</p>
-      <p>Hero sekarang <b>20px</b> — dari <code>Headline/Medium</code>, tapi itu library lama
-      (<code>[old]Paper.id Color &amp; Font</code>), bukan Paperverse Mobile.</p>
-      <p><b>Konsekuensinya:</b> pola "hero angka gede" yang jadi dasar Arah C — dan yang dipakai
-      Chime/Gusto/Crypto.com di 28–32px — <b>nggak didukung DS ini</b>. Kalau mau, itu
-      <b>penambahan ke DS</b>, keputusan kamu sebagai designer DS.</p>
-      <p><code>Heading/M</code> dan <code>Heading/L</code> ada sebagai style tapi nilainya belum
-      ketemu di node manapun yang disampel.</p>
+    <div class="note">
+      <h3>Hero ikut plafon DS — 16px</h3>
+      <p><b>Keputusan: ikut DS.</b> Hero turun dari 20px ke <b>16px</b> (<code>Heading/S</code>) —
+      teks terbesar yang beneran dipakai di screen produksi Paperverse Mobile.</p>
+      <p><b>Yang berubah:</b> ukuran nggak bisa lagi jadi alat dominasi. Hierarki hero sekarang
+      diambil dari <b>3 lever lain</b> — posisi (paling atas), ruang (jarak lega + garis pemisah),
+      kontras (bold gelap vs sekitarnya regular abu).</p>
+      <p><b>Jujurnya:</b> Arah C awalnya bertumpu pada "angka gede". Dengan plafon 16px, pembeda
+      utamanya bergeser ke <b>tracker progres &amp; riwayat Mitra</b>. Itu masih bikin C unggul
+      dari A dan B, tapi alasannya beda dari yang dipresentasikan di step 3.</p>
     </div>
 
     <div class="note">

@@ -259,7 +259,7 @@ const GENERATIONS=[
        {t:'ok',x:'Aksi utama <b>Bagikan Kode</b>, Chat Amanda jadi text-link'},
        {t:'ok',x:'<b>KYB = Trusted Company = L4</b> — satu gerbang, bukan dua'},
        {t:'warn',x:'Belum masuk desain: PaperPlus <b>Rp1.080.000</b>, pencairan via rekening'},
-       {t:'tanya',x:'<b>KYC wajib dilewatin sebelum KYB?</b> Checklist sekarang nebak 2/3'}
+       {t:'ok',x:'Verifikasi <b>berurutan</b> email → KYC → KYB. Checklist 2/3 terkonfirmasi'}
       ]},
    2:{status:'done',file:'referral-screening/index.html',
       ringkas:'Screening <b>11 app mobile</b> + 4 web + 7 referensi entry point.',
@@ -281,12 +281,12 @@ const GENERATIONS=[
        {t:'info',x:'Loading &amp; error cuma dibikin di C — sama buat ketiganya'}
       ]},
    4:{status:'done',file:'referral-mobile/02-ui.html',
-      ringkas:'<b>7 layar</b> pakai nilai DS asli, termasuk gerbang KYB.',
+      ringkas:'<b>7 layar</b> pakai nilai DS asli. 3 keputusan desain sudah diambil.',
       poin:[
        {t:'ok',x:'Audit: spacing &amp; radius <b>nol pelanggaran</b>, 8 hex semua token DS'},
        {t:'ok',x:'Gerbang KYB ditangani — layar 6 &amp; 7'},
-       {t:'stop',x:'<b>Plafon teks DS 16px.</b> Hero 20px pakai library lama — pola hero angka gede nggak didukung'},
-       {t:'stop',x:'<b>Kartu promo Home nggak ada komponennya.</b> Banner DS itu notice inline'},
+       {t:'ok',x:'Hero <b>ikut plafon DS 16px</b> — hierarki dari posisi, ruang &amp; kontras'},
+       {t:'ok',x:'Entry point Home <b>pakai komponen Banner</b> — konsekuensi: nominal jadi 14px, tap seluruh banner'},
        {t:'ok',x:'Toast &amp; Banner terverifikasi — Toast ternyata <b>gradient</b>, bukan solid'}
       ]},
    5:{status:'nunggu',
@@ -294,8 +294,8 @@ const GENERATIONS=[
       poin:[
        {t:'ok',x:'Overlay komen sudah kepasang di file lokal (bukan versi publik)'},
        {t:'tanya',x:'<b>Target Figma:</b> file baru, atau ke file yang sudah ada?'},
-       {t:'tanya',x:'Hero turun ke 16px, atau tambah display style ke DS?'},
-       {t:'tanya',x:'Kartu promo Home: bikin komponen DS, atau daftar custom?'}
+       
+       {t:'info',x:'Semua keputusan desain sudah diambil — tinggal target Figma'}
       ]},
    6:{status:'nunggu',ringkas:'Belum jalan — nunggu step 5.'}
   }
