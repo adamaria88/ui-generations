@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══════════════════════════════════════════════════════════════════
+     STEP 4 — APPLY DS · Shared Invoice Onboarding (Tur) [Mobile]
+     Layar Purchase Invoice mobile + tur, NILAI DARI PAPERVERSE (file 2Fga9lAogbeZ0q2uGlhFTc).
+     Tiap blok komponen dianotasi PAPERVERSE: <node>. Token asli, nol ngarang.
+     Detail nilai: ds-tokens.md
+     ══════════════════════════════════════════════════════════════════ -->
+<title>DS · Shared Invoice Onboarding (Mobile)</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  /* ─── DS TOKENS (PAPERVERSE, verbatim) ─── */
+  :root{
+    --text-primary:#133f5d; --text-secondary:#718c9e; --text-inverse:#fff;
+    --action-primary:#4199d5; --active-text-light:#4199d5;
+    --border-default:#dde1e5; --surface:#ffffff; --state-active-bg:#f2f7fc;
+    --caution-bg:#fdf9ef; --caution-icon:#eab11c; --caution-text:#6e4e00;
+    --success-bg:#f7fbf3; --success-icon:#97cc56; --success-text:#356021;
+    --danger-bg:#fdf3f5; --danger-icon:#e35273; --danger-text:#5c122d;
+    --radius-md:8px; --radius-lg:12px;
+    --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px; --sp-xl:20px;
+    --shadow-card:0 3px 10px rgba(0,0,0,.08);          /* Shadow Neutral-01 */
+    --shadow-btn:0 1px 2px rgba(10,13,18,.05);         /* shade/button/color */
+    --page-bg:#f8f9fa;   /* PAPERVERSE: semantic/background/grey */
+    --grey-20:#f8f9fa;   /* PAPERVERSE: color/light/grey/20 */
+    /* OVERRIDE: hook banner gradient disesuaikan ke web (sanksi user 2026-07-23) */
+    --hook-grad:linear-gradient(96deg,#F6C64E 0%,#FBE3A6 55%,#FDF3D6 100%);
+    --hook-border:#EAB11C;   /* tetap pakai caution/icon */
+  }
+  html,body{height:100%}
+  body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#e6e9ec;color:var(--text-primary);
+       display:flex;min-height:100%}
+
+  /* ─── panel kiri ─── */
+  .side{width:280px;flex:none;background:#fbfbfa;border-right:1px solid var(--border-default);
+        padding:20px 18px;overflow-y:auto;height:100vh}
+  .side h1{font-size:15px;font-weight:800;margin-bottom:2px;color:#1f2328}
+  .side .tag{font-size:11px;color:#8a8a8a;margin-bottom:12px}
+  .side .ds{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+            color:#1F7A4D;background:#E4F2EA;border:1px solid #bfe3cf;border-radius:5px;padding:2px 7px;margin-bottom:14px}
+  .side h2{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#8a8a8a;margin:16px 0 7px}
+  .steps{display:flex;flex-direction:column;gap:5px}
+  .step{border:1px solid var(--border-default);background:#fff;border-radius:9px;padding:8px 10px;cursor:pointer;
+        font-size:12px;display:flex;gap:8px;align-items:flex-start;text-align:left;font-family:inherit;color:#1f2328}
+  .step:hover{background:#f4f4f3}
+  .step.on{border-color:var(--action-primary);background:var(--state-active-bg)}
+  .step .n{width:18px;height:18px;flex:none;border-radius:50%;background:#eceff2;color:#8a8a8a;
+           font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .step.on .n{background:var(--action-primary);color:#fff}
+  .step .t{font-weight:700}
+  .step .d{font-weight:400;color:#8a8a8a;font-size:11px;margin-top:1px}
+  .note{font-size:12px;line-height:1.55;color:#4a4a4a;margin-top:14px;border-top:1px dashed var(--border-default);padding-top:12px}
+  .note b{color:#1f2328}.note ul{margin:6px 0 0;padding-left:16px}.note li{margin-bottom:4px}
+  .anno{margin-top:12px;font-size:10.5px;color:#8a8a8a;line-height:1.5;border-top:1px dashed var(--border-default);padding-top:10px}
+  .anno code{background:#f8f9fa;border-radius:3px;padding:1px 4px;font-size:9.5px}
+
+  /* ─── stage ─── */
+  .stage{flex:1;display:flex;flex-direction:column;align-items:center;padding:28px 20px 40px;overflow-y:auto;height:100vh}
+  .caption{font-size:12px;color:#8a8a8a;margin-bottom:14px;text-align:center;max-width:340px;line-height:1.5}
+  .phone{width:360px;flex:none;background:#fff;border:10px solid #1e1e1e;border-radius:40px;overflow:hidden;
+         position:relative;box-shadow:0 14px 44px rgba(0,0,0,.22)}
+  .scr{height:740px;position:relative;overflow:hidden;background:var(--page-bg);display:flex;flex-direction:column}
+
+  /* status bar */
+  .sb{height:28px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;
+      font-size:12px;font-weight:700;flex:none}
+  .sb .rt{display:flex;gap:4px;color:var(--text-primary)}
+
+  /* PAPERVERSE: Navbar header 6235:21953 */
+  .hd{height:48px;background:#fff;display:flex;align-items:center;gap:12px;padding:0 16px;flex:none;position:relative;
+      box-shadow:0 1px 0 rgba(0,0,0,.04)}
+  .hd .burg{width:20px;height:14px;display:flex;flex-direction:column;justify-content:space-between}
+  .hd .burg i{height:2px;background:var(--text-primary);border-radius:2px}
+  .hd .ttl{flex:1;text-align:center;font-size:16px;font-weight:700;color:var(--text-primary)}
+  .hd .bell{width:18px;height:18px;border:2px solid var(--text-primary);border-radius:50% 50% 45% 45%;flex:none;position:relative}
+  .hd .bell::after{content:'';position:absolute;bottom:-3px;left:50%;transform:translateX(-50%);width:5px;height:3px;
+                   border:2px solid var(--text-primary);border-top:0;border-radius:0 0 4px 4px}
+
+  /* PAPERVERSE: Tab bar 6363:11327 · Tab 106:3159 */
+  .tabs{height:44px;background:#fff;display:flex;flex:none;box-shadow:inset 0 -1px 0 var(--border-default)}
+  .tabs .tb{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-secondary);
+            font-weight:600;position:relative;cursor:pointer}
+  .tabs .tb.on{color:var(--action-primary);font-weight:700}
+  .tabs .tb.on::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2.5px;background:var(--action-primary)}
+
+  .body{flex:1;overflow-y:auto;padding:14px 20px 0;position:relative}
+
+  /* PAPERVERSE: Input text 16:672 */
+  .search{height:40px;background:#fff;border:1px solid var(--border-default);border-radius:20px;display:flex;
+          align-items:center;padding:0 14px;gap:8px;font-size:13px;color:var(--text-secondary);margin-bottom:12px}
+  .search .mag{width:14px;height:14px;border:1.6px solid var(--text-secondary);border-radius:50%;flex:none;position:relative}
+  .search .mag::after{content:'';position:absolute;right:-3px;bottom:-3px;width:5px;height:1.6px;background:var(--text-secondary);transform:rotate(45deg)}
+
+  /* PAPERVERSE: Chips 6404:33129 */
+  .chips{display:flex;gap:8px;margin-bottom:14px;overflow:hidden}
+  .chip{height:30px;border:1px solid var(--border-default);border-radius:16px;display:flex;align-items:center;gap:6px;
+        padding:0 12px;font-size:12px;color:var(--text-primary);white-space:nowrap;flex:none;background:#fff;font-weight:600}
+  .chip.filter{color:var(--text-primary)}
+  .chip .bdg{min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--action-primary);color:#fff;
+             font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .chip .cv{color:var(--action-primary);border-color:var(--action-primary)}
+  .chip.dd{color:var(--action-primary);border-color:var(--action-primary)}
+  .chip.dd::after{content:'▾';font-size:10px;margin-left:2px}
+
+  /* count row + Bayar Sekaligus (PAPERVERSE: Button Tertiary 6078:20854) */
+  .cnt{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .cnt .l{font-size:12px;color:var(--text-secondary);background:var(--grey-20);border-radius:var(--radius-md);padding:var(--sp-xs) var(--sp-sm);font-weight:600}
+  .btn-link{font-size:13px;color:var(--action-primary);font-weight:700;display:flex;align-items:center;gap:5px;
+            background:none;border:0;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .btn-link .ic{font-size:14px}
+  .btn-link.off{color:var(--text-secondary);opacity:.5;pointer-events:none}
+
+  /* invoice card */
+  .icard{background:#fff;border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:var(--sp-md);margin-bottom:var(--sp-md);
+         box-shadow:var(--shadow-card)}
+  .icard .dt{font-size:11px;color:var(--text-secondary);margin-bottom:9px}
+  .icard .top{display:flex;gap:6px;align-items:center;margin-bottom:9px}
+  /* PAPERVERSE: Chips 6404:33129 — status chip · radius 4 · pad xs×2xs(4×2) · Body-SemiBold/S 12/18 */
+  .pill{border-radius:4px;padding:2px 4px;display:flex;align-items:center;font-size:12px;line-height:18px;font-weight:600}
+  .pill.paid{background:var(--success-icon);color:var(--text-inverse)}          /* Solid Light Green */
+  .pill.unpaid{background:var(--caution-icon);color:var(--text-inverse)}        /* Solid Orange #eab11c */
+  .pill.o{border:1px solid currentColor}
+  .pill.terkirim{color:var(--action-primary);background:var(--state-active-bg)} /* Outline Blue = Sent */
+  .pill.disetujui{color:var(--success-icon);background:var(--success-bg)}        /* Outline Light Green = Accepted */
+  .pill.ditolak{color:var(--danger-icon);background:var(--danger-bg)}            /* Outline Red = Rejected */
+  .icard .dots{margin-left:auto;color:var(--text-secondary);font-weight:900;letter-spacing:1px;font-size:16px}
+  .icard .co{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+  .tick{width:15px;height:15px;flex:none;color:var(--action-primary)}
+  .icard .rowb{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+  .icard .num{font-size:12px;color:var(--text-secondary)}
+  .icard .amt{font-size:14px;font-weight:800;color:var(--text-primary)}
+  .icard .foot{display:flex;align-items:center;font-size:11px;color:var(--text-secondary);gap:8px}
+  .icard .foot .cal{width:13px;height:13px;border:1.4px solid var(--text-secondary);border-radius:2px;flex:none}
+  .icard .foot .sp{flex:1}
+  .icard .foot .g{width:16px;height:16px;color:var(--text-secondary)}
+  .icard .foot .conn{color:var(--action-primary)}
+
+  /* bottom nav */
+  .bn{height:58px;background:#fff;box-shadow:inset 0 1px 0 var(--border-default);display:flex;align-items:center;flex:none}
+  .bn .it{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9.5px;color:var(--text-secondary)}
+  .bn .it.on{color:var(--action-primary);font-weight:700}
+  .bn .it .g{width:20px;height:20px;border-radius:5px;border:1.6px solid currentColor;opacity:.85}
+  .bn .fab{width:46px;height:46px;border-radius:50%;background:var(--action-primary);border:3px solid #fff;color:#fff;
+           display:flex;align-items:center;justify-content:center;font-size:24px;margin-top:-16px;box-shadow:var(--shadow-btn)}
+
+  /* PAPERVERSE: Banner 6445:35237 (Warning/Attention) — OVERRIDE warna → web */
+  .banner{border:1px solid var(--hook-border);background:var(--hook-grad);border-radius:var(--radius-md);
+          padding:12px;margin-bottom:14px;display:flex;gap:var(--sp-sm);align-items:center}
+  .banner .bic{width:20px;height:20px;flex:none;color:var(--caution-text)}
+  .banner .btx{flex:1;min-width:0}
+  .banner .btx b{font-size:14px;font-weight:700;color:#5A3E00;display:block;line-height:20px}
+  .banner .btx span{font-size:12px;color:#6e4e00;line-height:18px}
+  .banner .bact{width:30px;height:30px;flex:none;border-radius:50%;background:rgba(255,255,255,.55);
+                display:flex;align-items:center;justify-content:center;color:#5A3E00;box-shadow:var(--shadow-btn)}
+
+  /* PAPERVERSE: Scrim c98545 (#133f5d @70%, ring 2px putih offset 4px) */
+  .scrim{position:absolute;inset:0;background:rgba(19,63,93,.70);z-index:4}
+  .spot{position:absolute;border:2px solid #fff;border-radius:8px;z-index:5;pointer-events:none;
+        box-shadow:0 0 0 4px rgba(19,63,93,.70)}
+
+  /* PAPERVERSE: Coachmark 7830:27839 */
+  .coach{position:absolute;z-index:6;width:320px;background:var(--surface);border-radius:var(--radius-lg);
+         padding:var(--sp-lg) var(--sp-xl);box-shadow:var(--shadow-card)}
+  .coach .imgslot{height:150px;border-radius:var(--radius-md);margin-bottom:var(--sp-lg);overflow:hidden;
+                  background:var(--state-active-bg);display:flex;align-items:center;justify-content:center}
+  .coach .imgslot img{width:100%;height:100%;object-fit:cover;display:block}
+  .coach .ttl{display:flex;align-items:flex-start;gap:var(--sp-xs);margin-bottom:var(--sp-sm)}
+  .coach .ttl h4{flex:1;font-size:16px;font-weight:700;line-height:20px;color:var(--text-primary)}
+  .coach .ttl .x{width:24px;height:24px;flex:none;opacity:.65;color:var(--text-primary);font-size:15px;
+                 display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .coach .desc{font-size:14px;line-height:22px;color:var(--text-secondary);margin-bottom:var(--sp-lg)}
+  .coach .nav{display:flex;align-items:center}
+  .coach .dots{display:flex;gap:var(--sp-sm)}
+  .coach .dots i{width:8px;height:8px;border-radius:50%;background:var(--border-default)}
+  .coach .dots i.on{background:var(--action-primary)}
+  .coach .cbtn{margin-left:auto;background:var(--action-primary);color:var(--text-inverse);font-weight:600;
+               font-size:14px;line-height:22px;border:0;border-radius:9999px;padding:var(--sp-sm) var(--sp-lg);
+               cursor:pointer;font-family:inherit;box-shadow:var(--shadow-btn)}
+  .coach .arw{position:absolute;width:12px;height:12px;background:var(--surface);transform:rotate(45deg)}
+
+  /* entry "Keuntungan Penggunaan" = PAPERVERSE: Banner Subtle/Informative 6445:42143
+     Subtle = bg surface putih + border action/primary #4199d5 · pad md×sm(12×8) · radius md(8) */
+  .entry{display:flex;align-items:center;gap:var(--sp-sm);width:100%;margin-bottom:var(--sp-md);
+         background:var(--surface);border:1px solid var(--action-primary);border-radius:var(--radius-md);
+         padding:var(--sp-sm) var(--sp-md);cursor:pointer;font-family:inherit;text-align:left}
+  .entry .ei{width:20px;height:20px;flex:none;color:var(--action-primary)}
+  .entry .etx{flex:1;min-width:0}
+  .entry .etx b{display:block;font-size:14px;font-weight:600;line-height:22px;color:var(--text-primary)}  /* Body-SemiBold/M */
+  .entry .etx span{font-size:12px;line-height:18px;color:var(--text-secondary)}                            /* Body/S */
+  .entry .ec{width:18px;height:18px;flex:none;color:var(--action-primary)}
+
+  /* PAPERVERSE: Empty state 9001:86112 — Shared Invoice kosong */
+  .empty{padding:36px 20px 24px;text-align:center}
+  .empty .eill{width:120px;height:120px;margin:0 auto var(--sp-lg)}
+  .empty .eill svg{width:100%;height:100%}
+  .empty h3{font-size:14px;font-weight:600;line-height:22px;color:var(--text-primary);margin-bottom:var(--sp-xs)}  /* Body-SemiBold/M */
+  .empty p{font-size:12px;line-height:18px;color:var(--text-secondary)}                                          /* Body/S */
+
+  .hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<aside class="side">
+  <h1>Shared Invoice Onboarding</h1>
+  <div class="tag">Tur mobile · Purchase Invoice · step 4</div>
+  <div class="ds">Apply DS · Paperverse</div>
+
+  <h2>State</h2>
+  <div class="steps" id="steps"></div>
+
+  <div class="note" id="note"></div>
+  <div class="anno" id="anno"></div>
+</aside>
+
+<main class="stage">
+  <div class="caption" id="cap"></div>
+  <div class="phone">
+    <div class="scr">
+      <div class="sb"><span>12:30</span><span class="rt">▦ ▤ ▮</span></div>
+
+      <!-- PAPERVERSE: Navbar header 6235:21953 -->
+      <div class="hd">
+        <div class="burg"><i></i><i></i><i></i></div>
+        <div class="ttl">Purchase Invoice</div>
+        <div class="bell"></div>
+      </div>
+
+      <!-- PAPERVERSE: Tab bar 6363:11327 -->
+      <div class="tabs">
+        <div class="tb" id="tabMy">My Invoice</div>
+        <div class="tb" id="tabShared">Shared Invoice</div>
+      </div>
+
+      <div class="body" id="scroll">
+        <!-- PAPERVERSE: Input text 16:672 -->
+        <div class="search"><span class="mag"></span>Cari Invoice Anda</div>
+        <!-- PAPERVERSE: Chips 6404:33129 -->
+        <div class="chips" id="chips"></div>
+
+        <!-- entry "Keuntungan Penggunaan" (PAPERVERSE: Banner Subtle/Informative 6445:42143) — di bawah filter -->
+        <button class="entry hidden" id="entry">
+          <svg class="ei" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 7.2a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2zM11 11h2v6h-2z" fill="#fff"/></svg>
+          <div class="etx"><b>Keuntungan Penggunaan</b><span>Lihat lagi cara pakai Shared Invoice</span></div>
+          <svg class="ec" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+
+        <!-- PAPERVERSE: Banner 6445:35237 · OVERRIDE warna→web · action icon-only -->
+        <div class="banner hidden" id="banner">
+          <svg class="bic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.9 5.3a2 2 0 0 0 2.2 0L21 8"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+          <div class="btx"><b>3 invoice dari supplier menunggu</b><span>Dari PT Abadi Nan Jaya &amp; mitra lainnya</span></div>
+          <div class="bact"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
+        </div>
+
+        <div class="cnt">
+          <span class="l" id="cntLabel">8 Invoice Pembelian</span>
+          <button class="btn-link" id="bayar"><span class="ic">⇄</span>Bayar Sekaligus</button>
+        </div>
+
+        <div id="list"></div>
+
+        <!-- PAPERVERSE: Empty state template 9001:86112 (Shared Invoice kosong) -->
+        <div class="empty hidden" id="empty">
+          <div class="eill">
+            <svg viewBox="0 0 96 96" fill="none">
+              <ellipse cx="48" cy="52" rx="40" ry="34" fill="#EAF1F7"/>
+              <path d="M28 40h18l5 6h17a3 3 0 0 1 3 3v20a3 3 0 0 1-3 3H28a3 3 0 0 1-3-3V43a3 3 0 0 1 3-3z" fill="#fff" stroke="#B9CEDE" stroke-width="2"/>
+              <circle cx="48" cy="59" r="11" fill="#DCE7EF"/>
+              <path d="M44 55l8 8M52 55l-8 8" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Anda belum memiliki Shared Invoice</h3>
+          <p>Belum ada invoice yang dikirimkan oleh Mitra Anda</p>
+        </div>
+      </div>
+
+      <div class="scrim hidden" id="scrim"></div>
+      <div class="spot hidden" id="spot"></div>
+      <div class="coach hidden" id="coach"></div>
+
+      <div class="bn">
+        <div class="it"><span class="g"></span>Home</div>
+        <div class="it"><span class="g"></span>Penjualan</div>
+        <div class="fab">+</div>
+        <div class="it on"><span class="g"></span>Pembelian</div>
+        <div class="it"><span class="g"></span>Bantuan</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+var $=function(id){return document.getElementById(id)};
+var TICK='<svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 1.8 3-.2 1 2.8 2.6 1.4-.8 2.9.8 2.9-2.6 1.4-1 2.8-3-.2L12 22l-2.4-1.8-3 .2-1-2.8L3 16.9l.8-2.9L3 11l2.6-1.4 1-2.8 3 .2z"/><path d="M9.5 12.5l1.8 1.8 3.4-3.6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var CONN='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 1.8 3-.2 1 2.8L21 7.8l-.8 2.9.8 2.9-2.6 1.4-1 2.8-3-.2L12 19.5l-2.4-1.6-3 .2-1-2.8L3 13.6l.8-2.9L3 7.8l2.6-1.4 1-2.8 3 .2z"/></svg>';
+
+var ROWS_MY=[
+  {pay:'Paid'}, {pay:'Unpaid'}, {pay:'Unpaid'}
+];
+var ROWS_SHARED=[
+  {pay:'Unpaid',appr:'terkirim',al:'Terkirim',tick:true,conn:true},
+  {pay:'Paid',  appr:'disetujui',al:'Disetujui',tick:true,conn:true},
+  {pay:'Unpaid',appr:'ditolak', al:'Ditolak', tick:true,conn:true}
+];
+function card(r){
+  return '<div class="icard" data-row>'
+    +'<div class="dt">Tgl. Invoice: 23 Jul 2025</div>'
+    +'<div class="top"><span class="pill '+(r.pay==='Paid'?'paid':'unpaid')+'">'+r.pay+'</span>'
+    +(r.appr?'<span class="pill o '+r.appr+'">'+r.al+'</span>':'')
+    +'<span class="dots">···</span></div>'
+    +'<div class="co">PT JFI - Cabang Krian'+(r.tick?TICK:'')+'</div>'
+    +'<div class="rowb"><span class="num">EXP/2025/0008</span><span class="amt">Rp30.000.000,00</span></div>'
+    +'<div class="foot"><span class="cal"></span>Tgl. Jatuh Tempo: 20 Jan 25<span class="sp"></span>'
+    +'<span class="g" data-doc><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3h6l4 4v14H6V3z"/><path d="M14 3v4h4"/></svg></span>'
+    +(r.conn?'<span class="g conn" data-conn>'+CONN+'</span>':'')
+    +'</div></div>';
+}
+
+var IMG1='img/att-2.png', IMG3='img/att-3.png';   // reuse gambar web (step 1 & 3)
+function coachHTML(step){
+  var img=(step===1||step===3);
+  var src={1:IMG1,3:IMG3}[step];
+  var titles={1:'Lihat &amp; bayar invoice dari banyak supplier sekaligus',
+              2:'Pantau status pembayaran real-time',
+              3:'Supplier terkoneksi → biaya lebih rendah'};
+  var descs={1:'Invoice dari supplier otomatis muncul di sini tanpa perlu kirim manual.',
+             2:'Status diperbarui otomatis, sama persis kayak yang dilihat supplier.',
+             3:'Connect &amp; blue-tick bikin fee kartu kredit turun jadi 1,45%.'};
+  var last=step===3;
+  return (img?'<div class="imgslot"><img src="'+src+'" alt=""></div>':'')
+    +'<div class="ttl"><h4>'+titles[step]+'</h4><span class="x">✕</span></div>'
+    +'<div class="desc">'+descs[step]+'</div>'
+    +'<div class="nav"><div class="dots">'
+    +'<i class="'+(step===1?'on':'')+'"></i><i class="'+(step===2?'on':'')+'"></i><i class="'+(step===3?'on':'')+'"></i>'
+    +'</div><button class="cbtn">'+(last?'Done':'Next')+'</button></div>';
+}
+
+var STATES=[
+  {key:'my-banner',tab:'my',
+   cap:'My Invoice — hook banner (Banner Warning/Attention, warna di-override ke web, CTA jadi ikon chevron) di atas list.',
+   note:{h:'Hook banner',b:['<code>Banner 6445:35237</code> · Warning/Attention','Warna <b>OVERRIDE→web</b> (amber gradient) · border caution #EAB11C','CTA = <b>icon-only</b> chevron → Shared','Muncul sekali per user']},
+   anno:'PAPERVERSE: Banner 6445:35237 · OVERRIDE: gradient→web'},
+  {key:'s1',tab:'shared',coach:1,
+   cap:'Step 1/3 — spotlight “Bayar Sekaligus”. Coachmark DS: image ON (gambar web), tombol Next.',
+   note:{h:'Step 1/3 — Bulk pay',b:['Spotlight: <b>Bayar Sekaligus</b>','Image <b>ON</b> (nested content, gambar web)','Tombol <b>Next</b> · dots ●○○']},
+   anno:'PAPERVERSE: Coachmark 7830:27839 · Scrim c98545'},
+  {key:'s2',tab:'shared',coach:2,
+   cap:'Step 2/3 — spotlight chip status ganda. Coachmark text-only (image OFF).',
+   note:{h:'Step 2/3 — Real-time status',b:['Spotlight: <b>chip status ganda</b>','Image <b>OFF</b> (text-only)','Tombol <b>Next</b> · dots ○●○']},
+   anno:'PAPERVERSE: Coachmark 7830:27839'},
+  {key:'s3',tab:'shared',coach:3,
+   cap:'Step 3/3 — spotlight ikon koneksi kanan-bawah. Image ON (gambar web), tombol Done.',
+   note:{h:'Step 3/3 — Connect → fee',b:['Spotlight: <b>ikon koneksi</b> (kanan-bawah)','Image <b>ON</b> (gambar web)','Tombol <b>Done</b> · dots ○○●']},
+   anno:'PAPERVERSE: Coachmark 7830:27839'},
+  {key:'empty',tab:'shared',empty:true,
+   cap:'Empty state — Shared Invoice kosong. Entry “Keuntungan Penggunaan” (Banner Subtle) tetap di bawah filter, tap = replay tur.',
+   note:{h:'Empty state',b:['<code>Empty state 9001:86112</code> — ilustrasi + judul + subjudul','“0 Invoice” · Bayar Sekaligus <b>disabled</b>','Entry <b>Banner Subtle</b> tetap muncul (bawah filter)','Tap entry → replay tur']},
+   anno:'PAPERVERSE: Empty state 9001:86112 · Banner Subtle 6445:42143'}
+];
+
+var CHIPS_MY='<div class="chip filter">≡ Filter <span class="bdg">2</span></div><div class="chip dd">Semua Pembayaran</div>';
+var CHIPS_SH='<div class="chip filter">≡ Filter <span class="bdg">2</span></div><div class="chip dd">Semua Pembayaran</div><div class="chip dd">Semua Doku</div>';
+
+function place(){
+  var st=CUR, scrEl=document.querySelector('.scr'), ref=scrEl.getBoundingClientRect(), scroll=$('scroll');
+  var spot=$('spot'), coach=$('coach');
+  spot.classList.add('hidden'); coach.classList.add('hidden');
+  if(!st.coach) return;
+  var target;
+  if(st.coach===1) target=scroll.querySelector('.btn-link');
+  if(st.coach===2){ var c=scroll.querySelectorAll('[data-row]')[0]; target=c.querySelector('.pill.o'); }
+  if(st.coach===3){ var c2=scroll.querySelectorAll('[data-row]')[0]; target=c2.querySelector('[data-conn]'); }
+  if(!target) return;
+  var t=target.getBoundingClientRect();
+  var pad=st.coach===3?9:6;
+  var top=t.top-ref.top-pad, left=t.left-ref.left-pad, w=t.width+pad*2, h=t.height+pad*2;
+  spot.style.top=top+'px'; spot.style.left=left+'px'; spot.style.width=w+'px'; spot.style.height=h+'px';
+  spot.classList.remove('hidden');
+
+  coach.innerHTML=coachHTML(st.coach);
+  coach.classList.remove('hidden');
+  var ch=coach.getBoundingClientRect();
+  var GAP=14,NAV=58,BW=360,BH=740,M=20;
+  var targCx=left+w/2;
+  var cLeft=Math.min(Math.max(M,targCx-ch.width/2), BW-ch.width-M);
+  var below=top+h+GAP, flip=(below+ch.height>BH-NAV-M);
+  var cTop=flip?(top-ch.height-GAP):below;
+  cTop=Math.min(Math.max(M,cTop), BH-NAV-ch.height-M);
+  coach.style.top=cTop+'px'; coach.style.left=cLeft+'px';
+
+  var arw=document.createElement('div'); arw.className='arw';
+  var ax=Math.min(Math.max(14,targCx-cLeft),ch.width-26);
+  arw.style.left=ax+'px';
+  if(flip){ arw.style.bottom='-6px'; arw.style.top='auto'; } else { arw.style.top='-6px'; }
+  coach.appendChild(arw);
+}
+
+var CUR=STATES[0];
+function render(key){
+  CUR=STATES.find(function(s){return s.key===key})||STATES[0];
+  var st=CUR;
+  $('tabMy').classList.toggle('on',st.tab==='my');
+  $('tabShared').classList.toggle('on',st.tab==='shared');
+  $('chips').innerHTML=st.tab==='my'?CHIPS_MY:CHIPS_SH;
+  var rows=st.tab==='my'?ROWS_MY:ROWS_SHARED;
+  $('list').innerHTML=st.empty?'':rows.map(card).join('');
+  $('banner').classList.toggle('hidden',!(st.tab==='my'));
+  $('empty').classList.toggle('hidden',!st.empty);
+  $('entry').classList.toggle('hidden',st.tab!=='shared');   /* entry di bawah filter, tiap tab Shared */
+  /* count row: empty → "0 Invoice" + Bayar Sekaligus disabled */
+  $('cntLabel').textContent=st.empty?'0 Invoice':'8 Invoice Pembelian';
+  $('bayar').classList.toggle('off',!!st.empty);
+  $('scrim').classList.toggle('hidden',!st.coach);
+  $('cap').textContent=st.cap;
+  var n=st.note;
+  $('note').innerHTML='<b>'+n.h+'</b><ul>'+n.b.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>';
+  $('anno').innerHTML='Anotasi blok: <code>'+st.anno+'</code>';
+  document.querySelectorAll('.step').forEach(function(el){el.classList.toggle('on',el.dataset.key===st.key)});
+  $('scroll').scrollTop=0;
+  requestAnimationFrame(place);
+}
+
+$('steps').innerHTML=STATES.map(function(s,i){
+  var lbl={'my-banner':'My Invoice + Hook banner','s1':'Step 1/3 — Bayar Sekaligus','s2':'Step 2/3 — Status real-time','s3':'Step 3/3 — Connect → fee','empty':'Empty state + Keuntungan'}[s.key];
+  return '<button class="step" data-key="'+s.key+'"><span class="n">'+(i+1)+'</span><span class="t">'+lbl+'</span></button>';
+}).join('');
+document.querySelectorAll('.step').forEach(function(el){el.onclick=function(){render(el.dataset.key)}});
+$('entry').onclick=function(){ render('s1'); };   /* tap entry → REPLAY TUR dari step 1 */
+window.addEventListener('resize',function(){requestAnimationFrame(place)});
+render('my-banner');
+</script>
+</body>
+</html>
