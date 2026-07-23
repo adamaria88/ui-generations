@@ -70,10 +70,12 @@
   .chip.dd::after{content:'▾';font-size:10px;color:var(--action-primary)}
   .chip.dd{color:var(--action-primary);border-color:var(--action-primary)}
   .filt .sbtn.on{background:var(--state-active-bg);border-color:var(--action-primary);color:var(--action-primary)}
-  .searchbar{margin-bottom:14px}
-  .searchbar input{width:100%;height:36px;border:1px solid var(--input-border);border-radius:4px;padding:8px 12px;
-                   font:400 14px 'Lato';color:var(--text-primary);outline:none}
-  .searchbar input::placeholder{color:var(--placeholder)}
+  /* search bar full (selalu keliatan) — match screen asli */
+  .searchbar{margin-bottom:12px;display:flex;align-items:center;gap:8px;height:40px;background:#fff;
+             border:1px solid var(--border-default);border-radius:20px;padding:0 14px}
+  .searchbar svg{width:16px;height:16px;color:var(--text-secondary);flex:none}
+  .searchbar input{flex:1;border:0;background:none;height:100%;font:400 13px 'Lato';color:var(--text-primary);outline:none}
+  .searchbar input::placeholder{color:var(--text-secondary)}
 
   /* date group header — DI LUAR card (PAPERVERSE: 11193:219147) */
   .dategrp{font-size:11px;color:var(--text-secondary);margin:0 0 8px 2px}
@@ -145,7 +147,7 @@
   .scrim{position:absolute;inset:0;background:transparent;z-index:5}
   /* spot = LUBANG beneran: interior transparan (target NGGAK ke-dim) + ring putih 2px + dim keliling via box-shadow */
   .spot{position:absolute;border-radius:8px;z-index:4;pointer-events:none;
-        box-shadow:0 0 0 2px #fff, 0 0 0 9999px rgba(19,63,93,.70)}
+        box-shadow:0 0 0 2px #fff, 0 0 0 9999px rgba(19,63,93,.75)}   /* DS Scrim: #133f5d @75% */
   .coach{position:absolute;z-index:6;width:320px;background:var(--surface);border-radius:var(--radius-lg);padding:var(--sp-lg) var(--sp-xl);box-shadow:var(--shadow-card)}
   .coach .imgslot{height:150px;border-radius:var(--radius-md);margin-bottom:var(--sp-sm);overflow:hidden;background:var(--state-active-bg)}
   .coach .imgslot img{width:100%;height:100%;object-fit:cover;display:block}
@@ -221,18 +223,19 @@
 
     <div class="body" id="scroll">
      <div class="fixtop">
-      <!-- PAPERVERSE: Search & Filter 7503:6946 -->
+      <!-- search bar full (selalu keliatan) — match screen asli -->
+      <div class="searchbar" id="searchbar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input placeholder="Cari Invoice Anda">
+      </div>
+      <!-- PAPERVERSE: Chips filter 7503:6946 -->
       <div class="filt">
         <button class="fbtn" id="filterBtn" title="Filter">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
           <span class="badge">2</span>
         </button>
         <div class="chips" id="chips"></div>
-        <button class="fbtn sbtn" id="searchBtn" title="Cari">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        </button>
       </div>
-      <div class="searchbar hidden" id="searchbar"><input placeholder="Cari Invoice Anda"></div>
 
       <!-- hook banner -->
       <div class="banner hidden" id="banner">
@@ -312,7 +315,11 @@ var FT_DOC=`<svg class="pic" width="18" height="18" viewBox="0 0 18 18" fill="no
 var FT_CONN=`<svg class="pic" data-conn width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="PI List State"><g id="Connected" clip-path="url(#clip0_9001_78881)"><g id="Frame" clip-path="url(#clip1_9001_78881)"><g id="Clip path group"><mask id="mask0_9001_78881" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16"><g id="clip0_11193_114490"><path id="Vector" d="M16 0H0V16H16V0Z" fill="white"/></g></mask><g mask="url(#mask0_9001_78881)"><g id="Group"><path id="Vector_2" d="M0.697449 7.37985C0.86277 7.77778 0.86277 8.22739 0.697449 8.62533L0.123993 10.0207C0.0413323 10.2171 0 10.429 0 10.6408C0 10.8527 0.0413323 11.0646 0.123993 11.261C0.206653 11.4573 0.325477 11.6382 0.4753 11.7932C0.625122 11.9431 0.80594 12.0672 1.00742 12.1447L2.40233 12.7236C2.80013 12.8889 3.12044 13.2042 3.2806 13.602L3.85922 14.9974C4.02454 15.3954 4.33968 15.7157 4.73748 15.876C5.13529 16.0413 5.58476 16.0413 5.98256 15.876L7.37746 15.2972C7.57895 15.2145 7.7856 15.1783 7.99741 15.1783C8.20924 15.1783 8.42105 15.2196 8.61737 15.2972L10.0123 15.876C10.41 16.0413 10.8596 16.0413 11.2573 15.876C11.6551 15.7106 11.9755 15.3954 12.1356 14.9974L12.7142 13.602C12.8796 13.2042 13.1999 12.8889 13.5925 12.7236L14.9874 12.1447C15.1837 12.062 15.3645 11.9431 15.5196 11.7932C15.6693 11.6434 15.7933 11.4677 15.8708 11.261C15.9535 11.0646 15.9948 10.8527 15.9948 10.6408C15.9948 10.429 15.9535 10.2171 15.8708 10.0207L15.2974 8.62533C15.1321 8.22739 15.1321 7.77778 15.2974 7.37985L15.876 5.9845C16.0413 5.58656 16.0413 5.13695 15.876 4.73901C15.7107 4.34109 15.3956 4.02067 14.9978 3.86046L13.6028 3.28165C13.2051 3.11628 12.8847 2.79587 12.7245 2.39793L12.146 1.00259C11.9806 0.604651 11.6655 0.284238 11.2676 0.124031C10.8699 -0.0413437 10.4204 -0.0413437 10.0226 0.124031L8.62771 0.697674C8.43139 0.780361 8.21956 0.821705 8.00775 0.821705C7.79593 0.821705 7.58412 0.780361 7.3878 0.697674L5.9929 0.124031C5.59509 -0.0413437 5.14563 -0.0413437 4.74782 0.124031C4.35002 0.289406 4.02971 0.604651 3.86956 1.00259L3.29092 2.39793C3.12561 2.79587 2.81046 3.11628 2.41266 3.28165L1.01776 3.86046C0.619956 4.02584 0.299645 4.34109 0.139491 4.73901C-0.0258305 5.13695 -0.0258305 5.58656 0.139491 5.9845L0.697449 7.37985Z" fill="url(#paint0_linear_9001_78881)"/><g id="Group_2" filter="url(#filter0_d_9001_78881)"><path id="Vector_3" d="M7.70156 3.96998C7.80717 3.69751 8.1927 3.69751 8.2983 3.96998L9.25987 6.45095C9.30529 6.56809 9.41498 6.64783 9.54049 6.65481L12.1971 6.80265C12.4889 6.81889 12.608 7.18556 12.3816 7.37019L10.3192 9.05133C10.2217 9.13071 10.1799 9.25977 10.212 9.3812L10.8923 11.9536C10.9671 12.236 10.6552 12.4627 10.4096 12.3043L8.17334 10.8624C8.06776 10.7943 7.9321 10.7943 7.82652 10.8624L5.59031 12.3043C5.34472 12.4627 5.03282 12.236 5.10754 11.9536L5.78789 9.3812C5.82002 9.25977 5.77809 9.13071 5.68071 9.05133L3.61831 7.37019C3.39181 7.18556 3.51094 6.81889 3.80272 6.80265L6.4594 6.65481C6.58484 6.64783 6.69459 6.56809 6.73999 6.45095L7.70156 3.96998Z" fill="url(#paint1_linear_9001_78881)"/></g></g></g></g></g></g></g><defs><filter id="filter0_d_9001_78881" x="2.78" y="3.76562" width="10.44" height="10.0308" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="0.72"/><feGaussianBlur stdDeviation="0.36"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.616329 0 0 0 0 0.661748 0 0 0 0 0.416488 0 0 0 0.1 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_9001_78881"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_9001_78881" result="shape"/></filter><linearGradient id="paint0_linear_9001_78881" x1="8" y1="16" x2="8" y2="-8.08116" gradientUnits="userSpaceOnUse"><stop stop-color="#1E60B6"/><stop offset="0.307294" stop-color="#17348F"/><stop offset="0.702951" stop-color="#001636"/></linearGradient><linearGradient id="paint1_linear_9001_78881" x1="8.00037" y1="2.94212" x2="8.00036" y2="12.2294" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="0.490385" stop-color="#FFE8BD"/><stop offset="1" stop-color="#F3A632"/></linearGradient><clipPath id="clip0_9001_78881"><rect width="16" height="16" fill="white"/></clipPath><clipPath id="clip1_9001_78881"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>`;
 var IMG={1:'img/att-2.png',3:'img/att-3.png'};
 
-var ROWS_MY=[{pay:'Paid'},{pay:'Unpaid'},{pay:'Unpaid'}];
+var ROWS_MY=[
+  {pay:'Unpaid',appr:'terkirim',al:'Terkirim',tick:true,conn:true},
+  {pay:'Paid',appr:'disetujui',al:'Disetujui',tick:true,conn:true},
+  {pay:'Unpaid',appr:'ditolak',al:'Ditolak',tick:true,conn:true}
+];
 var ROWS_SHARED=[
   {pay:'Unpaid',appr:'terkirim',al:'Terkirim',tick:true,conn:true},
   {pay:'Paid',appr:'disetujui',al:'Disetujui',tick:true,conn:true},
@@ -394,8 +401,6 @@ function render(){
   $('cntLabel').textContent=empty?'0 Invoice':(sh?'8 Invoice':'8 Invoice Pembelian');
   $('bayar').classList.toggle('off',empty);
   $('scrim').classList.toggle('hidden',!S.tour);
-  $('searchbar').classList.toggle('hidden',!S.search);
-  $('searchBtn').classList.toggle('on',S.search);
   /* pas tur jalan: kunci scroll list + reset ke atas biar target selalu pas sama highlight */
   var lw=$('listwrap');
   if(S.tour){ lw.scrollTop=0; lw.style.overflowY='hidden'; } else { lw.style.overflowY='auto'; }
@@ -407,7 +412,6 @@ $('tabMy').onclick=function(){ S.tab='my'; S.tour=0; render(); };
 $('tabShared').onclick=function(){ S.tour=0; gotoShared(); };
 $('banner').onclick=function(){ gotoShared(); };                 /* banner = NAVIGATE ke Shared */
 $('entry').onclick=function(){ S.tab='shared'; S.tour=1; render(); };  /* replay tur */
-$('searchBtn').onclick=function(){ S.search=!S.search; render(); };
 $('reset').onclick=function(){ S={tab:'my',tour:0,scenario:'full',tourSeen:false,search:false}; syncSc(); render(); toast('Onboarding di-reset'); };
 $('scFull').onclick=function(){ S.scenario='full'; S.tour=0; syncSc(); render(); };
 $('scEmpty').onclick=function(){ S.scenario='empty'; S.tab='shared'; S.tour=0; syncSc(); render(); };
