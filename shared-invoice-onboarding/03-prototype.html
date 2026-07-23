@@ -141,8 +141,11 @@
   .empty p{font-size:12px;line-height:18px;color:var(--text-secondary)}
 
   /* scrim + coachmark — PAPERVERSE: Scrim c98545 · Coachmark 7830:27839 */
-  .scrim{position:absolute;inset:0;background:rgba(19,63,93,.70);z-index:4}
-  .spot{position:absolute;border:2px solid #fff;border-radius:8px;z-index:5;pointer-events:none;box-shadow:0 0 0 4px rgba(19,63,93,.70)}
+  /* scrim = pemblokir klik transparan (dim-nya dari box-shadow .spot = CUTOUT beneran) */
+  .scrim{position:absolute;inset:0;background:transparent;z-index:5}
+  /* spot = LUBANG beneran: interior transparan (target NGGAK ke-dim) + ring putih 2px + dim keliling via box-shadow */
+  .spot{position:absolute;border-radius:8px;z-index:4;pointer-events:none;
+        box-shadow:0 0 0 2px #fff, 0 0 0 9999px rgba(19,63,93,.70)}
   .coach{position:absolute;z-index:6;width:320px;background:var(--surface);border-radius:var(--radius-lg);padding:var(--sp-lg) var(--sp-xl);box-shadow:var(--shadow-card)}
   .coach .imgslot{height:150px;border-radius:var(--radius-md);margin-bottom:var(--sp-sm);overflow:hidden;background:var(--state-active-bg)}
   .coach .imgslot img{width:100%;height:100%;object-fit:cover;display:block}
@@ -393,6 +396,9 @@ function render(){
   $('scrim').classList.toggle('hidden',!S.tour);
   $('searchbar').classList.toggle('hidden',!S.search);
   $('searchBtn').classList.toggle('on',S.search);
+  /* pas tur jalan: kunci scroll list + reset ke atas biar target selalu pas sama highlight */
+  var lw=$('listwrap');
+  if(S.tour){ lw.scrollTop=0; lw.style.overflowY='hidden'; } else { lw.style.overflowY='auto'; }
   requestAnimationFrame(placeCoach);
 }
 
@@ -408,6 +414,7 @@ $('scEmpty').onclick=function(){ S.scenario='empty'; S.tab='shared'; S.tour=0; s
 function syncSc(){ $('scFull').classList.toggle('on',has()); $('scEmpty').classList.toggle('on',!has()); }
 $('list').addEventListener('click',function(e){ if(e.target.closest('[data-row]')&&!S.tour) toast('→ View Detail invoice'); });
 window.addEventListener('resize',function(){ requestAnimationFrame(placeCoach); });
+$('listwrap').addEventListener('scroll',function(){ if(S.tour) requestAnimationFrame(placeCoach); });
 
 /* ── Buka di HP: QR + URL (buka full-screen di HP) ── */
 $('openHp').onclick=function(){
