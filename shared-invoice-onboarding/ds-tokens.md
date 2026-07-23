@@ -46,7 +46,9 @@ File Paperverse Mobile: `2Fga9lAogbeZ0q2uGlhFTc`.
 - Dots: 8px, aktif `#4199d5`, mati `#dde1e5`, gap 8px
 - Button: pill `full`, bg `#4199d5`, teks inverse SemiBold 14px, label **Next**(First/Middle) / **Done**(Last), shadow button
 - Arrow: 12×6, via paddingLeft "Arrow Row" (Start 24 / Center 154 / End 284), Up=card di bawah target
+- **URUTAN dalam kartu**: Title+Close → **Image** → Description → Navigation. ⚠️ Image di **ANTARA** title & description, BUKAN paling atas (bug lama: image ke-taruh di atas title).
 - **IMAGE**: toggle di nested `_Coachmark/Content`, default OFF. Match web → ON step 1&3, OFF step 2.
+- **Arrow**: segitiga "Tip" 12×6 (bukan diamond/rotate), Up=kartu di bawah target.
 - Varian: Placement(Bottom/Top) × Arrow(Start/Center/End) × Step(First/Middle/Last)
 
 ### Scrim `c98545…` (Paperverse 1.0)
@@ -79,6 +81,15 @@ Token baru kebuka dari context Chips: `semantic/background/grey`=`#f8f9fa` · `l
 
 ### Empty state `9001:86112` (EEQL6qQCBkANN6OqNiDvSP)
 Shared Invoice kosong: ilustrasi folder + judul "Anda belum memiliki Shared Invoice" (SemiBold #133f5d) + subjudul "Belum ada invoice yang dikirimkan oleh Mitra Anda" (secondary). Count "0 Invoice" · Bayar Sekaligus disabled. Ilustrasi = placeholder (asset DS asli belum di-download).
+
+### Search & Filter `7503:6946`
+Baris: `[filter-icon btn 30px pill]` + `[chips pill]` + `[search-icon btn 30px pill]`. Chip: white, border `#dde1e5`, radius 100px, pad 8×4, teks Body/M Regular 14px `#718c9e`. Search aktif → button bg `#f2f7fc` border `#4199d5` + Input Text muncul (border `#89bde5` light/blue/40, radius 4, placeholder `#c2cdd5` dark/blue/25).
+
+### Tab Bar (bottom nav) `6363:11327`
+⚠️ Ini **bottom nav** (Home/Penjualan/+/Pembelian/Bantuan), BUKAN tab My/Shared. Width 360, pad 8, shadow atas `0 -3px 5px rgba(0,0,0,.09)`. Ikon 24px: compass/document/plus(FAB)/cart/headset. Aktif `#4199d5`, non-aktif `#718c9e`. FAB bg `#4199d5` radius full 38px. Label Body/S 12/18. (Tab My/Shared = `Tab 106:3159`, komponen beda.)
+
+### Card `11193:219147`
+Tgl. Invoice = header grup **di luar** card. Card: chip status (2), nama + blue-tick, EXP + nominal, footer: calendar + jatuh tempo + [doc icon + connection-flower icon]. Ikon footer biru `#4199d5`.
 
 ### Node lain (belum di-extract detail, dari screenshot + token)
 - Button Tertiary `6078:20854` = text-link: transparan, no border, radius full, pad `lg×sm`(16×8), teks `color/state/active/text-light` **#4199d5** SemiBold 14px, ikon 18px opsional, drop-shadow `0 1px 1px rgba(10,13,18,.05)`. Tipe Button: Primary/Secondary/Destructive/**Tertiary** × IconOnly × State(Default/Hover/Pressed) × Size(Default/Compact) × Disabled.
