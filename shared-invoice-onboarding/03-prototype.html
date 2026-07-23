@@ -137,12 +137,13 @@
   .banner .bact{width:30px;height:30px;flex:none;border-radius:50%;background:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;color:#5A3E00;box-shadow:var(--shadow-btn)}
 
   /* entry Banner Subtle — PAPERVERSE: 6445:42143 */
-  .entry{display:flex;align-items:center;gap:var(--sp-sm);width:100%;margin-bottom:var(--sp-md);background:var(--surface);border:1px solid var(--action-primary);border-radius:var(--radius-md);padding:var(--sp-sm) var(--sp-md);cursor:pointer;font-family:inherit;text-align:left}
+  .entry{display:flex;align-items:center;gap:var(--sp-sm);width:100%;margin-bottom:var(--sp-md);background:var(--surface);border:1px solid var(--action-primary);border-radius:var(--radius-md);padding:var(--sp-xs) var(--sp-md);cursor:pointer;font-family:inherit;text-align:left}
   .entry .ei{width:20px;height:20px;flex:none;color:var(--action-primary)}
-  .entry .etx{flex:1;min-width:0}
-  .entry .etx b{display:block;font-size:14px;font-weight:600;line-height:22px;color:var(--text-primary)}
-  .entry .etx span{font-size:12px;line-height:18px;color:var(--text-secondary)}
-  .entry .ec{width:18px;height:18px;flex:none;color:var(--action-primary)}
+  /* teks 1 baris kompak (match Figma): "Keuntungan Penggunaan" bold + "Shared Invoice" reguler */
+  .entry .etx{flex:1;min-width:0;font-size:12px;line-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .entry .etx b{font-weight:600;color:var(--text-primary)}      /* PAPERVERSE: Body-SemiBold/S */
+  .entry .etx span{color:var(--text-secondary)}                 /* PAPERVERSE: Body/S */
+  .entry .ec{width:18px;height:18px;flex:none;color:var(--action-primary)}   /* play-circle = replay tur */
 
   /* empty state — PAPERVERSE: 9001:86112 */
   .empty{padding:36px 20px 24px;text-align:center}
@@ -258,8 +259,8 @@
       <!-- entry Banner Subtle -->
       <button class="entry hidden" id="entry">
         <svg class="ei" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 7.2a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2zM11 11h2v6h-2z" fill="#fff"/></svg>
-        <div class="etx"><b>Keuntungan Penggunaan</b><span>Lihat lagi cara pakai Shared Invoice</span></div>
-        <svg class="ec" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <div class="etx"><b>Keuntungan Penggunaan</b> <span>Shared Invoice</span></div>
+        <svg class="ec" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M10.5 8.8l4.5 3.2-4.5 3.2z" fill="currentColor"/></svg>
       </button>
 
       <div class="cnt">
@@ -375,7 +376,7 @@ function placeCoach(){
   if(!S.tour) return;
   var target;
   if(S.tour===1) target=scroll.querySelector('.btn-link');
-  if(S.tour===2){ var c=scroll.querySelectorAll('[data-row]')[0]; target=c&&c.querySelector('.pill.o'); }
+  if(S.tour===2){ var c=scroll.querySelectorAll('[data-row]')[0]; target=c&&c.querySelector('.pill:not(.o)'); }  /* pill pembayaran (Paid/Unpaid, kiri) */
   if(S.tour===3){ var c2=scroll.querySelectorAll('[data-row]')[0]; target=c2&&c2.querySelector('[data-conn]'); }
   if(!target) return;
   var t=target.getBoundingClientRect(), pad=S.tour===3?9:6;
@@ -383,10 +384,12 @@ function placeCoach(){
   spot.style.top=top+'px'; spot.style.left=left+'px'; spot.style.width=w+'px'; spot.style.height=h+'px';
   spot.classList.remove('hidden');
   coach.innerHTML=coachHTML(S.tour); coach.classList.remove('hidden');
-  var ch=coach.getBoundingClientRect(), GAP=14,NAV=66,M=20,BW=ref.width,BH=ref.height;
+  var ch=coach.getBoundingClientRect(), GAP=14,NAV=66,M=16,BW=ref.width,BH=ref.height;
   var targCx=left+w/2, cLeft=Math.min(Math.max(M,targCx-ch.width/2),BW-ch.width-M);
-  var below=top+h+GAP, flip=(below+ch.height>BH-NAV-M);
-  var cTop=flip?(top-ch.height-GAP):below; cTop=Math.min(Math.max(M,cTop),BH-NAV-ch.height-M);
+  /* pilih sisi (atas/bawah spot) yg muat; SELALU nempel DI LUAR spot — jangan pernah nutupin highlight */
+  var spotBot=top+h, roomBelow=(BH-NAV-M)-(spotBot+GAP), roomAbove=(top-GAP)-M;
+  var flip=(ch.height<=roomBelow)?false:((ch.height<=roomAbove)?true:(roomAbove>roomBelow));
+  var cTop=flip?(top-GAP-ch.height):(spotBot+GAP);
   coach.style.top=cTop+'px'; coach.style.left=cLeft+'px';
   var arw=document.createElement('div'); arw.className='arw '+(flip?'down':'up');
   arw.style.left=Math.min(Math.max(14,targCx-cLeft),ch.width-26)+'px';
