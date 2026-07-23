@@ -175,8 +175,8 @@ window.DURASI = {
           "terakhir": "2026-07-23"
         },
         "6": {
-          "menit": 55,
-          "catatan": "fix bug: class .top bentrok (.icard .top) → badge ke-dorong; rename .fixtop. Diagnosa via render headless Edge",
+          "menit": 62,
+          "catatan": "coachmark: cutout beneran (target ga ke-dim, ring putih) + lock scroll pas tur (target selalu pas)",
           "sesi": [
             {
               "mulai": "2026-07-23T09:18:06.822Z",
