@@ -75,6 +75,15 @@
   .tabs button.on{background:var(--accent);color:var(--accent-tx)}
   .tabs .star{font-size:9px;color:var(--tx-mut)}
   .tabs button.on .star{color:var(--accent-tx)}
+  /* dokumen (.md hasil convert) — dipisah dari tab versi biar nggak ketuker sama draft */
+  .docs{display:flex;gap:4px;align-items:center}
+  .docs .sep{width:1px;height:18px;background:var(--bd-strong);margin:0 4px;flex:none}
+  .docs button{border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);
+    font:600 12px 'Lato';padding:5px 11px;border-radius:7px;cursor:pointer;display:flex;
+    align-items:center;gap:5px;transition:background .12s,color .12s,border-color .12s}
+  .docs button svg{width:13px;height:13px}
+  .docs button:hover{color:var(--tx);background:var(--item-hover)}
+  .docs button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
   .bar .sp{flex:1}
   .bar-btn{border:1px solid var(--bd-strong);background:transparent;color:var(--tx-mut);font:600 12px 'Lato';padding:7px 11px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px}
   .bar-btn svg{width:15px;height:15px}
@@ -179,6 +188,7 @@
     <g id="i-expand" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></g>
     <g id="i-list" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></g>
     <g id="i-more" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></g>
+    <g id="i-doc" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></g>
   </defs></svg>
   <div class="drawer-scrim" id="drawer-scrim"></div>
 
@@ -202,7 +212,9 @@
       <span class="status" id="cmp-status"></span>
       <div class="plat" id="plat"></div>
       <div class="tabs" id="tabs"></div>
+      <div class="docs" id="docs"></div>
       <span class="sp"></span>
+      <span id="bar-durasi"></span>
       <button class="bar-btn ico-only" id="log-btn" title="Changelog"><svg viewBox="0 0 24 24"><use href="#i-list"/></svg></button>
       <button class="bar-btn bar-btn--primary" id="link-btn" title="Salin link share ke versi ini"><svg viewBox="0 0 24 24"><use href="#i-link"/></svg> Salin Link</button>
       <div class="more-wrap">
@@ -238,6 +250,8 @@
     </div>
   </div>
 
+<script src="../_data/durasi.js"></script>
+<script src="../_data/durasi-panel.js"></script>
 <script>
   /* ══════════════════════════════════════════════════════════════════
      REGISTRY — Komponen → Platform → Versi.
@@ -245,7 +259,62 @@
      ══════════════════════════════════════════════════════════════════ */
   var COMPONENTS = [
     {
+      slug:'selection-list', name:'Selection List (Checkbox)',
+      platforms:[
+        { key:'web', label:'🖥 Web', phase:'Fase 1 · draft',
+          versions:[
+            { v:3, file:'selection-list/draft-3.html', date:'2026-07-17', title:'Rombak total — 3 pola, dari riset Mobbin',
+              changes:['**DIROMBAK** setelah lihat 18 screen web produksi via Mobbin MCP — draft-1 salah arah di 3 titik',
+                '❌ Pola "terpilih naik ke atas" **DIBUANG** — dari 28 screen (web+iOS), **NOL** yang pakai. Itu karangan, bukan pola nyata',
+                '❌ Footer kebalik — draft-1 nganggep footer opsional; kenyataannya **footer = pola dominan** (Shopify · Wix · Airbnb · Bolt.new · Turo · Qatalog)',
+                '❌ Counter kurang — jadi **"X dari N"** (Whop "34/45", Shopify "0/1 selected", Wix "1 of 8")',
+                'Pola A — Modal + footer: checkbox kiri, select-all checkbox atas, counter+Batal/Terapkan di footer · pola dominan (6 dari 8 modal)',
+                'Pola B — Inline langsung kepakai: checkbox KANAN, select-all = TOMBOL, counter ngomongin dampak ("0 tampil, 9 disembunyiin") · treatment Reddit/Slite',
+                'Pola C — Dual select-all + bertingkat: kategori = checkbox induk (indeterminate), nyaring → 2 opsi select-all · Mixpanel + Mercury (fintech)',
+                'Debat "pilih semua = hasil saring apa semua data" KEJAWAB: Mixpanel kasih dua-duanya',
+                '⚠️ NON-DS — warna/font generik, nunggu Fase 3 live-pull Paperverse'] },
+            { v:1, file:'selection-list/draft-1.html', date:'2026-07-17', title:'First draft (2 pola, NON-DS) — SUPERSEDED oleh v3',
+              changes:['Komponen BARU — pilih banyak item dari daftar (panel/list checkbox), BUKAN field chips (itu [[multi-select]])',
+                'Pola A — Flat list: terpilih tetap di posisi asal · ala Shopify Polaris Resource list / Ant Checkbox.Group',
+                'Pola B — Terpilih naik ke atas: 2 seksi (Terpilih | Lainnya) + footer sticky Terapkan/Batal · ala GitHub Primer SelectPanel / Carbon',
+                'Sama-sama punya: search + highlight · "Pilih semua" tri-state (indeterminate kalau sebagian) · counter "N dipilih" · row disabled · empty state',
+                '"Pilih semua" saat lagi nyaring cuma kena hasil saringan (bukan semua data) — pola Carbon/Ant',
+                'A11y: row = role=checkbox + tabindex, Space/Enter toggle, focus-visible, target ≥44px, Esc bersihin search',
+                '⚠️ NON-DS — warna/font generik, nunggu Fase 3 live-pull Paperverse'] },
+          ] },
+        { key:'mobile', label:'📱 Mobile', phase:'Fase 1 · draft',
+          versions:[
+            { v:4, file:'selection-list/draft-4.html', date:'2026-07-17', title:'Rombak — checkbox pindah KANAN, dari riset Mobbin',
+              changes:['**DIROMBAK** setelah lihat 10 screen iOS produksi via Mobbin MCP',
+                '❌ **Checkbox pindah KIRI → KANAN.** Draft-2 nyalin pola web; di mobile 5 dari 5 app naruh KANAN (Careem · Beli · Tabby · foodpanda · Etsy). Jempol nutupin sisi kanan → centangan langsung keliatan berubah',
+                '❌ **"Pilih semua" DICOPOT** — nol dari 10 screen iOS punya select-all. Yang ada cuma "Bersihkan". Draft-2 maksain bawa dari web',
+                '❌ "Selesai" kanan-atas (draft-2 Pola B) dibuang — nggak ada bukti produksi + titik terjauh dari jempol',
+                'Footer jadi "Bersihkan" (teks kiri) + "Terapkan (N)" (primary kanan) — pola Beli/Mercury, counter di dalam tombol',
+                'Pola A — Bottom sheet: judul jadi "Supplier (2)" pas ada pilihan · bentuk persis Beli',
+                'Pola B — Full-screen: 1 tombol full-width di bawah · foodpanda "Apply" / Etsy "Show results"',
+                'Pola C — Select mode: ⚠️ BUKTI LEMAH (0 dari 10 screen), dasarnya cuma iOS HIG edit mode. Dipertahanin karena beda kasus (list dipakai buat browse + aksi massal)',
+                'Tetap: frame 375px · safe area · keyboard simulasi · no hover → pressed · target ≥44px',
+                '⚠️ NON-DS — warna/font generik, nunggu Fase 3 live-pull Paperverse'] },
+            { v:2, file:'selection-list/draft-2.html', date:'2026-07-17', title:'Mobile-first · 3 pola (NON-DS) — SUPERSEDED oleh v4',
+              changes:['Jalur A (mobile-first) — mode mobile dari Fase 1, BUKAN adapt dari web (alt web belum dipilih)',
+                'Pola A — Bottom sheet: tap field → sheet naik, konteks layar asal masih kelihatan · Terapkan full-width di zona thumb · ala Material 3 modal bottom sheet',
+                'Pola B — Full-screen picker: pindah halaman penuh, list paling lega/tahan keyboard · "Selesai" kanan-atas (konvensi iOS, tapi jauh dari jempol) · ala HIG / Primer',
+                'Pola C — Select mode: default list biasa (tap = detail), tap "Pilih" → checkbox meluncur masuk + action bar bawah · ala iOS edit mode',
+                'Frame 375px + notch + home indicator (safe area) · keyboard simulasi naik pas fokus search — nunjukin list keciut jadi ~3 baris',
+                'Aturan touch: NO HOVER → pressed/active · target ≥44px (row 56px, checkbox 22px area 44px) · aksi utama zona thumb-reach',
+                '📱 Di HP → full-layar + switcher pola A/B/C (1 pola sekali lihat) · 🖥 desktop → 3-up buat compare',
+                '⚠️ NON-DS — warna/font generik, nunggu Fase 3 live-pull Paperverse'] },
+          ] },
+      ]
+    },
+    {
       slug:'coachmark', name:'Coachmark',
+      // dokumen .md → .doc.html (generate: node paper-designer/tools/md-to-doc.mjs --all)
+      // `plat` opsional: diisi = cuma muncul di platform itu · kosong = muncul di semua
+      docs:[
+        { label:'Guideline', file:'coachmark/guideline-alt-a.doc.html' },
+        { label:'Referensi', file:'coachmark/references-mobile.doc.html', plat:'mobile' },
+      ],
       platforms:[
         { key:'web', label:'🖥 Web', phase:'Explore · revisi nav+close',
           versions:[
@@ -301,6 +370,75 @@
                 'Jumlah dot NGIKUT property "Jumlah step" (1 kontrol, 2 efek) — di Figma jadi VARIANT 2-5, pola sama kayak Number of Chips',
                 '⚠️ 4 elemen BARU (belum ada di DS, disetujui user buat dibikin): Scrim (#133f5d @70%) · Ring (2px putih) · Dots (8px) · Arrow (12px)',
                 'Lolos component-audit.mjs exit 0'] },
+          ] },
+        { key:'mobile', label:'📱 Mobile', phase:'Fase 5 · LIVE + konsep arrow offset',
+          versions:[
+            { v:3, file:'coachmark/playground-arrow-offset.html', date:'2026-07-21', title:'Konsep · Arrow Offset bebas (pre-Figma)',
+              changes:['**Masalah:** 3 preset (Start/Center/End) nggak nutup target yang nggak pas di titik itu. Bukti di playground: tab bar 4 kolom → target di 45/135/225/315px. Item pinggir meleset **5px** (aman), item tengah meleset **45px** (arrow nunjuk tempat kosong)',
+                '**Mekanisme (SUDAH DIUJI di Figma dulu, sebelum dirancang):** override posisi `x` di instance **DITOLAK**, tapi override **`paddingLeft` BISA** — dan arrow beneran gerak. Jadi Arrow Row dibikin auto-layout HORIZONTAL, arrow digeser lewat `paddingLeft`',
+                'Playground: pilih target (4 item tab bar) → banding mode **Preset (3)** vs **Offset bebas**. Ada slider, tombol snap ke preset, readout (target center · arrow center · paddingLeft · ideal), dan vonis nyampe/meleset berapa px',
+                '📏 Toggle garis bantu — garis putus-putus hijau (target) vs merah (arrow) biar melesetnya kelihatan, bukan cuma angka',
+                '**Rentang aman 16–292**: di bawah 16 arrow nabrak sudut membulat (radius 12), di atas 292 nyundul sisi kanan kartu',
+                '✅ **SUDAH DITERAPIN KE FIGMA** (keputusan user: tetap dua-duanya). `Arrow Row` di **18/18 varian** diubah jadi auto-layout HORIZONTAL, offset pindah dari `x` → `paddingLeft`. Varian preset Start/Center/End tetap ada',
+                '  → Bukti override jalan: instance `paddingLeft` 154 → 109, arrow ikut gerak. Audit 0 pelanggaran, geometri nggak berubah (kartu 320, tinggi 146, shadow root utuh)',
+                '  → Deskripsi komponen di Figma dikasih cara pakainya: pilih preset dulu, kalau butuh presisi select `Arrow Row` → atur left padding (rentang 16–292)',
+                '  → `paddingLeft` sengaja nilai mentah, bukan token — ini posisi, bukan spacing',
+                'Audit lolos exit 0 · 15 cek logika+struktur lolos',
+                '🖥 WEB DISAMAIN (24/24 varian): Bottom/Top pakai `Arrow Row` HORIZONTAL + `paddingLeft` (Start 24 · Center 164 · End 304) · Left/Right dapet pembungkus BARU `Arrow Col` VERTICAL + `paddingTop` (Center 60) — di situ arrow gerak vertikal',
+                '  → Bukti override: horizontal 164→90, vertikal 60→28, arrow ikut gerak dua-duanya',
+                '  → ⚠️ KOREKSI: kartu web ternyata **340px**, bukan 344 kayak yang tercatat. Preset awal dihitung pakai 344 → Center meleset 2px, End nggak simetris. Sekarang preset **dihitung dari lebar nyata**, bukan hardcode',
+                '  → ⚠️ 2 instance lepas (`8732:9848`, `8718:108505`) yang tadinya nangkring langsung di page nggak ada lagi. 18 sisanya utuh & valid, nggak ada frame ke-detach. Belum ketauan kehapus pas restrukturisasi atau dirapihin user'] },
+            { v:2, file:'coachmark/mobile-alt-a.html', date:'2026-07-21', title:'Fase 5 · Komponen LIVE di Paperverse Mobile + spec disesuaikan mobile',
+              changes:['✅ **KOMPONEN LIVE di Figma Paperverse Mobile** — page `↳ Coachmark` (`7793:23`). Keputusan user: pola **anchored**, bukan bottom sheet',
+                '**Coachmark** set `7802:343` (6 varian: Placement Bottom/Top × Step First/Middle/Last) · **_Coachmark/Content** `7801:92` (Image False/True + Description) · **/Navigation** `7800:61` (Dots/Counter + Back Action) · **/Dots** `7795:91` (14 varian) · **/Dot** `7794:27` · **/Arrow** `7798:27281` · **/Close** `7798:29`',
+                'Reuse DS mobile (bukan bikin ulang): **Button** `6078:20485` Size=Default · ikon **x-close** 24px · effect style **Shadow Neutral-01**',
+                '🔧 **SPEC DISESUAIKAN MOBILE** (user: "jangan port web mentah") — diukur langsung dari komponen mobile yang ada:',
+                '  • Button **Size=Default (38px)**, BUKAN Compact — Compact di mobile cuma **26px** (di web 30px), jauh di bawah target sentuh',
+                '  • Radius kartu **12** (`radius/lg`) — semua permukaan mobile pakai 12 (Bottom Sheet header)',
+                '  • Padding **16 atas-bawah / 20 kiri-kanan** — ikut Bottom Sheet Body mobile (`16/20/16/20`), hemat ruang vertikal',
+                '  • Gap konten **16** (`spacing/lg`) — ikut Bottom Sheet Body',
+                '  • Title **18/24** (`text/heading/size/sm`) — keputusan user: bind ke token, bukan 16 mentah kayak web',
+                '  • Close glyph **24px** (ikon mobile standar), web 16px',
+                '  • Dots default **Steps=3** (web 5) — bukti Mobbin: tur mobile 2–3 step',
+                '  • State **Pressed** gantiin Hover · Arrow cuma **Up/Down**',
+                '🔍 Audit: **0 pelanggaran binding, 0 nilai mentah** — semua ke LIBRARY (`semantic` 7130fa76 + `primitive_text_and_layout` 44a633f7), diverifikasi tree-walk 7 komponen',
+                '🐞 FIX: tombol sempat nongol ikon placeholder — property `Head`/`Trail` Button default nyala, dimatiin',
+                '⚠️ Dicatat: Button DS mobile 38px masih < 44px target sentuh — keputusan user "ikutin DS aja", implementasi wajib lebarin tap area',
+                '🐞 FIX (dilaporin user): frame `Container` (baris Title+Close) tingginya nyangkut **FIXED 100px** padahal isinya 24 → ~76px ruang kosong antara Title & Description. Sebab: `createFrame()` lahir 100×100, dan di auto-layout HORIZONTAL `primaryAxisSizingMode` ngatur LEBAR — tingginya nggak pernah di-set. Dibetulin user langsung di Figma (MCP lagi putus). Verified: Container **24px FILL/HUG**, kartu **222→146px**, audit binding tetap 0 pelanggaran',
+                '📌 Pelajaran: `component-audit.mjs` nggak ngecek GEOMETRI — ukuran ngaco lolos gerbang. Tiap abis build Figma wajib ukur tinggi tiap frame vs isinya, jangan cuma andelin screenshot',
+                '🔨 ARROW JADI SUMBU VARIAN (dilaporin user: "arrow-nya di tengah semua"): **Figma NGGAK BISA override posisi layer nested di instance** — diverifikasi lewat tes (`set_x` → "cannot be overridden"). Dibungkus frame full-width pun percuma. Yang bisa di-override cuma visibility + swap varian',
+                '  → Sempat gue keluarin arrow jadi komponen pendamping — **SALAH baca kebutuhan**, user: "arrownya gaboleh hilang itu dibutuhin". Udah dibalikin',
+                '  → Solusi final: posisi arrow jadi **sumbu varian `Arrow` (Start/Center/End)**. Set baru **`7830:27839`** (lama `7802:343` dihapus). `Placement` (2) × `Arrow` (3) × `Step` (3) = **18 varian**',
+                '  → Arrow x: Start 24 · Center 154 · End 284 (dalam kartu 320). Arah ngikut Placement — Bottom→panah atas, Top→panah bawah',
+                '  → ⚠️ Batas: 3 posisi nggak nutup target di ~25%/75% layar. Escape hatch: matiin arrow bawaan (visibility BISA di-override) + taruh `_Coachmark/Arrow` standalone di x presisi, tanpa detach',
+                '  → Verifikasi: 18/18 arrow ada, arah bener semua, audit 0 pelanggaran. Deskripsi komponen dipasang di Figma',
+                '🌑 SHADOW PINDAH KE ROOT (dilaporin user: "shadownya kurang natural, arrownya ga kena shadow"): `Shadow Neutral-01` tadinya di frame **Card**, jadi arrow di luar layer itu dan **nggak ngecast bayangan** — keliatan segitiga putih datar ditempel, ada seam',
+                '  → Fix: effect style pindah ke **root varian** + `clipsContent=false`. Figma nggabungin arrow+kartu jadi 1 siluet → 1 bayangan nyambung',
+                '  → Diverifikasi dengan render 3× + shadow dinaikin sementara ke 45% (di 8% produksi bedanya NGGAK kelihatan mata). Diterapin ke **18 varian mobile + 12 varian web**',
+                '🖥 WEB juga dikasih sumbu `Arrow` (keputusan user: Bottom/Top aja) — **12 → 24 varian**. Arrow x: Start 24 · Center 166 · End 308 (kartu 344). Left/Right tetap Center-only (arrow gerak vertikal = masalah beda). Matriks nggak lengkap, dan itu boleh di Figma',
+                '  → ⚠️ Ketemu **21 instance kepasang** di page Coachmark, jadi varian lama **DI-RENAME di tempat** (ID kejaga) bukan dibikin ulang. Semua 21 instance tetap nyambung + otomatis dapet `Arrow=Center`, persis kayak tampilan sebelumnya. Kalau dibikin-ulang-hapus-lama, 21-21nya putus',
+                '  → 🐞 Jebakan: 1 varian (`8621:701`) pembungkus arrow-nya `layoutMode=VERTICAL` → `arrow.x` nggak ngefek sama sekali (nyangkut 0) TANPA error. Auto-layout ngunci posisi anak. Wajib `layoutMode=NONE` dulu',
+                '  → Verifikasi: 24 varian · 21/21 instance hidup · arrow x & arah bener semua · shadow di root 24/24',
+                '📚 REFERENSI DISIMPAN: `coachmark/references-mobile.md` — 12 screen Mobbin (MD Vinyl · monday.com · Tabby · eBay · Pinterest · Whatnot dll) dikelompokin per pola, plus alasan Pola A dipilih & Pola B/C nggak. Sebelumnya cuma ada di chat, nggak kecatat — padahal pipeline Fase 1 mewajibkan referensi tersimpan dengan URL clickable'] },
+            { v:1, file:'coachmark/mobile-alt-a.html', date:'2026-07-20', title:'Mobile adapt · Pola A (anchored) — konten sama kayak web',
+              changes:['Jalur B (adapt dari web) — nurunin **Alt A** yang udah live di Figma ke mobile. Konten disamain, cuma layar yang beda (keputusan user)',
+                'POLA A = kartu nempel di target + arrow, near-full-width. Dipilih dari **riset Mobbin** (bukan dokumentasi DS):',
+                '  • MD Vinyl · monday.com · Tabby = kartu near-full-width anchored + arrow, counter/dots + Next di footer',
+                '  • eBay · Pinterest = kartu pinned bawah (Pola B) — dipakai kalau NGGAK ada target kecil spesifik. Beda use case, bukan pengganti',
+                '  • Whatnot = bukti Left/Right masih mungkin, tapi cuma kalau target mepet tepi layar',
+                '⚠️ **FRAME 360px, BUKAN 375** — ketahuan dari Scrim Paperverse Mobile (360×812). Kartu jadi 320px (360 − spacing/xl × 2) — kebetulan sama persis kayak web',
+                'Placement 4 → **2 varian** (Bottom/Top). Left & Right dibuang: 360px nggak muat kartu di samping target → card set 12 → 6 varian',
+                'Nilai di-LIVE-PULL dari Paperverse Mobile via importComponentByKeyAsync (bukan get_design_context yang butuh selection):',
+                '  • Scrim = color/surface/dark/raised #133f5d **@.75** (web .7 → drift)',
+                '  • Tombol = Button mobile: h38 · pad 8/16 · radius/full · Lato SemiBold 14/22 (web h30)',
+                '  • Secondary teks jadi **biru #4199d5** (web #133f5d) → drift',
+                '  • Radius kartu **12** (radius/lg, konvensi mobile) vs web 4 (radius/sm) → drift disengaja',
+                '  • Warna & text style inti **SAMA PERSIS** sama web (#133f5d, #4199d5, Lato Bold 16/20, Regular 14/22) — nggak ada drift warna',
+                'Touch: hover → **pressed/active** · hit area close & dots **≥44px** (glyph tetap 16/8px) · safe area home indicator 20px',
+                '🚩 **FLAG KE TIM DS**: Paperverse Mobile BELUM punya kartu anchored + arrow. Komponen bernama `Tooltips` isinya ternyata **bottom sheet** (Header+Body+Footer+Gesture Bar, ada checkbox "Don\'t show"). Kartu di sini dirakit dari potongan existing — 0 elemen ngarang, tapi perlu keputusan DS: bikin komponen baru atau arahin ke bottom sheet',
+                'Lolos component-audit.mjs exit 0',
+                '🔄 SINKRON SAMA WEB (2026-07-20, permintaan user) — nurunin adjustment designer di Figma web ke mobile: radius kartu 12→**8** (radius/md) · padding 16-20→**20** (spacing/xl) · gap **12** (spacing/md) · Close pindah **inline sebelah judul** (bukan absolute pojok), glyph polos tanpa circle bg, warna **action/disabled/fg** `#7f97a7` @65% · **Image default MATI** (ikut web: Image jadi VARIANT default False) · properti baru **Back Action** (mati → Previous ilang walau bukan step pertama). Yang TETAP beda karena platform: frame 360 · kartu 320 (web 344) · scrim .75 · tombol 38px · hit area ≥44px · safe area. Audit exit 0, 20 cek lolos',
+                '🐞 FIX (dilaporin user): panah step 3 (placement Top) nyasar — nangkring di ATAS kartu tapi ngarah ke BAWAH. Sebab: `arrow` itu elemen `<svg>`, dan `svg.className` tipenya `SVGAnimatedString` (read-only) → assignment `arrow.className=...` GAGAL DIAM-DIAM, class nggak pernah ganti. Fix: pakai `setAttribute(\'class\', ...)`. Sekalian `rotate(180deg)` dibuang, diganti tukar bentuk `path` (transform-origin di SVG beda-beda antar browser). Ditambah cek regresi: nol `.className=` yang kena elemen SVG'] },
           ] },
       ]
     },
@@ -377,6 +515,9 @@
     },
     {
       slug:'radio-button', name:'Radio Button',
+      docs:[
+        { label:'Guideline', file:'radio-button/guideline-alt-a.doc.html' },
+      ],
       platforms:[
         { key:'web', label:'🖥 Web', phase:'Fase 5 · Figma + refine',
           versions:[
@@ -396,8 +537,9 @@
 
   var frame=document.getElementById('frame'), tabs=document.getElementById('tabs'), plat=document.getElementById('plat'),
       log=document.getElementById('log'), sideList=document.getElementById('side-list'), stageEmpty=document.getElementById('stage-empty'),
-      side=document.getElementById('side'), drawerScrim=document.getElementById('drawer-scrim');
-  var curSlug=null, curPlatKey=null, curV=null;
+      side=document.getElementById('side'), drawerScrim=document.getElementById('drawer-scrim'),
+      docsEl=document.getElementById('docs');
+  var curSlug=null, curPlatKey=null, curV=null, curDoc=null;
 
   function comp(slug){ return COMPONENTS.find(function(c){return c.slug===slug;}); }
   function curComp(){ return comp(curSlug); }
@@ -459,14 +601,47 @@
       b.onclick=function(){ showVersion(ver.v); };
       tabs.appendChild(b);
     });
+    renderDocs();
     var exists=(v!=null)&&p.versions.some(function(x){return x.v===v;});
     showVersion(exists?v:p.versions[0].v);
   }
 
+  /* ─── DOKUMEN (.md → .doc.html lewat tools/md-to-doc.mjs) ───────────
+     Dokumen dipisah dari tab versi: versi = draft komponen, dokumen =
+     tulisan (referensi, guideline). Ditaruh di stage yang sama biar dapet
+     full-layar & QR gratis. `plat` opsional — kalau diisi, dokumen cuma
+     muncul di platform itu; kalau kosong, muncul di semua.
+     ─────────────────────────────────────────────────────────────────── */
+  function docsOf(){
+    var c=curComp(); if(!c||!c.docs) return [];
+    return c.docs.filter(function(d){ return !d.plat || d.plat===curPlatKey; });
+  }
+  function renderDocs(){
+    var list=docsOf(); docsEl.innerHTML='';
+    if(!list.length) return;
+    var sep=document.createElement('div'); sep.className='sep'; docsEl.appendChild(sep);
+    list.forEach(function(d,i){
+      var b=document.createElement('button'); b.dataset.d=i;
+      b.innerHTML='<svg viewBox="0 0 24 24"><use href="#i-doc"/></svg>'+d.label;
+      b.onclick=function(){ showDoc(i); };
+      docsEl.appendChild(b);
+    });
+  }
+  function showDoc(i){
+    var list=docsOf(), d=list[i]; if(!d) return;
+    curDoc=i;
+    stageEmpty.style.display='none'; frame.style.display='block'; frame.src=d.file;
+    tabs.querySelectorAll('button').forEach(function(b){b.classList.remove('on');});
+    docsEl.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',+b.dataset.d===i);});
+    renderLog();
+    syncHash();
+  }
+
   function showVersion(v){
-    curV=v; var p=curPlat(), ver=p.versions.find(function(x){return x.v===v;});
+    curV=v; curDoc=null; var p=curPlat(), ver=p.versions.find(function(x){return x.v===v;});
     stageEmpty.style.display='none'; frame.style.display='block'; frame.src=ver.file;
     tabs.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',+b.dataset.v===v);});
+    docsEl.querySelectorAll('button').forEach(function(b){b.classList.remove('on');});
     renderLog();
     syncHash();   // URL selalu cerminan yang lagi dilihat
   }
@@ -565,7 +740,9 @@
       try{document.execCommand('copy');}catch(e){}ta.remove();done();}
   }
   function routeOf(slug,platKey,v,raw){
-    return '#/'+slug+'/'+platKey+'/v'+v+(raw?'/raw':'');
+    // dokumen punya rute sendiri: /doc-<n> — biar link ke referensi/guideline bisa di-share
+    var leaf=(curDoc!=null)?('doc-'+curDoc):('v'+v);
+    return '#/'+slug+'/'+platKey+'/'+leaf+(raw?'/raw':'');
   }
   function absUrl(hash){
     return location.origin==='null'
@@ -600,7 +777,21 @@
     }
     var p=c.platforms.find(function(x){return x.key===platKey;})||c.platforms[0];
 
-    var v=null, vRaw=(parts[2]||'').replace(/^v/,'');
+    var leaf=parts[2]||'';
+    rawMode = parts.indexOf('raw')>=0;
+    document.body.classList.toggle('raw',rawMode);
+
+    // rute dokumen: /doc-<n>
+    var dm=leaf.match(/^doc-(\d+)$/);
+    if(dm){
+      selectComponent(slug, p.key, null);
+      var list=docsOf(), di=parseInt(dm[1],10);
+      if(list[di]) { showDoc(di); return true; }
+      toast('Dokumen ke-'+di+' nggak ada di '+c.name+' — dibuka draft terbaru.',true);
+      return true;
+    }
+
+    var v=null, vRaw=leaf.replace(/^v/,'');
     if(vRaw){
       v=parseInt(vRaw,10);
       if(isNaN(v)||!p.versions.some(function(x){return x.v===v;})){
@@ -608,8 +799,6 @@
         v=null;
       }
     }
-    rawMode = parts.indexOf('raw')>=0;
-    document.body.classList.toggle('raw',rawMode);
 
     selectComponent(slug, p.key, v);
     return true;
@@ -630,7 +819,7 @@
      Halaman share nggak punya data komponen lain sama sekali → nggak ada yang
      bisa digali. Bikin/refresh: node paper-designer/tools/make-share-page.mjs --all
      ─────────────────────────────────────────────────────────────────── */
-  var SHARE_TOKEN={"coachmark":"8267b1","segmented-button":"8fa2c0","multi-select":"e464b7","combobox":"f6d310","push-notification":"fb0763","banner":"643ded","radio-button":"8c4287"};  // slug → token (disuntik generator; kosong = share page belum dibuat)
+  var SHARE_TOKEN={"selection-list":"ecf0d0","coachmark":"8267b1","segmented-button":"8fa2c0","multi-select":"e464b7","combobox":"f6d310","push-notification":"fb0763","banner":"643ded","radio-button":"8c4287"};  // slug → token (disuntik generator; kosong = share page belum dibuat)
   function shareUrl(slug,platKey,v){
     var tok=SHARE_TOKEN[slug]; if(!tok) return null;
     var c=comp(slug);
@@ -654,6 +843,17 @@
   renderSidebar('');
   if(!COMPONENTS.length){ stageEmpty.style.display='flex'; frame.style.display='none'; }
   else if(!applyRoute()){ selectComponent(sortedComponents()[0].slug); }
+
+  /* ═══ CTA DURASI — panel "berapa lama bikinnya" (per fase + total) ═══
+     DB: paper-designer/data/durasi.json → build ke _output/_data/durasi.js */
+  if(window.DurasiPanel) DurasiPanel.init({
+    jenis:'komponen',
+    mount:document.getElementById('bar-durasi'),
+    btnClass:'bar-btn',
+    lblClass:'lbl',
+    label:'Durasi',
+    getSlug:function(){ return curSlug; }
+  });
 </script>
 </body>
 </html>
