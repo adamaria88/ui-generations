@@ -203,6 +203,7 @@
       <div class="sub" id="gsub"></div>
     </div>
     <span class="sp"></span>
+    <span id="bar-durasi"></span>
     <button class="btn ico" id="prev" title="Step sebelumnya (←)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
     </button>
@@ -227,6 +228,8 @@
   </div>
 </main>
 
+<script src="_data/durasi.js"></script>
+<script src="_data/durasi-panel.js"></script>
 <script>
 /* ═══ 6 STEP TETAP ═══ */
 const STEPS=[
@@ -472,6 +475,17 @@ document.addEventListener('keydown',e=>{
   else curS=firstInteresting(GENERATIONS[0]);
   render();
 })();
+
+/* ═══ CTA DURASI — panel "berapa lama bikinnya" (per fase + total) ═══
+   DB: paper-designer/data/durasi.json → build ke _data/durasi.js */
+if(window.DurasiPanel) DurasiPanel.init({
+  jenis:'ui',
+  mount:$('bar-durasi'),
+  btnClass:'btn',
+  lblClass:'lbl-hide',
+  label:'Durasi',
+  getSlug:()=>GENERATIONS[curG] && GENERATIONS[curG].slug
+});
 </script>
 </body>
 </html>
