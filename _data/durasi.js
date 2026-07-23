@@ -175,8 +175,8 @@ window.DURASI = {
           "terakhir": "2026-07-23"
         },
         "6": {
-          "menit": 22,
-          "catatan": "ESTIMASI (lupa nyalain timer) — fix coachmark urutan+arrow + share link full-screen HP (QR)",
+          "menit": 47,
+          "catatan": "ESTIMASI (timer ke-reset) — ikon SVG asli (strip bg artboard) + scroll cuma list",
           "sesi": [
             {
               "mulai": "2026-07-23T09:18:06.822Z",
@@ -187,6 +187,11 @@ window.DURASI = {
               "mulai": "2026-07-23T09:30:00.953Z",
               "selesai": "2026-07-23T09:37:47.263Z",
               "menit": 8
+            },
+            {
+              "mulai": "2026-07-23T10:03:00.025Z",
+              "selesai": "2026-07-23T10:13:23.372Z",
+              "menit": 10
             }
           ],
           "terakhir": "2026-07-23"
