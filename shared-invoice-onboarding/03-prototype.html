@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══════════════════════════════════════════════════════════════════
+     STEP 6 — PROTOTYPE INTERAKTIF · Shared Invoice Onboarding (Tur) [Mobile]
+     Nilai DS dari Paperverse Mobile (2Fga9lAogbeZ0q2uGlhFTc). Anotasi PAPERVERSE: <node>.
+     Komponen: Coachmark 7830:27839 · Banner 6445:35237 · Banner Subtle 6445:42143 ·
+     Scrim c98545 · Chips(status) 6404:33129 · Search&Filter 7503:6946 · Tab Bar(bottom) 6363:11327 ·
+     Card 11193:219147 · Empty state 9001:86112
+     ══════════════════════════════════════════════════════════════════ -->
+<title>Prototype · Shared Invoice Onboarding (Mobile)</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --text-primary:#133f5d; --text-secondary:#718c9e; --text-inverse:#fff; --disabled-fg:#7f97a7;
+    --action-primary:#4199d5; --border-default:#dde1e5; --surface:#ffffff; --state-active-bg:#f2f7fc;
+    --input-border:#89bde5; --placeholder:#c2cdd5;
+    --caution-icon:#eab11c; --success-bg:#f7fbf3; --success-icon:#97cc56;
+    --danger-bg:#fdf3f5; --danger-icon:#e35273;
+    --radius-md:8px; --radius-lg:12px;
+    --sp-xs:4px; --sp-sm:8px; --sp-md:12px; --sp-lg:16px; --sp-xl:20px;
+    --shadow-card:0 3px 10px rgba(0,0,0,.08); --shadow-btn:0 1px 2px rgba(10,13,18,.05);
+    --shadow-nav:0 -3px 5px rgba(0,0,0,.09);
+    --page-bg:#f8f9fa; --grey-20:#f8f9fa;
+    --hook-grad:linear-gradient(96deg,#F6C64E 0%,#FBE3A6 55%,#FDF3D6 100%); --hook-border:#EAB11C;
+  }
+  html,body{height:100%}
+  body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#e6e9ec;color:var(--text-primary);
+       min-height:100%;display:flex;flex-direction:column;align-items:center;padding:26px 16px 40px}
+  .cap{font-size:12px;color:#8a8a8a;margin-bottom:14px;text-align:center;max-width:380px;line-height:1.5}
+  .cap b{color:#4a4a4a}
+
+  .phone{width:360px;flex:none;background:#fff;border:10px solid #1e1e1e;border-radius:40px;overflow:hidden;
+         position:relative;box-shadow:0 16px 48px rgba(0,0,0,.24)}
+  .scr{height:740px;position:relative;overflow:hidden;background:var(--page-bg);display:flex;flex-direction:column}
+  .sb{height:28px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:12px;font-weight:700;flex:none}
+  .sb .rt{display:flex;gap:4px;color:var(--text-primary)}
+
+  .hd{height:48px;background:#fff;display:flex;align-items:center;gap:12px;padding:0 16px;flex:none;box-shadow:0 1px 0 rgba(0,0,0,.04)}
+  .hd .burg{width:20px;height:14px;display:flex;flex-direction:column;justify-content:space-between}
+  .hd .burg i{height:2px;background:var(--text-primary);border-radius:2px}
+  .hd .ttl{flex:1;text-align:center;font-size:16px;font-weight:700;color:var(--text-primary)}
+  .hd .bell{width:18px;height:18px;border:2px solid var(--text-primary);border-radius:50% 50% 45% 45%;flex:none}
+
+  /* top tabs (My Invoice / Shared Invoice) — PAPERVERSE: Tab 106:3159 */
+  .tabs{height:44px;background:#fff;display:flex;flex:none;box-shadow:inset 0 -1px 0 var(--border-default)}
+  .tabs .tb{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-secondary);font-weight:600;position:relative;cursor:pointer}
+  .tabs .tb.on{color:var(--action-primary);font-weight:700}
+  .tabs .tb.on::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2.5px;background:var(--action-primary)}
+
+  .body{flex:1;overflow-y:auto;padding:14px 20px 0;position:relative}
+
+  /* PAPERVERSE: Search & Filter 7503:6946 — [filter-icon][chips][search-icon] + input expand */
+  .filt{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .filt .fbtn{width:30px;height:30px;flex:none;border:1px solid var(--border-default);background:#fff;border-radius:100px;
+              display:flex;align-items:center;justify-content:center;color:var(--text-primary);cursor:pointer;position:relative}
+  .filt .fbtn svg{width:16px;height:16px}
+  .filt .fbtn .badge{position:absolute;top:-4px;right:-4px;min-width:15px;height:15px;padding:0 3px;border-radius:8px;
+                     background:var(--action-primary);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .filt .chips{flex:1;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+  .filt .chips::-webkit-scrollbar{display:none}
+  .chip{height:30px;border:1px solid var(--border-default);border-radius:100px;display:flex;align-items:center;gap:4px;
+        padding:4px 8px;font-size:14px;line-height:22px;color:var(--text-secondary);white-space:nowrap;flex:none;background:#fff}
+  .chip.dd::after{content:'▾';font-size:10px;color:var(--action-primary)}
+  .chip.dd{color:var(--action-primary);border-color:var(--action-primary)}
+  .filt .sbtn.on{background:var(--state-active-bg);border-color:var(--action-primary);color:var(--action-primary)}
+  .searchbar{margin-bottom:14px}
+  .searchbar input{width:100%;height:36px;border:1px solid var(--input-border);border-radius:4px;padding:8px 12px;
+                   font:400 14px 'Lato';color:var(--text-primary);outline:none}
+  .searchbar input::placeholder{color:var(--placeholder)}
+
+  /* date group header — DI LUAR card (PAPERVERSE: 11193:219147) */
+  .dategrp{font-size:11px;color:var(--text-secondary);margin:0 0 8px 2px}
+
+  /* count row */
+  .cnt{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .cnt .l{font-size:12px;color:var(--text-secondary);background:var(--grey-20);border-radius:var(--radius-md);padding:var(--sp-xs) var(--sp-sm);font-weight:600}
+  .btn-link{font-size:13px;color:var(--action-primary);font-weight:700;display:flex;align-items:center;gap:5px;background:none;border:0;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .btn-link .ic{font-size:14px}
+  .btn-link.off{color:var(--text-secondary);opacity:.5;pointer-events:none}
+
+  /* invoice card — PAPERVERSE: 11193:219147 */
+  .icard{background:#fff;border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:var(--sp-md);margin-bottom:var(--sp-md);box-shadow:var(--shadow-card);cursor:pointer}
+  .icard .top{display:flex;gap:6px;align-items:center;margin-bottom:9px}
+  .pill{border-radius:4px;padding:2px 4px;display:flex;align-items:center;font-size:12px;line-height:18px;font-weight:600}
+  .pill.paid{background:var(--success-icon);color:var(--text-inverse)}
+  .pill.unpaid{background:var(--caution-icon);color:var(--text-inverse)}
+  .pill.o{border:1px solid currentColor}
+  .pill.terkirim{color:var(--action-primary);background:var(--state-active-bg)}
+  .pill.disetujui{color:var(--success-icon);background:var(--success-bg)}
+  .pill.ditolak{color:var(--danger-icon);background:var(--danger-bg)}
+  .icard .dots{margin-left:auto;color:var(--text-secondary);font-weight:900;letter-spacing:1px;font-size:16px}
+  .icard .co{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+  .tick{width:15px;height:15px;flex:none;color:var(--action-primary)}
+  .icard .rowb{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+  .icard .num{font-size:12px;color:var(--text-secondary)}
+  .icard .amt{font-size:14px;font-weight:800;color:var(--text-primary)}
+  .icard .foot{display:flex;align-items:center;font-size:11px;color:var(--text-secondary);gap:8px}
+  .icard .foot .cal{width:14px;height:14px;flex:none;color:var(--text-secondary)}
+  .icard .foot .sp{flex:1}
+  .icard .foot .ic{width:18px;height:18px;flex:none}
+  .icard .foot .ic.doc{color:var(--action-primary)}
+  .icard .foot .ic.conn{color:var(--action-primary)}
+
+  /* bottom nav — PAPERVERSE: Tab Bar 6363:11327 */
+  .bn{background:#fff;box-shadow:var(--shadow-nav);display:flex;align-items:center;gap:8px;padding:8px;flex:none}
+  .bn .it{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;line-height:18px;color:var(--text-secondary)}
+  .bn .it.on{color:var(--action-primary)}
+  .bn .it svg{width:24px;height:24px}
+  .bn .fab{width:38px;height:38px;flex:none;border-radius:9999px;background:var(--action-primary);color:#fff;
+           display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-btn)}
+  .bn .fab svg{width:18px;height:18px}
+
+  /* hook banner — PAPERVERSE: Banner 6445:35237 (OVERRIDE warna→web) */
+  .banner{border:1px solid var(--hook-border);background:var(--hook-grad);border-radius:var(--radius-md);padding:12px;margin-bottom:14px;display:flex;gap:var(--sp-sm);align-items:center;cursor:pointer}
+  .banner .bic{width:20px;height:20px;flex:none;color:#5A3E00}
+  .banner .btx{flex:1;min-width:0}
+  .banner .btx b{font-size:14px;font-weight:700;color:#5A3E00;display:block;line-height:20px}
+  .banner .btx span{font-size:12px;color:#6e4e00;line-height:18px}
+  .banner .bact{width:30px;height:30px;flex:none;border-radius:50%;background:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;color:#5A3E00;box-shadow:var(--shadow-btn)}
+
+  /* entry Banner Subtle — PAPERVERSE: 6445:42143 */
+  .entry{display:flex;align-items:center;gap:var(--sp-sm);width:100%;margin-bottom:var(--sp-md);background:var(--surface);border:1px solid var(--action-primary);border-radius:var(--radius-md);padding:var(--sp-sm) var(--sp-md);cursor:pointer;font-family:inherit;text-align:left}
+  .entry .ei{width:20px;height:20px;flex:none;color:var(--action-primary)}
+  .entry .etx{flex:1;min-width:0}
+  .entry .etx b{display:block;font-size:14px;font-weight:600;line-height:22px;color:var(--text-primary)}
+  .entry .etx span{font-size:12px;line-height:18px;color:var(--text-secondary)}
+  .entry .ec{width:18px;height:18px;flex:none;color:var(--action-primary)}
+
+  /* empty state — PAPERVERSE: 9001:86112 */
+  .empty{padding:36px 20px 24px;text-align:center}
+  .empty .eill{width:120px;height:120px;margin:0 auto var(--sp-lg)}
+  .empty .eill svg{width:100%;height:100%}
+  .empty h3{font-size:14px;font-weight:600;line-height:22px;color:var(--text-primary);margin-bottom:var(--sp-xs)}
+  .empty p{font-size:12px;line-height:18px;color:var(--text-secondary)}
+
+  /* scrim + coachmark — PAPERVERSE: Scrim c98545 · Coachmark 7830:27839 */
+  .scrim{position:absolute;inset:0;background:rgba(19,63,93,.70);z-index:4}
+  .spot{position:absolute;border:2px solid #fff;border-radius:8px;z-index:5;pointer-events:none;box-shadow:0 0 0 4px rgba(19,63,93,.70)}
+  .coach{position:absolute;z-index:6;width:320px;background:var(--surface);border-radius:var(--radius-lg);padding:var(--sp-lg) var(--sp-xl);box-shadow:var(--shadow-card)}
+  .coach .imgslot{height:150px;border-radius:var(--radius-md);margin-bottom:var(--sp-sm);overflow:hidden;background:var(--state-active-bg)}
+  .coach .imgslot img{width:100%;height:100%;object-fit:cover;display:block}
+  .coach .ttl{display:flex;align-items:flex-start;gap:var(--sp-xs);margin-bottom:var(--sp-sm)}
+  .coach .ttl h4{flex:1;font-size:16px;font-weight:700;line-height:20px;color:var(--text-primary)}
+  .coach .ttl .x{width:24px;height:24px;flex:none;opacity:.65;color:var(--text-primary);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .coach .desc{font-size:14px;line-height:22px;color:var(--text-secondary);margin-bottom:var(--sp-lg)}
+  .coach .nav{display:flex;align-items:center}
+  .coach .dots{display:flex;gap:var(--sp-sm)}
+  .coach .dots i{width:8px;height:8px;border-radius:50%;background:var(--border-default)}
+  .coach .dots i.on{background:var(--action-primary)}
+  .coach .cbtn{margin-left:auto;background:var(--action-primary);color:var(--text-inverse);font-weight:600;font-size:14px;line-height:22px;border:0;border-radius:9999px;padding:var(--sp-sm) var(--sp-lg);cursor:pointer;font-family:inherit;box-shadow:var(--shadow-btn)}
+  /* arrow = segitiga (Tip 12×6), bukan diamond */
+  .coach .arw{position:absolute;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent}
+  .coach .arw.up{border-bottom:6px solid var(--surface);top:-6px}
+  .coach .arw.down{border-top:6px solid var(--surface);bottom:-6px}
+
+  .hidden{display:none !important}
+  .toast{position:absolute;left:50%;bottom:78px;transform:translateX(-50%) translateY(8px);background:rgba(19,63,93,.94);color:#fff;font-size:12px;padding:9px 14px;border-radius:20px;opacity:0;transition:.24s;z-index:8;white-space:nowrap;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .ctrl{margin-top:18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;background:#fbfbfa;border:1px solid #dde1e5;border-radius:12px;padding:10px 14px}
+  .ctrl .lbl{font-size:11px;font-weight:700;color:#8a8a8a;text-transform:uppercase;letter-spacing:.05em}
+  .ctrl button{font-family:'Lato';font-size:12px;font-weight:600;border:1px solid #cfd6db;background:#fff;color:#4a4a4a;border-radius:8px;padding:6px 11px;cursor:pointer}
+  .ctrl button:hover{background:#f2f4f6}
+  .ctrl button.on{background:var(--action-primary);border-color:var(--action-primary);color:#fff}
+  .ctrl .sep{width:1px;height:20px;background:#e0e0e0}
+  .ctrl button svg{width:13px;height:13px;vertical-align:-2px;margin-right:3px}
+
+  /* FULL-SCREEN di HP (viewport sempit) atau body.full — app isi layar penuh */
+  @media (max-width:420px){
+    body{padding:0;background:var(--page-bg);display:block}
+    .cap,.ctrl{display:none}
+    .phone{border:0;border-radius:0;width:100vw;box-shadow:none}
+    .scr{height:100vh;height:100dvh}
+  }
+  body.full{padding:0;background:var(--page-bg);display:block}
+  body.full .cap,body.full .ctrl{display:none}
+  body.full .phone{border:0;border-radius:0;width:100vw;box-shadow:none}
+  body.full .scr{height:100vh;height:100dvh}
+
+  /* QR "Buka di HP" */
+  .qrs{position:fixed;inset:0;background:rgba(20,22,25,.5);z-index:50;display:none;align-items:center;justify-content:center;padding:24px}
+  .qrs.on{display:flex}
+  .qrc{background:#fff;border-radius:16px;padding:22px;width:300px;max-width:92vw;text-align:center;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+  .qrc h3{font-size:15px;font-weight:800;margin-bottom:4px;color:#1f2328}
+  .qrc p{font-size:12px;color:#8a8a8a;line-height:1.5;margin-bottom:14px}
+  .qrc .qimg{width:190px;height:190px;margin:0 auto 14px;border-radius:10px;background:#f4f4f2;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:11px;color:#b4b4b4}
+  .qrc .qimg img{width:100%;height:100%}
+  .qrc .qurl{font:600 11px 'Lato';color:#8a8a8a;background:#f4f4f2;border-radius:8px;padding:9px 10px;word-break:break-all;margin-bottom:12px;line-height:1.5}
+  .qrc .qacts{display:flex;gap:8px}
+  .qrc .qacts button{flex:1;border:0;border-radius:9px;padding:10px;font:700 12px 'Lato';cursor:pointer}
+  .qrc .qcopy{background:var(--action-primary);color:#fff}
+  .qrc .qclose{background:#eceff2;color:#4a4a4a}
+</style>
+</head>
+<body>
+
+<div class="cap">Prototype interaktif — <b>tap hook banner</b> (My Invoice) buat ke Shared · tur jalan otomatis di kunjungan pertama · tap <b>Keuntungan Penggunaan</b> buat replay.</div>
+
+<div class="phone">
+  <div class="scr">
+    <div class="sb"><span>12:30</span><span class="rt">▦ ▤ ▮</span></div>
+    <div class="hd">
+      <div class="burg"><i></i><i></i><i></i></div>
+      <div class="ttl">Purchase Invoice</div>
+      <div class="bell"></div>
+    </div>
+    <div class="tabs">
+      <div class="tb" id="tabMy">My Invoice</div>
+      <div class="tb" id="tabShared">Shared Invoice</div>
+    </div>
+
+    <div class="body" id="scroll">
+      <!-- PAPERVERSE: Search & Filter 7503:6946 -->
+      <div class="filt">
+        <button class="fbtn" id="filterBtn" title="Filter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+          <span class="badge">2</span>
+        </button>
+        <div class="chips" id="chips"></div>
+        <button class="fbtn sbtn" id="searchBtn" title="Cari">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+      </div>
+      <div class="searchbar hidden" id="searchbar"><input placeholder="Cari Invoice Anda"></div>
+
+      <!-- hook banner -->
+      <div class="banner hidden" id="banner">
+        <svg class="bic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.9 5.3a2 2 0 0 0 2.2 0L21 8"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+        <div class="btx"><b>3 invoice dari supplier menunggu</b><span>Dari PT Abadi Nan Jaya &amp; mitra lainnya</span></div>
+        <div class="bact"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
+      </div>
+
+      <!-- entry Banner Subtle -->
+      <button class="entry hidden" id="entry">
+        <svg class="ei" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 7.2a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2zM11 11h2v6h-2z" fill="#fff"/></svg>
+        <div class="etx"><b>Keuntungan Penggunaan</b><span>Lihat lagi cara pakai Shared Invoice</span></div>
+        <svg class="ec" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+
+      <div class="cnt">
+        <span class="l" id="cntLabel">8 Invoice Pembelian</span>
+        <button class="btn-link" id="bayar"><span class="ic">⇄</span>Bayar Sekaligus</button>
+      </div>
+
+      <div id="list"></div>
+
+      <div class="empty hidden" id="empty">
+        <div class="eill"><svg viewBox="0 0 96 96" fill="none"><ellipse cx="48" cy="52" rx="40" ry="34" fill="#EAF1F7"/><path d="M28 40h18l5 6h17a3 3 0 0 1 3 3v20a3 3 0 0 1-3 3H28a3 3 0 0 1-3-3V43a3 3 0 0 1 3-3z" fill="#fff" stroke="#B9CEDE" stroke-width="2"/><circle cx="48" cy="59" r="11" fill="#DCE7EF"/><path d="M44 55l8 8M52 55l-8 8" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg></div>
+        <h3>Anda belum memiliki Shared Invoice</h3>
+        <p>Belum ada invoice yang dikirimkan oleh Mitra Anda</p>
+      </div>
+    </div>
+
+    <div class="scrim hidden" id="scrim"></div>
+    <div class="spot hidden" id="spot"></div>
+    <div class="coach hidden" id="coach"></div>
+    <div class="toast" id="toast"></div>
+
+    <!-- PAPERVERSE: Tab Bar (bottom nav) 6363:11327 -->
+    <div class="bn">
+      <div class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z" fill="currentColor" stroke="none"/></svg>Home</div>
+      <div class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></svg>Penjualan</div>
+      <div class="fab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      <div class="it on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h2l2 11h9l2-7H7"/><circle cx="9" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Pembelian</div>
+      <div class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M20 19a4 4 0 0 1-4 3h-2"/></svg>Bantuan</div>
+    </div>
+  </div>
+</div>
+
+<div class="ctrl">
+  <span class="lbl">Demo</span>
+  <button id="reset">↺ Reset onboarding</button>
+  <span class="sep"></span>
+  <span class="lbl">Data</span>
+  <button id="scFull" class="on">Ada invoice</button>
+  <button id="scEmpty">Kosong</button>
+  <span class="sep"></span>
+  <button id="openHp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></svg>Buka di HP</button>
+</div>
+
+<!-- QR "Buka di HP" — buka prototype full-screen di HP -->
+<div class="qrs" id="qrScrim">
+  <div class="qrc">
+    <h3>Buka di HP</h3>
+    <p>Scan pakai kamera HP — prototype tampil <b>full-layar</b> pake sentuhan asli.</p>
+    <div class="qimg" id="qrImg">…</div>
+    <div class="qurl" id="qrUrl"></div>
+    <div class="qacts"><button class="qcopy" id="qrCopy">Copy URL</button><button class="qclose" id="qrClose">Tutup</button></div>
+  </div>
+</div>
+
+<script>
+var $=function(id){return document.getElementById(id)};
+var TICK='<svg class="tick" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 1.8 3-.2 1 2.8 2.6 1.4-.8 2.9.8 2.9-2.6 1.4-1 2.8-3-.2L12 22l-2.4-1.8-3 .2-1-2.8L3 16.9l.8-2.9L3 11l2.6-1.4 1-2.8 3 .2z"/><path d="M9.5 12.5l1.8 1.8 3.4-3.6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+/* card footer icons (PAPERVERSE: 11193:219147) — doc + connection flower */
+var IC_DOC='<span class="ic doc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h4"/></svg></span>';
+var IC_CONN='<span class="ic conn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.3 1.6 2.8-.1.9 2.6 2.4 1.4-.8 2.7.8 2.7-2.4 1.4-.9 2.6-2.8-.1L12 20.4l-2.3-1.7-2.8.1-.9-2.6L3.6 14.8l.8-2.7-.8-2.7 2.4-1.4.9-2.6 2.8.1z"/><path d="M9.6 12.2l1.7 1.7 3.3-3.4" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+var IC_CAL='<span class="cal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></span>';
+var IMG={1:'img/att-2.png',3:'img/att-3.png'};
+
+var ROWS_MY=[{pay:'Paid'},{pay:'Unpaid'},{pay:'Unpaid'}];
+var ROWS_SHARED=[
+  {pay:'Unpaid',appr:'terkirim',al:'Terkirim',tick:true,conn:true},
+  {pay:'Paid',appr:'disetujui',al:'Disetujui',tick:true,conn:true},
+  {pay:'Unpaid',appr:'ditolak',al:'Ditolak',tick:true,conn:true}
+];
+/* Tgl. Invoice = header grup DI LUAR card */
+function cardBlock(r){
+  return '<div class="dategrp">Tgl. Invoice: 23 Jul 2025</div>'
+    +'<div class="icard" data-row>'
+    +'<div class="top"><span class="pill '+(r.pay==='Paid'?'paid':'unpaid')+'">'+r.pay+'</span>'
+    +(r.appr?'<span class="pill o '+r.appr+'">'+r.al+'</span>':'')+'<span class="dots">···</span></div>'
+    +'<div class="co">PT JFI - Cabang Krian'+(r.tick?TICK:'')+'</div>'
+    +'<div class="rowb"><span class="num">EXP/2025/0008</span><span class="amt">Rp30.000.000,00</span></div>'
+    +'<div class="foot">'+IC_CAL+'Tgl. Jatuh Tempo: 20 Jan 25<span class="sp"></span>'
+    +(r.conn?IC_DOC:'')+IC_CONN+'</div></div>';
+}
+function coachHTML(step){
+  var img=(step===1||step===3);
+  var titles={1:'Lihat &amp; bayar invoice dari banyak supplier sekaligus',2:'Pantau status pembayaran real-time',3:'Supplier terkoneksi → biaya lebih rendah'};
+  var descs={1:'Invoice dari supplier otomatis muncul di sini tanpa perlu kirim manual.',2:'Status diperbarui otomatis, sama persis kayak yang dilihat supplier.',3:'Connect &amp; blue-tick bikin fee kartu kredit turun jadi 1,45%.'};
+  /* urutan komponen real: Title → Image → Description → Nav (image di ANTARA title & desc) */
+  return '<div class="ttl"><h4>'+titles[step]+'</h4><span class="x" id="coachX">✕</span></div>'
+    +(img?'<div class="imgslot"><img src="'+IMG[step]+'" alt=""></div>':'')
+    +'<div class="desc">'+descs[step]+'</div>'
+    +'<div class="nav"><div class="dots"><i class="'+(step===1?'on':'')+'"></i><i class="'+(step===2?'on':'')+'"></i><i class="'+(step===3?'on':'')+'"></i></div>'
+    +'<button class="cbtn" id="coachBtn">'+(step===3?'Done':'Next')+'</button></div>';
+}
+var CHIPS_MY='<div class="chip dd">Semua Pembayaran</div><div class="chip dd">Semua Status</div>';
+var CHIPS_SH='<div class="chip dd">Semua Pembayaran</div><div class="chip dd">Semua Dokumen</div>';
+
+/* ── state ── */
+var S={tab:'my',tour:0,scenario:'full',tourSeen:false,search:false};
+function has(){ return S.scenario==='full'; }   /* ada shared invoice? */
+
+function toast(m){ var t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove('show')},1600); }
+
+function placeCoach(){
+  var scrEl=document.querySelector('.scr'), ref=scrEl.getBoundingClientRect(), scroll=$('scroll');
+  var spot=$('spot'), coach=$('coach');
+  spot.classList.add('hidden'); coach.classList.add('hidden');
+  if(!S.tour) return;
+  var target;
+  if(S.tour===1) target=scroll.querySelector('.btn-link');
+  if(S.tour===2){ var c=scroll.querySelectorAll('[data-row]')[0]; target=c&&c.querySelector('.pill.o'); }
+  if(S.tour===3){ var c2=scroll.querySelectorAll('[data-row]')[0]; target=c2&&c2.querySelector('.ic.conn'); }
+  if(!target) return;
+  var t=target.getBoundingClientRect(), pad=S.tour===3?9:6;
+  var top=t.top-ref.top-pad, left=t.left-ref.left-pad, w=t.width+pad*2, h=t.height+pad*2;
+  spot.style.top=top+'px'; spot.style.left=left+'px'; spot.style.width=w+'px'; spot.style.height=h+'px';
+  spot.classList.remove('hidden');
+  coach.innerHTML=coachHTML(S.tour); coach.classList.remove('hidden');
+  var ch=coach.getBoundingClientRect(), GAP=14,NAV=66,M=20,BW=ref.width,BH=ref.height;
+  var targCx=left+w/2, cLeft=Math.min(Math.max(M,targCx-ch.width/2),BW-ch.width-M);
+  var below=top+h+GAP, flip=(below+ch.height>BH-NAV-M);
+  var cTop=flip?(top-ch.height-GAP):below; cTop=Math.min(Math.max(M,cTop),BH-NAV-ch.height-M);
+  coach.style.top=cTop+'px'; coach.style.left=cLeft+'px';
+  var arw=document.createElement('div'); arw.className='arw '+(flip?'down':'up');
+  arw.style.left=Math.min(Math.max(14,targCx-cLeft),ch.width-26)+'px';
+  coach.appendChild(arw);
+  $('coachBtn').onclick=nextStep; $('coachX').onclick=closeTour;
+}
+function nextStep(){ if(S.tour>=3){ closeTour(); toast('Tur selesai — replay via “Keuntungan Penggunaan”'); } else { S.tour++; render(); } }
+function closeTour(){ S.tour=0; S.tourSeen=true; render(); }
+/* pindah ke Shared: tur auto-jalan kalau belum pernah & ada invoice */
+function gotoShared(){ S.tab='shared'; if(has() && !S.tourSeen) S.tour=1; render(); }
+
+function render(){
+  var sh=S.tab==='shared', empty=sh&&!has();
+  $('tabMy').classList.toggle('on',!sh);
+  $('tabShared').classList.toggle('on',sh);
+  $('chips').innerHTML=sh?CHIPS_SH:CHIPS_MY;
+  var rows=sh?ROWS_SHARED:ROWS_MY;
+  $('list').innerHTML=empty?'':rows.map(cardBlock).join('');
+  $('empty').classList.toggle('hidden',!empty);
+  /* HOOK BANNER: My Invoice + ADA shared invoice. Bukan once-per-user. */
+  $('banner').classList.toggle('hidden',!(!sh && has()));
+  /* ENTRY: tab Shared + ADA invoice (hilang kalau kosong) */
+  $('entry').classList.toggle('hidden',!(sh && has()));
+  $('cntLabel').textContent=empty?'0 Invoice':(sh?'8 Invoice':'8 Invoice Pembelian');
+  $('bayar').classList.toggle('off',empty);
+  $('scrim').classList.toggle('hidden',!S.tour);
+  $('searchbar').classList.toggle('hidden',!S.search);
+  $('searchBtn').classList.toggle('on',S.search);
+  requestAnimationFrame(placeCoach);
+}
+
+/* ── interaksi ── */
+$('tabMy').onclick=function(){ S.tab='my'; S.tour=0; render(); };
+$('tabShared').onclick=function(){ S.tour=0; gotoShared(); };
+$('banner').onclick=function(){ gotoShared(); };                 /* banner = NAVIGATE ke Shared */
+$('entry').onclick=function(){ S.tab='shared'; S.tour=1; render(); };  /* replay tur */
+$('searchBtn').onclick=function(){ S.search=!S.search; render(); };
+$('reset').onclick=function(){ S={tab:'my',tour:0,scenario:'full',tourSeen:false,search:false}; syncSc(); render(); toast('Onboarding di-reset'); };
+$('scFull').onclick=function(){ S.scenario='full'; S.tour=0; syncSc(); render(); };
+$('scEmpty').onclick=function(){ S.scenario='empty'; S.tab='shared'; S.tour=0; syncSc(); render(); };
+function syncSc(){ $('scFull').classList.toggle('on',has()); $('scEmpty').classList.toggle('on',!has()); }
+$('list').addEventListener('click',function(e){ if(e.target.closest('[data-row]')&&!S.tour) toast('→ View Detail invoice'); });
+window.addEventListener('resize',function(){ requestAnimationFrame(placeCoach); });
+
+/* ── Buka di HP: QR + URL (buka full-screen di HP) ── */
+$('openHp').onclick=function(){
+  var url=location.href.split('#')[0];
+  $('qrUrl').textContent=url;
+  $('qrImg').innerHTML='<img alt="QR" src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&margin=0&data='+encodeURIComponent(url)+'">';
+  $('qrScrim').classList.add('on');
+};
+$('qrClose').onclick=function(){ $('qrScrim').classList.remove('on'); };
+$('qrScrim').onclick=function(e){ if(e.target===$('qrScrim')) $('qrScrim').classList.remove('on'); };
+$('qrCopy').onclick=function(){ var b=this; if(navigator.clipboard) navigator.clipboard.writeText($('qrUrl').textContent); b.textContent='Tersalin ✓'; setTimeout(function(){b.textContent='Copy URL'},1500); };
+/* ?full=1 → paksa full-screen di desktop juga */
+if(/[?&]full=1/.test(location.search)) document.body.classList.add('full');
+
+render();
+</script>
+</body>
+</html>
