@@ -30,25 +30,34 @@
   html,body{height:100%}
   body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:#e6e9ec;color:var(--text-primary);
        min-height:100%;display:flex;flex-direction:column;align-items:center;padding:26px 16px 40px}
+  /* ── TEXT STYLES (PAPERVERSE library — SEMUA font app = salah satu dari ini) ──
+     Heading/S        Lato 700 16/20   judul header · judul coachmark
+     Body-SemiBold/M  Lato 600 14/22   nama supplier · amount · tab · link · banner title · Next
+     Body-SemiBold/S  Lato 600 12/18   pill status
+     Body/M           Lato 400 14/22   chip filter · search input · coachmark desc
+     Body/S           Lato 400 12/18   no. invoice · jatuh tempo · banner desc · empty p
+     Body/Body XSmall Lato 400 12/16   tgl grup · count "8 Invoice"
+     TabBar label     Lato 400 9       bottom nav
+     (chrome demo di luar app — .cap/.ctrl/.qrc/.sb — bukan DS, dibiarin)                    */
   .cap{font-size:12px;color:#8a8a8a;margin-bottom:14px;text-align:center;max-width:380px;line-height:1.5}
   .cap b{color:#4a4a4a}
 
   .phone{width:360px;flex:none;background:#fff;border:10px solid #1e1e1e;border-radius:40px;overflow:hidden;
          position:relative;box-shadow:0 16px 48px rgba(0,0,0,.24)}
   .scr{height:740px;position:relative;overflow:hidden;background:var(--page-bg);display:flex;flex-direction:column}
-  .sb{height:28px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:12px;font-weight:700;flex:none}
+  .sb{height:28px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:12px;font-weight:600;flex:none}
   .sb .rt{display:flex;gap:4px;color:var(--text-primary)}
 
   .hd{height:48px;background:#fff;display:flex;align-items:center;gap:12px;padding:0 16px;flex:none;box-shadow:0 1px 0 rgba(0,0,0,.04)}
   .hd .burg{width:20px;height:14px;display:flex;flex-direction:column;justify-content:space-between}
   .hd .burg i{height:2px;background:var(--text-primary);border-radius:2px}
-  .hd .ttl{flex:1;text-align:center;font-size:16px;font-weight:700;color:var(--text-primary)}
+  .hd .ttl{flex:1;text-align:center;font-size:16px;font-weight:700;line-height:20px;color:var(--text-primary)}  /* PAPERVERSE: Heading/S */
   .hd .bell{width:18px;height:18px;border:2px solid var(--text-primary);border-radius:50% 50% 45% 45%;flex:none}
 
   /* top tabs (My Invoice / Shared Invoice) — PAPERVERSE: Tab 106:3159 */
   .tabs{height:44px;background:#fff;display:flex;flex:none;box-shadow:inset 0 -1px 0 var(--border-default)}
-  .tabs .tb{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-secondary);font-weight:600;position:relative;cursor:pointer}
-  .tabs .tb.on{color:var(--action-primary);font-weight:700}
+  .tabs .tb{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:22px;color:var(--text-secondary);font-weight:600;position:relative;cursor:pointer}  /* PAPERVERSE: Body-SemiBold/M */
+  .tabs .tb.on{color:var(--action-primary)}   /* aktif = warna, weight tetap 600 (library) */
   .tabs .tb.on::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2.5px;background:var(--action-primary)}
 
   /* cuma list yang scroll — .top sticky, .listwrap scroll */
@@ -56,38 +65,34 @@
   .fixtop{flex:none;padding:14px 20px 0}   /* sticky header — JANGAN pakai .top (bentrok .icard .top) */
   .listwrap{flex:1;overflow-y:auto;padding:0 20px 10px}
 
-  /* PAPERVERSE: Search & Filter 7503:6946 — filter row [icon][chips][clear] DI ATAS, search DI BAWAH (match komponen asli) */
-  .filt{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+  /* PAPERVERSE: Search & Filter (kompak 1 baris) — filter-icon + chip dropdown + search-icon */
+  .filt{display:flex;align-items:center;gap:6px;margin-bottom:14px}
   .filt .fbtn{width:30px;height:30px;flex:none;border:1px solid var(--border-default);background:#fff;border-radius:100px;
               display:flex;align-items:center;justify-content:center;color:var(--text-primary);cursor:pointer;position:relative}
   .filt .fbtn svg{width:16px;height:16px}
-  .filt .fbtn .badge{position:absolute;top:-4px;right:-4px;min-width:15px;height:15px;padding:0 3px;border-radius:8px;
-                     background:var(--action-primary);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
   .filt .chips{flex:1;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
   .filt .chips::-webkit-scrollbar{display:none}
+  /* chip filter = dropdown biru · PAPERVERSE: Body/M (Lato 14/22) */
   .chip{height:30px;border:1px solid var(--border-default);border-radius:100px;display:flex;align-items:center;gap:4px;
-        padding:4px 9px;font-size:13px;line-height:22px;color:var(--text-secondary);white-space:nowrap;flex:none;background:#fff;cursor:pointer}
-  .chip.dd::after{content:'▾';font-size:10px;color:var(--action-primary)}
+        padding:4px 10px;font-size:14px;line-height:22px;color:var(--text-secondary);white-space:nowrap;flex:none;background:#fff;cursor:pointer}
   .chip.dd{color:var(--action-primary);border-color:var(--action-primary)}
-  /* ✕ clear filter — pinned kanan, lingkaran biru (match komponen) */
-  .filt .clr{width:30px;height:30px;flex:none;border:1px solid var(--action-primary);background:#fff;border-radius:100px;
-             display:flex;align-items:center;justify-content:center;color:var(--action-primary);cursor:pointer}
-  .filt .clr svg{width:15px;height:15px}
+  .chip.dd::after{content:'';width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid var(--action-primary);margin-left:1px}
+  /* ikon search = toggle search bar */
   .filt .sbtn.on{background:var(--state-active-bg);border-color:var(--action-primary);color:var(--action-primary)}
-  /* search bar full (selalu keliatan) — match screen asli */
+  /* search bar (muncul saat ikon search di-tap) · PAPERVERSE: Body/M (Lato 14/22) */
   .searchbar{margin-bottom:14px;display:flex;align-items:center;gap:8px;height:40px;background:#fff;
              border:1px solid var(--border-default);border-radius:20px;padding:0 14px}
   .searchbar svg{width:16px;height:16px;color:var(--text-secondary);flex:none}
-  .searchbar input{flex:1;border:0;background:none;height:100%;font:400 13px 'Lato';color:var(--text-primary);outline:none}
+  .searchbar input{flex:1;border:0;background:none;height:100%;font:400 14px/22px 'Lato';color:var(--text-primary);outline:none}
   .searchbar input::placeholder{color:var(--text-secondary)}
 
   /* date group header — DI LUAR card (PAPERVERSE: 11193:219147) */
-  .dategrp{font-size:11px;color:var(--text-secondary);margin:0 0 8px 2px}
+  .dategrp{font-size:12px;line-height:16px;color:var(--text-secondary);margin:0 0 8px 2px}  /* PAPERVERSE: Body/Body XSmall */
 
   /* count row */
   .cnt{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-  .cnt .l{font-size:12px;color:var(--text-secondary);background:var(--grey-20);border-radius:var(--radius-md);padding:var(--sp-xs) var(--sp-sm);font-weight:600}
-  .btn-link{font-size:13px;color:var(--action-primary);font-weight:700;display:flex;align-items:center;gap:5px;background:none;border:0;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .cnt .l{font-size:12px;line-height:16px;color:var(--text-secondary);background:var(--grey-20);border-radius:var(--radius-md);padding:var(--sp-xs) var(--sp-sm);font-weight:400}  /* PAPERVERSE: Body/Body XSmall */
+  .btn-link{font-size:14px;line-height:22px;color:var(--action-primary);font-weight:600;display:flex;align-items:center;gap:5px;background:none;border:0;cursor:pointer;font-family:inherit;white-space:nowrap}  /* PAPERVERSE: Body-SemiBold/M */
   .btn-link .ic{font-size:14px}
   .btn-link.off{color:var(--text-secondary);opacity:.5;pointer-events:none}
 
@@ -101,8 +106,8 @@
   .pill.terkirim{color:var(--action-primary);background:var(--state-active-bg)}
   .pill.disetujui{color:var(--success-icon);background:var(--success-bg)}
   .pill.ditolak{color:var(--danger-icon);background:var(--danger-bg)}
-  .icard .dots{margin-left:auto;color:var(--text-secondary);font-weight:900;letter-spacing:1px;font-size:16px}
-  .icard .co{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+  .icard .dots{margin-left:auto;color:var(--text-secondary);font-weight:700;letter-spacing:1px;font-size:16px}
+  .icard .co{font-size:14px;line-height:22px;font-weight:600;color:var(--text-primary);margin-bottom:7px;display:flex;align-items:center;gap:6px}  /* PAPERVERSE: Body-SemiBold/M */
   .tick{width:14px;height:14px;flex:none;display:block}
   .icard .rowb{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
   .icard .num{font-size:12px;line-height:18px;color:var(--text-secondary)}
@@ -116,7 +121,7 @@
 
   /* bottom nav — PAPERVERSE: Tab Bar 6363:11327 */
   .bn{background:#fff;box-shadow:var(--shadow-nav);display:flex;align-items:center;gap:8px;padding:8px;flex:none}
-  .bn .it{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;line-height:18px;color:var(--text-secondary)}
+  .bn .it{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;line-height:12px;color:var(--text-secondary)}  /* PAPERVERSE: TabBar label (Lato 9) */
   .bn .it.on{color:var(--action-primary)}
   .bn .it svg{width:24px;height:24px}
   .bn .fab{width:38px;height:38px;flex:none;border-radius:9999px;background:var(--action-primary);color:#fff;
@@ -127,7 +132,7 @@
   .banner{border:1px solid var(--hook-border);background:var(--hook-grad);border-radius:var(--radius-md);padding:12px;margin-bottom:14px;display:flex;gap:var(--sp-sm);align-items:center;cursor:pointer}
   .banner .bic{width:20px;height:20px;flex:none;color:#5A3E00}
   .banner .btx{flex:1;min-width:0}
-  .banner .btx b{font-size:14px;font-weight:700;color:#5A3E00;display:block;line-height:20px}
+  .banner .btx b{font-size:14px;font-weight:600;color:#5A3E00;display:block;line-height:22px}  /* PAPERVERSE: Body-SemiBold/M */
   .banner .btx span{font-size:12px;color:#6e4e00;line-height:18px}
   .banner .bact{width:30px;height:30px;flex:none;border-radius:50%;background:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;color:#5A3E00;box-shadow:var(--shadow-btn)}
 
@@ -157,7 +162,7 @@
   .coach .imgslot img{width:100%;height:100%;object-fit:cover;display:block}
   .coach .ttl{display:flex;align-items:flex-start;gap:var(--sp-xs);margin-bottom:var(--sp-sm)}
   .coach .ttl h4{flex:1;font-size:16px;font-weight:700;line-height:20px;color:var(--text-primary)}
-  .coach .ttl .x{width:24px;height:24px;flex:none;opacity:.65;color:var(--text-primary);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .coach .ttl .x{width:24px;height:24px;flex:none;opacity:.65;color:var(--text-primary);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer}
   .coach .desc{font-size:14px;line-height:22px;color:var(--text-secondary);margin-bottom:var(--sp-lg)}
   .coach .nav{display:flex;align-items:center}
   .coach .dots{display:flex;gap:var(--sp-sm)}
@@ -227,19 +232,18 @@
 
     <div class="body" id="scroll">
      <div class="fixtop">
-      <!-- PAPERVERSE: Search & Filter 7503:6946 — filter row DI ATAS [icon][chips][clear] -->
+      <!-- PAPERVERSE: Search & Filter (kompak 1 baris) — filter-icon + chip dropdown + search-icon -->
       <div class="filt">
         <button class="fbtn" id="filterBtn" title="Filter">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
-          <span class="badge">2</span>
         </button>
         <div class="chips" id="chips"></div>
-        <button class="clr" id="clrFilter" title="Hapus filter">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        <button class="fbtn sbtn" id="searchBtn" title="Cari">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
         </button>
       </div>
-      <!-- search bar full DI BAWAH filter (match komponen asli) -->
-      <div class="searchbar" id="searchbar">
+      <!-- search bar: muncul saat ikon search di-tap -->
+      <div class="searchbar hidden" id="searchbar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
         <input placeholder="Cari Invoice Anda">
       </div>
@@ -354,8 +358,8 @@ function coachHTML(step){
     +'<div class="nav"><div class="dots"><i class="'+(step===1?'on':'')+'"></i><i class="'+(step===2?'on':'')+'"></i><i class="'+(step===3?'on':'')+'"></i></div>'
     +'<button class="cbtn" id="coachBtn">'+(step===3?'Done':'Next')+'</button></div>';
 }
-/* 3 chip filter — sama kayak komponen Figma 7503:6946 (Pembayaran/Status/Tanggal) */
-var CHIPS_MY='<div class="chip">Pembayaran</div><div class="chip">Status</div><div class="chip">Tanggal</div>';
+/* chip filter dropdown — sama kayak komponen Figma (Semua Pembayaran/Semua Dokumen/Tanggal) */
+var CHIPS_MY='<div class="chip dd">Semua Pembayaran</div><div class="chip dd">Semua Dokumen</div><div class="chip dd">Tanggal</div>';
 var CHIPS_SH=CHIPS_MY;
 
 /* ── state ── */
@@ -416,6 +420,8 @@ function render(){
 }
 
 /* ── interaksi ── */
+/* ikon search = toggle search bar (kompak, match komponen) */
+$('searchBtn').onclick=function(){ var sb=$('searchbar'), show=sb.classList.contains('hidden'); sb.classList.toggle('hidden',!show); this.classList.toggle('on',show); if(show) sb.querySelector('input').focus(); };
 $('tabMy').onclick=function(){ S.tab='my'; S.tour=0; render(); };
 $('tabShared').onclick=function(){ S.tour=0; gotoShared(); };
 $('banner').onclick=function(){ gotoShared(); };                 /* banner = NAVIGATE ke Shared */
