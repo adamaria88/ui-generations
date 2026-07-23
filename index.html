@@ -292,7 +292,16 @@ const GENERATIONS=[
        {t:'ok',x:'DOM test 37 cek lolos · nol warna karangan di UI'},
        {t:'info',x:'Sisa hex audit = chrome panel review + bezel (non-produksi) + <code>#f8f9fa</code> (token DS, cache allowlist basi) + banner OVERRIDE'}
       ]},
-   5:{status:'nunggu'},6:{status:'nunggu'}
+   5:{status:'skip',ringkas:'Dilewat — langsung ke prototype interaktif (keputusan user). Figma nyusul kalau perlu.'},
+   6:{status:'done',file:'shared-invoice-onboarding/03-prototype.html',
+      ringkas:'Prototype interaktif — aksi asli buat demo ke produk/tech. Nilai DS sama kayak step 4.',
+      poin:[
+       {t:'ok',x:'Hook banner: muncul kalau <b>ada shared invoice</b>, klik = <b>navigate</b> ke Shared (bukan trigger tur)'},
+       {t:'ok',x:'Tur <b>auto</b> di kunjungan pertama Shared · replay via Keuntungan Penggunaan'},
+       {t:'ok',x:'Empty → banner &amp; entry <b>hilang</b> · Tgl. Invoice = header <b>di luar</b> card'},
+       {t:'ok',x:'Komponen DS: Search&amp;Filter 7503:6946 · Bottom nav 6363:11327 · Card 11193:219147'},
+       {t:'ok',x:'27 cek interaksi lolos · kontrol demo di luar frame HP'}
+      ]}
   }
  },
  {
