@@ -173,6 +173,23 @@ window.DURASI = {
             }
           ],
           "terakhir": "2026-07-23"
+        },
+        "6": {
+          "menit": 22,
+          "catatan": "ESTIMASI (lupa nyalain timer) — fix coachmark urutan+arrow + share link full-screen HP (QR)",
+          "sesi": [
+            {
+              "mulai": "2026-07-23T09:18:06.822Z",
+              "selesai": "2026-07-23T09:21:38.249Z",
+              "menit": 4
+            },
+            {
+              "mulai": "2026-07-23T09:30:00.953Z",
+              "selesai": "2026-07-23T09:37:47.263Z",
+              "menit": 8
+            }
+          ],
+          "terakhir": "2026-07-23"
         }
       }
     },
