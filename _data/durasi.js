@@ -175,8 +175,8 @@ window.DURASI = {
           "terakhir": "2026-07-23"
         },
         "6": {
-          "menit": 47,
-          "catatan": "ESTIMASI (timer ke-reset) — ikon SVG asli (strip bg artboard) + scroll cuma list",
+          "menit": 55,
+          "catatan": "fix bug: class .top bentrok (.icard .top) → badge ke-dorong; rename .fixtop. Diagnosa via render headless Edge",
           "sesi": [
             {
               "mulai": "2026-07-23T09:18:06.822Z",
