@@ -174,9 +174,36 @@ window.DURASI = {
           ],
           "terakhir": "2026-07-23"
         },
+        "5": {
+          "menit": 35,
+          "catatan": "scrim → DS Scrim spec (#133f5d @75% + bind variable) di 3 frame tur; empty state → title benefit + 3 poin",
+          "sesi": [
+            {
+              "mulai": "2026-07-23T10:57:19.333Z",
+              "selesai": "2026-07-23T11:16:26.710Z",
+              "menit": 19
+            },
+            {
+              "mulai": "2026-07-23T11:20:48.789Z",
+              "selesai": "2026-07-23T11:26:14.977Z",
+              "menit": 5
+            },
+            {
+              "mulai": "2026-07-23T11:39:47.646Z",
+              "selesai": "2026-07-23T11:46:34.362Z",
+              "menit": 7
+            },
+            {
+              "mulai": "2026-07-23T11:49:49.202Z",
+              "selesai": "2026-07-23T11:53:28.156Z",
+              "menit": 4
+            }
+          ],
+          "terakhir": "2026-07-23"
+        },
         "6": {
-          "menit": 62,
-          "catatan": "coachmark: cutout beneran (target ga ke-dim, ring putih) + lock scroll pas tur (target selalu pas)",
+          "menit": 69,
+          "catatan": "jadiin rule pre-flight Figma (memory+doc shared) + sync prototype dari Figma: search bar full, kartu chip ganda, scrim 75%",
           "sesi": [
             {
               "mulai": "2026-07-23T09:18:06.822Z",
@@ -192,6 +219,11 @@ window.DURASI = {
               "mulai": "2026-07-23T10:03:00.025Z",
               "selesai": "2026-07-23T10:13:23.372Z",
               "menit": 10
+            },
+            {
+              "mulai": "2026-07-23T12:18:20.982Z",
+              "selesai": "2026-07-23T12:24:51.901Z",
+              "menit": 7
             }
           ],
           "terakhir": "2026-07-23"
