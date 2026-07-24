@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playground · Accordion (Mobile) — Paperverse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  /* __TOOLING__ */
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--app-bg:#F4F4F2;--bar-bg:#EDECE6;--surface:#FCFCFB;--canvas:#FFFFFF;--bd:rgba(0,0,0,.08);--bd-strong:rgba(0,0,0,.16);--tx:#1F2328;--tx-mut:#6E6E68;--tx-dim:#A3A39B;--accent:#1F2328;--accent-tx:#fff;--item-on:#EAEAE6;--item-hover:#EDEDE9;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 6px 22px rgba(0,0,0,.12)}
+  body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:var(--app-bg);color:var(--tx)}
+  .expl-topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;background:var(--bar-bg);color:var(--tx);padding:10px 20px;border-bottom:1px solid var(--bd-strong)}
+  .expl-crumb{font-size:12px;font-weight:700;color:var(--tx-dim)}.expl-topbar .sp{flex:1}
+  .expl-btn{border:0;border-radius:8px;padding:8px 14px;font:600 13px 'Lato';cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .expl-btn svg{width:15px;height:15px}
+  .expl-btn--ghost{background:transparent;border:1px solid var(--bd-strong);color:var(--tx-mut)}.expl-btn--ghost:hover{background:var(--item-hover);color:var(--tx)}.expl-btn--ghost.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
+  .expl-btn--primary{background:var(--accent);color:var(--accent-tx)}.expl-btn--primary:hover{background:#33383E}
+  .expl-hint{padding:10px 20px;font-size:12px;color:var(--tx-mut);background:var(--app-bg);border-bottom:1px solid var(--bd)}.expl-hint b{color:var(--tx)}
+  .expl-head{padding:24px 28px 4px}.expl-head h1{font-size:30px;font-weight:800;letter-spacing:-.01em;line-height:1.12}.expl-head p{font-size:14px;color:var(--tx-mut);margin-top:7px}
+  .expl-head .node{font-size:11px;font-family:ui-monospace,Menlo,monospace;color:#8a8f96;background:#eceae4;padding:2px 7px;border-radius:5px;margin-left:6px}
+  .pg{display:flex;flex-direction:row-reverse;align-items:flex-start;min-height:calc(100vh - 120px)}
+  .pg-panel{width:300px;flex:none;background:var(--surface);border-left:1px solid var(--bd-strong);padding:18px 16px;align-self:stretch}
+  .pg-panel h3{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--tx-dim);margin-bottom:10px}
+  .pg-grp{margin-bottom:20px}
+  .pg-seg{display:flex;background:var(--item-on);border-radius:8px;padding:3px;flex-wrap:wrap;gap:2px}
+  .pg-seg button{flex:1;min-width:64px;border:0;background:transparent;color:var(--tx-mut);font:700 12px 'Lato';padding:6px 0;border-radius:6px;cursor:pointer}
+  .pg-seg button.on{background:var(--surface);color:var(--tx);box-shadow:var(--shadow-sm)}
+  .pg-row{display:flex;align-items:center;gap:8px;padding:8px 2px;border-bottom:1px solid var(--bd)}.pg-row:last-child{border-bottom:0}
+  .pg-row .lbl{font-size:13px;font-weight:600;color:var(--tx)}
+  .pg-row .tag,.pg-legend .tag{font-size:9px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;padding:2px 6px;border-radius:5px}
+  .tag-variant{background:#e0eaff;color:#3b5bdb}.tag-bool{background:#e6f4ea;color:#1e7e34}.tag-slot{background:#eae6ff;color:#6b4dff}.tag-swap{background:#e0f2f1;color:#0d9488}
+  .pg-row .sp{flex:1}
+  .sw{width:38px;height:22px;border-radius:99px;background:#cbccc7;position:relative;cursor:pointer;transition:background .15s;flex:none}
+  .sw::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .15s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+  .sw.on{background:var(--accent)}.sw.on::after{transform:translateX(16px)}
+  .pg-count{display:flex;align-items:center;gap:12px}
+  .pg-count input[type=range]{flex:1}
+  .pg-count .val{font:800 15px 'Lato';color:var(--tx);min-width:20px;text-align:center}
+  .pg-legend{font-size:11px;line-height:1.7;color:var(--tx-mut)}.pg-legend b{color:var(--tx)}
+  .pg-stagewrap{flex:1;min-width:0;padding:28px}
+  .pg-note{font-size:12px;color:var(--tx-dim);margin-bottom:18px;max-width:520px;line-height:1.5}.pg-note b{color:var(--tx-mut)}
+  .expl-canvas{position:relative}
+  .stage-box{background:var(--canvas);border:1px solid var(--bd);border-radius:14px;padding:32px;display:flex;justify-content:center}
+  body.expl-comment .expl-canvas{cursor:crosshair}
+  .expl-pin{position:absolute;z-index:40;width:26px;height:26px;border-radius:50% 50% 50% 4px;background:var(--accent);color:var(--accent-tx);font:700 11px/26px 'Lato';text-align:center;transform:translate(-2px,-28px);box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:pointer}
+  .expl-sel{position:absolute;z-index:39;border:1.5px dashed var(--accent);background:rgba(31,35,40,.10);border-radius:4px;pointer-events:none}
+  .expl-area{position:absolute;z-index:38;border:1.5px solid var(--accent);background:rgba(31,35,40,.08);border-radius:4px;pointer-events:none}
+  .expl-pop{position:fixed;z-index:70;width:280px;background:var(--surface);border:1px solid var(--bd-strong);border-radius:12px;box-shadow:var(--shadow-md);padding:12px}
+  .expl-pop-ref{font:700 11px 'Lato';color:var(--tx-mut);margin-bottom:8px}
+  .expl-pop textarea{width:100%;min-height:70px;border:1px solid var(--bd-strong);border-radius:8px;padding:8px 10px;font:400 13px/1.5 'Lato';outline:none;color:var(--tx);background:var(--canvas)}
+  .expl-pop-acts{display:flex;gap:8px;margin-top:8px;justify-content:flex-end}
+  .expl-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(10px);background:var(--accent);color:var(--accent-tx);font:600 12px 'Lato';padding:10px 18px;border-radius:99px;box-shadow:var(--shadow-md);z-index:80;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+  .expl-toast.show{opacity:1;transform:translateX(-50%)}
+</style>
+
+<!-- ═══════ STYLE #2 · KOMPONEN (DIAUDIT) ═══════ -->
+<style>
+  /* PAPERVERSE MOBILE: Accordion — Figma node 6162:8666. border/subtle #f2f4f5, radius/md 8, pad 16. */
+  .acc-group{display:flex;flex-direction:column;gap:8px;width:360px;font-family:'Lato',sans-serif}
+  .acc-group.transparent{gap:0}
+  .acc-item{background:#ffffff;border:1px solid #f2f4f5;border-radius:8px;overflow:hidden}
+  .acc-group.transparent .acc-item{border:0;border-bottom:1px solid #f2f4f5;border-radius:0;background:transparent}
+  .acc-head{font-family:'Lato',sans-serif;display:flex;gap:12px;align-items:center;padding:16px;cursor:pointer;user-select:none;width:100%;background:transparent;border:0;text-align:left}
+  .acc-head .lead{display:flex;gap:8px;align-items:center;flex:1;min-width:0}
+  .acc-head .ic-grid{width:18px;height:18px;flex:none;color:#133f5d}
+  .acc-head .label{font-size:14px;line-height:22px;color:#133f5d;font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .acc-head .chev{width:20px;height:20px;flex:none;color:#133f5d;transition:transform .22s ease}
+  .acc-item.open .chev{transform:rotate(180deg)}
+  .acc-body{display:none;padding:0 16px 16px}
+  .acc-item.open .acc-body{display:block}
+  .acc-slot{font-family:'Lato',sans-serif;background:#f8fbfe;border:1px dashed #dde1e5;border-radius:4px;min-height:60px;display:flex;align-items:center;justify-content:center;color:#718c9e;font-size:14px;line-height:19px;text-align:center;padding:12px}
+</style>
+</head>
+<body data-component="Accordion (Mobile)">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <g id="t-chat" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a7.5 7.5 0 01-10.9 6.7L4 20l1.8-5.1A7.5 7.5 0 1121 11.5z"/></g>
+    <g id="t-send" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></g>
+    <symbol id="i-grid" viewBox="0 0 15 15"><path d="M14.25 5.25V9.75M14.25 5.25H0.75M14.25 5.25V4.35C14.25 3.09 14.25 2.46 14.0048 1.9785C13.7891 1.5552 13.4448 1.211 13.0215 0.9952C12.5402 0.75 11.9101 0.75 10.65 0.75H9.75M5.25 0.75H4.35C3.09 0.75 2.46 0.75 1.9785 0.9952C1.5552 1.211 1.211 1.5552 0.9952 1.9785C0.75 2.46 0.75 3.09 0.75 4.35V5.25M5.25 0.75H7.5H9.75M5.25 0.75V14.25M5.25 14.25H7.5H9.75M5.25 14.25H4.35C3.09 14.25 2.46 14.25 1.9785 14.0048C1.5552 13.7891 1.211 13.4448 0.9952 13.0215C0.75 12.5402 0.75 11.9101 0.75 10.65V9.75M9.75 14.25H10.65C11.9101 14.25 12.5402 14.25 13.0215 14.0048C13.4448 13.7891 13.7891 13.4448 14.0048 13.0215C14.25 12.5402 14.25 11.9101 14.25 10.65V9.75M9.75 14.25V0.75M14.25 9.75H0.75M0.75 9.75V5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 20 20"><path d="M6 8L10 12L14 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  </defs></svg>
+
+  <div class="expl-topbar">
+    <span class="expl-crumb">Component Explorer · Playground</span>
+    <span class="sp"></span>
+    <button class="expl-btn expl-btn--ghost" id="expl-comment-btn"><svg viewBox="0 0 24 24"><use href="#t-chat"/></svg> Komen</button>
+    <button class="expl-btn expl-btn--primary" id="expl-submit-btn"><svg viewBox="0 0 24 24"><use href="#t-send"/></svg> Submit</button>
+  </div>
+  <div class="expl-hint"><b>Panel kanan = properties komponen</b> (ala Figma). Variant + Number of List = variant set Figma. Klik header buat expand.</div>
+
+  <header class="expl-head">
+    <h1>Accordion <span class="node">6162:8666</span></h1>
+    <p>Playground · Paperverse Mobile — collapsible list. Atur Variant &amp; jumlah item di panel kanan.</p>
+  </header>
+
+  <div class="pg">
+    <aside class="pg-panel">
+      <div class="pg-grp">
+        <h3>Variant <span class="tag tag-variant">variant</span></h3>
+        <div class="pg-seg" id="seg-variant"><button data-v="container" class="on">Container</button><button data-v="transparent">Transparent</button></div>
+      </div>
+      <div class="pg-grp">
+        <h3>Number of List <span class="tag tag-variant">variant</span></h3>
+        <div class="pg-count"><input type="range" id="rng-count" min="1" max="8" value="3"><span class="val" id="val-count">3</span></div>
+      </div>
+      <div class="pg-grp">
+        <h3>Toggle</h3>
+        <div class="pg-row"><span class="lbl">Leading icon</span><span class="tag tag-bool">bool</span><span class="sp"></span><span class="sw on" data-t="icon"></span></div>
+        <div class="pg-row"><span class="lbl">Expand pertama</span><span class="tag tag-bool">bool</span><span class="sp"></span><span class="sw" data-t="openFirst"></span></div>
+      </div>
+      <div class="pg-grp">
+        <h3>Label item <span class="tag tag-slot">slot</span></h3>
+        <input class="pg-input" id="in-label" value="Header" maxlength="24" style="width:100%;border:1px solid var(--bd-strong);border-radius:8px;padding:8px 10px;font:400 13px 'Lato';color:var(--tx);background:var(--canvas);outline:none">
+      </div>
+      <div class="pg-grp">
+        <h3>Mapping ke Figma</h3>
+        <div class="pg-legend">
+          <span class="tag tag-variant">variant</span> Variant (Container/Transparent) · Number of List (1–8) → variant set.<br>
+          <span class="tag tag-bool">bool</span> Icon · Expand → BOOLEAN.<br>
+          <span class="tag tag-slot">slot</span> label header + isi body → SLOT (Content Switcher).
+        </div>
+      </div>
+    </aside>
+
+    <div class="pg-stagewrap">
+      <div class="pg-note">Preview <b>Accordion</b> Paperverse Mobile · lebar 360. <b>Container</b> = tiap item kartu ber-border (gap 8). <b>Transparent</b> = list rata + divider tipis. Isi body = slot "Content Switcher".</div>
+      <div class="expl-canvas">
+        <div class="stage-box"><div class="cmp"><div class="acc-group" id="stage"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var ROMAN=['I','II','III','IV','V','VI','VII','VIII'];
+  var state={variant:'container',count:3,icon:true,openFirst:false,label:'Header'};
+  var stage=document.getElementById('stage');
+  function item(i,open){
+    return '<div class="acc-item'+(open?' open':'')+'">'+
+      '<button class="acc-head" aria-expanded="'+(open?'true':'false')+'">'+
+        '<span class="lead">'+(state.icon?'<svg class="ic-grid"><use href="#i-grid"/></svg>':'')+'<span class="label">'+state.label+' '+ROMAN[i]+'</span></span>'+
+        '<svg class="chev"><use href="#i-chevron"/></svg>'+
+      '</button>'+
+      '<div class="acc-body"><div class="acc-slot">Content Switcher</div></div>'+
+    '</div>';
+  }
+  function render(){
+    stage.className='acc-group'+(state.variant==='transparent'?' transparent':'');
+    var h='';for(var i=0;i<state.count;i++)h+=item(i,state.openFirst&&i===0);
+    stage.innerHTML=h;
+  }
+  document.getElementById('seg-variant').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;this.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');state.variant=b.getAttribute('data-v');render();});
+  var rng=document.getElementById('rng-count');
+  rng.addEventListener('input',function(){state.count=+this.value;document.getElementById('val-count').textContent=this.value;render();});
+  document.querySelectorAll('.sw[data-t]').forEach(function(sw){sw.addEventListener('click',function(){var t=sw.getAttribute('data-t');state[t]=!state[t];sw.classList.toggle('on',state[t]);render();});});
+  document.getElementById('in-label').addEventListener('input',function(){state.label=this.value||'Header';render();});
+  /* expand interaktif */
+  stage.addEventListener('click',function(e){
+    if(document.body.classList.contains('expl-comment'))return;
+    var h=e.target.closest('.acc-head'); if(!h)return;
+    var it=h.closest('.acc-item'); var open=it.classList.toggle('open'); h.setAttribute('aria-expanded',open);
+  });
+  render();
+})();
+</script>
+<script src="../_shared/review-tooling.js"></script>
+</body>
+</html>

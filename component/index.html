@@ -43,6 +43,11 @@
   .side-search svg{width:14px;height:14px;color:var(--tx-dim);flex:none}
   .side-search input{flex:1;border:0;background:transparent;color:var(--tx);font:400 12px 'Lato';outline:none}
   .side-search input::placeholder{color:var(--tx-dim)}
+  .side-plat{display:flex;gap:3px;margin:0 12px 8px;background:var(--item-on);border-radius:8px;padding:3px}
+  .side-plat button{flex:1;border:0;background:transparent;color:var(--tx-mut);font:700 11px 'Lato';padding:6px 4px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;transition:background .12s,color .12s}
+  .side-plat button svg{width:12px;height:12px}
+  .side-plat button:hover{color:var(--tx)}
+  .side-plat button.on{background:var(--surface);color:var(--tx);box-shadow:var(--shadow-sm)}
   .side-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx-dim);padding:6px 18px}
   .side-list{flex:1;overflow:auto;padding:0 8px 12px}
   .cmp-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:9px;cursor:pointer;margin-bottom:2px;transition:background .12s}
@@ -199,6 +204,11 @@
       <div class="tag">Paper.id · eksplorasi komponen</div>
     </div>
     <div class="side-search"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg><input id="side-search" placeholder="Cari komponen..."></div>
+    <div class="side-plat" id="side-plat">
+      <button data-f="all" class="on">Semua</button>
+      <button data-f="web"><svg viewBox="0 0 24 24"><use href="#i-monitor"/></svg> Web</button>
+      <button data-f="mobile"><svg viewBox="0 0 24 24"><use href="#i-phone"/></svg> Mobile</button>
+    </div>
     <div class="side-lbl">Komponen</div>
     <div class="side-list" id="side-list"></div>
     <div class="side-foot" id="side-foot"></div>
@@ -453,6 +463,25 @@
       ]
     },
     {
+      slug:'selection-blocks', name:'Selection Blocks',
+      docs:[
+        { label:'Referensi', file:'selection-blocks/references-mobile.doc.html', plat:'mobile' },
+      ],
+      platforms:[
+        { key:'mobile', label:'📱 Mobile', phase:'Fase 5 · LIVE di Figma',
+          versions:[
+            { v:1, file:'selection-blocks/figma-spec.html', date:'2026-07-23', title:'Fase 5 · Komponen LIVE di Paperverse Mobile (adapt dari web)',
+              changes:['✅ **LIVE di Figma Paperverse Mobile** — page `↳ Selection Blocks` (`7857:23`). Adapt dari Selection Block web (`8525:276822`)',
+                '**Selection Block** set `7859:51` — 4 State (Default/**Pressed**/Selected/Disabled) · **SLOT** `Leading`+`Trailing` (real slot via `slotContentId`) · **TEXT** `Title` · **BOOLEAN** `Badge`+`Description`',
+                '**Selection Group** set `7862:493` — `Number of Cards` 2–8 (default 3), tiap kartu nested instance yang di-expose, kartu pertama Selected',
+                'Reuse DS mobile (bukan bikin ulang): dot = **`_Radio/Options/Box`** `82:1459` · badge = **Chips** `6404:33140` Outline/Blue (INSTANCE_SWAP)',
+                '🔧 Beda dari web (riset Mobbin): (1) `Hover` → **`Pressed`** (touch) · (2) kontrol **kanan aja**, opsi kiri dibuang — 7/8 app naruh kanan',
+                '🔍 Audit binding tree-walk **0 pelanggaran** — semua ke LIBRARY `semantic` + `primitive_text_and_layout` · toggle Badge/Description + edit Title diverifikasi jalan',
+                '📄 Halaman ini = spec sheet (screenshot Figma ke-inline). Riset lengkap di tab Dokumen → Referensi. Sumber kebenaran tetap komponen Figma'] },
+          ] },
+      ]
+    },
+    {
       slug:'multi-select', name:'Multi-Select (Chips)',
       platforms:[
         { key:'web', label:'🖥 Web', phase:'Fase 1 · draft',
@@ -506,6 +535,16 @@
     {
       slug:'banner', name:'Banner',
       platforms:[
+        { key:'mobile', label:'📱 Mobile', phase:'Fase 5 · LIVE di Figma + Playground',
+          versions:[
+            { v:1, file:'banner/playground-mobile.html', date:'2026-07-24', title:'Playground · dari Figma Paperverse Mobile (9 varian)',
+              changes:['✅ **Dari Figma Paperverse Mobile** — Banner `6445:35237`. Diimplementasi jadi playground interaktif + gallery semua varian',
+                'Property 1:1 sama variant set Figma: **State** (Informative/Warning/Success/Danger/Help) × **Type** (Attention bg-tint / Subtle bg-putih) = 9 varian (Help cuma Attention)',
+                'BOOLEAN: Icon · Subtitle · Close · SLOT: Title/Subtitle (teks bebas)',
+                'Token live-pull: icon info #4199d5 · warning #eab11c · success #97cc56 · danger #e35273 · help #133f5d · bg tint per-state · text-dark per-state · width 320 · radius 8 · Lato SemiBold 14/22 + Regular 12/18',
+                'Ikon status = lingkaran isi + glyph putih (rekonstruksi glyph DS); close = tertiary icon, warna ikut state',
+                'Playground panel KANAN (ala Figma) · review tooling standar (Komen/Submit)'] },
+          ] },
         { key:'web', label:'🖥 Web', phase:'Fase 1 · draft',
           versions:[
             { v:1, file:'banner/draft-1.html', date:'2026-07-08', title:'First draft (2 pola, NON-DS)',
@@ -532,6 +571,66 @@
           ] },
       ]
     },
+    {
+      slug:'button', name:'Button',
+      platforms:[
+        { key:'mobile', label:'📱 Mobile', phase:'Fase 5 · LIVE di Figma + Playground',
+          versions:[
+            { v:1, file:'button/playground.html', date:'2026-07-24', title:'Playground · dari Figma Paperverse Mobile',
+              changes:['✅ **Dari Figma Paperverse Mobile** — Button `6078:20485`. Playground interaktif + matriks semua varian',
+                'Property 1:1 variant set Figma: **Type** (Primary/Secondary/Tertiary/Destructive) × **Size** (Default 38px / Compact 26px) × **State** (Default/Hover/Pressed) × **Icon Only** (variant)',
+                'BOOLEAN: Head (leading grid icon) · Trail (chevron) · Disabled · SLOT: label',
+                'Token live-pull: primary #4199d5 (hover #89bde5, pressed #3385b5) · destructive #e35273/#ee94a8/#b52b55 · secondary border #eaedef teks #4199d5 · disabled #e7eaec/#7f97a7 · radius/full pill · shade/button shadow verbatim · Lato SemiBold 14/12',
+                'Ikon grid = path SVG asli dari Figma (af38630e). Hover/pressed CSS beneran jalan',
+                '⚠️ Catatan DS: Default 38px < 44px target sentuh → implementasi wajib lebarin tap area',
+                'Playground panel KANAN (ala Figma) · review tooling standar'] },
+          ] },
+      ]
+    },
+    {
+      slug:'accordion', name:'Accordion',
+      platforms:[
+        { key:'mobile', label:'📱 Mobile', phase:'Fase 5 · LIVE di Figma + Playground',
+          versions:[
+            { v:1, file:'accordion/playground.html', date:'2026-07-24', title:'Playground · dari Figma Paperverse Mobile',
+              changes:['✅ **Dari Figma Paperverse Mobile** — Accordion `6162:8666`. Playground interaktif (expand jalan)',
+                'Property 1:1 variant set Figma: **Variant** (Container kartu ber-border / Transparent list divider) × **Number of List** (1–8)',
+                'BOOLEAN: leading grid icon · Expand pertama · SLOT: label header + body (Content Switcher)',
+                'Token live-pull: border/subtle #f2f4f5 · radius/md 8 · padding 16 · gap 8 · chevron 20 · Lato Regular 14/22 · text #133f5d',
+                'Klik header → expand, chevron muter. Grid icon = path SVG asli Figma',
+                'Playground panel KANAN (ala Figma) · review tooling standar'] },
+          ] },
+      ]
+    },
+    {
+      slug:'search-sheet', name:'Search Sheet (Autocomplete)',
+      platforms:[
+        { key:'mobile', label:'📱 Mobile', phase:'Fase 5 · LIVE di Figma + Playground',
+          versions:[
+            { v:1, file:'search-sheet/playground.html', date:'2026-07-24', title:'Playground · dari Figma Paperverse Mobile',
+              changes:['✅ **Dari Figma Paperverse Mobile** — Autocomplete/Search Sheet `7761:520`. Playground dalam mobile frame 375px, search filter live',
+                'Property 1:1 variant set Figma: **Variant** (Default h300 / Full h900) + Item List Amount (2–12)',
+                'BOOLEAN: Search field · Gesture bar · SLOT: Title + data list',
+                'Struktur: Header (title + close) → search field (border #dde1e5, radius 4, suffix search icon, placeholder #c2cdd5) → item list (row 14/22 #133f5d) → gesture bar',
+                'Ketik di kolom Cari → filter + highlight live (contoh data kategori pengeluaran Paper.id)',
+                'Playground panel KANAN (ala Figma) · review tooling standar'] },
+          ] },
+      ]
+    },
+    {
+      slug:'dialog', name:'Dialog (Bottom Sheet)',
+      platforms:[
+        { key:'mobile', label:'📱 Mobile', phase:'Fase 5 · LIVE di Figma + Playground',
+          versions:[
+            { v:1, file:'dialog/playground.html', date:'2026-07-24', title:'Playground · dari Figma Paperverse Mobile',
+              changes:['✅ **Dari Figma Paperverse Mobile** — Bottom Sheet Dialog `4525:32659`. Playground dalam mobile frame, checkbox + tombol interaktif',
+                'Struktur 1:1 Figma: Header (grabber #e2e8eb + title Bold 16/20 + close) · Body (272, Content Frame dashed #3a93c7 / bg #f2f7fc) · Footer (checkbox "Jangan tampilkan lagi" + Secondary & Call to Action flex sama) · Gesture bar',
+                'BOOLEAN: Grabber · Checkbox · Secondary · SLOT: Title/Body/label tombol · SWAP: Body & tombol INSTANCE_SWAP',
+                'Token live-pull: radius/lg 12 · pad 12/20 header, 16/20 body · checkbox 18 border #e1e5e8 checked #4199d5 · Button (node 6078:20485) reuse',
+                'Playground panel KANAN (ala Figma) · review tooling standar'] },
+          ] },
+      ]
+    },
     // ← komponen berikutnya tambah di sini
   ];
 
@@ -540,6 +639,8 @@
       side=document.getElementById('side'), drawerScrim=document.getElementById('drawer-scrim'),
       docsEl=document.getElementById('docs');
   var curSlug=null, curPlatKey=null, curV=null, curDoc=null;
+  var platFilter='all';   // filter global sidebar: 'all' | 'web' | 'mobile'
+  function hasPlat(c,key){ return c.platforms.some(function(p){return p.key===key;}); }
 
   function comp(slug){ return COMPONENTS.find(function(c){return c.slug===slug;}); }
   function curComp(){ return comp(curSlug); }
@@ -553,18 +654,49 @@
 
   function renderSidebar(filter){
     filter=(filter||'').toLowerCase();
-    var shown=sortedComponents().filter(function(c){return c.name.toLowerCase().indexOf(filter)>=0;});
-    document.getElementById('side-foot').textContent=COMPONENTS.length+' komponen · '+
-      COMPONENTS.reduce(function(a,c){return a+totalVersions(c);},0)+' iterasi';
-    if(!shown.length){ sideList.innerHTML='<div class="side-empty">Nggak ada komponen cocok.</div>'; return; }
+    var shown=sortedComponents().filter(function(c){
+      if(c.name.toLowerCase().indexOf(filter)<0) return false;
+      if(platFilter!=='all' && !hasPlat(c,platFilter)) return false;   // pisah web vs mobile
+      return true;
+    });
+    // hitung komponen per platform buat footer
+    var nWeb=COMPONENTS.filter(function(c){return hasPlat(c,'web');}).length;
+    var nMob=COMPONENTS.filter(function(c){return hasPlat(c,'mobile');}).length;
+    document.getElementById('side-foot').textContent=
+      (platFilter==='all'? COMPONENTS.length+' komponen'
+       :platFilter==='web'? nWeb+' komponen web'
+       : nMob+' komponen mobile')
+      +' · '+shown.length+' tampil';
+    if(!shown.length){ sideList.innerHTML='<div class="side-empty">Nggak ada komponen di filter ini.</div>'; return; }
     sideList.innerHTML='';
     shown.forEach(function(c){
       var el=document.createElement('div'); el.className='cmp-item'+(c.slug===curSlug?' on':'');
-      el.innerHTML='<span class="cmp-dot"></span><span class="cmp-nm">'+c.name+'</span><span class="cmp-plat">'+platIcons(c)+'</span>';
-      el.onclick=function(){ selectComponent(c.slug); closeDrawer(); };
+      // pas difilter, tampilin ikon platform yg relevan aja
+      var picon = platFilter==='all' ? platIcons(c)
+        : (platFilter==='mobile'?'📱':'🖥');
+      el.innerHTML='<span class="cmp-dot"></span><span class="cmp-nm">'+c.name+'</span><span class="cmp-plat">'+picon+'</span>';
+      el.onclick=function(){ selectComponent(c.slug, platFilter!=='all'?platFilter:null); closeDrawer(); };
       sideList.appendChild(el);
     });
   }
+
+  /* filter global web/mobile — misahin daftar komponen per platform */
+  document.getElementById('side-plat').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    platFilter=b.getAttribute('data-f');
+    this.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});
+    renderSidebar(document.getElementById('side-search').value);
+    // kalau komponen aktif nggak punya platform yg difilter, lompat ke komponen pertama yg cocok
+    if(platFilter!=='all'){
+      var c=curComp();
+      if(!c || !hasPlat(c,platFilter)){
+        var first=sortedComponents().filter(function(x){return hasPlat(x,platFilter);})[0];
+        if(first) selectComponent(first.slug, platFilter);
+      } else if(curPlatKey!==platFilter){
+        selectPlatform(platFilter);
+      }
+    }
+  });
 
   /* selectComponent/selectPlatform nerima target platform+versi (dipakai router).
      Kalau nggak dikasih → jatuh ke platform pertama + versi terbaru (perilaku lama). */

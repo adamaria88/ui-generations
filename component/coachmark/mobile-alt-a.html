@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coachmark Mobile · Pola A (anchored) — Fase 3.7</title>
+<!-- Font DS = Lato. 600 = SemiBold (dipakai tombol mobile Paperverse) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<!-- ═══════ STYLE #1 · TOOLING (di-skip audit) ═══════ -->
+<style>
+  /* __TOOLING__ */
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--app-bg:#F4F4F2;--bar-bg:#EDECE6;--surface:#FCFCFB;--canvas:#FFFFFF;--bd:rgba(0,0,0,.08);--bd-strong:rgba(0,0,0,.16);--tx:#1F2328;--tx-mut:#6E6E68;--tx-dim:#A3A39B;--accent:#1F2328;--accent-tx:#fff;--item-on:#EAEAE6;--item-hover:#EDEDE9;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 6px 22px rgba(0,0,0,.12)}
+  body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:var(--app-bg);color:var(--tx)}
+  .expl-topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;background:var(--bar-bg);color:var(--tx);padding:10px 20px;border-bottom:1px solid var(--bd-strong)}
+  .expl-crumb{font-size:12px;font-weight:700;color:var(--tx-dim);letter-spacing:.02em}
+  .expl-topbar .sp{flex:1}
+  .expl-btn{border:0;border-radius:8px;padding:8px 14px;font:600 13px 'Lato',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:filter .12s,background .12s}
+  .expl-btn svg{width:15px;height:15px}
+  .expl-btn--ghost{background:transparent;border:1px solid var(--bd-strong);color:var(--tx-mut)}
+  .expl-btn--ghost:hover{background:var(--item-hover);color:var(--tx)}
+  .expl-btn--ghost.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
+  .expl-btn--primary{background:var(--accent);color:var(--accent-tx)}
+  .expl-btn--primary:hover{background:#33383E}
+  .expl-hint{padding:10px 20px;font-size:12px;color:var(--tx-mut);background:var(--app-bg);border-bottom:1px solid var(--bd)}
+  .expl-hint b{color:var(--tx)}
+  .expl-head{padding:26px 28px 4px}
+  .expl-head h1{font-size:30px;font-weight:800;letter-spacing:-.01em;line-height:1.12;color:var(--tx)}
+  .expl-head p{font-size:14px;color:var(--tx-mut);margin-top:7px}
+
+  .pg{display:flex;flex-direction:row-reverse;align-items:flex-start;min-height:calc(100vh - 90px)}
+  .pg-panel{width:300px;flex:none;background:var(--surface);border-left:1px solid var(--bd-strong);padding:18px 16px;align-self:stretch;overflow-y:auto;max-height:calc(100vh - 90px)}
+  .pg-panel h3{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--tx-dim);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .pg-grp{margin-bottom:20px}
+  .pg-seg{display:flex;background:var(--item-on);border-radius:8px;padding:3px}
+  .pg-seg button{flex:1;border:0;background:transparent;color:var(--tx-mut);font:700 12px 'Lato',sans-serif;padding:6px 0;border-radius:6px;cursor:pointer}
+  .pg-seg button.on{background:var(--surface);color:var(--tx);box-shadow:var(--shadow-sm)}
+  .pg-row{display:flex;align-items:center;gap:8px;padding:8px 2px;border-bottom:1px solid var(--bd)}
+  .pg-row:last-child{border-bottom:0}
+  .pg-row .lbl{font-size:13px;font-weight:600;color:var(--tx)}
+  .pg-row .sp{flex:1}
+  .sw{width:38px;height:22px;border-radius:99px;background:#cbccc7;position:relative;cursor:pointer;transition:background .15s;flex:none}
+  .sw::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .15s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+  .sw.on{background:var(--accent)}
+  .sw.on::after{transform:translateX(16px)}
+  .pg-legend{font-size:11px;line-height:1.7;color:var(--tx-mut)}
+  .pg-legend b{color:var(--tx)}
+  .pg-flag{font-size:11px;line-height:1.6;color:var(--tx-mut);background:#FFF6E0;border:1px solid #E8D9A8;border-radius:8px;padding:9px 11px}
+  .pg-flag b{color:#7A5A00}
+  .pg-opt{display:flex;flex-direction:column;gap:6px}
+  .pg-opt button{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--bd);background:var(--surface);border-radius:9px;padding:9px 11px;cursor:pointer;text-align:left;transition:border-color .12s,background .12s}
+  .pg-opt button:hover{border-color:var(--bd-strong)}
+  .pg-opt button.on{border-color:var(--accent);background:var(--item-on)}
+  .pg-opt .k{font:800 11px 'Lato';color:var(--accent);width:14px;flex:none;padding-top:1px}
+  .pg-opt .nm{font:700 12px 'Lato';color:var(--tx)}
+  .pg-opt .ds{font:400 11px 'Lato';color:var(--tx-dim);margin-top:1px}
+
+  .pg-stagewrap{flex:1;min-width:0;padding:28px;display:flex;flex-direction:column;align-items:center}
+  .pg-note{font-size:12px;color:var(--tx-dim);margin-bottom:20px;max-width:560px;line-height:1.5;align-self:flex-start}
+  .pg-note b{color:var(--tx-mut)}
+
+  /* Bezel HP = review chrome, BUKAN komponen.
+     Radius layar (40px) = bentuk device, bukan nilai DS → sengaja ditaruh di layer tooling. */
+  .phone-bezel{padding:12px;background:#1F2328;border-radius:52px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+  .phone-bezel .scr{border-radius:40px}
+  .phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:28px;background:#1F2328;border-radius:0 0 18px 18px;z-index:200}
+
+  .expl-canvas{position:relative}
+  body.expl-comment .expl-canvas{cursor:crosshair}
+  .expl-pin{position:absolute;z-index:240;width:26px;height:26px;border-radius:50% 50% 50% 4px;background:var(--accent);color:var(--accent-tx);font:700 11px/26px 'Lato';text-align:center;transform:translate(-2px,-28px);box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:pointer}
+  .expl-sel{position:absolute;z-index:239;border:1.5px dashed var(--accent);background:rgba(31,35,40,.10);border-radius:4px;pointer-events:none}
+  .expl-area{position:absolute;z-index:238;border:1.5px solid var(--accent);background:rgba(31,35,40,.08);border-radius:4px;pointer-events:none}
+  .expl-pop{position:fixed;z-index:270;width:280px;background:var(--surface);border:1px solid var(--bd-strong);border-radius:12px;box-shadow:var(--shadow-md);padding:12px}
+  .expl-pop-ref{font:700 11px 'Lato';color:var(--tx-mut);margin-bottom:8px}
+  .expl-pop textarea{width:100%;min-height:70px;border:1px solid var(--bd-strong);border-radius:8px;padding:8px 10px;font:400 13px/1.5 'Lato';outline:none;color:var(--tx);background:var(--canvas)}
+  .expl-pop-acts{display:flex;gap:8px;margin-top:8px;justify-content:flex-end}
+  .expl-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(10px);background:var(--accent);color:var(--accent-tx);font:600 12px 'Lato';padding:10px 18px;border-radius:99px;box-shadow:var(--shadow-md);z-index:280;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+  .expl-toast.show{opacity:1;transform:translateX(-50%)}
+</style>
+
+<!-- ═══════ STYLE #2 · KOMPONEN (DIAUDIT — token Paperverse Mobile + Lato) ═══════ -->
+<style>
+  /* Frame 360×812 = ukuran asli Scrim Paperverse Mobile (BUKAN 375) */
+  .scr{position:relative;width:360px;height:812px;background:#ffffff;overflow:hidden;font-family:'Lato',sans-serif;color:#133f5d}
+
+  /* ── status bar + safe area (Home Indicator/Paper) ── */
+  .scr-status{height:44px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font:700 12px/16px 'Lato';color:#133f5d}
+  .scr-home{position:absolute;left:0;right:0;bottom:0;height:20px;display:flex;align-items:center;justify-content:center;background:#ffffff}
+  .scr-home i{display:block;width:134px;height:5px;border-radius:9999px;background:#133f5d}
+
+  /* ── mock page: Invoice Pembelian (mobile) ── */
+  .mp-top{display:flex;align-items:center;gap:12px;padding:8px 20px 12px}
+  .mp-title{font:700 20px/28px 'Lato';color:#133f5d;flex:1}
+  .mp-ico{width:24px;height:24px;color:#133f5d}
+  .mp-tabs{display:flex;gap:24px;padding:0 20px;border-bottom:1px solid #dde1e5}
+  .mp-tab{padding:8px 0 12px;font:600 14px/22px 'Lato';color:#718c9e;background:none;border:0;cursor:pointer}
+  .mp-tab.on{color:#4199d5;box-shadow:inset 0 -2px 0 0 #4199d5}
+  .mp-search{margin:12px 20px;height:40px;display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid #dde1e5;border-radius:9999px;color:#a5b6c1;font:400 14px/22px 'Lato';background:#ffffff}
+  .mp-list{padding:0 20px;display:flex;flex-direction:column;gap:12px}
+  .mp-card{border:1px solid #dde1e5;border-radius:8px;padding:12px 16px;background:#ffffff}
+  .mp-card-r{display:flex;align-items:center;gap:8px}
+  .mp-card-r + .mp-card-r{margin-top:4px}
+  .mp-no{font:700 14px/22px 'Lato';color:#133f5d;flex:1}
+  .mp-amt{font:700 14px/22px 'Lato';color:#133f5d}
+  .mp-sup{font:400 12px/18px 'Lato';color:#718c9e;flex:1}
+  .mp-badge{display:inline-block;padding:2px 8px;border-radius:9999px;font:600 12px/18px 'Lato';background:#f3f6f9;color:#718c9e}
+  .mp-badge--due{background:#f2f7fc;color:#4199d5}
+  /* tab bar bawah */
+  .mp-nav{position:absolute;left:0;right:0;bottom:20px;height:56px;display:flex;align-items:center;background:#ffffff;border-top:1px solid #dde1e5}
+  .mp-navitem{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font:600 12px/16px 'Lato';color:#718c9e;background:none;border:0;cursor:pointer;padding:4px 0}
+  .mp-navitem.on{color:#4199d5}
+  .mp-navitem svg{width:24px;height:24px}
+
+  /* ── SCRIM + RING ──
+     Scrim = color/surface/dark/raised (#133f5d) @ .75 — nilai Paperverse MOBILE
+     (web pakai .7 → drift, dicatat) */
+  .cmp-ring{position:absolute;z-index:100;border-radius:4px;pointer-events:none;
+            box-shadow:0 0 0 9999px rgba(19,63,93,.75);
+            outline:2px solid #ffffff;outline-offset:4px;
+            transition:top .3s,left .3s,width .3s,height .3s}
+
+  /* ── KARTU (Pola A: anchored, near-full-width) ──
+     320px = 360 − spacing/xl(20) × 2.
+     Radius 8 = radius/md · padding 20 = spacing/xl · gap 12 = spacing/md
+     → disamain sama adjustment web 2026-07-20 (dulu radius 12 / padding 16-20). */
+  /* Shadow = effect style `Shadow Neutral-01` dari library Primitive Token (Text & Layout)
+     — DROP_SHADOW r10 · offset 0,3 · #000000 @8%. BUKAN `table/option` (itu lokal & buat dropdown). */
+  .cmp-card{position:absolute;z-index:110;width:320px;left:20px;background:#ffffff;
+            border-radius:8px;padding:4px;box-shadow:0 3px 10px #00000014;
+            transition:top .28s cubic-bezier(.2,.7,.3,1)}
+  .cmp-card-in{padding:20px;display:flex;flex-direction:column;gap:12px}
+  .cmp-arrow{position:absolute;left:0;color:#ffffff;line-height:0}
+  .cmp-arrow--up{top:-8px}
+  .cmp-arrow--down{bottom:-8px}
+
+  .cmp-img{width:100%;aspect-ratio:16/9;border-radius:4px;background:#f2f7fc;
+           display:flex;align-items:center;justify-content:center;color:#a5b6c1;font:600 12px/18px 'Lato'}
+  /* Text: gap 8 = spacing/sm · baris judul gap 4 = spacing/xs (ikut struktur web) */
+  .cmp-txt{display:flex;flex-direction:column;gap:8px}
+  .cmp-titlerow{display:flex;align-items:flex-start;gap:4px}
+  .cmp-title{font:700 16px/20px 'Lato';color:#133f5d;flex:1}
+  .cmp-sub{font:400 14px/22px 'Lato';color:#718c9e}
+
+  /* dots — hit area 44px tinggi (target sentuh), dot visual 8px */
+  .cmp-dots{display:flex;align-items:center;margin:-12px 0}
+  .cmp-dot{width:20px;height:44px;display:flex;align-items:center;justify-content:center;
+           background:none;border:0;padding:0;cursor:pointer}
+  .cmp-dot i{display:block;width:8px;height:8px;border-radius:9999px;background:#dde1e5;transition:background .15s}
+  .cmp-dot.on i{background:#4199d5}
+  .cmp-dot:active i{background:#3385b5}
+
+  .cmp-count{font:600 14px/22px 'Lato';color:#718c9e}
+  .cmp-count b{color:#133f5d;font-weight:700}
+
+  /* footer */
+  .cmp-foot{display:flex;align-items:center;gap:8px}
+  .cmp-foot .sp{flex:1}
+  /* Tombol = Button Paperverse Mobile: h38 · pad 8/16 · radius full · Lato SemiBold 14/22 */
+  .cmp-btn{height:38px;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+           padding:8px 16px;border-radius:9999px;font:600 14px/22px 'Lato';cursor:pointer;
+           transition:background .15s,border-color .15s}
+  .cmp-btn--primary{background:#4199d5;color:#ffffff;border:0}
+  .cmp-btn--primary:active{background:#3385b5}
+  /* Secondary mobile: teks BIRU (#4199d5) — beda dari web yang #133f5d */
+  .cmp-btn--secondary{background:#ffffff;color:#4199d5;border:1px solid #eaedef}
+  .cmp-btn--secondary:active{background:#f2f4f5}
+
+  /* close — INLINE sebelah judul (ikut web 2026-07-20, bukan absolute pojok lagi).
+     Glyph 16px tanpa circle bg · warna color/action/disabled/fg · opacity 65%.
+     Margin negatif -12 bikin footprint jadi 20px tapi HIT AREA tetap 44px. */
+  .cmp-x{flex:none;width:44px;height:44px;margin:-12px -12px -12px 0;
+         display:flex;align-items:center;justify-content:center;
+         background:none;border:0;padding:0;cursor:pointer}
+  .cmp-x i{width:16px;height:16px;color:#7f97a7;display:flex;align-items:center;justify-content:center;
+           opacity:.65;transition:color .15s,opacity .15s}
+  .cmp-x i svg{width:16px;height:16px}
+  .cmp-x:active i{color:#718c9e;opacity:1}
+</style>
+</head>
+<body data-component="Coachmark Mobile">
+
+<div class="expl-topbar">
+  <span class="expl-crumb">FASE 3.7 · MOBILE ADAPT · POLA A</span>
+  <span class="sp"></span>
+  <button class="expl-btn expl-btn--ghost" id="expl-comment-btn">💬 Komen <span style="opacity:.6">(C)</span></button>
+  <button class="expl-btn expl-btn--primary" id="expl-submit-btn">Setor komen</button>
+</div>
+<div class="expl-hint"><b>Cara review:</b> klik <b>💬 Komen</b> → klik titik / drag area di layar HP → tulis catatan → <b>Setor komen</b> buat nyalin ke chat.</div>
+
+<div class="expl-head">
+  <h1>Coachmark — Mobile</h1>
+  <p>Pola A (kartu nempel di target). Turunan dari Alt A web, konten sama. Frame 360×812 sesuai Scrim Paperverse Mobile.</p>
+</div>
+
+<div class="pg">
+  <aside class="pg-panel">
+    <div class="pg-grp">
+      <h3>Step</h3>
+      <div class="pg-opt" id="c-step"></div>
+    </div>
+
+    <div class="pg-grp">
+      <h3>Placement</h3>
+      <div class="pg-seg" id="c-place">
+        <button data-v="auto" class="on">Auto</button>
+        <button data-v="bottom">Bottom</button>
+        <button data-v="top">Top</button>
+      </div>
+      <p class="pg-legend" style="margin-top:8px">Mobile cuma <b>Top / Bottom</b>. Left &amp; Right dibuang — 360px nggak muat kartu di samping target.</p>
+    </div>
+
+    <div class="pg-grp">
+      <h3>Navigation</h3>
+      <div class="pg-seg" id="c-nav">
+        <button data-v="dots" class="on">Dots</button>
+        <button data-v="counter">Counter</button>
+      </div>
+      <p class="pg-legend" style="margin-top:8px"><b>Dots</b> ≤5 step (loncat langsung) · <b>Counter</b> ≥6 step (+ Previous).</p>
+      <div class="pg-row" style="margin-top:4px"><span class="lbl">Back Action</span><span class="sp"></span><div class="sw on" id="c-back"></div></div>
+      <p class="pg-legend">Properti baru dari web. Mati → <b>Previous</b> ilang walau bukan step pertama. Cuma ngefek di mode Counter.</p>
+    </div>
+
+    <div class="pg-grp">
+      <h3>Content</h3>
+      <div class="pg-row"><span class="lbl">Image</span><span class="sp"></span><div class="sw" id="c-img"></div></div>
+      <div class="pg-row"><span class="lbl">Description</span><span class="sp"></span><div class="sw on" id="c-desc"></div></div>
+      <p class="pg-legend" style="margin-top:8px">Image default <b>mati</b> — ikut web (`Image` jadi VARIANT default False). Kartu mulai teks-only, gambar di-opt-in.</p>
+    </div>
+
+    <div class="pg-grp">
+      <h3>Beda dari web</h3>
+      <p class="pg-legend">
+        <b>360px</b> frame (bukan 375) · kartu <b>320px</b> (web 344)<br>
+        Placement <b>4 → 2</b> varian (12 → 6 varian card set)<br>
+        Scrim <b>.7 → .75</b><br>
+        Tombol <b>30 → 38px</b>, Secondary teks jadi <b>biru</b><br>
+        Hover → <b>pressed</b> · hit area close &amp; dots <b>≥44px</b><br>
+        + safe area home indicator
+      </p>
+      <h3 style="margin-top:14px">Disamain sama web</h3>
+      <p class="pg-legend">
+        Sinkron adjustment designer <b>2026-07-20</b>:<br>
+        Radius kartu <b>8</b> (radius/md) · padding <b>20</b> (spacing/xl) · gap <b>12</b> (spacing/md)<br>
+        Close <b>inline sebelah judul</b> (bukan pojok absolute), glyph polos tanpa circle, warna <b>action/disabled/fg</b><br>
+        <b>Image</b> default mati · properti <b>Back Action</b><br>
+        Shadow <b>table/option</b> (`0 1px 5px` @15%)
+      </p>
+    </div>
+
+    <div class="pg-grp">
+      <div class="pg-flag">
+        <b>⚠️ Flag ke tim DS</b><br>
+        Paperverse Mobile <b>belum punya</b> kartu anchored + arrow. Yang ada namanya <code>Tooltips</code> tapi isinya <b>bottom sheet</b>. Kartu di sini dirakit dari potongan existing (Scrim · Button · text style). Perlu diputusin: bikin komponen baru, atau arahin ke bottom sheet.
+      </div>
+    </div>
+  </aside>
+
+  <div class="pg-stagewrap">
+    <p class="pg-note"><b>Konteks:</b> Invoice Pembelian (mobile) — tur 3 step ngenalin tab <b>Dibagikan</b>. Step 3 sengaja nunjuk tab bar bawah biar kelihatan placement <b>Top</b> jalan.</p>
+    <div class="expl-canvas">
+      <div class="phone-bezel">
+        <div class="scr" id="scr">
+          <div class="phone-notch"></div>
+
+          <div class="scr-status"><span>9:41</span><span>▮▮▮ ⌁ ▰</span></div>
+
+          <div class="mp-top">
+            <span class="mp-title">Invoice Pembelian</span>
+            <svg class="mp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          </div>
+
+          <div class="mp-tabs">
+            <button class="mp-tab on">Semua</button>
+            <button class="mp-tab" id="t-shared">Dibagikan</button>
+            <button class="mp-tab">Draf</button>
+          </div>
+
+          <div class="mp-search" id="t-search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <span>Cari no. invoice / supplier</span>
+          </div>
+
+          <div class="mp-list">
+            <div class="mp-card">
+              <div class="mp-card-r"><span class="mp-no">INV-2026-0418</span><span class="mp-amt">Rp 12.450.000</span></div>
+              <div class="mp-card-r"><span class="mp-sup">PT Sinar Kencana</span><span class="mp-badge mp-badge--due">Jatuh tempo 3 hari</span></div>
+            </div>
+            <div class="mp-card">
+              <div class="mp-card-r"><span class="mp-no">INV-2026-0417</span><span class="mp-amt">Rp 3.200.000</span></div>
+              <div class="mp-card-r"><span class="mp-sup">CV Berkah Jaya</span><span class="mp-badge">Lunas</span></div>
+            </div>
+            <div class="mp-card">
+              <div class="mp-card-r"><span class="mp-no">INV-2026-0415</span><span class="mp-amt">Rp 875.000</span></div>
+              <div class="mp-card-r"><span class="mp-sup">Toko Anugrah</span><span class="mp-badge">Lunas</span></div>
+            </div>
+          </div>
+
+          <nav class="mp-nav">
+            <button class="mp-navitem on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg>Beranda</button>
+            <button class="mp-navitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Transaksi</button>
+            <button class="mp-navitem" id="t-report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>Laporan</button>
+            <button class="mp-navitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Akun</button>
+          </nav>
+
+          <div class="scr-home"><i></i></div>
+
+          <!-- COACHMARK -->
+          <div class="cmp-ring" id="ring"></div>
+          <div class="cmp-card" id="card">
+            <svg class="cmp-arrow cmp-arrow--up" id="arrow" width="16" height="8" viewBox="0 0 16 8" fill="currentColor"><path id="arrow-p" d="M8 0l8 8H0z"/></svg>
+            <div class="cmp-card-in">
+              <div class="cmp-img" id="img">gambar 16:9 (opsional)</div>
+              <div class="cmp-txt">
+                <div class="cmp-titlerow">
+                  <div class="cmp-title" id="title">Judul</div>
+                  <button class="cmp-x" id="x" aria-label="Tutup tur">
+                    <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></i>
+                  </button>
+                </div>
+                <div class="cmp-sub" id="sub">Deskripsi</div>
+              </div>
+              <div class="cmp-foot">
+                <div class="cmp-dots" id="dots"></div>
+                <span class="cmp-count" id="count" style="display:none"><b>1</b> / 3</span>
+                <span class="sp"></span>
+                <button class="cmp-btn cmp-btn--secondary" id="prev" style="display:none">Previous</button>
+                <button class="cmp-btn cmp-btn--primary" id="next">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════ KOMPONEN — behaviour ═══════ */
+(function(){
+  var STEPS=[
+    {t:'#t-shared', place:'bottom', title:'Invoice yang dibagikan ada di sini',
+     sub:'Supplier yang kirim invoice lewat Paper langsung masuk tab ini. Nggak perlu input manual lagi.'},
+    {t:'#t-search', place:'bottom', title:'Cari cepat pakai nomor atau nama',
+     sub:'Ketik sebagian nomor invoice atau nama supplier — hasil nyaring sambil kamu ngetik.'},
+    {t:'#t-report', place:'top', title:'Rekap pengeluaran ada di Laporan',
+     sub:'Total pembelian per periode, per supplier, dan status pembayaran dirangkum di sini.'}
+  ];
+  // showImg default FALSE — ikut web: `Image` jadi VARIANT default False (kartu mulai teks-only)
+  var cur=0, place='auto', nav='dots', showImg=false, showDesc=true, backAction=true;
+  var scr=document.getElementById('scr'), ring=document.getElementById('ring'), card=document.getElementById('card'),
+      arrow=document.getElementById('arrow'), arrowP=document.getElementById('arrow-p'),
+      img=document.getElementById('img'), title=document.getElementById('title'),
+      sub=document.getElementById('sub'), dots=document.getElementById('dots'), count=document.getElementById('count'),
+      prev=document.getElementById('prev'), next=document.getElementById('next');
+
+  function render(){
+    var s=STEPS[cur], tgt=scr.querySelector(s.t);
+    var sr=scr.getBoundingClientRect(), tr=tgt.getBoundingClientRect();
+    var top=tr.top-sr.top, left=tr.left-sr.left, w=tr.width, h=tr.height;
+
+    ring.style.top=top+'px'; ring.style.left=left+'px';
+    ring.style.width=w+'px'; ring.style.height=h+'px';
+
+    title.textContent=s.title;
+    sub.textContent=s.sub;
+    img.style.display=showImg?'flex':'none';
+    sub.style.display=showDesc?'block':'none';
+
+    // footer: Dots vs Counter
+    dots.style.display=nav==='dots'?'flex':'none';
+    count.style.display=nav==='counter'?'inline':'none';
+    // `Back Action` = properti baru dari web. Off → Previous disembunyiin walau bukan step pertama
+    prev.style.display=(nav==='counter'&&cur>0&&backAction)?'inline-flex':'none';
+    count.innerHTML='<b>'+(cur+1)+'</b> / '+STEPS.length;
+    next.textContent=(cur===STEPS.length-1)?'Done':'Next';
+    [].forEach.call(dots.children,function(d,i){d.classList.toggle('on',i===cur);});
+
+    // placement: auto = ikut spec step; kartu ditaruh setelah ukurannya kebaca
+    var p=(place==='auto')?s.place:place;
+    var ch=card.offsetHeight;
+    var GAP=16; // spacing/lg — jarak kartu ↔ target
+    var cardTop=(p==='bottom') ? (top+h+GAP) : (top-GAP-ch);
+    // clamp biar nggak keluar layar (status bar 44 atas, home indicator 20 bawah)
+    cardTop=Math.max(44+8, Math.min(cardTop, 812-20-8-ch));
+    card.style.top=cardTop+'px';
+
+    // arrow: nunjuk ke tengah target, dijepit di dalam lebar kartu.
+    // ⚠️ arrow = <svg> → className-nya SVGAnimatedString (read-only). WAJIB setAttribute,
+    //    kalau pakai .className= class-nya nggak ganti & gagal DIAM-DIAM.
+    arrow.setAttribute('class','cmp-arrow '+(p==='bottom'?'cmp-arrow--up':'cmp-arrow--down'));
+    // Ganti BENTUK path, bukan rotate() — transform-origin di SVG beda-beda antar browser.
+    arrowP.setAttribute('d', (p==='bottom')
+      ? 'M8 0l8 8H0z'      // apex di ATAS  → kartu di bawah target, nunjuk ke atas
+      : 'M8 8L0 0h16z');   // apex di BAWAH → kartu di atas target, nunjuk ke bawah
+    var cx=left+w/2-20;           // relatif ke kartu (kartu left = 20)
+    arrow.style.left=Math.max(16, Math.min(cx-8, 320-16-16))+'px';
+  }
+
+  // dots
+  STEPS.forEach(function(_,i){
+    var b=document.createElement('button');
+    b.className='cmp-dot'; b.innerHTML='<i></i>';
+    b.setAttribute('aria-label','Ke step '+(i+1));
+    b.onclick=function(){cur=i;render();};
+    dots.appendChild(b);
+  });
+  next.onclick=function(){ if(cur<STEPS.length-1){cur++;render();} };
+  prev.onclick=function(){ if(cur>0){cur--;render();} };
+  document.getElementById('x').onclick=function(){ alert('Tur ditutup (demo). Di produksi: scrim + ring + kartu hilang.'); };
+
+  /* ── kontrol panel (tooling) ── */
+  var stepBox=document.getElementById('c-step');
+  STEPS.forEach(function(s,i){
+    var b=document.createElement('button');
+    b.innerHTML='<span class="k">'+(i+1)+'</span><span><span class="nm">'+s.title.slice(0,28)+'…</span><span class="ds">target: '+s.t+' · '+s.place+'</span></span>';
+    b.onclick=function(){cur=i;syncStep();render();};
+    stepBox.appendChild(b);
+  });
+  function syncStep(){ [].forEach.call(stepBox.children,function(b,i){b.classList.toggle('on',i===cur);}); }
+
+  function seg(id,fn){
+    var box=document.getElementById(id);
+    box.onclick=function(e){
+      var b=e.target.closest('button'); if(!b)return;
+      [].forEach.call(box.children,function(x){x.classList.remove('on');});
+      b.classList.add('on'); fn(b.dataset.v); render();
+    };
+  }
+  seg('c-place',function(v){place=v;});
+  seg('c-nav',function(v){nav=v;});
+  function sw(id,fn){ var el=document.getElementById(id); el.onclick=function(){ el.classList.toggle('on'); fn(el.classList.contains('on')); render(); }; }
+  sw('c-img',function(v){showImg=v;});
+  sw('c-desc',function(v){showDesc=v;});
+  sw('c-back',function(v){backAction=v;});
+
+  syncStep();
+  // render 2x: sekali buat ukur tinggi kartu, sekali buat posisi final
+  render(); requestAnimationFrame(render);
+  window.addEventListener('resize',render);
+})();
+
+/* ═══════ TOOLING — review komen (standar template) ═══════ */
+(function(){
+  var COMPONENT=document.body.dataset.component||'Komponen';
+  var KEY='expl:'+location.pathname, notes=[];
+  try{notes=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(notes))notes=[];}catch(e){notes=[];}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(notes));}catch(e){}}
+  var commentMode=false, body=document.body, commentBtn=document.getElementById('expl-comment-btn');
+  function toast(m){var t=document.querySelector('.expl-toast');if(!t){t=document.createElement('div');t.className='expl-toast';document.body.appendChild(t);}t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show');},2200);}
+  function copy(txt,ok){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast(ok);},fb);}else fb();function fb(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast(ok);}catch(e){}ta.remove();}}
+  function setComment(v){commentMode=v;body.classList.toggle('expl-comment',v);commentBtn.classList.toggle('on',v);toast(v?'Mode komen ON — klik area komponen':'Mode komen OFF');}
+  commentBtn.onclick=function(){setComment(!commentMode);};
+  document.addEventListener('keydown',function(e){if((e.key==='c'||e.key==='C')&&document.activeElement.tagName!=='TEXTAREA')setComment(!commentMode);});
+  document.querySelectorAll('.expl-canvas').forEach(function(canvas){
+    canvas.addEventListener('mousedown',function(e){
+      if(!commentMode||e.button)return;if(e.target.closest('.expl-pin,.expl-area'))return;e.preventDefault();
+      var r=canvas.getBoundingClientRect(),sx=e.clientX-r.left,sy=e.clientY-r.top;
+      var sel=document.createElement('div');sel.className='expl-sel';canvas.appendChild(sel);var moved=false;
+      function mm(ev){var x=ev.clientX-r.left,y=ev.clientY-r.top,l=Math.min(x,sx),t=Math.min(y,sy),w=Math.abs(x-sx),h=Math.abs(y-sy);if(w>3||h>3)moved=true;sel.style.left=l+'px';sel.style.top=t+'px';sel.style.width=w+'px';sel.style.height=h+'px';}
+      function mu(ev){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);sel.remove();var x=ev.clientX-r.left,y=ev.clientY-r.top,l=Math.min(x,sx),t=Math.min(y,sy),w=Math.abs(x-sx),h=Math.abs(y-sy);openPop(ev.clientX,ev.clientY,{x:(moved&&w>6?l:sx),y:(moved&&h>6?t:sy),w:(moved&&w>6?w:0),h:(moved&&h>6?h:0)});}
+      document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);
+    });
+  });
+  function openPop(cx,cy,ctx){
+    document.querySelectorAll('.expl-pop').forEach(function(p){p.remove();});
+    var pop=document.createElement('div');pop.className='expl-pop';
+    pop.style.left=Math.min(cx,window.innerWidth-296)+'px';pop.style.top=Math.min(cy,window.innerHeight-160)+'px';
+    pop.innerHTML='<div class="expl-pop-ref">Komen</div><textarea placeholder="Tulis catatan..."></textarea><div class="expl-pop-acts"><button class="expl-btn expl-btn--ghost" style="background:var(--item-on);color:var(--tx-mut);border-color:transparent" data-x>Batal</button><button class="expl-btn expl-btn--primary" data-ok>Simpan</button></div>';
+    document.body.appendChild(pop);var ta=pop.querySelector('textarea');ta.focus();
+    pop.querySelector('[data-x]').onclick=function(){pop.remove();};
+    pop.querySelector('[data-ok]').onclick=function(){var t=ta.value.trim();if(!t){pop.remove();return;}notes.push({x:ctx.x,y:ctx.y,w:ctx.w,h:ctx.h,text:t});save();paint();pop.remove();toast('Komen tersimpan');};
+  }
+  function paint(){
+    document.querySelectorAll('.expl-pin,.expl-area').forEach(function(p){p.remove();});
+    var canvas=document.querySelector('.expl-canvas');
+    notes.forEach(function(n,i){if(n.w&&n.h){var a=document.createElement('div');a.className='expl-area';a.style.left=n.x+'px';a.style.top=n.y+'px';a.style.width=n.w+'px';a.style.height=n.h+'px';canvas.appendChild(a);}var pin=document.createElement('div');pin.className='expl-pin';pin.style.left=n.x+'px';pin.style.top=n.y+'px';pin.textContent=i+1;canvas.appendChild(pin);});
+  }
+  document.getElementById('expl-submit-btn').onclick=function(){
+    if(!notes.length){toast('Belum ada komen');return;}
+    var lines=['[REVIEW] '+COMPONENT+' (Fase 3.7 mobile adapt · Pola A)',''];notes.forEach(function(n,i){lines.push((i+1)+'. '+(n.w?'[area] ':'')+n.text);});lines.push('','(paste ke chat)');
+    copy(lines.join('\n'),'📋 '+notes.length+' komen di-copy');
+  };
+  paint();
+})();
+</script>
+</body>
+</html>

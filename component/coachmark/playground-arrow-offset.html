@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coachmark Mobile · Konsep Arrow Offset — Playground</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<!-- ═══════ STYLE #1 · TOOLING (di-skip audit) ═══════ -->
+<style>
+  /* __TOOLING__ */
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--app-bg:#F4F4F2;--bar-bg:#EDECE6;--surface:#FCFCFB;--bd:rgba(0,0,0,.08);--bd-strong:rgba(0,0,0,.16);--tx:#1F2328;--tx-mut:#6E6E68;--tx-dim:#A3A39B;--accent:#1F2328;--accent-tx:#fff;--item-on:#EAEAE6;--item-hover:#EDEDE9;--ok:#1E7E34;--bad:#B3261E;--warn-bg:#FFF6E0;--warn-bd:#E8D9A8;--warn-tx:#7A5A00;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 6px 22px rgba(0,0,0,.12)}
+  body{font-family:'Lato',-apple-system,'Segoe UI',sans-serif;background:var(--app-bg);color:var(--tx)}
+  .expl-topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;background:var(--bar-bg);padding:10px 20px;border-bottom:1px solid var(--bd-strong)}
+  .expl-crumb{font-size:12px;font-weight:700;color:var(--tx-dim);letter-spacing:.02em}
+  .expl-topbar .sp{flex:1}
+  .expl-btn{border:0;border-radius:8px;padding:8px 14px;font:600 13px 'Lato',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .expl-btn--ghost{background:transparent;border:1px solid var(--bd-strong);color:var(--tx-mut)}
+  .expl-btn--ghost:hover{background:var(--item-hover);color:var(--tx)}
+  .expl-btn--ghost.on{background:var(--accent);border-color:var(--accent);color:var(--accent-tx)}
+  .expl-btn--primary{background:var(--accent);color:var(--accent-tx)}
+  .expl-hint{padding:10px 20px;font-size:12px;color:var(--tx-mut);background:var(--app-bg);border-bottom:1px solid var(--bd)}
+  .expl-hint b{color:var(--tx)}
+  .expl-head{padding:26px 28px 4px}
+  .expl-head h1{font-size:30px;font-weight:800;letter-spacing:-.01em;line-height:1.12}
+  .expl-head p{font-size:14px;color:var(--tx-mut);margin-top:7px;max-width:720px;line-height:1.55}
+
+  .pg{display:flex;flex-direction:row-reverse;align-items:flex-start;min-height:calc(100vh - 90px)}
+  .pg-panel{width:330px;flex:none;background:var(--surface);border-left:1px solid var(--bd-strong);padding:18px 16px;align-self:stretch;overflow-y:auto;max-height:calc(100vh - 90px)}
+  .pg-panel h3{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--tx-dim);margin-bottom:10px}
+  .pg-grp{margin-bottom:22px}
+  .pg-seg{display:flex;background:var(--item-on);border-radius:8px;padding:3px}
+  .pg-seg button{flex:1;border:0;background:transparent;color:var(--tx-mut);font:700 12px 'Lato';padding:7px 0;border-radius:6px;cursor:pointer}
+  .pg-seg button.on{background:var(--surface);color:var(--tx);box-shadow:var(--shadow-sm)}
+  .pg-opt{display:flex;flex-direction:column;gap:6px}
+  .pg-opt button{display:flex;align-items:center;gap:10px;border:1px solid var(--bd);background:var(--surface);border-radius:9px;padding:9px 11px;cursor:pointer;text-align:left}
+  .pg-opt button:hover{border-color:var(--bd-strong)}
+  .pg-opt button.on{border-color:var(--accent);background:var(--item-on)}
+  .pg-opt .nm{font:700 12px 'Lato'}
+  .pg-opt .ds{font:400 11px 'Lato';color:var(--tx-dim);margin-top:1px}
+  .pg-range{width:100%;margin-top:6px}
+  .pg-legend{font-size:11px;line-height:1.7;color:var(--tx-mut)}
+  .pg-legend b{color:var(--tx)}
+  .readout{background:#1F2328;color:#E8E8E4;border-radius:9px;padding:11px 13px;font:600 12px/1.7 ui-monospace,'SF Mono',Menlo,Consolas,monospace}
+  .readout .k{color:#8A8D93}
+  .readout .v{color:#fff}
+  .verdict{margin-top:9px;padding:9px 11px;border-radius:8px;font-size:11.5px;line-height:1.6}
+  .verdict.ok{background:#E9F5EC;color:var(--ok);border:1px solid #BFE0C8}
+  .verdict.bad{background:#FDEDEC;color:var(--bad);border:1px solid #F5C6C3}
+  .pg-flag{font-size:11px;line-height:1.6;color:var(--warn-tx);background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:8px;padding:9px 11px}
+
+  .pg-stagewrap{flex:1;min-width:0;padding:28px;display:flex;flex-direction:column;align-items:center}
+  .pg-note{font-size:12px;color:var(--tx-dim);margin-bottom:18px;max-width:620px;line-height:1.55;align-self:flex-start}
+  .pg-note b{color:var(--tx-mut)}
+  .phone-bezel{padding:12px;background:#1F2328;border-radius:52px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+  .phone-bezel .scr{border-radius:40px}
+  .phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:28px;background:#1F2328;border-radius:0 0 18px 18px;z-index:200}
+  /* garis bantu = alat ukur, bukan bagian komponen */
+  .guide{position:absolute;z-index:150;pointer-events:none}
+  .guide-target{width:1px;top:0;bottom:0;background:repeating-linear-gradient(#1E7E34 0 5px,transparent 5px 10px)}
+  .guide-arrow{width:1px;top:0;bottom:0;background:repeating-linear-gradient(#B3261E 0 5px,transparent 5px 10px)}
+  .guide-lbl{position:absolute;z-index:151;font:800 9px 'Lato';padding:2px 5px;border-radius:4px;color:#fff;white-space:nowrap;transform:translateX(-50%)}
+  .guide-lbl.t{background:#1E7E34}
+  .guide-lbl.a{background:#B3261E}
+
+  .expl-canvas{position:relative}
+</style>
+
+<!-- ═══════ STYLE #2 · KOMPONEN (DIAUDIT — token Paperverse Mobile + Lato) ═══════ -->
+<style>
+  .scr{position:relative;width:360px;height:812px;background:#ffffff;overflow:hidden;font-family:'Lato',sans-serif;color:#133f5d}
+  .scr-status{height:44px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 8px;font:700 12px/16px 'Lato'}
+  .scr-home{position:absolute;left:0;right:0;bottom:0;height:20px;display:flex;align-items:center;justify-content:center;background:#ffffff}
+  .scr-home i{display:block;width:134px;height:5px;border-radius:9999px;background:#133f5d}
+
+  .mp-top{display:flex;align-items:center;gap:12px;padding:8px 20px 12px}
+  .mp-title{font:700 20px/28px 'Lato';flex:1}
+  .mp-list{padding:0 20px;display:flex;flex-direction:column;gap:12px}
+  .mp-card{border:1px solid #dde1e5;border-radius:8px;padding:12px 16px}
+  .mp-no{font:700 14px/22px 'Lato';flex:1}
+  .mp-sup{font:400 12px/18px 'Lato';color:#718c9e}
+  .mp-row{display:flex;align-items:center;gap:8px}
+
+  /* tab bar bawah — 4 item, jadi target uji */
+  .mp-nav{position:absolute;left:0;right:0;bottom:20px;height:56px;display:flex;align-items:center;background:#ffffff;border-top:1px solid #dde1e5}
+  .mp-navitem{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font:600 12px/16px 'Lato';color:#718c9e;background:none;border:0;cursor:pointer;padding:4px 0}
+  .mp-navitem.on{color:#4199d5}
+  .mp-navitem svg{width:24px;height:24px}
+
+  .cmp-ring{position:absolute;z-index:100;border-radius:8px;pointer-events:none;
+            box-shadow:0 0 0 9999px rgba(19,63,93,.75);outline:2px solid #ffffff;outline-offset:4px;
+            transition:top .25s,left .25s,width .25s}
+
+  /* Kartu: Arrow Row (auto-layout, offset lewat padding-left) + Card */
+  .cmp-wrap{position:absolute;z-index:110;left:20px;width:320px;
+            filter:drop-shadow(0 3px 10px #00000014);transition:top .25s}
+  .cmp-arrowrow{display:flex;height:8px}
+  .cmp-arrow{width:12px;height:8px;color:#ffffff;flex:none;transition:padding .18s}
+  .cmp-card{background:#ffffff;border-radius:12px}
+  .cmp-card-in{padding:20px;display:flex;flex-direction:column;gap:16px}
+  .cmp-txt{display:flex;flex-direction:column;gap:8px}
+  .cmp-titlerow{display:flex;align-items:flex-start;gap:4px}
+  .cmp-title{font:700 18px/24px 'Lato';flex:1}
+  .cmp-sub{font:400 14px/22px 'Lato';color:#718c9e}
+  .cmp-x{flex:none;width:44px;height:44px;margin:-12px -12px -12px 0;display:flex;align-items:center;justify-content:center;background:none;border:0;cursor:pointer}
+  .cmp-x i{width:24px;height:24px;color:#7f97a7;display:flex;align-items:center;justify-content:center;opacity:.65}
+  .cmp-x i svg{width:24px;height:24px}
+  .cmp-foot{display:flex;align-items:center;gap:8px}
+  .cmp-foot .sp{flex:1}
+  .cmp-dots{display:flex;align-items:center;margin:-12px 0}
+  .cmp-dot{width:20px;height:44px;display:flex;align-items:center;justify-content:center;background:none;border:0;padding:0}
+  .cmp-dot i{display:block;width:8px;height:8px;border-radius:9999px;background:#dde1e5}
+  .cmp-dot.on i{background:#4199d5}
+  .cmp-btn{height:38px;display:inline-flex;align-items:center;justify-content:center;padding:8px 16px;border-radius:9999px;font:600 14px/22px 'Lato';background:#4199d5;color:#ffffff;border:0;cursor:pointer}
+</style>
+</head>
+<body data-component="Coachmark Mobile · Arrow Offset">
+
+<div class="expl-topbar">
+  <span class="expl-crumb">KONSEP · ARROW OFFSET (PRE-FIGMA)</span>
+  <span class="sp"></span>
+  <button class="expl-btn expl-btn--ghost" id="guide-btn">📏 Garis bantu</button>
+  <button class="expl-btn expl-btn--primary" id="copy-btn">Salin spec</button>
+</div>
+<div class="expl-hint"><b>Coba:</b> klik item tab bar di bawah layar → lihat arrow-nya nyampe apa nggak. Banding <b>Preset (3 varian)</b> vs <b>Offset bebas</b>.</div>
+
+<div class="expl-head">
+  <h1>Arrow Offset — konsep</h1>
+  <p>Posisi layer nested <b>nggak bisa</b> di-override di instance Figma, tapi <b>padding bisa</b> (udah diuji). Jadi arrow ditaruh di dalam auto-layout row dan digeser lewat <code>padding-left</code> — bikin posisinya bebas, bukan cuma 3 titik.</p>
+</div>
+
+<div class="pg">
+  <aside class="pg-panel">
+    <div class="pg-grp">
+      <h3>Target yang disorot</h3>
+      <div class="pg-opt" id="c-target"></div>
+    </div>
+
+    <div class="pg-grp">
+      <h3>Cara posisi arrow</h3>
+      <div class="pg-seg" id="c-mode">
+        <button data-v="preset" class="on">Preset (3)</button>
+        <button data-v="free">Offset bebas</button>
+      </div>
+      <p class="pg-legend" style="margin-top:8px"><b>Preset</b> = varian Start/Center/End yang sekarang. <b>Offset bebas</b> = atur <code>padding-left</code> per instance.</p>
+    </div>
+
+    <div class="pg-grp" id="grp-offset" style="display:none">
+      <h3>Arrow offset</h3>
+      <input type="range" class="pg-range" id="c-offset" min="16" max="292" value="154">
+      <p class="pg-legend" style="margin-top:4px">Rentang aman <b>16–292</b>. Di bawah 16 arrow nabrak sudut membulat (radius 12); di atas 292 nyundul sisi kanan.</p>
+      <div class="pg-seg" style="margin-top:8px" id="c-snap">
+        <button data-v="24">Start</button>
+        <button data-v="154">Center</button>
+        <button data-v="284">End</button>
+      </div>
+    </div>
+
+    <div class="pg-grp">
+      <h3>Hasil</h3>
+      <div class="readout" id="readout"></div>
+      <div class="verdict" id="verdict"></div>
+    </div>
+
+    <div class="pg-grp">
+      <h3>Nanti di Figma</h3>
+      <p class="pg-legend">
+        <b>Arrow Row</b> jadi auto-layout <b>HORIZONTAL</b><br>
+        Arrow digeser pakai <b><code>paddingLeft</code></b><br>
+        Varian <code>Arrow</code> Start/Center/End tetap ada sebagai <b>preset cepat</b><br>
+        Designer override <code>paddingLeft</code> kalau butuh presisi
+      </p>
+      <div class="pg-flag" style="margin-top:9px">
+        <b>⚠️ Sudah diuji di Figma</b><br>
+        <code>paddingLeft</code> override di instance = <b>BISA</b><br>
+        <code>x</code> override di instance = <b>DITOLAK</b><br>
+        Makanya lewat padding, bukan posisi.
+      </div>
+    </div>
+  </aside>
+
+  <div class="pg-stagewrap">
+    <p class="pg-note"><b>Kenapa 3 preset nggak cukup:</b> tab bar 4 kolom bikin target ada di ~45 · 135 · 225 · 315px. Preset cuma nyampe di ~50 dan ~310. Item tengah meleset jauh.</p>
+    <div class="expl-canvas">
+      <div class="phone-bezel">
+        <div class="scr" id="scr">
+          <div class="phone-notch"></div>
+          <div class="scr-status"><span>9:41</span><span>▮▮▮ ⌁ ▰</span></div>
+
+          <div class="mp-top"><span class="mp-title">Invoice Pembelian</span></div>
+          <div class="mp-list">
+            <div class="mp-card"><div class="mp-row"><span class="mp-no">INV-2026-0418</span></div><div class="mp-row"><span class="mp-sup">PT Sinar Kencana</span></div></div>
+            <div class="mp-card"><div class="mp-row"><span class="mp-no">INV-2026-0417</span></div><div class="mp-row"><span class="mp-sup">CV Berkah Jaya</span></div></div>
+            <div class="mp-card"><div class="mp-row"><span class="mp-no">INV-2026-0415</span></div><div class="mp-row"><span class="mp-sup">Toko Anugrah</span></div></div>
+          </div>
+
+          <nav class="mp-nav" id="nav">
+            <button class="mp-navitem on" data-i="0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg>Beranda</button>
+            <button class="mp-navitem" data-i="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Transaksi</button>
+            <button class="mp-navitem" data-i="2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>Laporan</button>
+            <button class="mp-navitem" data-i="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Akun</button>
+          </nav>
+
+          <div class="scr-home"><i></i></div>
+
+          <div class="cmp-ring" id="ring"></div>
+          <div class="cmp-wrap" id="wrap">
+            <div class="cmp-arrowrow" id="arrowrow">
+              <svg class="cmp-arrow" viewBox="0 0 12 8" fill="currentColor"><path d="M6 8L0 0h12z"/></svg>
+            </div>
+            <div class="cmp-card">
+              <div class="cmp-card-in">
+                <div class="cmp-txt">
+                  <div class="cmp-titlerow">
+                    <div class="cmp-title">Rekap ada di sini</div>
+                    <button class="cmp-x" aria-label="Tutup tur"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></i></button>
+                  </div>
+                  <div class="cmp-sub">Total pembelian per periode dirangkum di halaman ini.</div>
+                </div>
+                <div class="cmp-foot">
+                  <div class="cmp-dots"><button class="cmp-dot on"><i></i></button><button class="cmp-dot"><i></i></button><button class="cmp-dot"><i></i></button></div>
+                  <span class="sp"></span>
+                  <button class="cmp-btn">Next</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var CARD_L=20, CARD_W=320, ARROW_W=12, MIN=16, MAX=292;
+  var PRESETS={Start:24, Center:154, End:284};
+
+  var scr=document.getElementById('scr'), ring=document.getElementById('ring'),
+      wrap=document.getElementById('wrap'), arrowrow=document.getElementById('arrowrow'),
+      readout=document.getElementById('readout'), verdict=document.getElementById('verdict'),
+      grpOffset=document.getElementById('grp-offset'), slider=document.getElementById('c-offset');
+
+  var targetIdx=2, mode='preset', freeOffset=154, guides=false;
+
+  function navItems(){ return [].slice.call(document.querySelectorAll('.mp-navitem')); }
+
+  function targetRect(){
+    var el=navItems()[targetIdx], r=el.getBoundingClientRect(), s=scr.getBoundingClientRect();
+    return { left:r.left-s.left, top:r.top-s.top, w:r.width, h:r.height };
+  }
+
+  // offset ideal = titik tengah target, relatif kartu, dikurangi setengah arrow
+  function idealOffset(){
+    var t=targetRect();
+    return Math.round(t.left + t.w/2 - CARD_L - ARROW_W/2);
+  }
+  function nearestPreset(ideal){
+    var best=null, bd=Infinity;
+    for(var k in PRESETS){ var d=Math.abs(PRESETS[k]-ideal); if(d<bd){bd=d;best=k;} }
+    return best;
+  }
+  function clamp(v){ return Math.max(MIN, Math.min(MAX, v)); }
+
+  function render(){
+    var t=targetRect(), ideal=idealOffset();
+    var offset, label;
+    if(mode==='preset'){ var p=nearestPreset(ideal); offset=PRESETS[p]; label='Varian Arrow='+p; }
+    else { offset=clamp(freeOffset); label='paddingLeft custom'; }
+
+    // ring nyorot target
+    ring.style.left=t.left+'px'; ring.style.top=t.top+'px';
+    ring.style.width=t.w+'px'; ring.style.height=t.h+'px';
+
+    // kartu di ATAS target (placement Top), arrow di bawah kartu
+    wrap.style.top=(t.top - wrap.offsetHeight - 16)+'px';
+    arrowrow.style.paddingLeft=offset+'px';
+
+    // meleset berapa jauh?
+    var miss=Math.abs(offset-clamp(ideal));
+    var arrowCenter=CARD_L+offset+ARROW_W/2;
+    var targetCenter=t.left+t.w/2;
+
+    readout.innerHTML=
+      '<div><span class="k">target center</span>  <span class="v">'+Math.round(targetCenter)+'px</span></div>'+
+      '<div><span class="k">arrow center</span>   <span class="v">'+Math.round(arrowCenter)+'px</span></div>'+
+      '<div><span class="k">paddingLeft</span>    <span class="v">'+offset+'px</span></div>'+
+      '<div><span class="k">ideal</span>          <span class="v">'+clamp(ideal)+'px</span></div>'+
+      '<div><span class="k">mode</span>           <span class="v">'+label+'</span></div>';
+
+    if(miss<=6){
+      verdict.className='verdict ok';
+      verdict.innerHTML='✓ <b>Nyampe</b> — meleset '+miss+'px, nggak kelihatan.';
+    } else {
+      verdict.className='verdict bad';
+      verdict.innerHTML='✗ <b>Meleset '+miss+'px</b> — arrow nunjuk ke tempat kosong. '+
+        (mode==='preset'?'Ini kasus yang butuh offset bebas.':'Geser slider ke '+clamp(ideal)+'px.');
+    }
+
+    drawGuides(targetCenter, arrowCenter);
+    navItems().forEach(function(b,i){ b.classList.toggle('on', i===targetIdx); });
+    slider.value=offset;
+  }
+
+  function drawGuides(tc, ac){
+    scr.querySelectorAll('.guide,.guide-lbl').forEach(function(g){g.remove();});
+    if(!guides) return;
+    function line(x,cls,lbl,lcls,top){
+      var g=document.createElement('div'); g.className='guide '+cls; g.style.left=x+'px'; scr.appendChild(g);
+      var l=document.createElement('div'); l.className='guide-lbl '+lcls; l.style.left=x+'px'; l.style.top=top+'px'; l.textContent=lbl; scr.appendChild(l);
+    }
+    line(tc,'guide-target','target '+Math.round(tc),'t',60);
+    line(ac,'guide-arrow','arrow '+Math.round(ac),'a',80);
+  }
+
+  navItems().forEach(function(b,i){ b.onclick=function(){ targetIdx=i; if(mode==='free') freeOffset=clamp(idealOffset()); render(); }; });
+
+  var box=document.getElementById('c-target');
+  ['Beranda','Transaksi','Laporan','Akun'].forEach(function(nm,i){
+    var b=document.createElement('button');
+    b.innerHTML='<span><span class="nm">'+nm+'</span><span class="ds">item '+(i+1)+' dari 4</span></span>';
+    b.onclick=function(){ targetIdx=i; if(mode==='free') freeOffset=clamp(idealOffset()); sync(); render(); };
+    box.appendChild(b);
+  });
+  function sync(){ [].forEach.call(box.children,function(b,i){ b.classList.toggle('on',i===targetIdx); }); }
+
+  document.getElementById('c-mode').onclick=function(e){
+    var b=e.target.closest('button'); if(!b)return;
+    [].forEach.call(this.children,function(x){x.classList.remove('on');}); b.classList.add('on');
+    mode=b.dataset.v;
+    grpOffset.style.display=(mode==='free')?'block':'none';
+    if(mode==='free') freeOffset=clamp(idealOffset());
+    render();
+  };
+  document.getElementById('c-snap').onclick=function(e){
+    var b=e.target.closest('button'); if(!b)return;
+    freeOffset=+b.dataset.v; render();
+  };
+  slider.oninput=function(){ freeOffset=+this.value; render(); };
+  document.getElementById('guide-btn').onclick=function(){ guides=!guides; this.classList.toggle('on',guides); render(); };
+
+  document.getElementById('copy-btn').onclick=function(){
+    var t=targetRect(), ideal=clamp(idealOffset());
+    var txt='[SPEC] Coachmark Mobile — Arrow Offset\n\n'+
+      'Mekanisme: Arrow Row = auto-layout HORIZONTAL, arrow digeser lewat paddingLeft.\n'+
+      'Alasan: override posisi (x) DITOLAK Figma; override padding BISA (sudah diuji).\n\n'+
+      'Rentang aman: 16–292 (kartu 320, arrow 12, radius 12)\n'+
+      'Preset: Start 24 · Center 154 · End 284\n\n'+
+      'Contoh sekarang:\n'+
+      '  target center = '+Math.round(t.left+t.w/2)+'px\n'+
+      '  paddingLeft ideal = '+ideal+'px\n'+
+      '  preset terdekat = '+nearestPreset(idealOffset())+' ('+PRESETS[nearestPreset(idealOffset())]+'px)\n'+
+      '  meleset kalau pakai preset = '+Math.abs(PRESETS[nearestPreset(idealOffset())]-ideal)+'px\n';
+    navigator.clipboard&&navigator.clipboard.writeText(txt);
+    this.textContent='✓ Ke-copy'; var self=this; setTimeout(function(){self.textContent='Salin spec';},1500);
+  };
+
+  sync(); render(); requestAnimationFrame(render);
+  window.addEventListener('resize',render);
+})();
+</script>
+</body>
+</html>
