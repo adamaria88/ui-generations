@@ -205,8 +205,7 @@
     </div>
     <div class="side-search"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg><input id="side-search" placeholder="Cari komponen..."></div>
     <div class="side-plat" id="side-plat">
-      <button data-f="all" class="on">Semua</button>
-      <button data-f="web"><svg viewBox="0 0 24 24"><use href="#i-monitor"/></svg> Web</button>
+      <button data-f="web" class="on"><svg viewBox="0 0 24 24"><use href="#i-monitor"/></svg> Web</button>
       <button data-f="mobile"><svg viewBox="0 0 24 24"><use href="#i-phone"/></svg> Mobile</button>
     </div>
     <div class="side-lbl">Komponen</div>
@@ -639,8 +638,15 @@
       side=document.getElementById('side'), drawerScrim=document.getElementById('drawer-scrim'),
       docsEl=document.getElementById('docs');
   var curSlug=null, curPlatKey=null, curV=null, curDoc=null;
-  var platFilter='all';   // filter global sidebar: 'all' | 'web' | 'mobile'
+  var platFilter='web';   // filter global sidebar: 'web' | 'mobile' (nggak ada "semua")
   function hasPlat(c,key){ return c.platforms.some(function(p){return p.key===key;}); }
+  /* sinkronin tombol filter + daftar sidebar ke platform yg lagi aktif */
+  function syncPlatFilter(key){
+    if(key!=='web'&&key!=='mobile') return;
+    platFilter=key;
+    document.querySelectorAll('#side-plat button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-f')===key);});
+    renderSidebar(document.getElementById('side-search').value);
+  }
 
   function comp(slug){ return COMPONENTS.find(function(c){return c.slug===slug;}); }
   function curComp(){ return comp(curSlug); }
@@ -656,26 +662,19 @@
     filter=(filter||'').toLowerCase();
     var shown=sortedComponents().filter(function(c){
       if(c.name.toLowerCase().indexOf(filter)<0) return false;
-      if(platFilter!=='all' && !hasPlat(c,platFilter)) return false;   // pisah web vs mobile
+      if(!hasPlat(c,platFilter)) return false;   // cuma web ATAU mobile — nggak ada "semua"
       return true;
     });
-    // hitung komponen per platform buat footer
-    var nWeb=COMPONENTS.filter(function(c){return hasPlat(c,'web');}).length;
-    var nMob=COMPONENTS.filter(function(c){return hasPlat(c,'mobile');}).length;
+    var n=COMPONENTS.filter(function(c){return hasPlat(c,platFilter);}).length;
     document.getElementById('side-foot').textContent=
-      (platFilter==='all'? COMPONENTS.length+' komponen'
-       :platFilter==='web'? nWeb+' komponen web'
-       : nMob+' komponen mobile')
-      +' · '+shown.length+' tampil';
-    if(!shown.length){ sideList.innerHTML='<div class="side-empty">Nggak ada komponen di filter ini.</div>'; return; }
+      n+' komponen '+platFilter+' · '+shown.length+' tampil';
+    if(!shown.length){ sideList.innerHTML='<div class="side-empty">Nggak ada komponen di '+platFilter+'.</div>'; return; }
     sideList.innerHTML='';
     shown.forEach(function(c){
       var el=document.createElement('div'); el.className='cmp-item'+(c.slug===curSlug?' on':'');
-      // pas difilter, tampilin ikon platform yg relevan aja
-      var picon = platFilter==='all' ? platIcons(c)
-        : (platFilter==='mobile'?'📱':'🖥');
+      var picon = platFilter==='mobile'?'📱':'🖥';
       el.innerHTML='<span class="cmp-dot"></span><span class="cmp-nm">'+c.name+'</span><span class="cmp-plat">'+picon+'</span>';
-      el.onclick=function(){ selectComponent(c.slug, platFilter!=='all'?platFilter:null); closeDrawer(); };
+      el.onclick=function(){ selectComponent(c.slug, platFilter); closeDrawer(); };
       sideList.appendChild(el);
     });
   }
@@ -683,19 +682,12 @@
   /* filter global web/mobile — misahin daftar komponen per platform */
   document.getElementById('side-plat').addEventListener('click',function(e){
     var b=e.target.closest('button'); if(!b) return;
-    platFilter=b.getAttribute('data-f');
-    this.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});
-    renderSidebar(document.getElementById('side-search').value);
-    // kalau komponen aktif nggak punya platform yg difilter, lompat ke komponen pertama yg cocok
-    if(platFilter!=='all'){
-      var c=curComp();
-      if(!c || !hasPlat(c,platFilter)){
-        var first=sortedComponents().filter(function(x){return hasPlat(x,platFilter);})[0];
-        if(first) selectComponent(first.slug, platFilter);
-      } else if(curPlatKey!==platFilter){
-        selectPlatform(platFilter);
-      }
-    }
+    var key=b.getAttribute('data-f'); if(key===platFilter) return;
+    syncPlatFilter(key);
+    // pindah ke komponen aktif kalau punya platform ini, kalau nggak → komponen pertama di platform ini
+    var c=curComp();
+    if(c && hasPlat(c,key)){ if(curPlatKey!==key) selectPlatform(key); }
+    else { var first=sortedComponents().filter(function(x){return hasPlat(x,key);})[0]; if(first) selectComponent(first.slug, key); }
   });
 
   /* selectComponent/selectPlatform nerima target platform+versi (dipakai router).
@@ -722,6 +714,7 @@
 
   function selectPlatform(key, v){
     curPlatKey=key; var c=curComp(), p=curPlat();
+    syncPlatFilter(key);   // sidebar filter ngikutin platform yg lagi dibuka
     document.getElementById('cmp-status').textContent=p.phase||'';
     plat.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.dataset.k===key);});
     // version tabs
